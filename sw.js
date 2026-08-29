@@ -1,4 +1,4 @@
-const VERSION='athenaeum-v1.0.1-shell-1';
+const VERSION='athenaeum-v1.0.2-shell-1';
 const CORE=['./','./index.html','./manifest.webmanifest','./assets/icons/icon-192.png','./assets/icons/icon-512.png'];
 self.addEventListener('install',event=>event.waitUntil((async()=>{const c=await caches.open(VERSION);for(const u of CORE){try{await c.add(u)}catch(e){console.warn('cache skip',u,e)}}await self.skipWaiting()})()));
 self.addEventListener('activate',event=>event.waitUntil((async()=>{for(const k of await caches.keys())if(k.startsWith('athenaeum-')&&k!==VERSION)await caches.delete(k);await self.clients.claim()})()));

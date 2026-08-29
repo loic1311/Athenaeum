@@ -1,0 +1,13 @@
+ATHENAEUM V1.0.2
+
+- Athenaeum-zijbalk volledig herwerkt: compacter, duidelijke navigatie, app-snelkoppelingen en profielkaart onderaan.
+- Accountknoppen in de zijbalk: Account en Wissel profiel.
+- Scriptorium en Paideia hebben nu een zichtbare “← Athenaeum”-knop.
+- App-toegang is per profiel instelbaar. Bestaande profielen zonder opgeslagen toegangsinstelling behouden voor compatibiliteit toegang tot Scriptorium + Paideia; nieuwe profielen kiezen expliciet hun apps.
+- Direct openen van een niet-toegewezen app wordt teruggestuurd naar Athenaeum.
+- Home is nu een compact startdashboard; Mijn apps bevat de inhoudelijke appstatus en voortgang.
+- Avatar “bij” toegevoegd; leeuw blijft beschikbaar.
+- Logo’s gebruiken nu de consistente vectorversies uit assets/logos.
+
+PUBLICATIE
+Gebruik ATHENAEUM_V1_0_2_GITHUB_ROOT.zip. Vervang alle bestanden in de lokale GitHub Desktop-repository en push.

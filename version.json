@@ -1,5 +1,12 @@
 {
-  "version": "1.0.1",
-  "release": "Athenaeum V1.0.1",
-  "hotfix": "self-contained shell + complete Scriptorium module + resilient service worker"
+  "version": "1.0.2",
+  "release": "Athenaeum V1.0.2",
+  "features": [
+    "per_profile_app_access",
+    "account_return_links",
+    "sidebar_redesign",
+    "home_apps_separation",
+    "bee_avatar",
+    "logo_alignment"
+  ]
 }

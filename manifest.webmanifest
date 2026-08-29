@@ -1,7 +1,7 @@
 {
-  "name": "Athenaeum V1.0.1 — Persoonlijke leer- en onderzoeksomgeving",
+  "name": "Athenaeum V1.0.2 — Persoonlijke leer- en onderzoeksomgeving",
   "short_name": "Athenaeum",
-  "description": "Profielen, Scriptorium, Paideia, kennisbank, examens, synchronisatie en meldingen.",
+  "description": "Athenaeum met gescheiden profielen, app-toegang per gebruiker, Scriptorium en Paideia.",
   "id": "./",
   "start_url": "./index.html",
   "scope": "./",
