@@ -1,53 +1,46 @@
-ATHENAEUM BOT - TELEGRAM SETUP
+ATHENAEUM V1.0.3 — TELEGRAM VOOR PAIDEIA
 
 DOEL
-Athenaeum Bot kan bijvoorbeeld sturen:
-- iedere ochtend: dagnummer, streak, ijsblokjes, 20 min Oude Geschiedenis + 10 min Algemene Geschiedenis, extra sessie indien van toepassing;
-- later op de dag: reminder als de dagsessie nog niet voltooid is;
-- melding dat zondag een weekexamen volgt;
-- examenuitslag / weekly report in latere updates.
+- iedere ochtend: dagnummer, streak, ijsblokjes, dagschema en aftelling tot zondagsexamen;
+- later op de dag: reminder als Paideia nog niet voltooid is;
+- testmelding vanuit Athenaeum of rechtstreeks vanuit Paideia.
 
-WAAROM SERVER-SIDE?
-Zet een Telegram bot-token NOOIT in GitHub/JavaScript. Iedereen zou het kunnen uitlezen. Het meegeleverde Supabase Edge Function-sjabloon bewaart het token als secret.
+1. SUPABASE
+Open je bestaande Athenaeum-project en voer supabase/setup.sql uit in SQL Editor.
 
-STAP 1 - BOT MAKEN
-1. Open Telegram en zoek @BotFather.
-2. Stuur /newbot.
-3. Kies naam, bijvoorbeeld Athenaeum Bot.
-4. Kies een username die eindigt op bot.
-5. Bewaar het BOT TOKEN tijdelijk privé.
+2. TELEGRAM BOT MAKEN
+Open Telegram en chat met @BotFather.
+Gebruik /newbot en kies bijvoorbeeld Athenaeum Bot.
+Kopieer de bot token. DEZE TOKEN NOOIT IN GITHUB OF DE BROWSERAPP ZETTEN.
 
-STAP 2 - SUPABASE
-1. Maak 1 gratis Supabase-project voor Athenaeum.
-2. SQL Editor > voer ../supabase/setup.sql uit.
-3. Deploy de Edge Function uit ../supabase/functions/telegram-bot/index.ts als 'telegram-bot'.
-4. Voeg in Edge Function Secrets toe:
-   TELEGRAM_BOT_TOKEN = token van BotFather
-   ATHENAEUM_APP_URL = jouw GitHub Pages URL, bv. https://jouwnaam.github.io/Athenaeum/
+3. EDGE FUNCTION DEPLOYEN
+Deploy de map supabase/functions/telegram-bot als function 'telegram-bot'. Voor Telegram-webhooks moet de function publiek bereikbaar zijn; deploy daarom zonder automatische JWT-verificatie. De function valideert gebruikerscalls zelf en kan optioneel Telegram's webhook-secret controleren.
 
-SUPABASE_URL en SUPABASE_SERVICE_ROLE_KEY worden in de hosted Edge Function-omgeving beschikbaar gemaakt. Gebruik service-role key NOOIT in client-JavaScript.
+Benodigde Supabase secrets:
+TELEGRAM_BOT_TOKEN=<token van BotFather>
+ATHENAEUM_APP_URL=https://JOUWNAAM.github.io/Athenaeum/
+TELEGRAM_WEBHOOK_SECRET=<lange willekeurige tekenreeks>
+SCHEDULER_SECRET=<andere lange willekeurige tekenreeks>
 
-STAP 3 - TELEGRAM WEBHOOK
-Open in browser, met jouw echte waarden:
-https://api.telegram.org/bot<TELEGRAM_BOT_TOKEN>/setWebhook?url=<SUPABASE_FUNCTION_URL>
+SUPABASE_URL en SUPABASE_SERVICE_ROLE_KEY worden in Supabase Edge Functions normaal door het platform beschikbaar gesteld.
 
-Function URL is ongeveer:
-https://PROJECTREF.supabase.co/functions/v1/telegram-bot
+4. TELEGRAM WEBHOOK INSTELLEN
+Open in je browser (vul BOT_TOKEN, PROJECT_REF en WEBHOOK_SECRET in):
+https://api.telegram.org/botBOT_TOKEN/setWebhook?url=https://PROJECT_REF.supabase.co/functions/v1/telegram-bot&secret_token=WEBHOOK_SECRET
 
-STAP 4 - ATHENAEUM PROFIEL KOPPELEN
-1. In Athenaeum > Instellingen: configureer Supabase en meld aan.
-2. Stel ochtendtijd, reminder en timezone in.
-3. Klik 'Koppel Athenaeum Bot'.
-4. Athenaeum toont een tijdelijke code, bv. AB12CD.
-5. Open jouw bot in Telegram en stuur:
-   /start AB12CD
-6. De bot bevestigt de koppeling.
+Telegram moet {"ok":true} teruggeven.
 
-STAP 5 - DAGELIJKSE SCHEDULER
-Supabase kan met pg_cron + pg_net iedere 15 minuten dezelfde Edge Function aanroepen met body:
-{"mode":"schedule"}
+5. SCHEDULER
+Laat de Edge Function elke 15 minuten aanroepen. In setup.sql staat een pg_cron/pg_net voorbeeld. Geef in de request-body mode='schedule' en je SCHEDULER_SECRET mee. De function controleert zelf per profiel of het werkelijk ochtendtijd/remindertijd is.
 
-In setup.sql staat een voorbeeld. Iedere 15 minuten is ruim binnen normale persoonlijke gebruiksschaal en controleert de function zelf of het lokaal in jouw timezone tijd is voor ochtendbericht/reminder. Het bot stuurt per dag maar 1 ochtendbericht en 1 reminder.
+6. PROFIEL KOPPELEN
+Athenaeum > Instellingen > synchronisatie: meld aan met het eigen Supabase-account van die gebruiker.
+Daarna: Telegram > Koppel Athenaeum Bot.
+Of rechtstreeks in Paideia > Telegram.
+Open de gegenereerde Telegram-link of stuur /start CODE naar de bot.
 
-PRIVACY
-Iedere gebruiker koppelt zijn eigen Athenaeum-profiel en Telegram-chat. De Edge Function gebruikt de gekoppelde chat_id alleen om Athenaeum-meldingen te versturen.
+7. TEST
+Klik 'Stuur testmelding'. Als die aankomt, werkt bot + Supabase + profielkoppeling.
+
+BELANGRIJK
+Elk Athenaeum-profiel hoort voor cloudsynchronisatie bij een eigen Supabase-authaccount/e-mailadres. Iedereen kan hetzelfde Supabase-project gebruiken, maar de RLS-policies zorgen dat gebruikers alleen hun eigen data zien.

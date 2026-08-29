@@ -1,12 +1,13 @@
 {
-  "version": "1.0.2",
-  "release": "Athenaeum V1.0.2",
+  "version": "1.0.3",
+  "release": "Athenaeum V1.0.3",
   "features": [
-    "per_profile_app_access",
-    "account_return_links",
-    "sidebar_redesign",
-    "home_apps_separation",
-    "bee_avatar",
-    "logo_alignment"
+    "profile_gate_on_launch",
+    "cloud_restore",
+    "smart_cross_device_merge",
+    "scriptorium_sync_without_pdfs",
+    "paideia_telegram",
+    "telegram_test_messages",
+    "stable_cloud_profile_key"
   ]
 }
