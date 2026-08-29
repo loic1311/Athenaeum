@@ -1,0 +1,28 @@
+ATHENAEUM ARCHITECTUUR
+
+Athenaeum = platform
+- Profielen: lokaal, optionele PIN, optionele cloudlogin per gebruiker.
+- Bibliotheek: gedeeld concept, metadata en kennis-packs per profiel.
+- Synchronisatie: local-first, cloud optioneel.
+- Telegram: optionele reminderadapter.
+
+Apps:
+1. Scriptorium
+   - profielgescheiden IndexedDB door database-namespace per ath_profile.
+   - bestaande onderzoeksworkflow behouden.
+2. Paideia
+   - dagelijks: 20 min Oude Geschiedenis + 10 min Algemene Geschiedenis.
+   - iedere 3 dagen extra algemene kennis; ongeveer iedere tweede extra cyclus een skill.
+   - wekelijkse en maandelijkse examens.
+   - streak en ijsblokjes.
+   - 300 offline modelvragen in V1.
+
+Toekomstige apps kunnen dezelfde profiel-, sync-, bibliotheek- en notificatielaag hergebruiken, bijvoorbeeld Farmacie of Vroegmoderne Documentanalyse.
+
+Kennisbronnen voor Paideia:
+1. user_corpus: door gebruiker aangeleverde scans/boeken (hoogste prioriteit voor geschiedenis)
+2. university_compendium: universitaire overzichtswerken / compendia
+3. scholarly_external: wetenschappelijke monografieën en artikels
+4. model_supplement: AI/modelkennis als aanvulling
+
+Een knowledge pack kan lessen, nodes, vragen en exacte fysieke paginaverwijzingen bevatten. Daardoor kan inhoud groeien zonder de appcode telkens te herschrijven.

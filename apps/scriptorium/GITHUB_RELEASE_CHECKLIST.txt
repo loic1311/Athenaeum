@@ -1,0 +1,22 @@
+SCRIPTORIUM V6.3.1 — RELEASECHECKLIST
+
+Voor push
+[ ] index.html staat in repository-root
+[ ] v6.css, v6.js, v6_3.js en sources.js staan naast index.html
+[ ] manifest.webmanifest en sw.js staan naast index.html
+[ ] corpus_seed.json staat naast index.html
+[ ] Scriptorium_AI_Instructiegids_Vrienden.pdf staat naast index.html
+[ ] icons/ en branding/ zijn geupload
+[ ] .nojekyll staat in root
+
+Na push
+[ ] GitHub Pages opent zonder 404
+[ ] Instellingen > GitHub/PWA systeemcheck toont release gereed of alleen niet-kritieke CDN-waarschuwingen
+[ ] Dashboard toont het ingebouwde corpus (56 werken) op een nieuw browserprofiel
+[ ] Training opent en toont authentieke primaire bronnen
+[ ] Primaire bronnen toont 33 ingebouwde bronrecords
+[ ] Download AI-instructiegids werkt
+[ ] Webmodus/Appmodus badge klopt
+
+Als een oude versie blijft staan
+Instellingen > GitHub/PWA systeemcheck > App-cache vernieuwen.

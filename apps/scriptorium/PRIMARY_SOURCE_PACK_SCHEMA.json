@@ -1,0 +1,37 @@
+{
+  "source_pack": 1,
+  "sources": [
+    {
+      "id": "stable_unique_id",
+      "primary": true,
+      "ready": true,
+      "source_type": "inscription | literary | papyrus_letter | coin | ...",
+      "language": "grc | lat | material",
+      "title": "...",
+      "author": "...",
+      "canonical_ref": "...",
+      "period": "...",
+      "place": "...",
+      "original_text": "exact primary text or object data",
+      "translation_text": "English only",
+      "original_source_name": "edition/database",
+      "original_source_url": "https://...",
+      "translation_source_name": "translator/edition or check source",
+      "translation_source_url": "https://...",
+      "translation_credit": "...",
+      "context_hint": "...",
+      "language_hint": "...",
+      "analytic_hint": "...",
+      "scaffold": [
+        "..."
+      ],
+      "tags": [
+        "..."
+      ],
+      "recommended_modules": [
+        "m05",
+        "m11"
+      ]
+    }
+  ]
+}

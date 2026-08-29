@@ -1,0 +1,25 @@
+SCRIPTORIUM V6.3 — SYNCHRONISATIE
+
+Wat is al ingebouwd voor iedere gebruiker?
+- 56 analysis-only corpusrecords;
+- 33 authentieke primaire bronnen;
+- theorie- en trainingslogica;
+- AI-instructiegids.
+Deze onderdelen hoeven niet via persoonlijke sync te worden overgedragen.
+
+Wat is persoonlijk en synchroniseerbaar?
+- eigen antwoorden en scores;
+- reviewplanning;
+- bronannotaties;
+- eigen bronpakketten;
+- eigen corpusmetadata/analyses;
+- instellingen.
+
+PDF-bestanden
+Grote lokaal toegevoegde PDF-blobs blijven op elk toestel in IndexedDB en worden niet in de gewone syncpayload opgenomen.
+
+Optie A: syncbestand
+Instellingen/Synchronisatie > Maak syncbestand. Bewaar dit in een gedeelde cloudmap en importeer/merge op het andere toestel.
+
+Optie B: Supabase
+Gebruik SUPABASE_SYNC_SETUP.sql eenmalig in een eigen Supabase-project en meld op elk toestel met hetzelfde account aan.

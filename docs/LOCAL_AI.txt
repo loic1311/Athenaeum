@@ -1,0 +1,11 @@
+LOKALE AI - KAN HET GRATIS?
+
+Ja, softwarematig kan lokale AI gratis zijn, bijvoorbeeld via open modellen en tools zoals Ollama of browsermodellen. Er zijn dan geen API-kosten.
+
+Maar:
+- je laptop moet het model zelf draaien;
+- sterke modellen vragen RAM, schijfruimte en rekenkracht;
+- kwaliteit is niet automatisch gelijk aan cloud-AI;
+- mobiele ondersteuning is beperkter.
+
+Daarom is lokale AI in Athenaeum V1 NIET vereist. Paideia blijft zonder AI functioneren met kennis-packs, 300 voorgegenereerde vragen, spaced repetition en zelfcorrectie. Een lokale-AI-adapter kan later optioneel worden toegevoegd zonder de kern afhankelijk te maken van AI.

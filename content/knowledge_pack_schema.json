@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "pack_id": "unique-id",
+  "title": "Book / compendium pack",
+  "domain": "ancient|general_history|general_knowledge|skill",
+  "source": {
+    "title": "",
+    "author": "",
+    "year": "",
+    "institution_or_publisher": "",
+    "source_class": "user_corpus|university_compendium|scholarly_external|model_supplement",
+    "file_name": "",
+    "notes": ""
+  },
+  "lessons": [
+    {
+      "id": "",
+      "title": "",
+      "summary": "",
+      "body_sections": [
+        {
+          "heading": "",
+          "text": ""
+        }
+      ],
+      "nodes": [
+        {
+          "type": "structure|process|revolution|conjuncture|person|place|institution|concept|event|primary_source|historiographic_problem",
+          "label": "",
+          "description": ""
+        }
+      ],
+      "source_refs": [
+        {
+          "physical_page": 1,
+          "locator": "",
+          "note": ""
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "",
+      "lesson_id": "",
+      "type": "short|mcq|open|chronology|compare|self",
+      "prompt": "",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "source_refs": [
+        {
+          "physical_page": 1,
+          "note": ""
+        }
+      ]
+    }
+  ]
+}

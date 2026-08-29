@@ -1,0 +1,28 @@
+SCRIPTORIUM V7
+
+BELANGRIJKSTE WIJZIGINGEN
+- desktop-sidebar is volledig viewporthoog en blijft visueel doorlopen;
+- subtiele scroll- en pagina-animaties, met respect voor reduced-motion;
+- telefoon gebruikt onderaan Home / Training / Corpus / Menu met emoji-iconen;
+- browsergeschiedenis werkt beter: terug-knop kan tussen Scriptorium-pagina's navigeren;
+- pagina Aanvullende vondsten heet nu Zoeken;
+- UGent Biblio-zoeker met auteurfilter en preset voor Oude Geschiedenis;
+- OpenAlex-zoeker;
+- bibliografieketen uit bibliografieën van het oorspronkelijke corpus;
+- per corpuswerk aparte herkomstcategorie naast didactisch gewicht;
+- externe bronzoeker op Primaire bronnen;
+- Leeratelier heet Theorie en is gegroepeerd als onderzoeksroute;
+- Synchronisatie en backup zijn samengebracht onder Instellingen;
+- Telegram delen ingebouwd; bot-automatisering alleen veilig via server-side Edge Function.
+
+HERKOMSTCATEGORIEËN
+1. Oorspronkelijk kerncorpus — de ingebouwde 56 geanalyseerde werken.
+2. Via UGent gevonden — metadata gevonden via Biblio UGent.
+3. Via bibliografie gevonden — referentieketen uit bestaande werken.
+4. Extern gevonden — bijvoorbeeld OpenAlex.
+5. Zelf toegevoegd — handmatige PDF-upload.
+
+Deze herkomstcategorie staat LOS van brongewicht normatief/vaknabij/aanvullend. Dat is bewust: herkomst is geen kwaliteitsbeoordeling.
+
+BIBLIOGRAFIEKETEN
+V7 bevat automatisch geëxtraheerde zoeksporen uit 55 tekstleesbare werken van het oorspronkelijke corpus. Eén scan-only werk kon niet betrouwbaar automatisch worden uitgelezen. De referenties zijn zoeksporen en moeten bibliografisch worden geverifieerd voordat je ze als echt corpuswerk behandelt.

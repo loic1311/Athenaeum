@@ -1,0 +1,15 @@
+SCRIPTORIUM V7 — TELEGRAM
+
+Direct delen werkt zonder configuratie via Telegram share links.
+
+AUTOMATISCHE BOTMELDINGEN
+Stop NOOIT een Telegram Bot API-token in index.html, JavaScript of GitHub Pages. Die bestanden zijn publiek leesbaar. Gebruik een server-side functie, bijvoorbeeld een Supabase Edge Function.
+
+Veilige route:
+1. Maak een bot via @BotFather.
+2. Bewaar TELEGRAM_BOT_TOKEN als secret in Supabase.
+3. Deploy een Edge Function op basis van telegram-edge-function-template.js.
+4. Laat de function controleren of de gebruiker geauthenticeerd is.
+5. Scriptorium kan daarna alleen de function URL aanroepen; het token blijft server-side.
+
+V7 bevat reeds directe share-links voor app, oefeningen en zoekresultaten.

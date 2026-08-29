@@ -1,0 +1,82 @@
+ATHENAEUM V1 - INSTALLATIE EN EERSTE SETUP
+
+1. WAT IS ATHENAEUM?
+Athenaeum is het overkoepelende platform. Profielen zijn gescheiden. Binnen een profiel kunnen verschillende apps bestaan:
+- Scriptorium: onderzoek, corpus, bronnen, historiografie, theorie en academische training.
+- Paideia: dagelijks leren, kennisbank, examens, streaks, ijsblokjes en brede kennisopbouw.
+
+2. GITHUB PAGES - EENMALIG
+Gebruik ATHENAEUM_V1_GITHUB_ROOT.zip.
+- Maak 1 GitHub-repository, bijvoorbeeld Athenaeum.
+- Zet de inhoud van de ZIP rechtstreeks in de repository-root. index.html moet dus onmiddellijk zichtbaar zijn.
+- GitHub > Settings > Pages > Deploy from branch > main > /(root).
+- Wacht tot de HTTPS-link beschikbaar is, bijvoorbeeld https://jouwnaam.github.io/Athenaeum/
+- Deze URL blijft bij updates dezelfde. Later vervang je alleen bestanden, commit en push.
+
+3. DESKTOP WEB
+Open de GitHub Pages-URL in Chrome, Edge of Safari. De layout schakelt automatisch naar laptopweergave.
+
+4. DESKTOP APP / PWA
+Chrome of Edge:
+- Open de GitHub Pages-URL.
+- Gebruik de installatieoptie in de adresbalk of menu > Install app / Pagina installeren als app.
+- Na installatie opent Athenaeum zonder gewone browserbalk.
+- Je hoeft de app bij updates niet opnieuw te installeren. Heropen of herlaad nadat GitHub Pages de nieuwe release heeft gepubliceerd.
+
+5. ANDROID WEB EN APP
+BELANGRIJK: open Athenaeum rechtstreeks in de normale Google Chrome-app. Geen ingebouwde browser van Telegram, Messenger, Gmail of andere custom tab.
+- Open de GitHub Pages-URL in Chrome.
+- Tik op de drie puntjes.
+- Open 'Installeren en snelkoppelingen'.
+- Kies 'Installeren' wanneer Chrome Athenaeum als webapp herkent.
+- Een optie die alleen 'Toevoegen aan startscherm' / snelkoppeling maakt, kan nog als gewone webmodus openen.
+
+Als alleen een snelkoppeling wordt aangeboden:
+- controleer dat de URL https:// gebruikt;
+- sluit alle eerdere Athenaeum-tabs;
+- wis NIET meteen je sitegegevens, want daar kan lokale voortgang in staan;
+- herlaad de site eenmaal;
+- open Athenaeum > Instellingen en controleer de PWA-diagnose;
+- controleer dat manifest en service worker OK zijn;
+- probeer daarna opnieuw via Chrome > Installeren en snelkoppelingen.
+
+6. IPHONE / IPAD
+Safari:
+- Open de GitHub Pages-URL.
+- Deel-knop > Zet op beginscherm.
+- Op iOS is dit de normale PWA-installatieroute.
+
+7. PROFIELEN
+Bij de eerste start kies je 'Nieuw profiel'.
+Per profiel kun je later onder Instellingen:
+- naam wijzigen;
+- 1 van de 5 avatars kiezen;
+- optioneel een PIN instellen;
+- de PIN vervangen of verwijderen;
+- export/import uitvoeren;
+- eigen synchronisatieaccount koppelen.
+
+8. SYNCHRONISATIE OP MEERDERE LAPTOPS
+Athenaeum is local-first. Voor automatische sync gebruik je optioneel 1 gratis Supabase-project voor het hele platform.
+- Voer supabase/setup.sql uit in Supabase SQL Editor.
+- Vul per profiel in Athenaeum > Instellingen de project URL en publishable/anon key in.
+- Maak voor iedere gebruiker een eigen e-mailaccount aan of meld aan.
+- Gebruik 'Nu synchroniseren'.
+- Na succesvolle setup sync't Athenaeum ook automatisch bij starten/focus en iedere paar minuten.
+
+Wat synchroniseert:
+- profielnaam/avatar;
+- Paideia voortgang, streak, examens en mastery;
+- kennis-packs;
+- bibliotheekmetadata;
+- instellingen en meldingstijden.
+
+Wat standaard NIET synchroniseert:
+- grote PDF/scans. Die blijven lokaal om cloudkosten en datalimieten laag te houden.
+
+9. UPDATES
+Voor een update:
+- maak voor belangrijke data altijd een profiel-export / backup;
+- vervang de bestanden in dezelfde GitHub repository;
+- commit + push;
+- URL, profielen en lokale opslag blijven behouden zolang je dezelfde origin/repository-URL gebruikt.

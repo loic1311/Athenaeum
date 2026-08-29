@@ -1,0 +1,15 @@
+ATHENAEUM V1 - GITHUB RELEASE CHECKLIST
+
+[ ] Gebruik een nieuwe repository, bij voorkeur 'Athenaeum'.
+[ ] Pak ATHENAEUM_V1_GITHUB_ROOT.zip uit.
+[ ] index.html staat direct in de repository-root.
+[ ] Commit + push naar main.
+[ ] GitHub Settings > Pages > main > /(root).
+[ ] Open de nieuwe HTTPS URL in desktopbrowser.
+[ ] Maak een testprofiel en open Paideia.
+[ ] Controleer Instellingen > PWA diagnose.
+[ ] Open dezelfde URL in de gewone Chrome-app op Android.
+[ ] Kies Chrome > Installeren en snelkoppelingen > Installeren.
+[ ] Configureer pas daarna optioneel Supabase/Telegram.
+
+Gebruik voor deze eerste Athenaeum-release NIET dezelfde Pages-path als een oude Scriptorium-PWA als je oude service-workerproblemen volledig wilt vermijden.

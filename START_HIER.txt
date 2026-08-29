@@ -1,0 +1,17 @@
+ATHENAEUM V1
+
+Gebruik voor GitHub Pages het bestand ATHENAEUM_V1_GITHUB_ROOT.zip.
+Deze map is de volledige ontwikkel-/archiefversie.
+
+Belangrijkste onderdelen:
+- index.html: Athenaeum profielselectie en platform-home
+- apps/scriptorium/: Scriptorium V7 als profielgescheiden module
+- apps/paideia/: Paideia dagelijkse leeromgeving
+- content/paideia_seed.json: 300 offline modelvragen / demonstratiebuffer
+- content/knowledge_pack_schema.json: schema voor later brongebonden leerinhoud uit je boeken/scans
+- supabase/setup.sql: synchronisatie + Telegram tabellen
+- supabase/functions/telegram-bot/: server-side Athenaeum Bot
+- docs/INSTALLATIE.txt en ATHENAEUM_INSTALLATIE_GIDS.pdf: installatie
+- docs/PAIDEIA_METHODE.txt: leerlogica
+
+Mijn advies: publiceer Athenaeum in een NIEUWE GitHub Pages repository/URL, bijvoorbeeld /Athenaeum/, in plaats van de oude /Scriptorium/ te overschrijven. Zo vermijd je conflicten met oude service workers en caches. Scriptorium zit binnen Athenaeum als module.

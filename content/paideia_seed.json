@@ -1,0 +1,6097 @@
+{
+  "version": 1,
+  "notice": "Dit is een model-supplement voor offline demonstratie. In Paideia krijgen later geïmporteerde, door de gebruiker gecontroleerde boek/scankennis voorrang.",
+  "schedule": {
+    "daily_minutes": 30,
+    "ancient_minutes": 20,
+    "general_history_minutes": 10,
+    "general_knowledge_every_n_days": 3,
+    "general_knowledge_extra_minutes": 18,
+    "weekly_exam_day": 6,
+    "monthly_mastery": true,
+    "starting_icecubes": 2,
+    "icecube_threshold": 75
+  },
+  "entity_types": [
+    "person",
+    "place",
+    "institution",
+    "concept",
+    "event",
+    "structure",
+    "process",
+    "revolution",
+    "conjuncture",
+    "network",
+    "primary_source",
+    "historiographic_problem"
+  ],
+  "ancient_topics": [
+    {
+      "title": "Greek polis and Archaic transformations",
+      "concepts": [
+        "polis",
+        "colonization",
+        "citizenship",
+        "elite competition"
+      ],
+      "structure_tags": [
+        "structure",
+        "evolution"
+      ]
+    },
+    {
+      "title": "Athenian democracy and Cleisthenic reform",
+      "concepts": [
+        "demes",
+        "tribes",
+        "isonomia",
+        "participation"
+      ],
+      "structure_tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ]
+    },
+    {
+      "title": "Persian Wars and the Delian League",
+      "concepts": [
+        "Persian Wars",
+        "naval power",
+        "tribute",
+        "Athenian empire"
+      ],
+      "structure_tags": [
+        "event",
+        "process",
+        "conjuncture"
+      ]
+    },
+    {
+      "title": "Peloponnesian War",
+      "concepts": [
+        "Sparta",
+        "Athens",
+        "alliance systems",
+        "war finance"
+      ],
+      "structure_tags": [
+        "event",
+        "conjuncture",
+        "structure"
+      ]
+    },
+    {
+      "title": "Macedon, Philip II and Alexander",
+      "concepts": [
+        "Macedonian monarchy",
+        "army reform",
+        "conquest",
+        "successor crisis"
+      ],
+      "structure_tags": [
+        "revolution",
+        "process",
+        "person"
+      ]
+    },
+    {
+      "title": "Hellenistic kingdoms and connected worlds",
+      "concepts": [
+        "Ptolemies",
+        "Seleucids",
+        "Antigonids",
+        "cities"
+      ],
+      "structure_tags": [
+        "structure",
+        "network",
+        "conjuncture"
+      ]
+    },
+    {
+      "title": "Roman Republic: institutions and competition",
+      "concepts": [
+        "Senate",
+        "magistracies",
+        "assemblies",
+        "nobilitas"
+      ],
+      "structure_tags": [
+        "institution",
+        "structure"
+      ]
+    },
+    {
+      "title": "Roman expansion and Mediterranean imperialism",
+      "concepts": [
+        "alliances",
+        "provinces",
+        "war",
+        "extraction"
+      ],
+      "structure_tags": [
+        "process",
+        "network",
+        "structure"
+      ]
+    },
+    {
+      "title": "Late Republican crisis",
+      "concepts": [
+        "Gracchi",
+        "Marius",
+        "Sulla",
+        "Caesar"
+      ],
+      "structure_tags": [
+        "conjuncture",
+        "revolution",
+        "process"
+      ]
+    },
+    {
+      "title": "Augustus and the Principate",
+      "concepts": [
+        "Actium",
+        "settlements",
+        "auctoritas",
+        "army"
+      ],
+      "structure_tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ]
+    },
+    {
+      "title": "High Empire: city, economy and society",
+      "concepts": [
+        "urbanism",
+        "euergetism",
+        "mobility",
+        "provincial integration"
+      ],
+      "structure_tags": [
+        "structure",
+        "network",
+        "process"
+      ]
+    },
+    {
+      "title": "Third-century transformations and Late Antiquity",
+      "concepts": [
+        "military emperors",
+        "fiscal change",
+        "Christianity",
+        "Tetrarchy"
+      ],
+      "structure_tags": [
+        "conjuncture",
+        "evolution",
+        "structure"
+      ]
+    }
+  ],
+  "general_history_topics": [
+    {
+      "title": "Late Antiquity and post-Roman worlds",
+      "concepts": [
+        "state transformation",
+        "Christian institutions",
+        "migration",
+        "Mediterranean"
+      ]
+    },
+    {
+      "title": "Carolingian Europe",
+      "concepts": [
+        "empire",
+        "lordship",
+        "church",
+        "administration"
+      ]
+    },
+    {
+      "title": "High Middle Ages",
+      "concepts": [
+        "lordship",
+        "urban revival",
+        "state formation",
+        "commerce"
+      ]
+    },
+    {
+      "title": "Crusades and Mediterranean networks",
+      "concepts": [
+        "religion",
+        "war",
+        "trade",
+        "cross-cultural contact"
+      ]
+    },
+    {
+      "title": "Late medieval crisis and recovery",
+      "concepts": [
+        "plague",
+        "war",
+        "labour",
+        "state finance"
+      ]
+    },
+    {
+      "title": "Renaissance and Reformation",
+      "concepts": [
+        "humanism",
+        "printing",
+        "confessionalization",
+        "state"
+      ]
+    },
+    {
+      "title": "Early modern state and economy",
+      "concepts": [
+        "fiscal-military state",
+        "Atlantic economy",
+        "empire",
+        "commercialization"
+      ]
+    },
+    {
+      "title": "Revolutions and industrial transformation",
+      "concepts": [
+        "political revolution",
+        "industry",
+        "nation",
+        "capitalism"
+      ]
+    }
+  ],
+  "general_knowledge_topics": [
+    {
+      "title": "Psychology",
+      "concepts": [
+        "memory",
+        "bias",
+        "learning",
+        "decision-making"
+      ]
+    },
+    {
+      "title": "Biology",
+      "concepts": [
+        "cell",
+        "genetics",
+        "evolution",
+        "homeostasis"
+      ]
+    },
+    {
+      "title": "Law",
+      "concepts": [
+        "legal systems",
+        "contracts",
+        "criminal law",
+        "rights"
+      ]
+    },
+    {
+      "title": "Medicine",
+      "concepts": [
+        "anatomy",
+        "infection",
+        "risk",
+        "public health"
+      ]
+    }
+  ],
+  "skill_topics": [
+    {
+      "title": "Change a car wheel",
+      "concepts": [
+        "safety",
+        "jack points",
+        "wheel bolts",
+        "torque"
+      ]
+    },
+    {
+      "title": "Repair a bicycle puncture",
+      "concepts": [
+        "tube",
+        "tyre levers",
+        "patch",
+        "pressure"
+      ]
+    },
+    {
+      "title": "Basic home repair",
+      "concepts": [
+        "fasteners",
+        "drilling",
+        "measuring",
+        "safety"
+      ]
+    },
+    {
+      "title": "Vegetable gardening",
+      "concepts": [
+        "soil",
+        "crop rotation",
+        "watering",
+        "seasonality"
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "q0001",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat polis binnen het thema “Greek polis and Archaic transformations” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "polis"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "evolution"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0002",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "open",
+      "prompt": "Waarom is polis analytisch belangrijk voor het begrijpen van Greek polis and Archaic transformations? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "polis",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "evolution"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0003",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat colonization binnen het thema “Greek polis and Archaic transformations” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "colonization"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "evolution"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0004",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "open",
+      "prompt": "Waarom is colonization analytisch belangrijk voor het begrijpen van Greek polis and Archaic transformations? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "colonization",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "evolution"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0005",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat citizenship binnen het thema “Greek polis and Archaic transformations” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "citizenship"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "evolution"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0006",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "open",
+      "prompt": "Waarom is citizenship analytisch belangrijk voor het begrijpen van Greek polis and Archaic transformations? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "citizenship",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "evolution"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0007",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat elite competition binnen het thema “Greek polis and Archaic transformations” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "elite competition"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "evolution"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0008",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "open",
+      "prompt": "Waarom is elite competition analytisch belangrijk voor het begrijpen van Greek polis and Archaic transformations? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "elite competition",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "evolution"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0009",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "open",
+      "prompt": "Beschrijf de belangrijkste structuur of ontwikkeling in “Greek polis and Archaic transformations” en leg uit hoe actoren, instituties en omstandigheden op elkaar inwerken.",
+      "answer": "",
+      "keywords": [
+        "structure",
+        "actor",
+        "institution"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "evolution"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0010",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "open",
+      "prompt": "Formuleer één sterke en één te sterke historische claim over “Greek polis and Archaic transformations”, en leg uit welk bewijs nodig is om de sterke claim te dragen.",
+      "answer": "",
+      "keywords": [
+        "evidence",
+        "claim"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "method"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0011",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "open",
+      "prompt": "Welke conjunctuur, revolutie of langetermijnevolutie is in “Greek polis and Archaic transformations” het belangrijkst? Verdedig je keuze.",
+      "answer": "",
+      "keywords": [
+        "change",
+        "process"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "evolution"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0012",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "open",
+      "prompt": "Plaats “Greek polis and Archaic transformations” in een breder Grieks/Romeins-Mediterraan netwerk. Welke verbinding verandert je interpretatie het meest?",
+      "answer": "",
+      "keywords": [
+        "network"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "network"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0013",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "open",
+      "prompt": "Je krijgt een primaire bron uit “Greek polis and Archaic transformations”. Welke drie bronkritische vragen stel je vóór je inhoudelijk concludeert?",
+      "answer": "",
+      "keywords": [
+        "author",
+        "genre",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "source criticism"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0014",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "self",
+      "prompt": "Maak zonder hulpmiddelen een mini-schema van “Greek polis and Archaic transformations”: 4 kernbegrippen, 2 actoren, 1 structuur en 1 verandering. Vergelijk daarna met je lesnotities.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0015",
+      "domain": "ancient",
+      "topic": "Athenian democracy and Cleisthenic reform",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat demes binnen het thema “Athenian democracy and Cleisthenic reform” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "demes"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0016",
+      "domain": "ancient",
+      "topic": "Athenian democracy and Cleisthenic reform",
+      "type": "open",
+      "prompt": "Waarom is demes analytisch belangrijk voor het begrijpen van Athenian democracy and Cleisthenic reform? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "demes",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0017",
+      "domain": "ancient",
+      "topic": "Athenian democracy and Cleisthenic reform",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat tribes binnen het thema “Athenian democracy and Cleisthenic reform” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "tribes"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0018",
+      "domain": "ancient",
+      "topic": "Athenian democracy and Cleisthenic reform",
+      "type": "open",
+      "prompt": "Waarom is tribes analytisch belangrijk voor het begrijpen van Athenian democracy and Cleisthenic reform? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "tribes",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0019",
+      "domain": "ancient",
+      "topic": "Athenian democracy and Cleisthenic reform",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat isonomia binnen het thema “Athenian democracy and Cleisthenic reform” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "isonomia"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0020",
+      "domain": "ancient",
+      "topic": "Athenian democracy and Cleisthenic reform",
+      "type": "open",
+      "prompt": "Waarom is isonomia analytisch belangrijk voor het begrijpen van Athenian democracy and Cleisthenic reform? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "isonomia",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0021",
+      "domain": "ancient",
+      "topic": "Athenian democracy and Cleisthenic reform",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat participation binnen het thema “Athenian democracy and Cleisthenic reform” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "participation"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0022",
+      "domain": "ancient",
+      "topic": "Athenian democracy and Cleisthenic reform",
+      "type": "open",
+      "prompt": "Waarom is participation analytisch belangrijk voor het begrijpen van Athenian democracy and Cleisthenic reform? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "participation",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0023",
+      "domain": "ancient",
+      "topic": "Athenian democracy and Cleisthenic reform",
+      "type": "open",
+      "prompt": "Beschrijf de belangrijkste structuur of ontwikkeling in “Athenian democracy and Cleisthenic reform” en leg uit hoe actoren, instituties en omstandigheden op elkaar inwerken.",
+      "answer": "",
+      "keywords": [
+        "structure",
+        "actor",
+        "institution"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0024",
+      "domain": "ancient",
+      "topic": "Athenian democracy and Cleisthenic reform",
+      "type": "open",
+      "prompt": "Formuleer één sterke en één te sterke historische claim over “Athenian democracy and Cleisthenic reform”, en leg uit welk bewijs nodig is om de sterke claim te dragen.",
+      "answer": "",
+      "keywords": [
+        "evidence",
+        "claim"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "method"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0025",
+      "domain": "ancient",
+      "topic": "Athenian democracy and Cleisthenic reform",
+      "type": "open",
+      "prompt": "Welke conjunctuur, revolutie of langetermijnevolutie is in “Athenian democracy and Cleisthenic reform” het belangrijkst? Verdedig je keuze.",
+      "answer": "",
+      "keywords": [
+        "change",
+        "process"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0026",
+      "domain": "ancient",
+      "topic": "Athenian democracy and Cleisthenic reform",
+      "type": "open",
+      "prompt": "Plaats “Athenian democracy and Cleisthenic reform” in een breder Grieks/Romeins-Mediterraan netwerk. Welke verbinding verandert je interpretatie het meest?",
+      "answer": "",
+      "keywords": [
+        "network"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "network"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0027",
+      "domain": "ancient",
+      "topic": "Athenian democracy and Cleisthenic reform",
+      "type": "open",
+      "prompt": "Je krijgt een primaire bron uit “Athenian democracy and Cleisthenic reform”. Welke drie bronkritische vragen stel je vóór je inhoudelijk concludeert?",
+      "answer": "",
+      "keywords": [
+        "author",
+        "genre",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "source criticism"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0028",
+      "domain": "ancient",
+      "topic": "Athenian democracy and Cleisthenic reform",
+      "type": "self",
+      "prompt": "Maak zonder hulpmiddelen een mini-schema van “Athenian democracy and Cleisthenic reform”: 4 kernbegrippen, 2 actoren, 1 structuur en 1 verandering. Vergelijk daarna met je lesnotities.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0029",
+      "domain": "ancient",
+      "topic": "Persian Wars and the Delian League",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat Persian Wars binnen het thema “Persian Wars and the Delian League” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "persian wars"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "event",
+        "process",
+        "conjuncture"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0030",
+      "domain": "ancient",
+      "topic": "Persian Wars and the Delian League",
+      "type": "open",
+      "prompt": "Waarom is Persian Wars analytisch belangrijk voor het begrijpen van Persian Wars and the Delian League? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "persian wars",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "event",
+        "process",
+        "conjuncture"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0031",
+      "domain": "ancient",
+      "topic": "Persian Wars and the Delian League",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat naval power binnen het thema “Persian Wars and the Delian League” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "naval power"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "event",
+        "process",
+        "conjuncture"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0032",
+      "domain": "ancient",
+      "topic": "Persian Wars and the Delian League",
+      "type": "open",
+      "prompt": "Waarom is naval power analytisch belangrijk voor het begrijpen van Persian Wars and the Delian League? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "naval power",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "event",
+        "process",
+        "conjuncture"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0033",
+      "domain": "ancient",
+      "topic": "Persian Wars and the Delian League",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat tribute binnen het thema “Persian Wars and the Delian League” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "tribute"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "event",
+        "process",
+        "conjuncture"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0034",
+      "domain": "ancient",
+      "topic": "Persian Wars and the Delian League",
+      "type": "open",
+      "prompt": "Waarom is tribute analytisch belangrijk voor het begrijpen van Persian Wars and the Delian League? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "tribute",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "event",
+        "process",
+        "conjuncture"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0035",
+      "domain": "ancient",
+      "topic": "Persian Wars and the Delian League",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat Athenian empire binnen het thema “Persian Wars and the Delian League” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "athenian empire"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "event",
+        "process",
+        "conjuncture"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0036",
+      "domain": "ancient",
+      "topic": "Persian Wars and the Delian League",
+      "type": "open",
+      "prompt": "Waarom is Athenian empire analytisch belangrijk voor het begrijpen van Persian Wars and the Delian League? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "athenian empire",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "event",
+        "process",
+        "conjuncture"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0037",
+      "domain": "ancient",
+      "topic": "Persian Wars and the Delian League",
+      "type": "open",
+      "prompt": "Beschrijf de belangrijkste structuur of ontwikkeling in “Persian Wars and the Delian League” en leg uit hoe actoren, instituties en omstandigheden op elkaar inwerken.",
+      "answer": "",
+      "keywords": [
+        "structure",
+        "actor",
+        "institution"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "event",
+        "process",
+        "conjuncture"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0038",
+      "domain": "ancient",
+      "topic": "Persian Wars and the Delian League",
+      "type": "open",
+      "prompt": "Formuleer één sterke en één te sterke historische claim over “Persian Wars and the Delian League”, en leg uit welk bewijs nodig is om de sterke claim te dragen.",
+      "answer": "",
+      "keywords": [
+        "evidence",
+        "claim"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "method"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0039",
+      "domain": "ancient",
+      "topic": "Persian Wars and the Delian League",
+      "type": "open",
+      "prompt": "Welke conjunctuur, revolutie of langetermijnevolutie is in “Persian Wars and the Delian League” het belangrijkst? Verdedig je keuze.",
+      "answer": "",
+      "keywords": [
+        "change",
+        "process"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "event",
+        "process",
+        "conjuncture"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0040",
+      "domain": "ancient",
+      "topic": "Persian Wars and the Delian League",
+      "type": "open",
+      "prompt": "Plaats “Persian Wars and the Delian League” in een breder Grieks/Romeins-Mediterraan netwerk. Welke verbinding verandert je interpretatie het meest?",
+      "answer": "",
+      "keywords": [
+        "network"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "network"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0041",
+      "domain": "ancient",
+      "topic": "Persian Wars and the Delian League",
+      "type": "open",
+      "prompt": "Je krijgt een primaire bron uit “Persian Wars and the Delian League”. Welke drie bronkritische vragen stel je vóór je inhoudelijk concludeert?",
+      "answer": "",
+      "keywords": [
+        "author",
+        "genre",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "source criticism"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0042",
+      "domain": "ancient",
+      "topic": "Persian Wars and the Delian League",
+      "type": "self",
+      "prompt": "Maak zonder hulpmiddelen een mini-schema van “Persian Wars and the Delian League”: 4 kernbegrippen, 2 actoren, 1 structuur en 1 verandering. Vergelijk daarna met je lesnotities.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0043",
+      "domain": "ancient",
+      "topic": "Peloponnesian War",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat Sparta binnen het thema “Peloponnesian War” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "sparta"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "event",
+        "conjuncture",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0044",
+      "domain": "ancient",
+      "topic": "Peloponnesian War",
+      "type": "open",
+      "prompt": "Waarom is Sparta analytisch belangrijk voor het begrijpen van Peloponnesian War? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "sparta",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "event",
+        "conjuncture",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0045",
+      "domain": "ancient",
+      "topic": "Peloponnesian War",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat Athens binnen het thema “Peloponnesian War” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "athens"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "event",
+        "conjuncture",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0046",
+      "domain": "ancient",
+      "topic": "Peloponnesian War",
+      "type": "open",
+      "prompt": "Waarom is Athens analytisch belangrijk voor het begrijpen van Peloponnesian War? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "athens",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "event",
+        "conjuncture",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0047",
+      "domain": "ancient",
+      "topic": "Peloponnesian War",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat alliance systems binnen het thema “Peloponnesian War” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "alliance systems"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "event",
+        "conjuncture",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0048",
+      "domain": "ancient",
+      "topic": "Peloponnesian War",
+      "type": "open",
+      "prompt": "Waarom is alliance systems analytisch belangrijk voor het begrijpen van Peloponnesian War? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "alliance systems",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "event",
+        "conjuncture",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0049",
+      "domain": "ancient",
+      "topic": "Peloponnesian War",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat war finance binnen het thema “Peloponnesian War” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "war finance"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "event",
+        "conjuncture",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0050",
+      "domain": "ancient",
+      "topic": "Peloponnesian War",
+      "type": "open",
+      "prompt": "Waarom is war finance analytisch belangrijk voor het begrijpen van Peloponnesian War? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "war finance",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "event",
+        "conjuncture",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0051",
+      "domain": "ancient",
+      "topic": "Peloponnesian War",
+      "type": "open",
+      "prompt": "Beschrijf de belangrijkste structuur of ontwikkeling in “Peloponnesian War” en leg uit hoe actoren, instituties en omstandigheden op elkaar inwerken.",
+      "answer": "",
+      "keywords": [
+        "structure",
+        "actor",
+        "institution"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "event",
+        "conjuncture",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0052",
+      "domain": "ancient",
+      "topic": "Peloponnesian War",
+      "type": "open",
+      "prompt": "Formuleer één sterke en één te sterke historische claim over “Peloponnesian War”, en leg uit welk bewijs nodig is om de sterke claim te dragen.",
+      "answer": "",
+      "keywords": [
+        "evidence",
+        "claim"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "method"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0053",
+      "domain": "ancient",
+      "topic": "Peloponnesian War",
+      "type": "open",
+      "prompt": "Welke conjunctuur, revolutie of langetermijnevolutie is in “Peloponnesian War” het belangrijkst? Verdedig je keuze.",
+      "answer": "",
+      "keywords": [
+        "change",
+        "process"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "event",
+        "conjuncture",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0054",
+      "domain": "ancient",
+      "topic": "Peloponnesian War",
+      "type": "open",
+      "prompt": "Plaats “Peloponnesian War” in een breder Grieks/Romeins-Mediterraan netwerk. Welke verbinding verandert je interpretatie het meest?",
+      "answer": "",
+      "keywords": [
+        "network"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "network"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0055",
+      "domain": "ancient",
+      "topic": "Peloponnesian War",
+      "type": "open",
+      "prompt": "Je krijgt een primaire bron uit “Peloponnesian War”. Welke drie bronkritische vragen stel je vóór je inhoudelijk concludeert?",
+      "answer": "",
+      "keywords": [
+        "author",
+        "genre",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "source criticism"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0056",
+      "domain": "ancient",
+      "topic": "Peloponnesian War",
+      "type": "self",
+      "prompt": "Maak zonder hulpmiddelen een mini-schema van “Peloponnesian War”: 4 kernbegrippen, 2 actoren, 1 structuur en 1 verandering. Vergelijk daarna met je lesnotities.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0057",
+      "domain": "ancient",
+      "topic": "Macedon, Philip II and Alexander",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat Macedonian monarchy binnen het thema “Macedon, Philip II and Alexander” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "macedonian monarchy"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "revolution",
+        "process",
+        "person"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0058",
+      "domain": "ancient",
+      "topic": "Macedon, Philip II and Alexander",
+      "type": "open",
+      "prompt": "Waarom is Macedonian monarchy analytisch belangrijk voor het begrijpen van Macedon, Philip II and Alexander? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "macedonian monarchy",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "revolution",
+        "process",
+        "person"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0059",
+      "domain": "ancient",
+      "topic": "Macedon, Philip II and Alexander",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat army reform binnen het thema “Macedon, Philip II and Alexander” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "army reform"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "revolution",
+        "process",
+        "person"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0060",
+      "domain": "ancient",
+      "topic": "Macedon, Philip II and Alexander",
+      "type": "open",
+      "prompt": "Waarom is army reform analytisch belangrijk voor het begrijpen van Macedon, Philip II and Alexander? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "army reform",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "revolution",
+        "process",
+        "person"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0061",
+      "domain": "ancient",
+      "topic": "Macedon, Philip II and Alexander",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat conquest binnen het thema “Macedon, Philip II and Alexander” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "conquest"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "revolution",
+        "process",
+        "person"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0062",
+      "domain": "ancient",
+      "topic": "Macedon, Philip II and Alexander",
+      "type": "open",
+      "prompt": "Waarom is conquest analytisch belangrijk voor het begrijpen van Macedon, Philip II and Alexander? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "conquest",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "revolution",
+        "process",
+        "person"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0063",
+      "domain": "ancient",
+      "topic": "Macedon, Philip II and Alexander",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat successor crisis binnen het thema “Macedon, Philip II and Alexander” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "successor crisis"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "revolution",
+        "process",
+        "person"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0064",
+      "domain": "ancient",
+      "topic": "Macedon, Philip II and Alexander",
+      "type": "open",
+      "prompt": "Waarom is successor crisis analytisch belangrijk voor het begrijpen van Macedon, Philip II and Alexander? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "successor crisis",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "revolution",
+        "process",
+        "person"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0065",
+      "domain": "ancient",
+      "topic": "Macedon, Philip II and Alexander",
+      "type": "open",
+      "prompt": "Beschrijf de belangrijkste structuur of ontwikkeling in “Macedon, Philip II and Alexander” en leg uit hoe actoren, instituties en omstandigheden op elkaar inwerken.",
+      "answer": "",
+      "keywords": [
+        "structure",
+        "actor",
+        "institution"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "revolution",
+        "process",
+        "person"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0066",
+      "domain": "ancient",
+      "topic": "Macedon, Philip II and Alexander",
+      "type": "open",
+      "prompt": "Formuleer één sterke en één te sterke historische claim over “Macedon, Philip II and Alexander”, en leg uit welk bewijs nodig is om de sterke claim te dragen.",
+      "answer": "",
+      "keywords": [
+        "evidence",
+        "claim"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "method"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0067",
+      "domain": "ancient",
+      "topic": "Macedon, Philip II and Alexander",
+      "type": "open",
+      "prompt": "Welke conjunctuur, revolutie of langetermijnevolutie is in “Macedon, Philip II and Alexander” het belangrijkst? Verdedig je keuze.",
+      "answer": "",
+      "keywords": [
+        "change",
+        "process"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "revolution",
+        "process",
+        "person"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0068",
+      "domain": "ancient",
+      "topic": "Macedon, Philip II and Alexander",
+      "type": "open",
+      "prompt": "Plaats “Macedon, Philip II and Alexander” in een breder Grieks/Romeins-Mediterraan netwerk. Welke verbinding verandert je interpretatie het meest?",
+      "answer": "",
+      "keywords": [
+        "network"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "network"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0069",
+      "domain": "ancient",
+      "topic": "Macedon, Philip II and Alexander",
+      "type": "open",
+      "prompt": "Je krijgt een primaire bron uit “Macedon, Philip II and Alexander”. Welke drie bronkritische vragen stel je vóór je inhoudelijk concludeert?",
+      "answer": "",
+      "keywords": [
+        "author",
+        "genre",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "source criticism"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0070",
+      "domain": "ancient",
+      "topic": "Macedon, Philip II and Alexander",
+      "type": "self",
+      "prompt": "Maak zonder hulpmiddelen een mini-schema van “Macedon, Philip II and Alexander”: 4 kernbegrippen, 2 actoren, 1 structuur en 1 verandering. Vergelijk daarna met je lesnotities.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0071",
+      "domain": "ancient",
+      "topic": "Hellenistic kingdoms and connected worlds",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat Ptolemies binnen het thema “Hellenistic kingdoms and connected worlds” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "ptolemies"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "network",
+        "conjuncture"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0072",
+      "domain": "ancient",
+      "topic": "Hellenistic kingdoms and connected worlds",
+      "type": "open",
+      "prompt": "Waarom is Ptolemies analytisch belangrijk voor het begrijpen van Hellenistic kingdoms and connected worlds? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "ptolemies",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "network",
+        "conjuncture"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0073",
+      "domain": "ancient",
+      "topic": "Hellenistic kingdoms and connected worlds",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat Seleucids binnen het thema “Hellenistic kingdoms and connected worlds” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "seleucids"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "network",
+        "conjuncture"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0074",
+      "domain": "ancient",
+      "topic": "Hellenistic kingdoms and connected worlds",
+      "type": "open",
+      "prompt": "Waarom is Seleucids analytisch belangrijk voor het begrijpen van Hellenistic kingdoms and connected worlds? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "seleucids",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "network",
+        "conjuncture"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0075",
+      "domain": "ancient",
+      "topic": "Hellenistic kingdoms and connected worlds",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat Antigonids binnen het thema “Hellenistic kingdoms and connected worlds” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "antigonids"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "network",
+        "conjuncture"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0076",
+      "domain": "ancient",
+      "topic": "Hellenistic kingdoms and connected worlds",
+      "type": "open",
+      "prompt": "Waarom is Antigonids analytisch belangrijk voor het begrijpen van Hellenistic kingdoms and connected worlds? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "antigonids",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "network",
+        "conjuncture"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0077",
+      "domain": "ancient",
+      "topic": "Hellenistic kingdoms and connected worlds",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat cities binnen het thema “Hellenistic kingdoms and connected worlds” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "cities"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "network",
+        "conjuncture"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0078",
+      "domain": "ancient",
+      "topic": "Hellenistic kingdoms and connected worlds",
+      "type": "open",
+      "prompt": "Waarom is cities analytisch belangrijk voor het begrijpen van Hellenistic kingdoms and connected worlds? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "cities",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "network",
+        "conjuncture"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0079",
+      "domain": "ancient",
+      "topic": "Hellenistic kingdoms and connected worlds",
+      "type": "open",
+      "prompt": "Beschrijf de belangrijkste structuur of ontwikkeling in “Hellenistic kingdoms and connected worlds” en leg uit hoe actoren, instituties en omstandigheden op elkaar inwerken.",
+      "answer": "",
+      "keywords": [
+        "structure",
+        "actor",
+        "institution"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "network",
+        "conjuncture"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0080",
+      "domain": "ancient",
+      "topic": "Hellenistic kingdoms and connected worlds",
+      "type": "open",
+      "prompt": "Formuleer één sterke en één te sterke historische claim over “Hellenistic kingdoms and connected worlds”, en leg uit welk bewijs nodig is om de sterke claim te dragen.",
+      "answer": "",
+      "keywords": [
+        "evidence",
+        "claim"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "method"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0081",
+      "domain": "ancient",
+      "topic": "Hellenistic kingdoms and connected worlds",
+      "type": "open",
+      "prompt": "Welke conjunctuur, revolutie of langetermijnevolutie is in “Hellenistic kingdoms and connected worlds” het belangrijkst? Verdedig je keuze.",
+      "answer": "",
+      "keywords": [
+        "change",
+        "process"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "network",
+        "conjuncture"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0082",
+      "domain": "ancient",
+      "topic": "Hellenistic kingdoms and connected worlds",
+      "type": "open",
+      "prompt": "Plaats “Hellenistic kingdoms and connected worlds” in een breder Grieks/Romeins-Mediterraan netwerk. Welke verbinding verandert je interpretatie het meest?",
+      "answer": "",
+      "keywords": [
+        "network"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "network"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0083",
+      "domain": "ancient",
+      "topic": "Hellenistic kingdoms and connected worlds",
+      "type": "open",
+      "prompt": "Je krijgt een primaire bron uit “Hellenistic kingdoms and connected worlds”. Welke drie bronkritische vragen stel je vóór je inhoudelijk concludeert?",
+      "answer": "",
+      "keywords": [
+        "author",
+        "genre",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "source criticism"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0084",
+      "domain": "ancient",
+      "topic": "Hellenistic kingdoms and connected worlds",
+      "type": "self",
+      "prompt": "Maak zonder hulpmiddelen een mini-schema van “Hellenistic kingdoms and connected worlds”: 4 kernbegrippen, 2 actoren, 1 structuur en 1 verandering. Vergelijk daarna met je lesnotities.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0085",
+      "domain": "ancient",
+      "topic": "Roman Republic: institutions and competition",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat Senate binnen het thema “Roman Republic: institutions and competition” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "senate"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0086",
+      "domain": "ancient",
+      "topic": "Roman Republic: institutions and competition",
+      "type": "open",
+      "prompt": "Waarom is Senate analytisch belangrijk voor het begrijpen van Roman Republic: institutions and competition? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "senate",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0087",
+      "domain": "ancient",
+      "topic": "Roman Republic: institutions and competition",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat magistracies binnen het thema “Roman Republic: institutions and competition” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "magistracies"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0088",
+      "domain": "ancient",
+      "topic": "Roman Republic: institutions and competition",
+      "type": "open",
+      "prompt": "Waarom is magistracies analytisch belangrijk voor het begrijpen van Roman Republic: institutions and competition? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "magistracies",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0089",
+      "domain": "ancient",
+      "topic": "Roman Republic: institutions and competition",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat assemblies binnen het thema “Roman Republic: institutions and competition” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "assemblies"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0090",
+      "domain": "ancient",
+      "topic": "Roman Republic: institutions and competition",
+      "type": "open",
+      "prompt": "Waarom is assemblies analytisch belangrijk voor het begrijpen van Roman Republic: institutions and competition? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "assemblies",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0091",
+      "domain": "ancient",
+      "topic": "Roman Republic: institutions and competition",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat nobilitas binnen het thema “Roman Republic: institutions and competition” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "nobilitas"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0092",
+      "domain": "ancient",
+      "topic": "Roman Republic: institutions and competition",
+      "type": "open",
+      "prompt": "Waarom is nobilitas analytisch belangrijk voor het begrijpen van Roman Republic: institutions and competition? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "nobilitas",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0093",
+      "domain": "ancient",
+      "topic": "Roman Republic: institutions and competition",
+      "type": "open",
+      "prompt": "Beschrijf de belangrijkste structuur of ontwikkeling in “Roman Republic: institutions and competition” en leg uit hoe actoren, instituties en omstandigheden op elkaar inwerken.",
+      "answer": "",
+      "keywords": [
+        "structure",
+        "actor",
+        "institution"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0094",
+      "domain": "ancient",
+      "topic": "Roman Republic: institutions and competition",
+      "type": "open",
+      "prompt": "Formuleer één sterke en één te sterke historische claim over “Roman Republic: institutions and competition”, en leg uit welk bewijs nodig is om de sterke claim te dragen.",
+      "answer": "",
+      "keywords": [
+        "evidence",
+        "claim"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "method"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0095",
+      "domain": "ancient",
+      "topic": "Roman Republic: institutions and competition",
+      "type": "open",
+      "prompt": "Welke conjunctuur, revolutie of langetermijnevolutie is in “Roman Republic: institutions and competition” het belangrijkst? Verdedig je keuze.",
+      "answer": "",
+      "keywords": [
+        "change",
+        "process"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0096",
+      "domain": "ancient",
+      "topic": "Roman Republic: institutions and competition",
+      "type": "open",
+      "prompt": "Plaats “Roman Republic: institutions and competition” in een breder Grieks/Romeins-Mediterraan netwerk. Welke verbinding verandert je interpretatie het meest?",
+      "answer": "",
+      "keywords": [
+        "network"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "network"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0097",
+      "domain": "ancient",
+      "topic": "Roman Republic: institutions and competition",
+      "type": "open",
+      "prompt": "Je krijgt een primaire bron uit “Roman Republic: institutions and competition”. Welke drie bronkritische vragen stel je vóór je inhoudelijk concludeert?",
+      "answer": "",
+      "keywords": [
+        "author",
+        "genre",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "source criticism"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0098",
+      "domain": "ancient",
+      "topic": "Roman Republic: institutions and competition",
+      "type": "self",
+      "prompt": "Maak zonder hulpmiddelen een mini-schema van “Roman Republic: institutions and competition”: 4 kernbegrippen, 2 actoren, 1 structuur en 1 verandering. Vergelijk daarna met je lesnotities.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0099",
+      "domain": "ancient",
+      "topic": "Roman expansion and Mediterranean imperialism",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat alliances binnen het thema “Roman expansion and Mediterranean imperialism” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "alliances"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "process",
+        "network",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0100",
+      "domain": "ancient",
+      "topic": "Roman expansion and Mediterranean imperialism",
+      "type": "open",
+      "prompt": "Waarom is alliances analytisch belangrijk voor het begrijpen van Roman expansion and Mediterranean imperialism? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "alliances",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "process",
+        "network",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0101",
+      "domain": "ancient",
+      "topic": "Roman expansion and Mediterranean imperialism",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat provinces binnen het thema “Roman expansion and Mediterranean imperialism” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "provinces"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "process",
+        "network",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0102",
+      "domain": "ancient",
+      "topic": "Roman expansion and Mediterranean imperialism",
+      "type": "open",
+      "prompt": "Waarom is provinces analytisch belangrijk voor het begrijpen van Roman expansion and Mediterranean imperialism? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "provinces",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "process",
+        "network",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0103",
+      "domain": "ancient",
+      "topic": "Roman expansion and Mediterranean imperialism",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat war binnen het thema “Roman expansion and Mediterranean imperialism” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "war"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "process",
+        "network",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0104",
+      "domain": "ancient",
+      "topic": "Roman expansion and Mediterranean imperialism",
+      "type": "open",
+      "prompt": "Waarom is war analytisch belangrijk voor het begrijpen van Roman expansion and Mediterranean imperialism? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "war",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "process",
+        "network",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0105",
+      "domain": "ancient",
+      "topic": "Roman expansion and Mediterranean imperialism",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat extraction binnen het thema “Roman expansion and Mediterranean imperialism” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "extraction"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "process",
+        "network",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0106",
+      "domain": "ancient",
+      "topic": "Roman expansion and Mediterranean imperialism",
+      "type": "open",
+      "prompt": "Waarom is extraction analytisch belangrijk voor het begrijpen van Roman expansion and Mediterranean imperialism? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "extraction",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "process",
+        "network",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0107",
+      "domain": "ancient",
+      "topic": "Roman expansion and Mediterranean imperialism",
+      "type": "open",
+      "prompt": "Beschrijf de belangrijkste structuur of ontwikkeling in “Roman expansion and Mediterranean imperialism” en leg uit hoe actoren, instituties en omstandigheden op elkaar inwerken.",
+      "answer": "",
+      "keywords": [
+        "structure",
+        "actor",
+        "institution"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "process",
+        "network",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0108",
+      "domain": "ancient",
+      "topic": "Roman expansion and Mediterranean imperialism",
+      "type": "open",
+      "prompt": "Formuleer één sterke en één te sterke historische claim over “Roman expansion and Mediterranean imperialism”, en leg uit welk bewijs nodig is om de sterke claim te dragen.",
+      "answer": "",
+      "keywords": [
+        "evidence",
+        "claim"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "method"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0109",
+      "domain": "ancient",
+      "topic": "Roman expansion and Mediterranean imperialism",
+      "type": "open",
+      "prompt": "Welke conjunctuur, revolutie of langetermijnevolutie is in “Roman expansion and Mediterranean imperialism” het belangrijkst? Verdedig je keuze.",
+      "answer": "",
+      "keywords": [
+        "change",
+        "process"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "process",
+        "network",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0110",
+      "domain": "ancient",
+      "topic": "Roman expansion and Mediterranean imperialism",
+      "type": "open",
+      "prompt": "Plaats “Roman expansion and Mediterranean imperialism” in een breder Grieks/Romeins-Mediterraan netwerk. Welke verbinding verandert je interpretatie het meest?",
+      "answer": "",
+      "keywords": [
+        "network"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "network"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0111",
+      "domain": "ancient",
+      "topic": "Roman expansion and Mediterranean imperialism",
+      "type": "open",
+      "prompt": "Je krijgt een primaire bron uit “Roman expansion and Mediterranean imperialism”. Welke drie bronkritische vragen stel je vóór je inhoudelijk concludeert?",
+      "answer": "",
+      "keywords": [
+        "author",
+        "genre",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "source criticism"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0112",
+      "domain": "ancient",
+      "topic": "Roman expansion and Mediterranean imperialism",
+      "type": "self",
+      "prompt": "Maak zonder hulpmiddelen een mini-schema van “Roman expansion and Mediterranean imperialism”: 4 kernbegrippen, 2 actoren, 1 structuur en 1 verandering. Vergelijk daarna met je lesnotities.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0113",
+      "domain": "ancient",
+      "topic": "Late Republican crisis",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat Gracchi binnen het thema “Late Republican crisis” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "gracchi"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "conjuncture",
+        "revolution",
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0114",
+      "domain": "ancient",
+      "topic": "Late Republican crisis",
+      "type": "open",
+      "prompt": "Waarom is Gracchi analytisch belangrijk voor het begrijpen van Late Republican crisis? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "gracchi",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "conjuncture",
+        "revolution",
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0115",
+      "domain": "ancient",
+      "topic": "Late Republican crisis",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat Marius binnen het thema “Late Republican crisis” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "marius"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "conjuncture",
+        "revolution",
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0116",
+      "domain": "ancient",
+      "topic": "Late Republican crisis",
+      "type": "open",
+      "prompt": "Waarom is Marius analytisch belangrijk voor het begrijpen van Late Republican crisis? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "marius",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "conjuncture",
+        "revolution",
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0117",
+      "domain": "ancient",
+      "topic": "Late Republican crisis",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat Sulla binnen het thema “Late Republican crisis” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "sulla"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "conjuncture",
+        "revolution",
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0118",
+      "domain": "ancient",
+      "topic": "Late Republican crisis",
+      "type": "open",
+      "prompt": "Waarom is Sulla analytisch belangrijk voor het begrijpen van Late Republican crisis? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "sulla",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "conjuncture",
+        "revolution",
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0119",
+      "domain": "ancient",
+      "topic": "Late Republican crisis",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat Caesar binnen het thema “Late Republican crisis” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "caesar"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "conjuncture",
+        "revolution",
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0120",
+      "domain": "ancient",
+      "topic": "Late Republican crisis",
+      "type": "open",
+      "prompt": "Waarom is Caesar analytisch belangrijk voor het begrijpen van Late Republican crisis? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "caesar",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "conjuncture",
+        "revolution",
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0121",
+      "domain": "ancient",
+      "topic": "Late Republican crisis",
+      "type": "open",
+      "prompt": "Beschrijf de belangrijkste structuur of ontwikkeling in “Late Republican crisis” en leg uit hoe actoren, instituties en omstandigheden op elkaar inwerken.",
+      "answer": "",
+      "keywords": [
+        "structure",
+        "actor",
+        "institution"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "conjuncture",
+        "revolution",
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0122",
+      "domain": "ancient",
+      "topic": "Late Republican crisis",
+      "type": "open",
+      "prompt": "Formuleer één sterke en één te sterke historische claim over “Late Republican crisis”, en leg uit welk bewijs nodig is om de sterke claim te dragen.",
+      "answer": "",
+      "keywords": [
+        "evidence",
+        "claim"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "method"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0123",
+      "domain": "ancient",
+      "topic": "Late Republican crisis",
+      "type": "open",
+      "prompt": "Welke conjunctuur, revolutie of langetermijnevolutie is in “Late Republican crisis” het belangrijkst? Verdedig je keuze.",
+      "answer": "",
+      "keywords": [
+        "change",
+        "process"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "conjuncture",
+        "revolution",
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0124",
+      "domain": "ancient",
+      "topic": "Late Republican crisis",
+      "type": "open",
+      "prompt": "Plaats “Late Republican crisis” in een breder Grieks/Romeins-Mediterraan netwerk. Welke verbinding verandert je interpretatie het meest?",
+      "answer": "",
+      "keywords": [
+        "network"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "network"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0125",
+      "domain": "ancient",
+      "topic": "Late Republican crisis",
+      "type": "open",
+      "prompt": "Je krijgt een primaire bron uit “Late Republican crisis”. Welke drie bronkritische vragen stel je vóór je inhoudelijk concludeert?",
+      "answer": "",
+      "keywords": [
+        "author",
+        "genre",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "source criticism"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0126",
+      "domain": "ancient",
+      "topic": "Late Republican crisis",
+      "type": "self",
+      "prompt": "Maak zonder hulpmiddelen een mini-schema van “Late Republican crisis”: 4 kernbegrippen, 2 actoren, 1 structuur en 1 verandering. Vergelijk daarna met je lesnotities.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0127",
+      "domain": "ancient",
+      "topic": "Augustus and the Principate",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat Actium binnen het thema “Augustus and the Principate” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "actium"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0128",
+      "domain": "ancient",
+      "topic": "Augustus and the Principate",
+      "type": "open",
+      "prompt": "Waarom is Actium analytisch belangrijk voor het begrijpen van Augustus and the Principate? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "actium",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0129",
+      "domain": "ancient",
+      "topic": "Augustus and the Principate",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat settlements binnen het thema “Augustus and the Principate” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "settlements"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0130",
+      "domain": "ancient",
+      "topic": "Augustus and the Principate",
+      "type": "open",
+      "prompt": "Waarom is settlements analytisch belangrijk voor het begrijpen van Augustus and the Principate? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "settlements",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0131",
+      "domain": "ancient",
+      "topic": "Augustus and the Principate",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat auctoritas binnen het thema “Augustus and the Principate” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "auctoritas"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0132",
+      "domain": "ancient",
+      "topic": "Augustus and the Principate",
+      "type": "open",
+      "prompt": "Waarom is auctoritas analytisch belangrijk voor het begrijpen van Augustus and the Principate? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "auctoritas",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0133",
+      "domain": "ancient",
+      "topic": "Augustus and the Principate",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat army binnen het thema “Augustus and the Principate” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "army"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0134",
+      "domain": "ancient",
+      "topic": "Augustus and the Principate",
+      "type": "open",
+      "prompt": "Waarom is army analytisch belangrijk voor het begrijpen van Augustus and the Principate? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "army",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0135",
+      "domain": "ancient",
+      "topic": "Augustus and the Principate",
+      "type": "open",
+      "prompt": "Beschrijf de belangrijkste structuur of ontwikkeling in “Augustus and the Principate” en leg uit hoe actoren, instituties en omstandigheden op elkaar inwerken.",
+      "answer": "",
+      "keywords": [
+        "structure",
+        "actor",
+        "institution"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0136",
+      "domain": "ancient",
+      "topic": "Augustus and the Principate",
+      "type": "open",
+      "prompt": "Formuleer één sterke en één te sterke historische claim over “Augustus and the Principate”, en leg uit welk bewijs nodig is om de sterke claim te dragen.",
+      "answer": "",
+      "keywords": [
+        "evidence",
+        "claim"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "method"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0137",
+      "domain": "ancient",
+      "topic": "Augustus and the Principate",
+      "type": "open",
+      "prompt": "Welke conjunctuur, revolutie of langetermijnevolutie is in “Augustus and the Principate” het belangrijkst? Verdedig je keuze.",
+      "answer": "",
+      "keywords": [
+        "change",
+        "process"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "institution",
+        "revolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0138",
+      "domain": "ancient",
+      "topic": "Augustus and the Principate",
+      "type": "open",
+      "prompt": "Plaats “Augustus and the Principate” in een breder Grieks/Romeins-Mediterraan netwerk. Welke verbinding verandert je interpretatie het meest?",
+      "answer": "",
+      "keywords": [
+        "network"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "network"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0139",
+      "domain": "ancient",
+      "topic": "Augustus and the Principate",
+      "type": "open",
+      "prompt": "Je krijgt een primaire bron uit “Augustus and the Principate”. Welke drie bronkritische vragen stel je vóór je inhoudelijk concludeert?",
+      "answer": "",
+      "keywords": [
+        "author",
+        "genre",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "source criticism"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0140",
+      "domain": "ancient",
+      "topic": "Augustus and the Principate",
+      "type": "self",
+      "prompt": "Maak zonder hulpmiddelen een mini-schema van “Augustus and the Principate”: 4 kernbegrippen, 2 actoren, 1 structuur en 1 verandering. Vergelijk daarna met je lesnotities.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0141",
+      "domain": "ancient",
+      "topic": "High Empire: city, economy and society",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat urbanism binnen het thema “High Empire: city, economy and society” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "urbanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "network",
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0142",
+      "domain": "ancient",
+      "topic": "High Empire: city, economy and society",
+      "type": "open",
+      "prompt": "Waarom is urbanism analytisch belangrijk voor het begrijpen van High Empire: city, economy and society? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "urbanism",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "network",
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0143",
+      "domain": "ancient",
+      "topic": "High Empire: city, economy and society",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat euergetism binnen het thema “High Empire: city, economy and society” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "euergetism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "network",
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0144",
+      "domain": "ancient",
+      "topic": "High Empire: city, economy and society",
+      "type": "open",
+      "prompt": "Waarom is euergetism analytisch belangrijk voor het begrijpen van High Empire: city, economy and society? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "euergetism",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "network",
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0145",
+      "domain": "ancient",
+      "topic": "High Empire: city, economy and society",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat mobility binnen het thema “High Empire: city, economy and society” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "mobility"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "network",
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0146",
+      "domain": "ancient",
+      "topic": "High Empire: city, economy and society",
+      "type": "open",
+      "prompt": "Waarom is mobility analytisch belangrijk voor het begrijpen van High Empire: city, economy and society? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "mobility",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "network",
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0147",
+      "domain": "ancient",
+      "topic": "High Empire: city, economy and society",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat provincial integration binnen het thema “High Empire: city, economy and society” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "provincial integration"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "network",
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0148",
+      "domain": "ancient",
+      "topic": "High Empire: city, economy and society",
+      "type": "open",
+      "prompt": "Waarom is provincial integration analytisch belangrijk voor het begrijpen van High Empire: city, economy and society? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "provincial integration",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "network",
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0149",
+      "domain": "ancient",
+      "topic": "High Empire: city, economy and society",
+      "type": "open",
+      "prompt": "Beschrijf de belangrijkste structuur of ontwikkeling in “High Empire: city, economy and society” en leg uit hoe actoren, instituties en omstandigheden op elkaar inwerken.",
+      "answer": "",
+      "keywords": [
+        "structure",
+        "actor",
+        "institution"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "network",
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0150",
+      "domain": "ancient",
+      "topic": "High Empire: city, economy and society",
+      "type": "open",
+      "prompt": "Formuleer één sterke en één te sterke historische claim over “High Empire: city, economy and society”, en leg uit welk bewijs nodig is om de sterke claim te dragen.",
+      "answer": "",
+      "keywords": [
+        "evidence",
+        "claim"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "method"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0151",
+      "domain": "ancient",
+      "topic": "High Empire: city, economy and society",
+      "type": "open",
+      "prompt": "Welke conjunctuur, revolutie of langetermijnevolutie is in “High Empire: city, economy and society” het belangrijkst? Verdedig je keuze.",
+      "answer": "",
+      "keywords": [
+        "change",
+        "process"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure",
+        "network",
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0152",
+      "domain": "ancient",
+      "topic": "High Empire: city, economy and society",
+      "type": "open",
+      "prompt": "Plaats “High Empire: city, economy and society” in een breder Grieks/Romeins-Mediterraan netwerk. Welke verbinding verandert je interpretatie het meest?",
+      "answer": "",
+      "keywords": [
+        "network"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "network"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0153",
+      "domain": "ancient",
+      "topic": "High Empire: city, economy and society",
+      "type": "open",
+      "prompt": "Je krijgt een primaire bron uit “High Empire: city, economy and society”. Welke drie bronkritische vragen stel je vóór je inhoudelijk concludeert?",
+      "answer": "",
+      "keywords": [
+        "author",
+        "genre",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "source criticism"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0154",
+      "domain": "ancient",
+      "topic": "High Empire: city, economy and society",
+      "type": "self",
+      "prompt": "Maak zonder hulpmiddelen een mini-schema van “High Empire: city, economy and society”: 4 kernbegrippen, 2 actoren, 1 structuur en 1 verandering. Vergelijk daarna met je lesnotities.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0155",
+      "domain": "ancient",
+      "topic": "Third-century transformations and Late Antiquity",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat military emperors binnen het thema “Third-century transformations and Late Antiquity” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "military emperors"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "conjuncture",
+        "evolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0156",
+      "domain": "ancient",
+      "topic": "Third-century transformations and Late Antiquity",
+      "type": "open",
+      "prompt": "Waarom is military emperors analytisch belangrijk voor het begrijpen van Third-century transformations and Late Antiquity? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "military emperors",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "conjuncture",
+        "evolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0157",
+      "domain": "ancient",
+      "topic": "Third-century transformations and Late Antiquity",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat fiscal change binnen het thema “Third-century transformations and Late Antiquity” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "fiscal change"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "conjuncture",
+        "evolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0158",
+      "domain": "ancient",
+      "topic": "Third-century transformations and Late Antiquity",
+      "type": "open",
+      "prompt": "Waarom is fiscal change analytisch belangrijk voor het begrijpen van Third-century transformations and Late Antiquity? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "fiscal change",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "conjuncture",
+        "evolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0159",
+      "domain": "ancient",
+      "topic": "Third-century transformations and Late Antiquity",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat Christianity binnen het thema “Third-century transformations and Late Antiquity” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "christianity"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "conjuncture",
+        "evolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0160",
+      "domain": "ancient",
+      "topic": "Third-century transformations and Late Antiquity",
+      "type": "open",
+      "prompt": "Waarom is Christianity analytisch belangrijk voor het begrijpen van Third-century transformations and Late Antiquity? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "christianity",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "conjuncture",
+        "evolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0161",
+      "domain": "ancient",
+      "topic": "Third-century transformations and Late Antiquity",
+      "type": "short",
+      "prompt": "Leg in 2-4 zinnen uit wat Tetrarchy binnen het thema “Third-century transformations and Late Antiquity” historisch betekent.",
+      "answer": "",
+      "keywords": [
+        "tetrarchy"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "conjuncture",
+        "evolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0162",
+      "domain": "ancient",
+      "topic": "Third-century transformations and Late Antiquity",
+      "type": "open",
+      "prompt": "Waarom is Tetrarchy analytisch belangrijk voor het begrijpen van Third-century transformations and Late Antiquity? Benoem minstens één mechanisme of verband.",
+      "answer": "",
+      "keywords": [
+        "tetrarchy",
+        "mechanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "conjuncture",
+        "evolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0163",
+      "domain": "ancient",
+      "topic": "Third-century transformations and Late Antiquity",
+      "type": "open",
+      "prompt": "Beschrijf de belangrijkste structuur of ontwikkeling in “Third-century transformations and Late Antiquity” en leg uit hoe actoren, instituties en omstandigheden op elkaar inwerken.",
+      "answer": "",
+      "keywords": [
+        "structure",
+        "actor",
+        "institution"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "conjuncture",
+        "evolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0164",
+      "domain": "ancient",
+      "topic": "Third-century transformations and Late Antiquity",
+      "type": "open",
+      "prompt": "Formuleer één sterke en één te sterke historische claim over “Third-century transformations and Late Antiquity”, en leg uit welk bewijs nodig is om de sterke claim te dragen.",
+      "answer": "",
+      "keywords": [
+        "evidence",
+        "claim"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "method"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0165",
+      "domain": "ancient",
+      "topic": "Third-century transformations and Late Antiquity",
+      "type": "open",
+      "prompt": "Welke conjunctuur, revolutie of langetermijnevolutie is in “Third-century transformations and Late Antiquity” het belangrijkst? Verdedig je keuze.",
+      "answer": "",
+      "keywords": [
+        "change",
+        "process"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "conjuncture",
+        "evolution",
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0166",
+      "domain": "ancient",
+      "topic": "Third-century transformations and Late Antiquity",
+      "type": "open",
+      "prompt": "Plaats “Third-century transformations and Late Antiquity” in een breder Grieks/Romeins-Mediterraan netwerk. Welke verbinding verandert je interpretatie het meest?",
+      "answer": "",
+      "keywords": [
+        "network"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "network"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0167",
+      "domain": "ancient",
+      "topic": "Third-century transformations and Late Antiquity",
+      "type": "open",
+      "prompt": "Je krijgt een primaire bron uit “Third-century transformations and Late Antiquity”. Welke drie bronkritische vragen stel je vóór je inhoudelijk concludeert?",
+      "answer": "",
+      "keywords": [
+        "author",
+        "genre",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "source criticism"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0168",
+      "domain": "ancient",
+      "topic": "Third-century transformations and Late Antiquity",
+      "type": "self",
+      "prompt": "Maak zonder hulpmiddelen een mini-schema van “Third-century transformations and Late Antiquity”: 4 kernbegrippen, 2 actoren, 1 structuur en 1 verandering. Vergelijk daarna met je lesnotities.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0169",
+      "domain": "general_history",
+      "topic": "Late Antiquity and post-Roman worlds",
+      "type": "short",
+      "prompt": "Definieer state transformation in de context van “Late Antiquity and post-Roman worlds” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "state transformation"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0170",
+      "domain": "general_history",
+      "topic": "Late Antiquity and post-Roman worlds",
+      "type": "short",
+      "prompt": "Definieer Christian institutions in de context van “Late Antiquity and post-Roman worlds” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "christian institutions"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0171",
+      "domain": "general_history",
+      "topic": "Late Antiquity and post-Roman worlds",
+      "type": "short",
+      "prompt": "Definieer migration in de context van “Late Antiquity and post-Roman worlds” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "migration"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0172",
+      "domain": "general_history",
+      "topic": "Late Antiquity and post-Roman worlds",
+      "type": "short",
+      "prompt": "Definieer Mediterranean in de context van “Late Antiquity and post-Roman worlds” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "mediterranean"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0173",
+      "domain": "general_history",
+      "topic": "Late Antiquity and post-Roman worlds",
+      "type": "open",
+      "prompt": "Leg de belangrijkste evolutie binnen “Late Antiquity and post-Roman worlds” uit als keten van oorzaken, mechanismen en gevolgen.",
+      "answer": "",
+      "keywords": [
+        "cause",
+        "mechanism",
+        "consequence"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0174",
+      "domain": "general_history",
+      "topic": "Late Antiquity and post-Roman worlds",
+      "type": "open",
+      "prompt": "Welke structuur verandert het langzaamst in “Late Antiquity and post-Roman worlds”, en welke juist het snelst? Motiveer.",
+      "answer": "",
+      "keywords": [
+        "structure",
+        "change"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0175",
+      "domain": "general_history",
+      "topic": "Late Antiquity and post-Roman worlds",
+      "type": "open",
+      "prompt": "Geef een universitair examenantwoord in schema-vorm: “Bespreek Late Antiquity and post-Roman worlds.” Bouw een logische periodisering en argumentlijn.",
+      "answer": "",
+      "keywords": [
+        "periodization",
+        "argument"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "exam"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0176",
+      "domain": "general_history",
+      "topic": "Late Antiquity and post-Roman worlds",
+      "type": "self",
+      "prompt": "Zonder notities: schrijf vijf ankerpunten die je nodig hebt om “Late Antiquity and post-Roman worlds” mondeling uit te leggen.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0177",
+      "domain": "general_history",
+      "topic": "Carolingian Europe",
+      "type": "short",
+      "prompt": "Definieer empire in de context van “Carolingian Europe” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "empire"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0178",
+      "domain": "general_history",
+      "topic": "Carolingian Europe",
+      "type": "short",
+      "prompt": "Definieer lordship in de context van “Carolingian Europe” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "lordship"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0179",
+      "domain": "general_history",
+      "topic": "Carolingian Europe",
+      "type": "short",
+      "prompt": "Definieer church in de context van “Carolingian Europe” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "church"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0180",
+      "domain": "general_history",
+      "topic": "Carolingian Europe",
+      "type": "short",
+      "prompt": "Definieer administration in de context van “Carolingian Europe” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "administration"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0181",
+      "domain": "general_history",
+      "topic": "Carolingian Europe",
+      "type": "open",
+      "prompt": "Leg de belangrijkste evolutie binnen “Carolingian Europe” uit als keten van oorzaken, mechanismen en gevolgen.",
+      "answer": "",
+      "keywords": [
+        "cause",
+        "mechanism",
+        "consequence"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0182",
+      "domain": "general_history",
+      "topic": "Carolingian Europe",
+      "type": "open",
+      "prompt": "Welke structuur verandert het langzaamst in “Carolingian Europe”, en welke juist het snelst? Motiveer.",
+      "answer": "",
+      "keywords": [
+        "structure",
+        "change"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0183",
+      "domain": "general_history",
+      "topic": "Carolingian Europe",
+      "type": "open",
+      "prompt": "Geef een universitair examenantwoord in schema-vorm: “Bespreek Carolingian Europe.” Bouw een logische periodisering en argumentlijn.",
+      "answer": "",
+      "keywords": [
+        "periodization",
+        "argument"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "exam"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0184",
+      "domain": "general_history",
+      "topic": "Carolingian Europe",
+      "type": "self",
+      "prompt": "Zonder notities: schrijf vijf ankerpunten die je nodig hebt om “Carolingian Europe” mondeling uit te leggen.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0185",
+      "domain": "general_history",
+      "topic": "High Middle Ages",
+      "type": "short",
+      "prompt": "Definieer lordship in de context van “High Middle Ages” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "lordship"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0186",
+      "domain": "general_history",
+      "topic": "High Middle Ages",
+      "type": "short",
+      "prompt": "Definieer urban revival in de context van “High Middle Ages” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "urban revival"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0187",
+      "domain": "general_history",
+      "topic": "High Middle Ages",
+      "type": "short",
+      "prompt": "Definieer state formation in de context van “High Middle Ages” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "state formation"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0188",
+      "domain": "general_history",
+      "topic": "High Middle Ages",
+      "type": "short",
+      "prompt": "Definieer commerce in de context van “High Middle Ages” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "commerce"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0189",
+      "domain": "general_history",
+      "topic": "High Middle Ages",
+      "type": "open",
+      "prompt": "Leg de belangrijkste evolutie binnen “High Middle Ages” uit als keten van oorzaken, mechanismen en gevolgen.",
+      "answer": "",
+      "keywords": [
+        "cause",
+        "mechanism",
+        "consequence"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0190",
+      "domain": "general_history",
+      "topic": "High Middle Ages",
+      "type": "open",
+      "prompt": "Welke structuur verandert het langzaamst in “High Middle Ages”, en welke juist het snelst? Motiveer.",
+      "answer": "",
+      "keywords": [
+        "structure",
+        "change"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0191",
+      "domain": "general_history",
+      "topic": "High Middle Ages",
+      "type": "open",
+      "prompt": "Geef een universitair examenantwoord in schema-vorm: “Bespreek High Middle Ages.” Bouw een logische periodisering en argumentlijn.",
+      "answer": "",
+      "keywords": [
+        "periodization",
+        "argument"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "exam"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0192",
+      "domain": "general_history",
+      "topic": "High Middle Ages",
+      "type": "self",
+      "prompt": "Zonder notities: schrijf vijf ankerpunten die je nodig hebt om “High Middle Ages” mondeling uit te leggen.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0193",
+      "domain": "general_history",
+      "topic": "Crusades and Mediterranean networks",
+      "type": "short",
+      "prompt": "Definieer religion in de context van “Crusades and Mediterranean networks” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "religion"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0194",
+      "domain": "general_history",
+      "topic": "Crusades and Mediterranean networks",
+      "type": "short",
+      "prompt": "Definieer war in de context van “Crusades and Mediterranean networks” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "war"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0195",
+      "domain": "general_history",
+      "topic": "Crusades and Mediterranean networks",
+      "type": "short",
+      "prompt": "Definieer trade in de context van “Crusades and Mediterranean networks” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "trade"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0196",
+      "domain": "general_history",
+      "topic": "Crusades and Mediterranean networks",
+      "type": "short",
+      "prompt": "Definieer cross-cultural contact in de context van “Crusades and Mediterranean networks” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "cross-cultural contact"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0197",
+      "domain": "general_history",
+      "topic": "Crusades and Mediterranean networks",
+      "type": "open",
+      "prompt": "Leg de belangrijkste evolutie binnen “Crusades and Mediterranean networks” uit als keten van oorzaken, mechanismen en gevolgen.",
+      "answer": "",
+      "keywords": [
+        "cause",
+        "mechanism",
+        "consequence"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0198",
+      "domain": "general_history",
+      "topic": "Crusades and Mediterranean networks",
+      "type": "open",
+      "prompt": "Welke structuur verandert het langzaamst in “Crusades and Mediterranean networks”, en welke juist het snelst? Motiveer.",
+      "answer": "",
+      "keywords": [
+        "structure",
+        "change"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0199",
+      "domain": "general_history",
+      "topic": "Crusades and Mediterranean networks",
+      "type": "open",
+      "prompt": "Geef een universitair examenantwoord in schema-vorm: “Bespreek Crusades and Mediterranean networks.” Bouw een logische periodisering en argumentlijn.",
+      "answer": "",
+      "keywords": [
+        "periodization",
+        "argument"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "exam"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0200",
+      "domain": "general_history",
+      "topic": "Crusades and Mediterranean networks",
+      "type": "self",
+      "prompt": "Zonder notities: schrijf vijf ankerpunten die je nodig hebt om “Crusades and Mediterranean networks” mondeling uit te leggen.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0201",
+      "domain": "general_history",
+      "topic": "Late medieval crisis and recovery",
+      "type": "short",
+      "prompt": "Definieer plague in de context van “Late medieval crisis and recovery” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "plague"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0202",
+      "domain": "general_history",
+      "topic": "Late medieval crisis and recovery",
+      "type": "short",
+      "prompt": "Definieer war in de context van “Late medieval crisis and recovery” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "war"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0203",
+      "domain": "general_history",
+      "topic": "Late medieval crisis and recovery",
+      "type": "short",
+      "prompt": "Definieer labour in de context van “Late medieval crisis and recovery” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "labour"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0204",
+      "domain": "general_history",
+      "topic": "Late medieval crisis and recovery",
+      "type": "short",
+      "prompt": "Definieer state finance in de context van “Late medieval crisis and recovery” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "state finance"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0205",
+      "domain": "general_history",
+      "topic": "Late medieval crisis and recovery",
+      "type": "open",
+      "prompt": "Leg de belangrijkste evolutie binnen “Late medieval crisis and recovery” uit als keten van oorzaken, mechanismen en gevolgen.",
+      "answer": "",
+      "keywords": [
+        "cause",
+        "mechanism",
+        "consequence"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0206",
+      "domain": "general_history",
+      "topic": "Late medieval crisis and recovery",
+      "type": "open",
+      "prompt": "Welke structuur verandert het langzaamst in “Late medieval crisis and recovery”, en welke juist het snelst? Motiveer.",
+      "answer": "",
+      "keywords": [
+        "structure",
+        "change"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0207",
+      "domain": "general_history",
+      "topic": "Late medieval crisis and recovery",
+      "type": "open",
+      "prompt": "Geef een universitair examenantwoord in schema-vorm: “Bespreek Late medieval crisis and recovery.” Bouw een logische periodisering en argumentlijn.",
+      "answer": "",
+      "keywords": [
+        "periodization",
+        "argument"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "exam"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0208",
+      "domain": "general_history",
+      "topic": "Late medieval crisis and recovery",
+      "type": "self",
+      "prompt": "Zonder notities: schrijf vijf ankerpunten die je nodig hebt om “Late medieval crisis and recovery” mondeling uit te leggen.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0209",
+      "domain": "general_history",
+      "topic": "Renaissance and Reformation",
+      "type": "short",
+      "prompt": "Definieer humanism in de context van “Renaissance and Reformation” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "humanism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0210",
+      "domain": "general_history",
+      "topic": "Renaissance and Reformation",
+      "type": "short",
+      "prompt": "Definieer printing in de context van “Renaissance and Reformation” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "printing"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0211",
+      "domain": "general_history",
+      "topic": "Renaissance and Reformation",
+      "type": "short",
+      "prompt": "Definieer confessionalization in de context van “Renaissance and Reformation” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "confessionalization"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0212",
+      "domain": "general_history",
+      "topic": "Renaissance and Reformation",
+      "type": "short",
+      "prompt": "Definieer state in de context van “Renaissance and Reformation” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "state"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0213",
+      "domain": "general_history",
+      "topic": "Renaissance and Reformation",
+      "type": "open",
+      "prompt": "Leg de belangrijkste evolutie binnen “Renaissance and Reformation” uit als keten van oorzaken, mechanismen en gevolgen.",
+      "answer": "",
+      "keywords": [
+        "cause",
+        "mechanism",
+        "consequence"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0214",
+      "domain": "general_history",
+      "topic": "Renaissance and Reformation",
+      "type": "open",
+      "prompt": "Welke structuur verandert het langzaamst in “Renaissance and Reformation”, en welke juist het snelst? Motiveer.",
+      "answer": "",
+      "keywords": [
+        "structure",
+        "change"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0215",
+      "domain": "general_history",
+      "topic": "Renaissance and Reformation",
+      "type": "open",
+      "prompt": "Geef een universitair examenantwoord in schema-vorm: “Bespreek Renaissance and Reformation.” Bouw een logische periodisering en argumentlijn.",
+      "answer": "",
+      "keywords": [
+        "periodization",
+        "argument"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "exam"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0216",
+      "domain": "general_history",
+      "topic": "Renaissance and Reformation",
+      "type": "self",
+      "prompt": "Zonder notities: schrijf vijf ankerpunten die je nodig hebt om “Renaissance and Reformation” mondeling uit te leggen.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0217",
+      "domain": "general_history",
+      "topic": "Early modern state and economy",
+      "type": "short",
+      "prompt": "Definieer fiscal-military state in de context van “Early modern state and economy” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "fiscal-military state"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0218",
+      "domain": "general_history",
+      "topic": "Early modern state and economy",
+      "type": "short",
+      "prompt": "Definieer Atlantic economy in de context van “Early modern state and economy” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "atlantic economy"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0219",
+      "domain": "general_history",
+      "topic": "Early modern state and economy",
+      "type": "short",
+      "prompt": "Definieer empire in de context van “Early modern state and economy” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "empire"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0220",
+      "domain": "general_history",
+      "topic": "Early modern state and economy",
+      "type": "short",
+      "prompt": "Definieer commercialization in de context van “Early modern state and economy” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "commercialization"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0221",
+      "domain": "general_history",
+      "topic": "Early modern state and economy",
+      "type": "open",
+      "prompt": "Leg de belangrijkste evolutie binnen “Early modern state and economy” uit als keten van oorzaken, mechanismen en gevolgen.",
+      "answer": "",
+      "keywords": [
+        "cause",
+        "mechanism",
+        "consequence"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0222",
+      "domain": "general_history",
+      "topic": "Early modern state and economy",
+      "type": "open",
+      "prompt": "Welke structuur verandert het langzaamst in “Early modern state and economy”, en welke juist het snelst? Motiveer.",
+      "answer": "",
+      "keywords": [
+        "structure",
+        "change"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0223",
+      "domain": "general_history",
+      "topic": "Early modern state and economy",
+      "type": "open",
+      "prompt": "Geef een universitair examenantwoord in schema-vorm: “Bespreek Early modern state and economy.” Bouw een logische periodisering en argumentlijn.",
+      "answer": "",
+      "keywords": [
+        "periodization",
+        "argument"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "exam"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0224",
+      "domain": "general_history",
+      "topic": "Early modern state and economy",
+      "type": "self",
+      "prompt": "Zonder notities: schrijf vijf ankerpunten die je nodig hebt om “Early modern state and economy” mondeling uit te leggen.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0225",
+      "domain": "general_history",
+      "topic": "Revolutions and industrial transformation",
+      "type": "short",
+      "prompt": "Definieer political revolution in de context van “Revolutions and industrial transformation” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "political revolution"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0226",
+      "domain": "general_history",
+      "topic": "Revolutions and industrial transformation",
+      "type": "short",
+      "prompt": "Definieer industry in de context van “Revolutions and industrial transformation” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "industry"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0227",
+      "domain": "general_history",
+      "topic": "Revolutions and industrial transformation",
+      "type": "short",
+      "prompt": "Definieer nation in de context van “Revolutions and industrial transformation” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "nation"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0228",
+      "domain": "general_history",
+      "topic": "Revolutions and industrial transformation",
+      "type": "short",
+      "prompt": "Definieer capitalism in de context van “Revolutions and industrial transformation” en geef één historisch gevolg.",
+      "answer": "",
+      "keywords": [
+        "capitalism"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general history"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0229",
+      "domain": "general_history",
+      "topic": "Revolutions and industrial transformation",
+      "type": "open",
+      "prompt": "Leg de belangrijkste evolutie binnen “Revolutions and industrial transformation” uit als keten van oorzaken, mechanismen en gevolgen.",
+      "answer": "",
+      "keywords": [
+        "cause",
+        "mechanism",
+        "consequence"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "process"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0230",
+      "domain": "general_history",
+      "topic": "Revolutions and industrial transformation",
+      "type": "open",
+      "prompt": "Welke structuur verandert het langzaamst in “Revolutions and industrial transformation”, en welke juist het snelst? Motiveer.",
+      "answer": "",
+      "keywords": [
+        "structure",
+        "change"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "structure"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0231",
+      "domain": "general_history",
+      "topic": "Revolutions and industrial transformation",
+      "type": "open",
+      "prompt": "Geef een universitair examenantwoord in schema-vorm: “Bespreek Revolutions and industrial transformation.” Bouw een logische periodisering en argumentlijn.",
+      "answer": "",
+      "keywords": [
+        "periodization",
+        "argument"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "exam"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0232",
+      "domain": "general_history",
+      "topic": "Revolutions and industrial transformation",
+      "type": "self",
+      "prompt": "Zonder notities: schrijf vijf ankerpunten die je nodig hebt om “Revolutions and industrial transformation” mondeling uit te leggen.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0233",
+      "domain": "general_knowledge",
+      "topic": "Psychology",
+      "type": "short",
+      "prompt": "Wat betekent memory in Psychology? Geef een correct, eenvoudig voorbeeld.",
+      "answer": "",
+      "keywords": [
+        "memory"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0234",
+      "domain": "general_knowledge",
+      "topic": "Psychology",
+      "type": "short",
+      "prompt": "Wat betekent bias in Psychology? Geef een correct, eenvoudig voorbeeld.",
+      "answer": "",
+      "keywords": [
+        "bias"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0235",
+      "domain": "general_knowledge",
+      "topic": "Psychology",
+      "type": "short",
+      "prompt": "Wat betekent learning in Psychology? Geef een correct, eenvoudig voorbeeld.",
+      "answer": "",
+      "keywords": [
+        "learning"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0236",
+      "domain": "general_knowledge",
+      "topic": "Psychology",
+      "type": "short",
+      "prompt": "Wat betekent decision-making in Psychology? Geef een correct, eenvoudig voorbeeld.",
+      "answer": "",
+      "keywords": [
+        "decision-making"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0237",
+      "domain": "general_knowledge",
+      "topic": "Psychology",
+      "type": "open",
+      "prompt": "Welke misvatting over Psychology zou een leek makkelijk maken? Corrigeer ze kort en duidelijk.",
+      "answer": "",
+      "keywords": [
+        "misconception"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0238",
+      "domain": "general_knowledge",
+      "topic": "Psychology",
+      "type": "self",
+      "prompt": "Maak een kaartje met 4 kernideeën uit Psychology en verbind ze met pijlen.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge",
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0239",
+      "domain": "general_knowledge",
+      "topic": "Biology",
+      "type": "short",
+      "prompt": "Wat betekent cell in Biology? Geef een correct, eenvoudig voorbeeld.",
+      "answer": "",
+      "keywords": [
+        "cell"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0240",
+      "domain": "general_knowledge",
+      "topic": "Biology",
+      "type": "short",
+      "prompt": "Wat betekent genetics in Biology? Geef een correct, eenvoudig voorbeeld.",
+      "answer": "",
+      "keywords": [
+        "genetics"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0241",
+      "domain": "general_knowledge",
+      "topic": "Biology",
+      "type": "short",
+      "prompt": "Wat betekent evolution in Biology? Geef een correct, eenvoudig voorbeeld.",
+      "answer": "",
+      "keywords": [
+        "evolution"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0242",
+      "domain": "general_knowledge",
+      "topic": "Biology",
+      "type": "short",
+      "prompt": "Wat betekent homeostasis in Biology? Geef een correct, eenvoudig voorbeeld.",
+      "answer": "",
+      "keywords": [
+        "homeostasis"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0243",
+      "domain": "general_knowledge",
+      "topic": "Biology",
+      "type": "open",
+      "prompt": "Welke misvatting over Biology zou een leek makkelijk maken? Corrigeer ze kort en duidelijk.",
+      "answer": "",
+      "keywords": [
+        "misconception"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0244",
+      "domain": "general_knowledge",
+      "topic": "Biology",
+      "type": "self",
+      "prompt": "Maak een kaartje met 4 kernideeën uit Biology en verbind ze met pijlen.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge",
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0245",
+      "domain": "general_knowledge",
+      "topic": "Law",
+      "type": "short",
+      "prompt": "Wat betekent legal systems in Law? Geef een correct, eenvoudig voorbeeld.",
+      "answer": "",
+      "keywords": [
+        "legal systems"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0246",
+      "domain": "general_knowledge",
+      "topic": "Law",
+      "type": "short",
+      "prompt": "Wat betekent contracts in Law? Geef een correct, eenvoudig voorbeeld.",
+      "answer": "",
+      "keywords": [
+        "contracts"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0247",
+      "domain": "general_knowledge",
+      "topic": "Law",
+      "type": "short",
+      "prompt": "Wat betekent criminal law in Law? Geef een correct, eenvoudig voorbeeld.",
+      "answer": "",
+      "keywords": [
+        "criminal law"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0248",
+      "domain": "general_knowledge",
+      "topic": "Law",
+      "type": "short",
+      "prompt": "Wat betekent rights in Law? Geef een correct, eenvoudig voorbeeld.",
+      "answer": "",
+      "keywords": [
+        "rights"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0249",
+      "domain": "general_knowledge",
+      "topic": "Law",
+      "type": "open",
+      "prompt": "Welke misvatting over Law zou een leek makkelijk maken? Corrigeer ze kort en duidelijk.",
+      "answer": "",
+      "keywords": [
+        "misconception"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0250",
+      "domain": "general_knowledge",
+      "topic": "Law",
+      "type": "self",
+      "prompt": "Maak een kaartje met 4 kernideeën uit Law en verbind ze met pijlen.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge",
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0251",
+      "domain": "general_knowledge",
+      "topic": "Medicine",
+      "type": "short",
+      "prompt": "Wat betekent anatomy in Medicine? Geef een correct, eenvoudig voorbeeld.",
+      "answer": "",
+      "keywords": [
+        "anatomy"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0252",
+      "domain": "general_knowledge",
+      "topic": "Medicine",
+      "type": "short",
+      "prompt": "Wat betekent infection in Medicine? Geef een correct, eenvoudig voorbeeld.",
+      "answer": "",
+      "keywords": [
+        "infection"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0253",
+      "domain": "general_knowledge",
+      "topic": "Medicine",
+      "type": "short",
+      "prompt": "Wat betekent risk in Medicine? Geef een correct, eenvoudig voorbeeld.",
+      "answer": "",
+      "keywords": [
+        "risk"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0254",
+      "domain": "general_knowledge",
+      "topic": "Medicine",
+      "type": "short",
+      "prompt": "Wat betekent public health in Medicine? Geef een correct, eenvoudig voorbeeld.",
+      "answer": "",
+      "keywords": [
+        "public health"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0255",
+      "domain": "general_knowledge",
+      "topic": "Medicine",
+      "type": "open",
+      "prompt": "Welke misvatting over Medicine zou een leek makkelijk maken? Corrigeer ze kort en duidelijk.",
+      "answer": "",
+      "keywords": [
+        "misconception"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0256",
+      "domain": "general_knowledge",
+      "topic": "Medicine",
+      "type": "self",
+      "prompt": "Maak een kaartje met 4 kernideeën uit Medicine en verbind ze met pijlen.",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "general knowledge",
+        "retrieval"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0257",
+      "domain": "skill",
+      "topic": "Change a car wheel",
+      "type": "short",
+      "prompt": "Waarom is “safety” belangrijk bij de vaardigheid “Change a car wheel”?",
+      "answer": "",
+      "keywords": [
+        "safety"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0258",
+      "domain": "skill",
+      "topic": "Change a car wheel",
+      "type": "short",
+      "prompt": "Waarom is “jack points” belangrijk bij de vaardigheid “Change a car wheel”?",
+      "answer": "",
+      "keywords": [
+        "jack points"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0259",
+      "domain": "skill",
+      "topic": "Change a car wheel",
+      "type": "short",
+      "prompt": "Waarom is “wheel bolts” belangrijk bij de vaardigheid “Change a car wheel”?",
+      "answer": "",
+      "keywords": [
+        "wheel bolts"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0260",
+      "domain": "skill",
+      "topic": "Change a car wheel",
+      "type": "short",
+      "prompt": "Waarom is “torque” belangrijk bij de vaardigheid “Change a car wheel”?",
+      "answer": "",
+      "keywords": [
+        "torque"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0261",
+      "domain": "skill",
+      "topic": "Change a car wheel",
+      "type": "open",
+      "prompt": "Zet “Change a car wheel” in een veilige theoretische volgorde. Benoem vooraf twee risico’s.",
+      "answer": "",
+      "keywords": [
+        "safety",
+        "sequence"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill",
+        "safety"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0262",
+      "domain": "skill",
+      "topic": "Change a car wheel",
+      "type": "self",
+      "prompt": "Visualiseer de stappen van “Change a car wheel” zonder praktisch uit te voeren. Welke stap zou je eerst opnieuw controleren vóór je het echt doet?",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0263",
+      "domain": "skill",
+      "topic": "Repair a bicycle puncture",
+      "type": "short",
+      "prompt": "Waarom is “tube” belangrijk bij de vaardigheid “Repair a bicycle puncture”?",
+      "answer": "",
+      "keywords": [
+        "tube"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0264",
+      "domain": "skill",
+      "topic": "Repair a bicycle puncture",
+      "type": "short",
+      "prompt": "Waarom is “tyre levers” belangrijk bij de vaardigheid “Repair a bicycle puncture”?",
+      "answer": "",
+      "keywords": [
+        "tyre levers"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0265",
+      "domain": "skill",
+      "topic": "Repair a bicycle puncture",
+      "type": "short",
+      "prompt": "Waarom is “patch” belangrijk bij de vaardigheid “Repair a bicycle puncture”?",
+      "answer": "",
+      "keywords": [
+        "patch"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0266",
+      "domain": "skill",
+      "topic": "Repair a bicycle puncture",
+      "type": "short",
+      "prompt": "Waarom is “pressure” belangrijk bij de vaardigheid “Repair a bicycle puncture”?",
+      "answer": "",
+      "keywords": [
+        "pressure"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0267",
+      "domain": "skill",
+      "topic": "Repair a bicycle puncture",
+      "type": "open",
+      "prompt": "Zet “Repair a bicycle puncture” in een veilige theoretische volgorde. Benoem vooraf twee risico’s.",
+      "answer": "",
+      "keywords": [
+        "safety",
+        "sequence"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill",
+        "safety"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0268",
+      "domain": "skill",
+      "topic": "Repair a bicycle puncture",
+      "type": "self",
+      "prompt": "Visualiseer de stappen van “Repair a bicycle puncture” zonder praktisch uit te voeren. Welke stap zou je eerst opnieuw controleren vóór je het echt doet?",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0269",
+      "domain": "skill",
+      "topic": "Basic home repair",
+      "type": "short",
+      "prompt": "Waarom is “fasteners” belangrijk bij de vaardigheid “Basic home repair”?",
+      "answer": "",
+      "keywords": [
+        "fasteners"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0270",
+      "domain": "skill",
+      "topic": "Basic home repair",
+      "type": "short",
+      "prompt": "Waarom is “drilling” belangrijk bij de vaardigheid “Basic home repair”?",
+      "answer": "",
+      "keywords": [
+        "drilling"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0271",
+      "domain": "skill",
+      "topic": "Basic home repair",
+      "type": "short",
+      "prompt": "Waarom is “measuring” belangrijk bij de vaardigheid “Basic home repair”?",
+      "answer": "",
+      "keywords": [
+        "measuring"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0272",
+      "domain": "skill",
+      "topic": "Basic home repair",
+      "type": "short",
+      "prompt": "Waarom is “safety” belangrijk bij de vaardigheid “Basic home repair”?",
+      "answer": "",
+      "keywords": [
+        "safety"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0273",
+      "domain": "skill",
+      "topic": "Basic home repair",
+      "type": "open",
+      "prompt": "Zet “Basic home repair” in een veilige theoretische volgorde. Benoem vooraf twee risico’s.",
+      "answer": "",
+      "keywords": [
+        "safety",
+        "sequence"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill",
+        "safety"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0274",
+      "domain": "skill",
+      "topic": "Basic home repair",
+      "type": "self",
+      "prompt": "Visualiseer de stappen van “Basic home repair” zonder praktisch uit te voeren. Welke stap zou je eerst opnieuw controleren vóór je het echt doet?",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0275",
+      "domain": "skill",
+      "topic": "Vegetable gardening",
+      "type": "short",
+      "prompt": "Waarom is “soil” belangrijk bij de vaardigheid “Vegetable gardening”?",
+      "answer": "",
+      "keywords": [
+        "soil"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0276",
+      "domain": "skill",
+      "topic": "Vegetable gardening",
+      "type": "short",
+      "prompt": "Waarom is “crop rotation” belangrijk bij de vaardigheid “Vegetable gardening”?",
+      "answer": "",
+      "keywords": [
+        "crop rotation"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0277",
+      "domain": "skill",
+      "topic": "Vegetable gardening",
+      "type": "short",
+      "prompt": "Waarom is “watering” belangrijk bij de vaardigheid “Vegetable gardening”?",
+      "answer": "",
+      "keywords": [
+        "watering"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0278",
+      "domain": "skill",
+      "topic": "Vegetable gardening",
+      "type": "short",
+      "prompt": "Waarom is “seasonality” belangrijk bij de vaardigheid “Vegetable gardening”?",
+      "answer": "",
+      "keywords": [
+        "seasonality"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0279",
+      "domain": "skill",
+      "topic": "Vegetable gardening",
+      "type": "open",
+      "prompt": "Zet “Vegetable gardening” in een veilige theoretische volgorde. Benoem vooraf twee risico’s.",
+      "answer": "",
+      "keywords": [
+        "safety",
+        "sequence"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill",
+        "safety"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0280",
+      "domain": "skill",
+      "topic": "Vegetable gardening",
+      "type": "self",
+      "prompt": "Visualiseer de stappen van “Vegetable gardening” zonder praktisch uit te voeren. Welke stap zou je eerst opnieuw controleren vóór je het echt doet?",
+      "answer": "",
+      "keywords": [],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "skill"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0281",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "transfer",
+      "prompt": "Transfervraag: kies een andere periode of context en leg uit welke onderdelen van het denkschema uit “Greek polis and Archaic transformations” wel en niet overdraagbaar zijn.",
+      "answer": "",
+      "keywords": [
+        "transfer",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "transfer"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0282",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "transfer",
+      "prompt": "Transfervraag: kies een andere periode of context en leg uit welke onderdelen van het denkschema uit “Greek polis and Archaic transformations” wel en niet overdraagbaar zijn.",
+      "answer": "",
+      "keywords": [
+        "transfer",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "transfer"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0283",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "transfer",
+      "prompt": "Transfervraag: kies een andere periode of context en leg uit welke onderdelen van het denkschema uit “Greek polis and Archaic transformations” wel en niet overdraagbaar zijn.",
+      "answer": "",
+      "keywords": [
+        "transfer",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "transfer"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0284",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "transfer",
+      "prompt": "Transfervraag: kies een andere periode of context en leg uit welke onderdelen van het denkschema uit “Greek polis and Archaic transformations” wel en niet overdraagbaar zijn.",
+      "answer": "",
+      "keywords": [
+        "transfer",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "transfer"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0285",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "transfer",
+      "prompt": "Transfervraag: kies een andere periode of context en leg uit welke onderdelen van het denkschema uit “Greek polis and Archaic transformations” wel en niet overdraagbaar zijn.",
+      "answer": "",
+      "keywords": [
+        "transfer",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "transfer"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0286",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "transfer",
+      "prompt": "Transfervraag: kies een andere periode of context en leg uit welke onderdelen van het denkschema uit “Greek polis and Archaic transformations” wel en niet overdraagbaar zijn.",
+      "answer": "",
+      "keywords": [
+        "transfer",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "transfer"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0287",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "transfer",
+      "prompt": "Transfervraag: kies een andere periode of context en leg uit welke onderdelen van het denkschema uit “Greek polis and Archaic transformations” wel en niet overdraagbaar zijn.",
+      "answer": "",
+      "keywords": [
+        "transfer",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "transfer"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0288",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "transfer",
+      "prompt": "Transfervraag: kies een andere periode of context en leg uit welke onderdelen van het denkschema uit “Greek polis and Archaic transformations” wel en niet overdraagbaar zijn.",
+      "answer": "",
+      "keywords": [
+        "transfer",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "transfer"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0289",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "transfer",
+      "prompt": "Transfervraag: kies een andere periode of context en leg uit welke onderdelen van het denkschema uit “Greek polis and Archaic transformations” wel en niet overdraagbaar zijn.",
+      "answer": "",
+      "keywords": [
+        "transfer",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "transfer"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0290",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "transfer",
+      "prompt": "Transfervraag: kies een andere periode of context en leg uit welke onderdelen van het denkschema uit “Greek polis and Archaic transformations” wel en niet overdraagbaar zijn.",
+      "answer": "",
+      "keywords": [
+        "transfer",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "transfer"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0291",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "transfer",
+      "prompt": "Transfervraag: kies een andere periode of context en leg uit welke onderdelen van het denkschema uit “Greek polis and Archaic transformations” wel en niet overdraagbaar zijn.",
+      "answer": "",
+      "keywords": [
+        "transfer",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "transfer"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0292",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "transfer",
+      "prompt": "Transfervraag: kies een andere periode of context en leg uit welke onderdelen van het denkschema uit “Greek polis and Archaic transformations” wel en niet overdraagbaar zijn.",
+      "answer": "",
+      "keywords": [
+        "transfer",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "transfer"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0293",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "transfer",
+      "prompt": "Transfervraag: kies een andere periode of context en leg uit welke onderdelen van het denkschema uit “Greek polis and Archaic transformations” wel en niet overdraagbaar zijn.",
+      "answer": "",
+      "keywords": [
+        "transfer",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "transfer"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0294",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "transfer",
+      "prompt": "Transfervraag: kies een andere periode of context en leg uit welke onderdelen van het denkschema uit “Greek polis and Archaic transformations” wel en niet overdraagbaar zijn.",
+      "answer": "",
+      "keywords": [
+        "transfer",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "transfer"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0295",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "transfer",
+      "prompt": "Transfervraag: kies een andere periode of context en leg uit welke onderdelen van het denkschema uit “Greek polis and Archaic transformations” wel en niet overdraagbaar zijn.",
+      "answer": "",
+      "keywords": [
+        "transfer",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "transfer"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0296",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "transfer",
+      "prompt": "Transfervraag: kies een andere periode of context en leg uit welke onderdelen van het denkschema uit “Greek polis and Archaic transformations” wel en niet overdraagbaar zijn.",
+      "answer": "",
+      "keywords": [
+        "transfer",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "transfer"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0297",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "transfer",
+      "prompt": "Transfervraag: kies een andere periode of context en leg uit welke onderdelen van het denkschema uit “Greek polis and Archaic transformations” wel en niet overdraagbaar zijn.",
+      "answer": "",
+      "keywords": [
+        "transfer",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "transfer"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0298",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "transfer",
+      "prompt": "Transfervraag: kies een andere periode of context en leg uit welke onderdelen van het denkschema uit “Greek polis and Archaic transformations” wel en niet overdraagbaar zijn.",
+      "answer": "",
+      "keywords": [
+        "transfer",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "transfer"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0299",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "transfer",
+      "prompt": "Transfervraag: kies een andere periode of context en leg uit welke onderdelen van het denkschema uit “Greek polis and Archaic transformations” wel en niet overdraagbaar zijn.",
+      "answer": "",
+      "keywords": [
+        "transfer",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "transfer"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    },
+    {
+      "id": "q0300",
+      "domain": "ancient",
+      "topic": "Greek polis and Archaic transformations",
+      "type": "transfer",
+      "prompt": "Transfervraag: kies een andere periode of context en leg uit welke onderdelen van het denkschema uit “Greek polis and Archaic transformations” wel en niet overdraagbaar zijn.",
+      "answer": "",
+      "keywords": [
+        "transfer",
+        "context"
+      ],
+      "options": [],
+      "correct": null,
+      "tags": [
+        "transfer"
+      ],
+      "provenance": "model_supplement",
+      "source_refs": []
+    }
+  ]
+}

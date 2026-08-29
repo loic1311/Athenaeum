@@ -1,0 +1,78 @@
+{
+  "name": "Scriptorium V7 — Academische Onderzoekscoach",
+  "short_name": "Scriptorium",
+  "description": "Academische onderzoekscoach voor Oude Geschiedenis met corpusbeheer, UGent- en OpenAlex-zoekfuncties, bibliografieketens, authentieke primaire bronnen, theorie, training, voortgang en synchronisatie.",
+  "id": "./",
+  "start_url": "./index.html?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "background_color": "#f6f1e7",
+  "theme_color": "#0d3b38",
+  "orientation": "any",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "./icons/icon-192-v7.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512-v7.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-maskable-192-v7.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icons/icon-maskable-512-v7.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Training",
+      "short_name": "Training",
+      "url": "./index.html?source=pwa&page=training",
+      "icons": [
+        {
+          "src": "./icons/icon-192-v7.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Zoeken",
+      "short_name": "Zoeken",
+      "url": "./index.html?source=pwa&page=discovery",
+      "icons": [
+        {
+          "src": "./icons/icon-192-v7.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Primaire bronnen",
+      "short_name": "Bronnen",
+      "url": "./index.html?source=pwa&page=sources",
+      "icons": [
+        {
+          "src": "./icons/icon-192-v7.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+SCRIPTORIUM V6.3 — PUBLICEREN VIA GITHUB PAGES
+
+Gebruik bij voorkeur het pakket Scriptorium_V6_3_GITHUB_ROOT.zip. De bestanden daarin staan al op repository-rootniveau.
+
+Eenmalig
+1. Maak of gebruik je bestaande GitHub repository, bijvoorbeeld Scriptorium.
+2. Zet de repository publiek als je GitHub Free Pages gebruikt.
+3. Upload ALLE bestanden uit het root-pakket rechtstreeks in de repository-root. index.html moet dus meteen zichtbaar zijn onder Code.
+4. Settings > Pages > Deploy from a branch > main > /(root).
+5. Wacht op de vaste URL, bijvoorbeeld https://jouwnaam.github.io/Scriptorium/.
+
+Updates
+- Gebruik dezelfde repository en dezelfde URL.
+- Vervang de bestanden door de nieuwe release, commit en push.
+- Je hoeft Pages niet opnieuw in te stellen en de PWA niet opnieuw te installeren.
+- Open na een grote update Instellingen > GitHub / PWA systeemcheck > App-cache vernieuwen als een toestel een oude versie blijft tonen.
+
+Belangrijk
+- Verplaats index.html niet in een submap.
+- Hernoem bestanden niet: manifest, service worker en relatieve paden rekenen op de meegeleverde namen.
+- Persoonlijke browserdata staat niet in GitHub.

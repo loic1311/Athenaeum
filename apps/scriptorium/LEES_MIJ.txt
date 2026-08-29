@@ -1,0 +1,39 @@
+SCRIPTORIUM V6.4 — TOEGANKELIJKE THEORIE + COMPLETE OEFENDOSSIERS
+
+SCRIPTORIUM V6.3.1 — GITHUB RELEASE
+
+Wat is nieuw
+- GitHub Pages is nu een volwaardige first-run omgeving: op een nieuw toestel wordt de didactische analyse van 56 papers automatisch als analysis-only corpus geladen.
+- De 33 authentieke primaire bronnen zijn ingebouwd.
+- Persoonlijke PDF-bestanden blijven lokaal in IndexedDB en worden nooit automatisch gepubliceerd.
+- Instellingen bevat een downloadbare PDF voor vrienden: Scriptorium_AI_Instructiegids_Vrienden.pdf.
+- Instellingen bevat een GitHub/PWA systeemcheck en een knop om de app-cache te vernieuwen.
+- Alle eigen appbestanden gebruiken relatieve ./-paden, geschikt voor project-URLs zoals https://naam.github.io/Scriptorium/.
+- Service worker gebruikt netwerk-eerst voor code/HTML en cachefallback voor offline gebruik, zodat updates betrouwbaarder doorkomen.
+- PDFLib en JSZip proberen bij uitval een tweede CDN te laden.
+
+Eerste gebruik op een nieuw toestel
+1. Open de GitHub Pages URL.
+2. Scriptorium maakt zijn lokale database.
+3. Het ingebouwde analysis-only corpus van 56 werken wordt toegevoegd.
+4. Training, theorie, primaire bronnen en voortgang zijn meteen beschikbaar.
+5. Wil je de originele PDF's lokaal raadplegen/exporteren, voeg die op dat toestel zelf toe.
+
+Delen met vrienden
+- Geef de GitHub Pages URL door.
+- Onder Instellingen > Delen met vrienden kunnen zij de AI-instructiegids downloaden.
+- Zij uploaden die PDF in hun eigen ChatGPT-chat en gebruiken daarna de door Scriptorium gekopieerde beoordelingsprompts.
+
+Persoonlijke data
+De publieke GitHub repository bevat appcode, de afgeleide didactische corpusanalyse, primaire bronrecords en de AI-gids. Persoonlijke antwoorden, scores, Supabase-sessies en lokaal toegevoegde PDF-bestanden staan in browseropslag en worden niet naar GitHub gepusht.
+
+
+V6.4 DIDACTISCHE HERZIENING
+- Theorie is herschreven in gewone taal, met stappenplannen en concrete voorbeelden.
+- Iedere theorieles koppelt de regel aan echte voorbeelden uit het 56-werken-corpus, met auteur en fysieke PDF-pagina.
+- Iedere theorieles bevat ook een worked example met een authentieke primaire bron.
+- Training toont nu vóór de bronnen een expliciet onderzoekskader: vraag/doel, voorlopige claim, afbakening, corpuslogica en methode.
+- Basiscontext die noodzakelijk is om een bron te analyseren is niet langer verstopt achter de hintknop.
+- Bronselectie probeert thematisch coherente dossiers te maken in plaats van willekeurige combinaties.
+- Modules Status quaestionis en Historiografische positionering krijgen echte onderzoeksposities uit het geanalyseerde corpus als materiaal.
+- Didactische onderzoekssituaties/studentfragmenten worden duidelijk gelabeld en zijn nooit vermomd als primaire bron.

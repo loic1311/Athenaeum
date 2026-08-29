@@ -1,0 +1,46 @@
+SCRIPTORIUM V6.3.1 — UPDATEHANDLEIDING
+
+Grote wijziging in V6.3.1
+Deze release is expliciet geoptimaliseerd voor publicatie via GitHub Pages en voor gebruik door andere gebruikers op nieuwe toestellen.
+
+Wat werd opgelost
+- GitHub-first boot: de 56 geanalyseerde papers worden automatisch als analysis-only corpus geladen op een nieuwe browser/origin.
+- Training/theorie zijn daardoor niet meer afhankelijk van eerder lokaal geïmporteerde IndexedDB-data.
+- Alle eigen assets gebruiken relatieve paden die werken onder een project-URL zoals /Scriptorium/.
+- Service worker vernieuwd zodat code-updates netwerk-eerst laden en offline fallback behouden.
+- Systeemcheck in Instellingen controleert assets, service worker, IndexedDB, PDFLib en JSZip.
+- App-cache kan vanuit Instellingen worden vernieuwd zonder persoonlijke IndexedDB-data te wissen.
+- AI-instructiegids voor vrienden toegevoegd als downloadbare PDF.
+- De publieke release bevat geen originele thesis-PDF's; alleen de didactische analyses.
+
+Updaten vanaf V6.2.x
+1. Maak voor de zekerheid een synchronisatiebestand/backup.
+2. Vervang ALLE repositorybestanden door de inhoud van V6.3.1.
+3. Commit en push naar dezelfde main branch.
+4. Wacht op GitHub Pages.
+5. Open Scriptorium > Instellingen > GitHub/PWA systeemcheck.
+6. Klik indien nodig op App-cache vernieuwen.
+
+Je hoeft NIET
+- een nieuwe repository te maken;
+- GitHub Pages opnieuw te activeren;
+- een nieuwe URL te gebruiken;
+- je PWA opnieuw te installeren, tenzij je toestel hardnekkig een oud icoon toont;
+- de 56 corpusanalyses opnieuw handmatig te importeren.
+
+
+V6.5.2.2 HOTFIX
+- opgelost: initialisatiecrash “Cannot set properties of null (setting onclick)”;
+- de knop Gemengde review wordt nu onafhankelijk van Bekijk theorie aangemaakt;
+- alle V6-uitbreidingsknoppen worden null-safe gekoppeld, zodat een ontbrekend optioneel element de app niet meer blokkeert.
+
+
+V6.5.2
+- mobiele ondernavigatie: Home, Training, Corpus, Menu;
+- sidebar verdwijnt op telefoon;
+- Menu opent bronnen, voortgang, leeratelier, vondsten, corpusanalyse, synchronisatie en instellingen;
+- Android/PWA manifest en iconen opnieuw opgebouwd;
+- aparte any- en maskable-iconen;
+- service worker registreert onafhankelijk van volledige app-initialisatie;
+- Instellingen bevat telefoon/PWA-diagnose;
+- webmodus/appmodus wordt op standalone display mode gebaseerd.
