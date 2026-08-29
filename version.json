@@ -1,0 +1,8 @@
+{
+  "platform":"Athenaeum",
+  "version":"1.0.0",
+  "release":"Athenaeum V1",
+  "apps":{"scriptorium":"7-migrated","paideia":"1.0"},
+  "profile_system":true,
+  "question_seed":300
+}
