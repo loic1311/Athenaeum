@@ -1,0 +1,40 @@
+ATHENAEUM V1.0.10 — TABLET / iPAD REBUILD
+
+Deze release wijzigt bewust NIET de telefoon- of laptop/desktop-layout.
+
+Wat fout ging op iPad/tablet:
+- op <=900px activeerden oudere telefoonregels nog `display:block` op de shell;
+- de latere tabletregel veranderde alleen grid-kolommen, maar zette `display:grid`
+  niet opnieuw expliciet;
+- daardoor kwam de volledige sidebar in portrait boven de inhoud te staan;
+- in landscape was de interface bruikbaar, maar te compact en onvoldoende
+  tablet-specifiek.
+
+Wat V1.0.10 doet:
+ATHENAEUM
+- echte 2-koloms tablet-shell in portrait én landscape;
+- portrait: compacte linkerrail van ca. 158px;
+- landscape: linkerrail van ca. 210px;
+- geen mobiele bottom-nav op tablet;
+- tablet-topbar blijft horizontaal;
+- portrait gebruikt 2 statistiekkolommen en 1 inhoudskolom;
+- landscape gebruikt 4 statistiekkolommen en 2 inhoudskolommen;
+- profielkeuzescherm is opnieuw geschaald voor tablet/iPad.
+
+PAIDEIA
+- eigen tablet-shell, niet langer afhankelijk van telefoonmediaqueries;
+- portrait compacte rail + 1 kolom;
+- landscape bredere rail + 2 kolommen;
+- examens/vragen/modals krijgen tabletmarges.
+
+SCRIPTORIUM
+- eigen tablet-shell;
+- portrait compacte rail en enkelkoloms analysegedeelten;
+- landscape bredere rail en 2-koloms analysegedeelten;
+- focus/training op tablet wordt niet in een te smalle desktop-split geforceerd.
+
+APP EN WEB
+Dezelfde tablet-layout wordt gebruikt in Safari/Chrome én als geïnstalleerde PWA.
+Alleen de veilige app-marges/statusbalk verschillen.
+
+Telefoon en laptop/desktop zijn uitdrukkelijk ongemoeid gelaten.

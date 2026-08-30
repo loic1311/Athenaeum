@@ -1,0 +1,50 @@
+ATHENAEUM V1.0.11 — OUT OF MEMORY / MULTI-DEVICE FIX
+
+OORZAAK
+Het probleem lag niet simpelweg aan 'twee mensen tegelijk'.
+De echte oorzaak zat in de synchronisatie-architectuur.
+
+Tot V1.0.10 bevatte één athenaeum_state-record:
+- profiel/Paideia: ongeveer 571 bytes
+- Scriptorium: ongeveer 20,5 MB JSON
+- totaal: ongeveer 20,7 MB JSON
+
+Elke automatische sync deed vervolgens:
+1. alle 56 Scriptorium-werken uit IndexedDB in geheugen laden;
+2. de volledige 20+ MB cloudpayload downloaden;
+3. lokaal + cloud recursief mergen;
+4. de gemergde 20+ MB opnieuw in IndexedDB toepassen;
+5. de volledige payload opnieuw JSON.stringify'en en uploaden.
+
+Daarbij stonden lokaal, cloud, merge-resultaat en HTTP-body tijdelijk tegelijk
+in het browsergeheugen. Op iPad en ook in Edge kon dit de tab na korte tijd naar
+'Out of Memory' duwen.
+
+Met twee apparaten tegelijk trad het probleem sneller op, omdat beide clients
+dezelfde zware volledige syncs uitvoerden en elkaar vaker tot nieuwe merges
+brachten. Twee apparaten horen echter gewoon ondersteund te worden.
+
+V1.0.11
+- athenaeum_state bevat alleen nog lichte profiel/Paideia-data;
+- Scriptorium is opgesplitst in:
+  * athenaeum_scriptorium_works — één rij per werk;
+  * athenaeum_scriptorium_settings — één rij per instelling;
+- automatische profielsync blijft om de 2 minuten licht;
+- Scriptorium synchroniseert incrementeel om de 15 minuten;
+- bij een Scriptorium-sync worden alleen ID + updated_at van alle werken vergeleken;
+- alleen gewijzigde werken worden individueel gedownload/geüpload;
+- geen volledige 20 MB corpusdump meer in één merge;
+- gelijke versies worden niet opnieuw recursief gemerged;
+- dubbele analysis_ranges worden niet verder vermenigvuldigd;
+- een cloudrestore haalt Scriptorium werk per werk binnen.
+
+SERVER
+De migratie is reeds toegepast op het gekoppelde Athenaeum Supabase-project.
+De hoofdstate is daarbij van ongeveer 20,7 MB naar ongeveer 571 bytes gegaan.
+De 56 Scriptorium-werken blijven volledig bewaard, maar staan nu elk in een
+afzonderlijke beveiligde rij.
+
+BELANGRIJK
+Sluit vóór de update oude V1.0.10-tabs/apps op alle apparaten. V1.0.11 bevat
+de nieuwe clientarchitectuur. De server blokkeert bovendien dat oude clients
+Scriptorium opnieuw in de zware hoofdstate stoppen.

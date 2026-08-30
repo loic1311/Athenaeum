@@ -156,6 +156,108 @@ body.device-tablet .discovery{grid-template-columns:1fr!important}
 body.device-desktop .app{grid-template-columns:270px 1fr!important}
 body.device-desktop .sidebar{position:sticky!important;top:0!important;height:100vh!important}
 
+
+
+/* ==========================================================
+   SCRIPTORIUM — V1.0.10 tablet/iPad rebuild
+   scoped to device-tablet; phone + desktop unchanged
+   ========================================================== */
+body.device-tablet .app{
+  display:grid!important;
+  grid-template-columns:200px minmax(0,1fr)!important;
+  min-height:100dvh!important;
+}
+body.device-tablet .sidebar{
+  display:block!important;
+  position:sticky!important;
+  top:0!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  overflow-y:auto!important;
+  padding:14px 11px!important;
+}
+body.device-tablet .content{
+  min-width:0!important;
+  padding:18px!important;
+}
+body.device-tablet .topbar{
+  min-height:68px!important;
+  padding:0 18px!important;
+}
+body.device-tablet .grid.stats{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+body.device-tablet .two{
+  grid-template-columns:1fr 1fr!important;
+}
+body.device-tablet .three,
+body.device-tablet .analysis-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+}
+body.device-tablet .discovery{
+  grid-template-columns:1fr!important;
+}
+body.device-tablet .focus-main{
+  grid-template-columns:1fr!important;
+  padding:20px!important;
+}
+body.device-tablet .focus-right{
+  position:relative!important;
+  top:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+
+@media (orientation:portrait){
+  body.device-tablet .app{
+    grid-template-columns:156px minmax(0,1fr)!important;
+  }
+  body.device-tablet .sidebar{
+    padding:11px 8px!important;
+  }
+  body.device-tablet .sidebar .brand-lockup img{
+    width:34px!important;
+    height:34px!important;
+  }
+  body.device-tablet .sidebar .brand-lockup h1{
+    font-size:15px!important;
+  }
+  body.device-tablet .nav button{
+    font-size:11px!important;
+    padding:8px 7px!important;
+  }
+  body.device-tablet .side-note{
+    display:none!important;
+  }
+  body.device-tablet .content{
+    padding:14px!important;
+  }
+  body.device-tablet .topbar{
+    min-height:64px!important;
+    padding:0 12px!important;
+  }
+  body.device-tablet .grid.stats{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  body.device-tablet .two,
+  body.device-tablet .three,
+  body.device-tablet .analysis-grid{
+    grid-template-columns:1fr!important;
+  }
+  body.device-tablet .focus-main{
+    padding:14px!important;
+  }
+}
+
+@media (orientation:landscape){
+  body.device-tablet .app{
+    grid-template-columns:210px minmax(0,1fr)!important;
+  }
+  body.device-tablet .content{
+    padding:20px!important;
+  }
+}
+
 </style>
 
 

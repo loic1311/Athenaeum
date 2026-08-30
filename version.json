@@ -1,11 +1,12 @@
 {
-  "version": "1.0.9",
-  "release": "Athenaeum V1.0.9",
+  "version": "1.0.11",
+  "release": "Athenaeum V1.0.11",
   "changes": [
-    "pin_modal_above_profile_gate",
-    "profile_editor_above_profile_gate",
-    "cloud_restore_modal_above_profile_gate",
-    "toast_layer_above_modals",
-    "retains_phone_tablet_ipad_desktop_layouts"
+    "split_lightweight_and_scriptorium_sync",
+    "scriptorium_per_record_incremental_sync",
+    "memory_safe_multi_device_sync",
+    "no_full_20mb_payload_every_two_minutes",
+    "cloud_restore_streams_scriptorium_records",
+    "tablet_phone_desktop_layouts_preserved"
   ]
 }

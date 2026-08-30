@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="Athenaeum"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="format-detection" content="telephone=no"/>
-<title>Athenaeum V1.0.9 — Persoonlijke leer- en onderzoeksomgeving</title><meta content="Athenaeum: profielen, Scriptorium, Paideia, kennisbank en synchronisatie." name="description"/>
+<title>Athenaeum V1.0.11 — Persoonlijke leer- en onderzoeksomgeving</title><meta content="Athenaeum: profielen, Scriptorium, Paideia, kennisbank en synchronisatie." name="description"/>
 <link href="./manifest.webmanifest" rel="manifest"/><link href="./assets/icons/apple-touch-icon.png" rel="apple-touch-icon"/><link href="./assets/icons/icon-192.png" rel="icon"/>
 <style id="athenaeum-core-style">
 :root{--ink:#102f32;--ink2:#17464a;--gold:#c79b48;--gold2:#e4c886;--cream:#f7f2e7;--paper:#fffdf8;--mist:#eef4f0;--line:#d9d2c3;--text:#19383a;--muted:#687a79;--good:#2e7c5c;--warn:#b47d2b;--bad:#a94e4e;--purple:#665074;--shadow:0 18px 44px rgba(17,48,50,.10);--r:22px}
@@ -23,7 +23,7 @@ body.force-mobile .shell{grid-template-columns:1fr}body.force-mobile .sidebar{di
 body.force-desktop .shell{grid-template-columns:265px minmax(0,1fr)}body.force-desktop .sidebar{display:block}body.force-desktop .mobile-nav{display:none}body.force-desktop .page-wrap{padding:24px}
 
 
-/* Athenaeum V1.0.9 — account/app separation and sidebar redesign */
+/* Athenaeum V1.0.11 — account/app separation and sidebar redesign */
 .sidebar{display:flex;flex-direction:column;overflow:hidden;padding:18px 16px;background:linear-gradient(180deg,#0d3437 0%,#0a292d 58%,#081f25 100%)}
 .side-brand{padding:4px 4px 16px!important;margin-bottom:6px;border-bottom:1px solid rgba(255,255,255,.08)}
 .side-brand.brand-lockup{gap:11px}.side-brand.brand-lockup img{width:44px;height:44px;border-radius:13px}.side-brand.brand-lockup h1{font-size:20px;letter-spacing:.02em}.side-brand.brand-lockup small{font-size:11px;color:#aac1ba}
@@ -41,7 +41,7 @@ body.force-desktop .shell{grid-template-columns:265px minmax(0,1fr)}body.force-d
 @media(max-width:900px){.side-apps,.side-section-label{display:none}.app-access-grid{grid-template-columns:1fr}.app-detail-grid{grid-template-columns:1fr}.app-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
 
-/* Athenaeum V1.0.9 — definitive mobile layout + simplified cloud settings */
+/* Athenaeum V1.0.11 — definitive mobile layout + simplified cloud settings */
 .cloud-default-note{display:flex;align-items:center;gap:10px;margin:12px 0 14px;padding:11px 13px;border:1px solid #cfe0da;background:#f2f8f5;border-radius:14px;color:#315b52}
 .cloud-default-note span{margin-left:auto;font-size:11px;color:#6d7f79}
 .advanced-cloud{margin-top:12px;border-top:1px solid #e3dccf;padding-top:10px}
@@ -79,14 +79,14 @@ body.force-desktop .shell{grid-template-columns:265px minmax(0,1fr)}body.force-d
   body .mobile-nav button .ico{font-size:20px!important}
 }
 
-/* V1.0.9 — input/touch reliability, source explorer and diagnostics */
+/* V1.0.11 — input/touch reliability, source explorer and diagnostics */
 input,textarea,select,.field input,.field textarea,.field select,.source-search-input{pointer-events:auto!important;touch-action:manipulation!important;position:relative;z-index:3}
 .primary-explorer{overflow:visible!important}.source-search-row{display:grid;grid-template-columns:minmax(260px,1fr) auto auto auto;gap:10px;align-items:center;margin-top:14px}.source-search-input{width:100%;min-width:0;border:1px solid #d8cfbe;border-radius:14px;padding:13px 14px;font:inherit;background:#fff;color:#17363d;outline:none}.source-search-input:focus{border-color:#5e8e82;box-shadow:0 0 0 4px rgba(59,117,102,.11)}
 .source-meta-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #e5decf}.source-empty{padding:14px;border:1px dashed #d8cfbe;border-radius:14px;background:#fbf8f1;color:#687b7c}.diag-box{margin-top:10px;padding:12px 14px;border:1px solid #d7ded8;border-radius:14px;background:#f6faf8}.diag-steps{display:grid;gap:5px;margin-top:7px;font-size:12px;color:#526b67}.warn-text{margin-top:8px;color:#a0553b}
 @media(max-width:900px){.source-search-row{grid-template-columns:1fr!important}.source-search-row .btn{width:100%!important}.primary-explorer{position:relative;z-index:5}.source-search-input{font-size:16px!important;min-height:48px!important}.diag-box{font-size:13px}}
 
 
-/* Athenaeum V1.0.9 — profielpoort is nu een echte lock */
+/* Athenaeum V1.0.11 — profielpoort is nu een echte lock */
 html.profile-locked,
 body.profile-locked{
   overflow:hidden!important;
@@ -143,7 +143,7 @@ body.profile-locked .sidebar{display:none!important}
 
 
 /* ==========================================================
-   Athenaeum V1.0.9 — device-adaptive interface
+   Athenaeum V1.0.11 — device-adaptive interface
    phone / tablet-iPad / desktop + installed PWA
    ========================================================== */
 
@@ -228,7 +228,7 @@ html[data-display-mode="app"] body.device-tablet .sidebar{
 }
 
 
-/* Athenaeum V1.0.9 — modal stack fix
+/* Athenaeum V1.0.11 — modal stack fix
    Profile gate = 1000, dialogs must always render above it. */
 .modal{
   z-index:1400!important;
@@ -239,11 +239,338 @@ html[data-display-mode="app"] body.device-tablet .sidebar{
 .toast-wrap{
   z-index:1500!important;
 }
+
+
+/* ==========================================================
+   ATHENAEUM V1.0.11 — TABLET/iPAD REBUILD
+   Intentionally scoped to .device-tablet only.
+   Phone and desktop rules above remain untouched.
+   ========================================================== */
+
+/* Base tablet shell: undo generic <=900px phone rules. */
+body.device-tablet #mainShell.shell,
+body.device-tablet .shell{
+  display:grid!important;
+  grid-template-columns:196px minmax(0,1fr)!important;
+  min-height:100dvh!important;
+  width:100%!important;
+}
+body.device-tablet .sidebar{
+  display:flex!important;
+  flex-direction:column!important;
+  position:sticky!important;
+  top:0!important;
+  width:auto!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  padding:16px 12px!important;
+  border-right:1px solid rgba(255,255,255,.08)!important;
+  border-bottom:0!important;
+}
+body.device-tablet .app-main{
+  display:block!important;
+  width:auto!important;
+  min-width:0!important;
+  min-height:100dvh!important;
+}
+body.device-tablet .mobile-nav,
+body.device-tablet .bottom-sheet{
+  display:none!important;
+}
+body.device-tablet .sidebar-foot{
+  margin-top:auto!important;
+}
+body.device-tablet .topbar{
+  position:sticky!important;
+  top:0!important;
+  z-index:60!important;
+  height:72px!important;
+  min-height:72px!important;
+  padding:0 18px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:14px!important;
+}
+body.device-tablet .topbar>div:first-child{
+  min-width:0!important;
+  flex:1 1 auto!important;
+}
+body.device-tablet .topbar>.row{
+  flex-direction:row!important;
+  align-items:center!important;
+  gap:8px!important;
+  flex:0 0 auto!important;
+}
+body.device-tablet .topbar h2{
+  font-size:25px!important;
+  line-height:1.05!important;
+}
+body.device-tablet .topbar .tiny{
+  display:block!important;
+  font-size:12px!important;
+  line-height:1.25!important;
+}
+body.device-tablet #switchProfile{
+  font-size:12px!important;
+  padding:9px 11px!important;
+}
+body.device-tablet .page-wrap{
+  padding:18px!important;
+  padding-bottom:28px!important;
+  max-width:1180px!important;
+  margin:0 auto!important;
+}
+body.device-tablet .hero{
+  padding:20px!important;
+  border-radius:22px!important;
+}
+body.device-tablet .hero h2{
+  font-size:30px!important;
+}
+body.device-tablet .card{
+  padding:16px!important;
+  border-radius:20px!important;
+}
+body.device-tablet .stat{
+  padding:14px!important;
+}
+body.device-tablet .stat .v{
+  font-size:25px!important;
+}
+body.device-tablet .modal-box{
+  width:min(760px,92vw)!important;
+  max-height:90dvh!important;
+}
+
+/* Tablet sidebar compact but complete */
+body.device-tablet .side-brand{
+  padding:4px 4px 14px!important;
+}
+body.device-tablet .side-brand.brand-lockup{
+  gap:9px!important;
+}
+body.device-tablet .side-brand.brand-lockup img{
+  width:38px!important;
+  height:38px!important;
+}
+body.device-tablet .side-brand.brand-lockup h1{
+  font-size:17px!important;
+}
+body.device-tablet .side-brand.brand-lockup small{
+  font-size:10px!important;
+}
+body.device-tablet .side-section-label{
+  display:block!important;
+  font-size:9px!important;
+  letter-spacing:1.4px!important;
+  margin:12px 5px 6px!important;
+}
+body.device-tablet .nav{
+  gap:4px!important;
+}
+body.device-tablet .nav button{
+  min-height:42px!important;
+  padding:9px 9px!important;
+  font-size:12.5px!important;
+  border-radius:11px!important;
+}
+body.device-tablet .side-apps{
+  display:grid!important;
+  gap:6px!important;
+}
+body.device-tablet .side-app-link{
+  min-height:38px!important;
+  padding:7px 8px!important;
+  font-size:11px!important;
+}
+body.device-tablet .side-user{
+  padding:9px!important;
+  margin:10px 0 8px!important;
+}
+body.device-tablet .side-user img{
+  width:34px!important;
+  height:34px!important;
+}
+body.device-tablet .side-user strong{
+  font-size:12px!important;
+}
+body.device-tablet .side-user small{
+  font-size:10px!important;
+}
+
+/* Landscape tablet / iPad */
+@media (orientation:landscape){
+  body.device-tablet #mainShell.shell,
+  body.device-tablet .shell{
+    grid-template-columns:210px minmax(0,1fr)!important;
+  }
+  body.device-tablet .page-wrap{
+    padding:20px 22px 28px!important;
+  }
+  body.device-tablet .stat-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:10px!important;
+  }
+  body.device-tablet .quick-apps,
+  body.device-tablet .app-detail-grid,
+  body.device-tablet .grid.two{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  body.device-tablet .grid.three{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  body.device-tablet .hero .spread{
+    align-items:center!important;
+  }
+}
+
+/* Portrait tablet / iPad: retain a real left rail instead of collapsing into phone UI. */
+@media (orientation:portrait){
+  body.device-tablet #mainShell.shell,
+  body.device-tablet .shell{
+    display:grid!important;
+    grid-template-columns:158px minmax(0,1fr)!important;
+  }
+  body.device-tablet .sidebar{
+    height:100dvh!important;
+    min-height:100dvh!important;
+    padding:13px 9px!important;
+  }
+  body.device-tablet .side-brand.brand-lockup img{
+    width:34px!important;
+    height:34px!important;
+  }
+  body.device-tablet .side-brand.brand-lockup h1{
+    font-size:15px!important;
+  }
+  body.device-tablet .side-brand.brand-lockup small,
+  body.device-tablet .sidebar-foot{
+    font-size:9px!important;
+  }
+  body.device-tablet .nav button{
+    padding:8px 7px!important;
+    font-size:11.5px!important;
+    min-height:39px!important;
+  }
+  body.device-tablet .side-apps{
+    display:none!important;
+  }
+  body.device-tablet .page-wrap{
+    padding:15px!important;
+    padding-bottom:24px!important;
+  }
+  body.device-tablet .topbar{
+    height:68px!important;
+    min-height:68px!important;
+    padding:0 14px!important;
+  }
+  body.device-tablet .topbar h2{
+    font-size:23px!important;
+  }
+  body.device-tablet .topbar .tiny{
+    font-size:11px!important;
+    max-width:360px!important;
+  }
+  body.device-tablet #modeChip{
+    font-size:10px!important;
+    padding:5px 8px!important;
+  }
+  body.device-tablet #switchProfile{
+    font-size:11px!important;
+    padding:8px 9px!important;
+  }
+  body.device-tablet .hero{
+    padding:17px!important;
+  }
+  body.device-tablet .hero h2{
+    font-size:27px!important;
+  }
+  body.device-tablet .stat-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+  }
+  body.device-tablet .quick-apps,
+  body.device-tablet .app-detail-grid,
+  body.device-tablet .grid.two,
+  body.device-tablet .grid.three{
+    grid-template-columns:1fr!important;
+  }
+  body.device-tablet .app-metrics{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+  body.device-tablet .spread{
+    gap:10px!important;
+  }
+}
+
+/* Tablet/iPad profile gate */
+body.device-tablet .profile-gate{
+  display:grid!important;
+  place-items:center!important;
+  padding:26px!important;
+  overflow:auto!important;
+}
+body.device-tablet .gate-box{
+  width:min(900px,100%)!important;
+  margin:auto!important;
+}
+body.device-tablet .gate-title img{
+  width:84px!important;
+  height:84px!important;
+}
+body.device-tablet .gate-title h1{
+  font-size:38px!important;
+}
+body.device-tablet .gate-title p{
+  font-size:15px!important;
+}
+body.device-tablet .profile-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:16px!important;
+  margin-top:20px!important;
+}
+body.device-tablet .profile-card{
+  min-height:190px!important;
+  padding:16px!important;
+  display:grid!important;
+  place-items:center!important;
+  align-content:center!important;
+}
+body.device-tablet .profile-card img{
+  width:82px!important;
+  height:82px!important;
+}
+body.device-tablet .profile-add{
+  min-height:190px!important;
+}
+@media (orientation:portrait){
+  body.device-tablet .profile-gate{
+    padding:24px 18px!important;
+  }
+  body.device-tablet .gate-box{
+    width:min(680px,100%)!important;
+  }
+  body.device-tablet .gate-title img{
+    width:76px!important;
+    height:76px!important;
+  }
+  body.device-tablet .gate-title h1{
+    font-size:34px!important;
+  }
+  body.device-tablet .profile-card{
+    min-height:170px!important;
+  }
+}
+
+/* V1.0.11 memory-safe sync status */
+#scriptSyncStatus{color:#60736d}
 </style></head><body>
 <div class="profile-gate fade-in" id="profileGate"><div class="gate-box"><div class="gate-title"><img alt="Athenaeum" src="./assets/logos/athenaeum.svg"/><h1>Athenaeum</h1><p>Jouw persoonlijke leer- en onderzoeksomgeving. Selecteer een gebruiker.</p></div><div class="profile-grid" id="profileGrid"></div><div class="row" style="justify-content:center;margin-top:18px"><button class="btn" id="restoreCloudBtn">☁️ Cloudprofiel herstellen</button></div></div></div>
 <div class="shell hidden" id="mainShell" hidden inert aria-hidden="true">
 <aside class="sidebar">
-<div class="side-brand brand-lockup"><img alt="Athenaeum" src="./assets/logos/athenaeum.svg"/><div><h1>Athenaeum</h1><small>persoonlijke omgeving · V1.0.9</small></div></div>
+<div class="side-brand brand-lockup"><img alt="Athenaeum" src="./assets/logos/athenaeum.svg"/><div><h1>Athenaeum</h1><small>persoonlijke omgeving · V1.0.11</small></div></div>
 <div class="side-section-label">Navigatie</div>
 <nav class="nav" id="mainNav"><button data-page="home">🏠 Home</button><button data-page="apps">◈ Mijn apps</button><button data-page="library">📚 Bibliotheek</button><button data-page="progress">📈 Voortgang</button><button data-page="settings">⚙️ Instellingen</button></nav>
 <div class="side-section-label">Jouw apps</div><div class="side-apps" id="sideApps"></div>
@@ -292,125 +619,833 @@ window.AthStore={AVATARS,APPS,profileApps,uid,loadProfiles,saveProfiles,currentP
 </script>
 <script>(function(){
 'use strict';
+
 const S=()=>window.AthStore;
 const CLOUD_KEY='main';
 const DEFAULT_URL='https://gtvgqmzkwawuhcnlkzfk.supabase.co';
 const DEFAULT_KEY='sb_publishable_4okIfaZ1KklugItkYxKtDA_bzTdDgs0';
-const REQUEST_TIMEOUT=12000;
-let timer=null,dirtyTimer=null,focusBound=false,visibilityBound=false,onlineBound=false,activePid='';
-const running=new Map();
+const REQUEST_TIMEOUT=15000;
+const LIGHT_INTERVAL=2*60*1000;
+const SCRIPTORIUM_INTERVAL=15*60*1000;
+
+let lightTimer=null,scriptTimer=null,dirtyTimer=null;
+let focusBound=false,visibilityBound=false,onlineBound=false;
+let activePid='';
 let suspendDirty=false;
+
+const running=new Map();
+const scriptRunning=new Map();
+
 function cfg(pid){
-  const base={url:DEFAULT_URL,key:DEFAULT_KEY,email:'',access_token:'',refresh_token:'',expires_at:0,user:null,enabled:false,last_sync:0,last_error:'',last_direction:'',cloud_profile_key:CLOUD_KEY,dirty_at:0};
+  const base={
+    url:DEFAULT_URL,key:DEFAULT_KEY,email:'',
+    access_token:'',refresh_token:'',expires_at:0,user:null,
+    enabled:false,last_sync:0,last_error:'',last_direction:'',
+    cloud_profile_key:CLOUD_KEY,dirty_at:0,
+    last_scriptorium_sync:0,last_scriptorium_error:''
+  };
   const stored=S().getProfileData(pid,'sync',{});
   return {...base,...stored,url:stored?.url||DEFAULT_URL,key:stored?.key||DEFAULT_KEY,cloud_profile_key:CLOUD_KEY};
 }
-function saveCfg(pid,c){suspendDirty=true;S().setProfileData(pid,'sync',{...c,cloud_profile_key:CLOUD_KEY});suspendDirty=false}
-function status(pid){const c=cfg(pid);return{enabled:!!c.enabled,signed_in:!!c.user?.id,email:c.user?.email||c.email||'',last_sync:c.last_sync||0,last_error:c.last_error||'',last_direction:c.last_direction||'',cloud_key:CLOUD_KEY,syncing:running.has(pid)}}
+
+function saveCfg(pid,c){
+  suspendDirty=true;
+  S().setProfileData(pid,'sync',{...c,cloud_profile_key:CLOUD_KEY});
+  suspendDirty=false;
+}
+
+function status(pid){
+  const c=cfg(pid);
+  return {
+    enabled:!!c.enabled,
+    signed_in:!!c.user?.id,
+    email:c.user?.email||c.email||'',
+    last_sync:c.last_sync||0,
+    last_error:c.last_error||'',
+    last_direction:c.last_direction||'',
+    last_scriptorium_sync:c.last_scriptorium_sync||0,
+    last_scriptorium_error:c.last_scriptorium_error||'',
+    cloud_key:CLOUD_KEY,
+    syncing:running.has(pid),
+    scriptorium_syncing:scriptRunning.has(pid)
+  };
+}
+
 function linkProfileToCloud(pid,user,email=''){
   if(!pid||!user?.id)return;
   const ps=S().loadProfiles(),i=ps.findIndex(p=>p.id===pid);
   if(i<0)return;
-  ps[i]={...ps[i],cloud_user_id:user.id,cloud_email:(user.email||email||ps[i].cloud_email||'').toLowerCase(),updated_at:Math.max(ps[i].updated_at||0,Date.now())};
+  ps[i]={
+    ...ps[i],
+    cloud_user_id:user.id,
+    cloud_email:(user.email||email||ps[i].cloud_email||'').toLowerCase(),
+    updated_at:Math.max(ps[i].updated_at||0,Date.now())
+  };
   S().saveProfiles(ps);
 }
-function baseHeaders(key,extra={}){return{'apikey':key,'Content-Type':'application/json',...extra}}
+
+function baseHeaders(key,extra={}){return {'apikey':key,'Content-Type':'application/json',...extra}}
+
 async function rawRequest(url,key,path,opt={}){
   if(!url||!key)throw new Error('Supabase URL/key ontbreken.');
   const endpoint=url.replace(/\/$/,'')+path;
   const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),REQUEST_TIMEOUT);
   let r;
   try{
-    r=await fetch(endpoint,{...opt,mode:'cors',credentials:'omit',cache:'no-store',signal:ctl.signal,headers:baseHeaders(key,opt.headers||{})});
+    r=await fetch(endpoint,{
+      ...opt,mode:'cors',credentials:'omit',cache:'no-store',
+      signal:ctl.signal,
+      headers:baseHeaders(key,opt.headers||{})
+    });
   }catch(e){
     clearTimeout(tm);
-    if(e?.name==='AbortError')throw new Error('Cloudserver antwoordt niet binnen 12 seconden. Controleer of het Supabase-project actief is.');
-    throw new Error(`Cloudserver niet bereikbaar (${url.replace(/\/$/,'')}). Controleer de project-URL, internetverbinding en eventuele adblock/privacyfilter. Technisch: ${e?.message||'Failed to fetch'}`);
+    if(e?.name==='AbortError')throw new Error('Cloudserver antwoordt niet binnen 15 seconden.');
+    throw new Error(`Cloudserver niet bereikbaar. Technisch: ${e?.message||'Failed to fetch'}`);
   }
   clearTimeout(tm);
+
   let data=null,text='';
-  try{text=await r.text();data=text?JSON.parse(text):null}catch{data=text||null}
+  try{
+    text=await r.text();
+    data=text?JSON.parse(text):null;
+  }catch{
+    data=text||null;
+  }
+
   if(!r.ok){
-    const msg=(data&&typeof data==='object'&&(data.msg||data.message||data.error_description||data.error))||String(data||'').slice(0,240)||`${r.status} ${r.statusText}`;
+    const msg=(data&&typeof data==='object'&&(data.msg||data.message||data.error_description||data.error))
+      ||String(data||'').slice(0,300)||`${r.status} ${r.statusText}`;
     throw new Error(`${r.status}: ${msg}`);
   }
   return data;
 }
-async function request(pid,path,opt={}){const c=cfg(pid);return rawRequest(c.url,c.key,path,opt)}
+
+async function request(pid,path,opt={}){
+  const c=cfg(pid);
+  return rawRequest(c.url,c.key,path,opt);
+}
+
 async function storeSession(pid,d){
   const c=cfg(pid);
-  saveCfg(pid,{...c,access_token:d.access_token||c.access_token,refresh_token:d.refresh_token||c.refresh_token,user:d.user||c.user,expires_at:Date.now()+((d.expires_in||3600)*1000),enabled:true,last_error:''});
+  saveCfg(pid,{
+    ...c,
+    access_token:d.access_token||c.access_token,
+    refresh_token:d.refresh_token||c.refresh_token,
+    user:d.user||c.user,
+    expires_at:Date.now()+((d.expires_in||3600)*1000),
+    enabled:true,last_error:''
+  });
   linkProfileToCloud(pid,d.user||c.user,c.email);
 }
+
 async function auth(pid,email,password,signup=false){
-  const c=cfg(pid);saveCfg(pid,{...c,email});
-  const d=await request(pid,signup?'/auth/v1/signup':'/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})});
+  const c=cfg(pid);
+  saveCfg(pid,{...c,email});
+  const d=await request(pid,signup?'/auth/v1/signup':'/auth/v1/token?grant_type=password',{
+    method:'POST',
+    body:JSON.stringify({email,password})
+  });
   if(d.user)linkProfileToCloud(pid,d.user,email);
   if(d.access_token)await storeSession(pid,d);
   return d;
 }
-async function access(pid){let c=cfg(pid);if(c.access_token&&c.expires_at>Date.now()+60000)return c.access_token;if(!c.refresh_token)throw new Error('Meld eerst aan.');const d=await request(pid,'/auth/v1/token?grant_type=refresh_token',{method:'POST',body:JSON.stringify({refresh_token:c.refresh_token})});await storeSession(pid,d);return d.access_token}
-function itemKey(x){if(x==null)return null;if(typeof x!=='object')return `p:${String(x)}`;for(const k of ['id','attempt_id','pack_id','work_id','key','date','source_id','doi','title'])if(x[k]!=null)return `${k}:${String(x[k])}`;return null}
-function stamp(x){return Number(x?.updated_at||x?.graded_at||x?.analysis_updated_at||x?.created_at||0)||0}
-function mergeArrays(a=[],b=[]){if(!Array.isArray(a))a=[];if(!Array.isArray(b))b=[];if([...a,...b].every(x=>x==null||typeof x!=='object'))return [...new Set([...a,...b])];const map=new Map(),loose=[];for(const x of [...a,...b]){const k=itemKey(x);if(!k){loose.push(x);continue}const old=map.get(k);if(!old||stamp(x)>=stamp(old))map.set(k,old&&typeof old==='object'&&typeof x==='object'?mergeValue(old,x):x)}return[...map.values(),...loose]}
+
+async function access(pid){
+  let c=cfg(pid);
+  if(c.access_token&&c.expires_at>Date.now()+60000)return c.access_token;
+  if(!c.refresh_token)throw new Error('Meld eerst aan.');
+  const d=await request(pid,'/auth/v1/token?grant_type=refresh_token',{
+    method:'POST',body:JSON.stringify({refresh_token:c.refresh_token})
+  });
+  await storeSession(pid,d);
+  return d.access_token;
+}
+
 function plain(x){return x&&typeof x==='object'&&!Array.isArray(x)}
-function mergeValue(a,b){if(a==null)return b;if(b==null)return a;if(Array.isArray(a)||Array.isArray(b))return mergeArrays(Array.isArray(a)?a:[],Array.isArray(b)?b:[]);if(plain(a)&&plain(b)){if(stamp(a)&&stamp(b)&&Math.abs(stamp(a)-stamp(b))>0){const newer=stamp(b)>stamp(a)?b:a,older=newer===b?a:b;const out={...older,...newer};for(const k of ['history','weekly_scores','monthly_scores','completed_dates','attempts','recent_signatures'])if(Array.isArray(a[k])||Array.isArray(b[k]))out[k]=mergeArrays(a[k]||[],b[k]||[]);return out}const out={...a};for(const[k,v]of Object.entries(b))out[k]=k in out?mergeValue(out[k],v):v;return out}return b}
-function mergePaideia(a={},b={}){const newer=(stamp(b)>=stamp(a))?b:a,older=newer===b?a:b;const out={...older,...newer};for(const k of ['completed_dates','weekly_scores','monthly_scores','history'])out[k]=mergeArrays(a[k]||[],b[k]||[]);out.daily_count=Math.max(Number(a.daily_count||0),Number(b.daily_count||0));out.updated_at=Math.max(stamp(a),stamp(b),Date.now());return out}
-function mergeData(a={},b={}){const out={...a};for(const[k,v]of Object.entries(b||{})){if(k==='paideia_state')out[k]=mergePaideia(out[k]||{},v||{});else out[k]=k in out?mergeValue(out[k],v):v}return out}
+function stamp(x){return Number(x?.updated_at||x?.graded_at||x?.analysis_updated_at||x?.created_at||0)||0}
+
+function stableKey(x){
+  if(x==null)return 'null';
+  if(typeof x!=='object')return typeof x+':'+String(x);
+  for(const k of ['id','attempt_id','pack_id','work_id','key','date','source_id','doi','title']){
+    if(x[k]!=null)return `${k}:${String(x[k])}`;
+  }
+  try{
+    const keys=Object.keys(x).sort();
+    return 'json:'+JSON.stringify(x,keys);
+  }catch{
+    return null;
+  }
+}
+
+function mergeArrays(a=[],b=[]){
+  if(!Array.isArray(a))a=[];
+  if(!Array.isArray(b))b=[];
+  const out=new Map();
+  const loose=[];
+  for(const x of [...a,...b]){
+    const k=stableKey(x);
+    if(!k){loose.push(x);continue}
+    const old=out.get(k);
+    if(old===undefined){out.set(k,x);continue}
+    if(plain(old)&&plain(x)){
+      const os=stamp(old),xs=stamp(x);
+      if(os&&xs){
+        out.set(k,xs>=os?x:old);
+      }else{
+        out.set(k,x);
+      }
+    }else out.set(k,x);
+  }
+  return [...out.values(),...loose];
+}
+
+function mergeValue(a,b){
+  if(a==null)return b;
+  if(b==null)return a;
+  if(Array.isArray(a)||Array.isArray(b))return mergeArrays(Array.isArray(a)?a:[],Array.isArray(b)?b:[]);
+  if(plain(a)&&plain(b)){
+    const as=stamp(a),bs=stamp(b);
+    if(as&&bs){
+      if(bs>as)return {...a,...b};
+      if(as>bs)return {...b,...a};
+      // Same version: never recursively re-merge identical heavy objects.
+      return {...a,...b};
+    }
+    const out={...a};
+    for(const [k,v] of Object.entries(b))out[k]=k in out?mergeValue(out[k],v):v;
+    return out;
+  }
+  return b;
+}
+
+function mergePaideia(a={},b={}){
+  const newer=(stamp(b)>=stamp(a))?b:a,older=newer===b?a:b;
+  const out={...older,...newer};
+  for(const k of ['completed_dates','weekly_scores','monthly_scores','history']){
+    out[k]=mergeArrays(a[k]||[],b[k]||[]);
+  }
+  out.daily_count=Math.max(Number(a.daily_count||0),Number(b.daily_count||0));
+  out.updated_at=Math.max(stamp(a),stamp(b),Date.now());
+  return out;
+}
+
+function mergeData(a={},b={}){
+  const out={...a};
+  for(const [k,v] of Object.entries(b||{})){
+    if(k==='paideia_state')out[k]=mergePaideia(out[k]||{},v||{});
+    else out[k]=k in out?mergeValue(out[k],v):v;
+  }
+  return out;
+}
+
 function profileSnapshot(p){
   const c=cfg(p.id);
-  return{id:p.id,name:p.name,avatar:p.avatar,apps:S().profileApps(p),icecubes:p.icecubes,pin_hash:p.pin_hash||'',pin_salt:p.pin_salt||'',cloud_user_id:p.cloud_user_id||c.user?.id||'',cloud_email:p.cloud_email||c.user?.email||c.email||'',updated_at:p.updated_at||0};
+  return {
+    id:p.id,name:p.name,avatar:p.avatar,apps:S().profileApps(p),
+    icecubes:p.icecubes,pin_hash:p.pin_hash||'',pin_salt:p.pin_salt||'',
+    cloud_user_id:p.cloud_user_id||c.user?.id||'',
+    cloud_email:p.cloud_email||c.user?.email||c.email||'',
+    updated_at:p.updated_at||0
+  };
 }
-function localData(pid){const data={};Object.keys(localStorage).filter(k=>k.startsWith(`ath_${pid}_`)&&!k.endsWith('_sync')).forEach(k=>{try{data[k.slice(`ath_${pid}_`.length)]=JSON.parse(localStorage.getItem(k))}catch{}});return data}
-function openIDB(name){return new Promise((res,rej)=>{const r=indexedDB.open(name,3);r.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains('works'))d.createObjectStore('works',{keyPath:'id'});if(!d.objectStoreNames.contains('files'))d.createObjectStore('files',{keyPath:'id'});if(!d.objectStoreNames.contains('settings'))d.createObjectStore('settings',{keyPath:'key'})};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
-function all(db,store){return new Promise((res,rej)=>{if(!db.objectStoreNames.contains(store))return res([]);const r=db.transaction(store).objectStore(store).getAll();r.onsuccess=()=>res(r.result||[]);r.onerror=()=>rej(r.error)})}
-function put(db,store,val){return new Promise((res,rej)=>{const r=db.transaction(store,'readwrite').objectStore(store).put(val);r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
-async function collectScriptorium(pid){try{const db=await openIDB(`ScriptoriumDB_${pid}`);const works=await all(db,'works'),settings=(await all(db,'settings')).filter(x=>!['v6_sb_config','v6_sync_meta'].includes(x.key));db.close();return{works,settings,updated_at:Date.now()}}catch(e){console.warn('Scriptorium sync collect skipped',e);return{works:[],settings:[],updated_at:0}}}
-async function applyScriptorium(pid,remote={}){if(!remote||(!remote.works?.length&&!remote.settings?.length))return;const db=await openIDB(`ScriptoriumDB_${pid}`);const localWorks=await all(db,'works'),localSettings=await all(db,'settings');const wmap=new Map(localWorks.map(x=>[x.id,x]));for(const w of remote.works||[]){const old=wmap.get(w.id);await put(db,'works',old?mergeValue(old,w):w)}const smap=new Map(localSettings.map(x=>[x.key,x]));for(const s of remote.settings||[]){if(['v6_sb_config','v6_sync_meta'].includes(s.key))continue;const old=smap.get(s.key);await put(db,'settings',old?{...old,...s,value:mergeValue(old.value,s.value)}:s)}db.close()}
-async function collect(pid){const p=S().loadProfiles().find(x=>x.id===pid);if(!p)throw new Error('Profiel bestaat lokaal niet.');return{schema:2,profile:profileSnapshot(p),data:localData(pid),scriptorium:await collectScriptorium(pid),updated_at:Date.now()}}
-function mergeScriptorium(a={},b={}){return{works:mergeArrays(a.works||[],b.works||[]),settings:mergeArrays(a.settings||[],b.settings||[]),updated_at:Math.max(a.updated_at||0,b.updated_at||0,Date.now())}}
-function merge(local,remote){if(!remote)return local;const lp=local.profile||{},rp=remote.profile||{},newer=(rp.updated_at||0)>(lp.updated_at||0)?rp:lp;return{schema:2,profile:{...lp,...rp,...newer,id:lp.id},data:mergeData(local.data||{},remote.data||{}),scriptorium:mergeScriptorium(local.scriptorium||{},remote.scriptorium||{}),updated_at:Date.now()}}
-async function apply(pid,payload){suspendDirty=true;try{if(payload.profile){const ps=S().loadProfiles(),i=ps.findIndex(p=>p.id===pid);if(i>=0){ps[i]={...ps[i],name:payload.profile.name||ps[i].name,avatar:payload.profile.avatar||ps[i].avatar,apps:Array.isArray(payload.profile.apps)?payload.profile.apps:ps[i].apps,icecubes:payload.profile.icecubes??ps[i].icecubes,pin_hash:payload.profile.pin_hash??ps[i].pin_hash,pin_salt:payload.profile.pin_salt||ps[i].pin_salt,cloud_user_id:payload.profile.cloud_user_id||ps[i].cloud_user_id||'',cloud_email:(payload.profile.cloud_email||ps[i].cloud_email||'').toLowerCase(),updated_at:Math.max(ps[i].updated_at||0,payload.profile.updated_at||0)};S().saveProfiles(ps)}}for(const[k,v]of Object.entries(payload.data||{}))S().setProfileData(pid,k,v);await applyScriptorium(pid,payload.scriptorium||{})}finally{suspendDirty=false}}
-async function queryState(pid,token,userId){let rows=await request(pid,`/rest/v1/athenaeum_state?user_id=eq.${encodeURIComponent(userId)}&profile_key=eq.${CLOUD_KEY}&select=profile_key,payload,updated_at`,{headers:{Authorization:`Bearer ${token}`}});if(Array.isArray(rows)&&rows[0])return rows[0];rows=await request(pid,`/rest/v1/athenaeum_state?user_id=eq.${encodeURIComponent(userId)}&select=profile_key,payload,updated_at&order=updated_at.desc&limit=1`,{headers:{Authorization:`Bearer ${token}`}});return Array.isArray(rows)?rows[0]||null:null}
-async function pull(pid){const token=await access(pid),c=cfg(pid),u=c.user;if(!u?.id)throw new Error('Gebruiker ontbreekt.');const row=await queryState(pid,token,u.id);return row?.payload||null}
-async function push(pid,payload){const token=await access(pid),c=cfg(pid),u=c.user;if(!u?.id)throw new Error('Gebruikers-ID ontbreekt.');await request(pid,'/rest/v1/athenaeum_state?on_conflict=user_id,profile_key',{method:'POST',headers:{Authorization:`Bearer ${token}`,Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({user_id:u.id,profile_key:CLOUD_KEY,payload,updated_at:new Date().toISOString()})})}
-function emitSync(pid,phase,error=''){try{window.dispatchEvent(new CustomEvent('athenaeum-sync',{detail:{pid,phase,error,status:status(pid)}}))}catch{}}
-async function syncNow(pid){if(running.has(pid))return running.get(pid);const task=(async()=>{emitSync(pid,'syncing');try{const local=await collect(pid),remote=await pull(pid),merged=merge(local,remote);await apply(pid,merged);await push(pid,merged);const c=cfg(pid);saveCfg(pid,{...c,last_sync:Date.now(),last_error:'',last_direction:'merge',enabled:true,dirty_at:0});emitSync(pid,'done');return merged}catch(e){const c=cfg(pid);saveCfg(pid,{...c,last_error:e.message||String(e)});emitSync(pid,'error',e.message||String(e));throw e}finally{running.delete(pid)}})();running.set(pid,task);return task}
-async function pullOnly(pid){const remote=await pull(pid);if(!remote)throw new Error('Nog geen cloudprofiel gevonden.');const local=await collect(pid),merged=merge(local,remote);await apply(pid,merged);const c=cfg(pid);saveCfg(pid,{...c,last_sync:Date.now(),last_error:'',last_direction:'cloud→lokaal',enabled:true});emitSync(pid,'done');return merged}
-async function pushOnly(pid){const local=await collect(pid);await push(pid,local);const c=cfg(pid);saveCfg(pid,{...c,last_sync:Date.now(),last_error:'',last_direction:'lokaal→cloud',enabled:true,dirty_at:0});emitSync(pid,'done');return local}
-async function signOut(pid){const c=cfg(pid);try{if(c.access_token)await request(pid,'/auth/v1/logout',{method:'POST',headers:{Authorization:`Bearer ${c.access_token}`}})}catch{}saveCfg(pid,{...c,access_token:'',refresh_token:'',expires_at:0,user:null,enabled:false,last_error:''});if(activePid===pid)stopAuto()}
-function markDirty(pid){if(suspendDirty||!pid)return;const c=cfg(pid);saveCfg(pid,{...c,dirty_at:Date.now()});if(!c.enabled||!navigator.onLine)return;clearTimeout(dirtyTimer);dirtyTimer=setTimeout(()=>syncNow(pid).catch(()=>{}),2500)}
-function stopAuto(){clearInterval(timer);clearTimeout(dirtyTimer);timer=null;dirtyTimer=null;activePid=''}
-function startAuto(pid){stopAuto();activePid=pid;const c=cfg(pid);if(!c.enabled)return;const run=()=>navigator.onLine&&syncNow(pid).catch(()=>{});setTimeout(run,900);timer=setInterval(run,2*60*1000);if(!focusBound){window.addEventListener('focus',()=>{const id=S().currentProfileId();if(id&&cfg(id).enabled)syncNow(id).catch(()=>{})});focusBound=true}if(!visibilityBound){document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){const id=S().currentProfileId();if(id&&cfg(id).enabled)syncNow(id).catch(()=>{})}});visibilityBound=true}if(!onlineBound){window.addEventListener('online',()=>{const id=S().currentProfileId();if(id&&cfg(id).enabled)syncNow(id).catch(()=>{})});onlineBound=true}}
+
+function localData(pid){
+  const data={};
+  Object.keys(localStorage)
+    .filter(k=>k.startsWith(`ath_${pid}_`)&&!k.endsWith('_sync'))
+    .forEach(k=>{
+      try{data[k.slice(`ath_${pid}_`.length)]=JSON.parse(localStorage.getItem(k))}
+      catch{}
+    });
+  return data;
+}
+
+// LIGHTWEIGHT STATE ONLY.
+// Scriptorium works/analyses are deliberately excluded from athenaeum_state.
+async function collect(pid){
+  const p=S().loadProfiles().find(x=>x.id===pid);
+  if(!p)throw new Error('Profiel bestaat lokaal niet.');
+  return {
+    schema:3,
+    profile:profileSnapshot(p),
+    data:localData(pid),
+    updated_at:Date.now()
+  };
+}
+
+function merge(local,remote){
+  if(!remote)return local;
+  const lp=local.profile||{},rp=remote.profile||{};
+  const newer=(rp.updated_at||0)>(lp.updated_at||0)?rp:lp;
+  return {
+    schema:3,
+    profile:{...lp,...rp,...newer,id:lp.id},
+    data:mergeData(local.data||{},remote.data||{}),
+    updated_at:Date.now()
+  };
+}
+
+async function apply(pid,payload){
+  suspendDirty=true;
+  try{
+    if(payload.profile){
+      const ps=S().loadProfiles(),i=ps.findIndex(p=>p.id===pid);
+      if(i>=0){
+        ps[i]={
+          ...ps[i],
+          name:payload.profile.name||ps[i].name,
+          avatar:payload.profile.avatar||ps[i].avatar,
+          apps:Array.isArray(payload.profile.apps)?payload.profile.apps:ps[i].apps,
+          icecubes:payload.profile.icecubes??ps[i].icecubes,
+          pin_hash:payload.profile.pin_hash??ps[i].pin_hash,
+          pin_salt:payload.profile.pin_salt||ps[i].pin_salt,
+          cloud_user_id:payload.profile.cloud_user_id||ps[i].cloud_user_id||'',
+          cloud_email:(payload.profile.cloud_email||ps[i].cloud_email||'').toLowerCase(),
+          updated_at:Math.max(ps[i].updated_at||0,payload.profile.updated_at||0)
+        };
+        S().saveProfiles(ps);
+      }
+    }
+    for(const [k,v] of Object.entries(payload.data||{}))S().setProfileData(pid,k,v);
+  }finally{
+    suspendDirty=false;
+  }
+}
+
+async function queryState(pid,token,userId){
+  let rows=await request(pid,
+    `/rest/v1/athenaeum_state?user_id=eq.${encodeURIComponent(userId)}&profile_key=eq.${CLOUD_KEY}&select=profile_key,payload,updated_at`,
+    {headers:{Authorization:`Bearer ${token}`}}
+  );
+  if(Array.isArray(rows)&&rows[0])return rows[0];
+  rows=await request(pid,
+    `/rest/v1/athenaeum_state?user_id=eq.${encodeURIComponent(userId)}&select=profile_key,payload,updated_at&order=updated_at.desc&limit=1`,
+    {headers:{Authorization:`Bearer ${token}`}}
+  );
+  return Array.isArray(rows)?rows[0]||null:null;
+}
+
+async function pull(pid){
+  const token=await access(pid),c=cfg(pid),u=c.user;
+  if(!u?.id)throw new Error('Gebruiker ontbreekt.');
+  const row=await queryState(pid,token,u.id);
+  return row?.payload||null;
+}
+
+async function push(pid,payload){
+  const token=await access(pid),c=cfg(pid),u=c.user;
+  if(!u?.id)throw new Error('Gebruikers-ID ontbreekt.');
+  const light={
+    schema:3,
+    profile:payload.profile||{},
+    data:payload.data||{},
+    updated_at:payload.updated_at||Date.now()
+  };
+  await request(pid,'/rest/v1/athenaeum_state?on_conflict=user_id,profile_key',{
+    method:'POST',
+    headers:{
+      Authorization:`Bearer ${token}`,
+      Prefer:'resolution=merge-duplicates,return=minimal'
+    },
+    body:JSON.stringify({
+      user_id:u.id,
+      profile_key:CLOUD_KEY,
+      payload:light,
+      updated_at:new Date().toISOString()
+    })
+  });
+}
+
+function emitSync(pid,phase,error=''){
+  try{
+    window.dispatchEvent(new CustomEvent('athenaeum-sync',{
+      detail:{pid,phase,error,status:status(pid)}
+    }));
+  }catch{}
+}
+
+async function syncNow(pid){
+  if(running.has(pid))return running.get(pid);
+  const task=(async()=>{
+    emitSync(pid,'syncing');
+    try{
+      const local=await collect(pid);
+      const remote=await pull(pid);
+      const merged=merge(local,remote);
+      await apply(pid,merged);
+      await push(pid,merged);
+      const c=cfg(pid);
+      saveCfg(pid,{
+        ...c,last_sync:Date.now(),last_error:'',
+        last_direction:'licht merge',enabled:true,dirty_at:0
+      });
+      emitSync(pid,'done');
+      return merged;
+    }catch(e){
+      const c=cfg(pid);
+      saveCfg(pid,{...c,last_error:e.message||String(e)});
+      emitSync(pid,'error',e.message||String(e));
+      throw e;
+    }finally{
+      running.delete(pid);
+    }
+  })();
+  running.set(pid,task);
+  return task;
+}
+
+async function pullOnly(pid){
+  const remote=await pull(pid);
+  if(!remote)throw new Error('Nog geen cloudprofiel gevonden.');
+  const local=await collect(pid),merged=merge(local,remote);
+  await apply(pid,merged);
+  const c=cfg(pid);
+  saveCfg(pid,{...c,last_sync:Date.now(),last_error:'',last_direction:'cloud→lokaal',enabled:true});
+  emitSync(pid,'done');
+  return merged;
+}
+
+async function pushOnly(pid){
+  const local=await collect(pid);
+  await push(pid,local);
+  const c=cfg(pid);
+  saveCfg(pid,{...c,last_sync:Date.now(),last_error:'',last_direction:'lokaal→cloud',enabled:true,dirty_at:0});
+  emitSync(pid,'done');
+  return local;
+}
+
+/* ---------------- SCRIPTORIUM INCREMENTAL SYNC ---------------- */
+
+function openIDB(name){
+  return new Promise((res,rej)=>{
+    const r=indexedDB.open(name,3);
+    r.onupgradeneeded=e=>{
+      const d=e.target.result;
+      if(!d.objectStoreNames.contains('works'))d.createObjectStore('works',{keyPath:'id'});
+      if(!d.objectStoreNames.contains('files'))d.createObjectStore('files',{keyPath:'id'});
+      if(!d.objectStoreNames.contains('settings'))d.createObjectStore('settings',{keyPath:'key'});
+    };
+    r.onsuccess=()=>res(r.result);
+    r.onerror=()=>rej(r.error);
+  });
+}
+
+function idbGet(db,store,key){
+  return new Promise((res,rej)=>{
+    if(!db.objectStoreNames.contains(store))return res(null);
+    const r=db.transaction(store).objectStore(store).get(key);
+    r.onsuccess=()=>res(r.result||null);
+    r.onerror=()=>rej(r.error);
+  });
+}
+
+function idbPut(db,store,val){
+  return new Promise((res,rej)=>{
+    const r=db.transaction(store,'readwrite').objectStore(store).put(val);
+    r.onsuccess=()=>res();
+    r.onerror=()=>rej(r.error);
+  });
+}
+
+function idbMeta(db,store,keyField){
+  return new Promise((res,rej)=>{
+    if(!db.objectStoreNames.contains(store))return res([]);
+    const out=[];
+    const tx=db.transaction(store,'readonly');
+    const req=tx.objectStore(store).openCursor();
+    req.onsuccess=e=>{
+      const c=e.target.result;
+      if(!c)return;
+      const v=c.value||{};
+      out.push({
+        key:String(v[keyField]??c.primaryKey),
+        updated_at:Number(v.updated_at||0)
+      });
+      c.continue();
+    };
+    req.onerror=()=>rej(req.error);
+    tx.oncomplete=()=>res(out);
+    tx.onerror=()=>rej(tx.error);
+  });
+}
+
+function dedupeRanges(arr){
+  if(!Array.isArray(arr))return [];
+  const seen=new Set(),out=[];
+  for(const r of arr){
+    const key=plain(r)?`${r.start??''}|${r.end??''}`:JSON.stringify(r);
+    if(seen.has(key))continue;
+    seen.add(key);out.push(r);
+  }
+  return out;
+}
+
+function sanitizeWork(w){
+  if(!plain(w))return w;
+  const a=dedupeRanges(w.analysis_ranges||[]);
+  const p=dedupeRanges(w.pending_ranges||[]);
+  if(a.length===(w.analysis_ranges||[]).length&&p.length===(w.pending_ranges||[]).length)return w;
+  return {...w,analysis_ranges:a,pending_ranges:p};
+}
+
+function ms(ts){
+  if(typeof ts==='number')return ts;
+  const n=Date.parse(ts||'');
+  return Number.isFinite(n)?n:0;
+}
+
+async function cloudWorkMeta(pid,token,userId){
+  const rows=await request(pid,
+    `/rest/v1/athenaeum_scriptorium_works?user_id=eq.${encodeURIComponent(userId)}&select=work_id,updated_at`,
+    {headers:{Authorization:`Bearer ${token}`}}
+  );
+  return Array.isArray(rows)?rows:[];
+}
+
+async function cloudSettingMeta(pid,token,userId){
+  const rows=await request(pid,
+    `/rest/v1/athenaeum_scriptorium_settings?user_id=eq.${encodeURIComponent(userId)}&select=setting_key,updated_at`,
+    {headers:{Authorization:`Bearer ${token}`}}
+  );
+  return Array.isArray(rows)?rows:[];
+}
+
+async function fetchCloudWork(pid,token,userId,workId){
+  const rows=await request(pid,
+    `/rest/v1/athenaeum_scriptorium_works?user_id=eq.${encodeURIComponent(userId)}&work_id=eq.${encodeURIComponent(workId)}&select=payload,updated_at&limit=1`,
+    {headers:{Authorization:`Bearer ${token}`}}
+  );
+  return Array.isArray(rows)&&rows[0]?rows[0]:null;
+}
+
+async function fetchCloudSetting(pid,token,userId,key){
+  const rows=await request(pid,
+    `/rest/v1/athenaeum_scriptorium_settings?user_id=eq.${encodeURIComponent(userId)}&setting_key=eq.${encodeURIComponent(key)}&select=payload,updated_at&limit=1`,
+    {headers:{Authorization:`Bearer ${token}`}}
+  );
+  return Array.isArray(rows)&&rows[0]?rows[0]:null;
+}
+
+async function uploadWork(pid,token,userId,work){
+  const clean=sanitizeWork(work);
+  const stampMs=Number(clean?.updated_at||0)||Date.now();
+  await request(pid,'/rest/v1/athenaeum_scriptorium_works?on_conflict=user_id,work_id',{
+    method:'POST',
+    headers:{Authorization:`Bearer ${token}`,Prefer:'resolution=merge-duplicates,return=minimal'},
+    body:JSON.stringify({
+      user_id:userId,work_id:String(clean.id),payload:clean,
+      updated_at:new Date(stampMs).toISOString()
+    })
+  });
+}
+
+async function uploadSetting(pid,token,userId,setting){
+  const stampMs=Number(setting?.updated_at||0)||Date.now();
+  await request(pid,'/rest/v1/athenaeum_scriptorium_settings?on_conflict=user_id,setting_key',{
+    method:'POST',
+    headers:{Authorization:`Bearer ${token}`,Prefer:'resolution=merge-duplicates,return=minimal'},
+    body:JSON.stringify({
+      user_id:userId,setting_key:String(setting.key),payload:setting,
+      updated_at:new Date(stampMs).toISOString()
+    })
+  });
+}
+
+async function syncScriptorium(pid,{preferRemote=false}={}){
+  if(scriptRunning.has(pid))return scriptRunning.get(pid);
+  const task=(async()=>{
+    const c=cfg(pid);
+    if(!c.enabled||!c.user?.id)return {skipped:true};
+    const token=await access(pid),userId=cfg(pid).user.id;
+    let db;
+    const stats={downloaded:0,uploaded:0,settings_down:0,settings_up:0};
+    try{
+      db=await openIDB(`ScriptoriumDB_${pid}`);
+
+      const [localWorks,remoteWorks,localSettings,remoteSettings]=await Promise.all([
+        idbMeta(db,'works','id'),
+        cloudWorkMeta(pid,token,userId),
+        idbMeta(db,'settings','key'),
+        cloudSettingMeta(pid,token,userId)
+      ]);
+
+      const lwork=new Map(localWorks.map(x=>[x.key,x.updated_at]));
+      const rwork=new Map(remoteWorks.map(x=>[String(x.work_id),ms(x.updated_at)]));
+
+      const allWorkIds=new Set([...lwork.keys(),...rwork.keys()]);
+      for(const id of allWorkIds){
+        const lt=lwork.get(id)||0,rt=rwork.get(id)||0;
+
+        if(!lwork.has(id)){
+          const row=await fetchCloudWork(pid,token,userId,id);
+          if(row?.payload){await idbPut(db,'works',sanitizeWork(row.payload));stats.downloaded++}
+          continue;
+        }
+        if(!rwork.has(id)){
+          const w=await idbGet(db,'works',id);
+          if(w){await uploadWork(pid,token,userId,w);stats.uploaded++}
+          continue;
+        }
+
+        if(preferRemote || rt>lt+1){
+          const row=await fetchCloudWork(pid,token,userId,id);
+          if(row?.payload){await idbPut(db,'works',sanitizeWork(row.payload));stats.downloaded++}
+        }else if(lt>rt+1){
+          const w=await idbGet(db,'works',id);
+          if(w){await uploadWork(pid,token,userId,w);stats.uploaded++}
+        }
+        // equal timestamp = same version: do nothing, avoiding heavy recursive merges.
+      }
+
+      const lset=new Map(localSettings.filter(x=>!['v6_sb_config','v6_sync_meta'].includes(x.key)).map(x=>[x.key,x.updated_at]));
+      const rset=new Map(remoteSettings.map(x=>[String(x.setting_key),ms(x.updated_at)]));
+      const allSetKeys=new Set([...lset.keys(),...rset.keys()]);
+      for(const key of allSetKeys){
+        const lt=lset.get(key)||0,rt=rset.get(key)||0;
+        if(!lset.has(key)){
+          const row=await fetchCloudSetting(pid,token,userId,key);
+          if(row?.payload){await idbPut(db,'settings',row.payload);stats.settings_down++}
+          continue;
+        }
+        if(!rset.has(key)){
+          const s=await idbGet(db,'settings',key);
+          if(s&&!['v6_sb_config','v6_sync_meta'].includes(s.key)){await uploadSetting(pid,token,userId,s);stats.settings_up++}
+          continue;
+        }
+        if(preferRemote || rt>lt+1){
+          const row=await fetchCloudSetting(pid,token,userId,key);
+          if(row?.payload){await idbPut(db,'settings',row.payload);stats.settings_down++}
+        }else if(lt>rt+1){
+          const s=await idbGet(db,'settings',key);
+          if(s&&!['v6_sb_config','v6_sync_meta'].includes(s.key)){await uploadSetting(pid,token,userId,s);stats.settings_up++}
+        }
+      }
+
+      const cc=cfg(pid);
+      saveCfg(pid,{...cc,last_scriptorium_sync:Date.now(),last_scriptorium_error:''});
+      try{window.dispatchEvent(new CustomEvent('athenaeum-scriptorium-sync',{detail:{pid,stats}}))}catch{}
+      return stats;
+    }catch(e){
+      const cc=cfg(pid);
+      saveCfg(pid,{...cc,last_scriptorium_error:e.message||String(e)});
+      throw e;
+    }finally{
+      try{db?.close()}catch{}
+      scriptRunning.delete(pid);
+    }
+  })();
+  scriptRunning.set(pid,task);
+  return task;
+}
+
+async function syncAll(pid){
+  await syncNow(pid);
+  return syncScriptorium(pid);
+}
+
+/* ------------------------------------------------------------- */
+
+async function signOut(pid){
+  const c=cfg(pid);
+  try{
+    if(c.access_token)await request(pid,'/auth/v1/logout',{
+      method:'POST',headers:{Authorization:`Bearer ${c.access_token}`}
+    });
+  }catch{}
+  saveCfg(pid,{...c,access_token:'',refresh_token:'',expires_at:0,user:null,enabled:false,last_error:''});
+  if(activePid===pid)stopAuto();
+}
+
+function markDirty(pid){
+  if(suspendDirty||!pid)return;
+  const c=cfg(pid);
+  saveCfg(pid,{...c,dirty_at:Date.now()});
+  if(!c.enabled||!navigator.onLine)return;
+  clearTimeout(dirtyTimer);
+  dirtyTimer=setTimeout(()=>syncNow(pid).catch(()=>{}),2500);
+}
+
+function stopAuto(){
+  clearInterval(lightTimer);
+  clearInterval(scriptTimer);
+  clearTimeout(dirtyTimer);
+  lightTimer=scriptTimer=dirtyTimer=null;
+  activePid='';
+}
+
+function startAuto(pid){
+  stopAuto();
+  activePid=pid;
+  const c=cfg(pid);
+  if(!c.enabled)return;
+
+  const light=()=>navigator.onLine&&syncNow(pid).catch(()=>{});
+  const heavy=()=>navigator.onLine&&syncScriptorium(pid).catch(()=>{});
+
+  setTimeout(light,900);
+  setTimeout(heavy,5000);
+  lightTimer=setInterval(light,LIGHT_INTERVAL);
+  scriptTimer=setInterval(heavy,SCRIPTORIUM_INTERVAL);
+
+  if(!focusBound){
+    window.addEventListener('focus',()=>{
+      const id=S().currentProfileId();
+      if(id&&cfg(id).enabled){
+        syncNow(id).catch(()=>{});
+        const c=cfg(id);
+        if(Date.now()-(c.last_scriptorium_sync||0)>5*60*1000)syncScriptorium(id).catch(()=>{});
+      }
+    });
+    focusBound=true;
+  }
+
+  if(!visibilityBound){
+    document.addEventListener('visibilitychange',()=>{
+      if(document.visibilityState==='visible'){
+        const id=S().currentProfileId();
+        if(id&&cfg(id).enabled){
+          syncNow(id).catch(()=>{});
+          const c=cfg(id);
+          if(Date.now()-(c.last_scriptorium_sync||0)>5*60*1000)syncScriptorium(id).catch(()=>{});
+        }
+      }
+    });
+    visibilityBound=true;
+  }
+
+  if(!onlineBound){
+    window.addEventListener('online',()=>{
+      const id=S().currentProfileId();
+      if(id&&cfg(id).enabled){
+        syncNow(id).catch(()=>{});
+        syncScriptorium(id).catch(()=>{});
+      }
+    });
+    onlineBound=true;
+  }
+}
+
 async function diagnoseConnection(pid){
-  const c=cfg(pid),report={url:c.url,key_present:!!c.key,online:navigator.onLine,server:false,auth:false,table:false,signed_in:!!c.user?.id,details:[]};
+  const c=cfg(pid),report={
+    url:c.url,key_present:!!c.key,online:navigator.onLine,
+    server:false,auth:false,table:false,scriptorium_tables:false,
+    signed_in:!!c.user?.id,details:[]
+  };
+
   if(!c.url||!c.key)return {...report,error:'Supabase URL/key ontbreken.'};
+
   try{
     await rawRequest(c.url,c.key,'/auth/v1/settings',{method:'GET'});
-    report.server=true;report.details.push('Cloudserver en Auth-endpoint bereikbaar.');
-  }catch(e){report.error=e.message;report.details.push(e.message);return report}
+    report.server=true;
+    report.details.push('Cloudserver en Auth-endpoint bereikbaar.');
+  }catch(e){
+    report.error=e.message;
+    report.details.push(e.message);
+    return report;
+  }
+
   if(c.user?.id){
     try{
       const token=await access(pid);
       await request(pid,'/auth/v1/user',{headers:{Authorization:`Bearer ${token}`}});
-      report.auth=true;report.details.push('Gebruikerssessie geldig.');
+      report.auth=true;
+      report.details.push('Gebruikerssessie geldig.');
+
       try{
-        await request(pid,`/rest/v1/athenaeum_state?user_id=eq.${encodeURIComponent(c.user.id)}&profile_key=eq.${CLOUD_KEY}&select=user_id&limit=1`,{headers:{Authorization:`Bearer ${token}`}});
-        report.table=true;report.details.push('athenaeum_state bereikbaar.');
-      }catch(e){report.details.push('Databasetabel: '+e.message)}
-    }catch(e){report.details.push('Aanmelding: '+e.message)}
-  }else report.details.push('Nog niet aangemeld; servercontrole is wel geslaagd.');
+        await request(pid,
+          `/rest/v1/athenaeum_state?user_id=eq.${encodeURIComponent(c.user.id)}&profile_key=eq.${CLOUD_KEY}&select=user_id&limit=1`,
+          {headers:{Authorization:`Bearer ${token}`}}
+        );
+        report.table=true;
+        report.details.push('Lichte Athenaeum-state bereikbaar.');
+      }catch(e){
+        report.details.push('Athenaeum-state: '+e.message);
+      }
+
+      try{
+        await request(pid,
+          `/rest/v1/athenaeum_scriptorium_works?user_id=eq.${encodeURIComponent(c.user.id)}&select=work_id&limit=1`,
+          {headers:{Authorization:`Bearer ${token}`}}
+        );
+        await request(pid,
+          `/rest/v1/athenaeum_scriptorium_settings?user_id=eq.${encodeURIComponent(c.user.id)}&select=setting_key&limit=1`,
+          {headers:{Authorization:`Bearer ${token}`}}
+        );
+        report.scriptorium_tables=true;
+        report.details.push('Incrementele Scriptorium-tabellen bereikbaar.');
+      }catch(e){
+        report.details.push('Scriptorium-sync: '+e.message);
+      }
+    }catch(e){
+      report.details.push('Aanmelding: '+e.message);
+    }
+  }else{
+    report.details.push('Nog niet aangemeld; servercontrole is wel geslaagd.');
+  }
+
   return report;
 }
-async function testConnection(pid){const rep=await diagnoseConnection(pid);if(!rep.server)throw new Error(rep.error||'Cloudserver niet bereikbaar.');if(cfg(pid).user?.id&&!rep.auth)throw new Error(rep.details.join(' '));return rep}
-async function restoreRemote({url,key,email,password}){const d=await rawRequest(url,key,'/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})});if(!d.access_token||!d.user?.id)throw new Error('Aanmelden mislukt.');let rows=await rawRequest(url,key,`/rest/v1/athenaeum_state?user_id=eq.${encodeURIComponent(d.user.id)}&profile_key=eq.${CLOUD_KEY}&select=payload,updated_at`,{headers:{Authorization:`Bearer ${d.access_token}`}});if(!(Array.isArray(rows)&&rows[0]))rows=await rawRequest(url,key,`/rest/v1/athenaeum_state?user_id=eq.${encodeURIComponent(d.user.id)}&select=payload,updated_at&order=updated_at.desc&limit=1`,{headers:{Authorization:`Bearer ${d.access_token}`}});const payload=Array.isArray(rows)&&rows[0]?.payload?rows[0].payload:null;if(!payload)throw new Error('Voor dit cloudaccount is nog geen Athenaeum-profiel opgeslagen.');return{auth:d,payload,url,key,email}}
+
+async function testConnection(pid){
+  const rep=await diagnoseConnection(pid);
+  if(!rep.server)throw new Error(rep.error||'Cloudserver niet bereikbaar.');
+  if(cfg(pid).user?.id&&!rep.auth)throw new Error(rep.details.join(' '));
+  return rep;
+}
+
+async function restoreRemote({url,key,email,password}){
+  const d=await rawRequest(url,key,'/auth/v1/token?grant_type=password',{
+    method:'POST',body:JSON.stringify({email,password})
+  });
+  if(!d.access_token||!d.user?.id)throw new Error('Aanmelden mislukt.');
+
+  let rows=await rawRequest(url,key,
+    `/rest/v1/athenaeum_state?user_id=eq.${encodeURIComponent(d.user.id)}&profile_key=eq.${CLOUD_KEY}&select=payload,updated_at`,
+    {headers:{Authorization:`Bearer ${d.access_token}`}}
+  );
+  if(!(Array.isArray(rows)&&rows[0])){
+    rows=await rawRequest(url,key,
+      `/rest/v1/athenaeum_state?user_id=eq.${encodeURIComponent(d.user.id)}&select=payload,updated_at&order=updated_at.desc&limit=1`,
+      {headers:{Authorization:`Bearer ${d.access_token}`}}
+    );
+  }
+
+  const payload=Array.isArray(rows)&&rows[0]?.payload?rows[0].payload:null;
+  if(!payload)throw new Error('Voor dit cloudaccount is nog geen Athenaeum-profiel opgeslagen.');
+  return {auth:d,payload,url,key,email};
+}
+
 function adoptSession(pid,r){
-  saveCfg(pid,{...cfg(pid),url:r.url||DEFAULT_URL,key:r.key||DEFAULT_KEY,email:r.email,access_token:r.auth.access_token,refresh_token:r.auth.refresh_token,user:r.auth.user,expires_at:Date.now()+((r.auth.expires_in||3600)*1000),enabled:true,cloud_profile_key:CLOUD_KEY,last_error:''});
+  saveCfg(pid,{
+    ...cfg(pid),
+    url:r.url||DEFAULT_URL,key:r.key||DEFAULT_KEY,email:r.email,
+    access_token:r.auth.access_token,refresh_token:r.auth.refresh_token,
+    user:r.auth.user,expires_at:Date.now()+((r.auth.expires_in||3600)*1000),
+    enabled:true,cloud_profile_key:CLOUD_KEY,last_error:''
+  });
   linkProfileToCloud(pid,r.auth.user,r.email);
 }
-window.addEventListener('athenaeum-local-change',e=>{const pid=e.detail?.profile_id;if(pid)markDirty(pid)});
-window.addEventListener('athenaeum-profile-change',()=>{const pid=S().currentProfileId();if(pid)markDirty(pid)});
-window.AthSync={cfg,saveCfg,status,auth,access,request,rawRequest,syncNow,startAuto,stopAuto,collect,pull,push,pullOnly,pushOnly,testConnection,diagnoseConnection,signOut,markDirty,restoreRemote,adoptSession,apply,merge,cloudKey:()=>CLOUD_KEY,defaults:()=>({url:DEFAULT_URL,key:DEFAULT_KEY}),linkProfileToCloud};
+
+window.addEventListener('athenaeum-local-change',e=>{
+  const pid=e.detail?.profile_id;
+  if(pid)markDirty(pid);
+});
+window.addEventListener('athenaeum-profile-change',()=>{
+  const pid=S().currentProfileId();
+  if(pid)markDirty(pid);
+});
+
+window.AthSync={
+  cfg,saveCfg,status,auth,access,request,rawRequest,
+  syncNow,syncAll,syncScriptorium,startAuto,stopAuto,
+  collect,pull,push,pullOnly,pushOnly,
+  testConnection,diagnoseConnection,
+  signOut,markDirty,restoreRemote,adoptSession,apply,merge,
+  cloudKey:()=>CLOUD_KEY,
+  defaults:()=>({url:DEFAULT_URL,key:DEFAULT_KEY}),
+  linkProfileToCloud
+};
 })();
 </script><script>(function(){
 'use strict';
@@ -509,7 +1544,7 @@ function avatar(p){return assetAvatar(p.avatar)}
 function renderShell(){const p=current();if(!p)return leaveProfile();$('#sideUser').innerHTML=`<img src="${avatar(p)}"><div class="user-copy"><strong>${esc(p.name)}</strong><small>${p.pin_hash?'PIN beveiligd':'profiel actief'}</small></div><div class="side-user-actions"><button id="sideAccount">Account</button><button id="sideSwitch">Wissel</button></div>`;const sa=$('#sideApps');if(sa)sa.innerHTML=allowedApps(p).map(a=>{const m=appMeta(a);return `<button class="side-app-link" data-side-app="${a}"><img src="${m.logo}"><span>${m.name}</span></button>`}).join('')||'<div class="tiny" style="padding:6px 10px;color:#8aa39c">Geen apps toegewezen</div>';$$('[data-side-app]').forEach(b=>b.onclick=()=>openApp(b.dataset.sideApp));$('#sideAccount')?.addEventListener('click',()=>editProfile(p.id));$('#sideSwitch')?.addEventListener('click',leaveProfile);const s1=$('#sheetScriptorium'),s2=$('#sheetPaideia');if(s1)s1.classList.toggle('hidden',!hasApp('scriptorium',p));if(s2)s2.classList.toggle('hidden',!hasApp('paideia',p));updateMode()}
 function openApp(name){const p=current();if(!p)return;if(!hasApp(name,p))return S.toast(`${appMeta(name).name} is niet toegewezen aan dit profiel.`);const url=name==='scriptorium'?`./apps/scriptorium/index.html?ath_profile=${encodeURIComponent(p.id)}`:`./apps/paideia/index.html?ath_profile=${encodeURIComponent(p.id)}`;location.href=url}
 function todayISO(){return new Date().toISOString().slice(0,10)}
-function renderHome(){const p=requireProfile();if(!p)return;const st=S.getProfileData(p.id,'paideia_state',{streak:0,icecubes:p.icecubes??2,last_completed:'',weekly_scores:[],monthly_scores:[],mastery:{}});const sync=AthSync.cfg(p.id),apps=allowedApps(p);const quick=apps.length?apps.map(a=>{const m=appMeta(a);const action=a==='paideia'?'Start sessie':'Open werkruimte';return `<div class="quick-app"><img src="${m.logo}"><div class="grow"><h3>${m.name}</h3><p>${m.desc}</p></div><button class="btn ${a==='paideia'?'gold':'primary'}" data-app="${a}">${action}</button></div>`}).join(''):`<div class="no-apps">Aan dit profiel zijn nog geen apps gekoppeld. Open <strong>Account</strong> om toegang toe te wijzen.</div>`;const paideia=hasApp('paideia',p)?`<div class="card"><h3>Vandaag</h3><p><strong>🏺 Oude geschiedenis — 20 min</strong><br><span class="muted">Structuren, evoluties, conjuncturen, personen, bronnen en historiografische problemen.</span></p><p><strong>🌍 Algemene geschiedenis — 10 min</strong><br><span class="muted">Dagelijks chronologisch raamwerk en synthese.</span></p><p class="tiny">Algemene kennis/skills verschijnt periodiek als extra sessie.</p></div><div class="card"><h3>Volgende evaluaties</h3><p>📅 <strong>Wekelijks examen</strong>: cumulatief en universitair van stijl.</p><p>🧠 <strong>Maandelijkse mastery check</strong>: synthese en langere open vragen.</p><p>🧊 Bij ≥75% verdien je een streak-freeze.</p></div>`:`<div class="card"><h3>Jouw Athenaeum</h3><p class="muted">Home blijft bewust compact: hier start je je toegewezen apps en zie je platformstatus. In <strong>Mijn apps</strong> staan de inhoudelijke voortgang en appdetails.</p></div><div class="card"><h3>Profieltoegang</h3><p>${apps.length?apps.map(a=>`✓ ${appMeta(a).name}`).join('<br>'):'Nog geen apps gekoppeld.'}</p></div>`;$('#page-home').innerHTML=`<div class="hero slide-up"><div class="spread"><div><div class="chip">ATHENAEUM V1.0.9</div><h2>Welkom terug, ${esc(p.name)}</h2><p>Je persoonlijke ingang naar onderzoek en leren. Alleen de apps die aan dit profiel zijn toegewezen verschijnen hier.</p></div><img src="${avatar(p)}" style="width:82px;height:82px;border-radius:50%"></div></div><div class="stat-grid"><div class="stat"><div class="k">🔥 Streak</div><div class="v">${hasApp('paideia',p)?(st.streak||0)+' dagen':'—'}</div></div><div class="stat"><div class="k">🧊 IJsblokjes</div><div class="v">${hasApp('paideia',p)?(st.icecubes??2):'—'}</div></div><div class="stat"><div class="k">Jouw apps</div><div class="v">${apps.length}</div></div><div class="stat"><div class="k">Cloudsync</div><div class="v" style="font-size:18px">${sync.enabled?'actief':'optioneel'}</div></div></div><div class="quick-apps">${quick}</div><div class="grid two" style="margin-top:18px">${paideia}</div>`;$$('[data-app]').forEach(b=>b.onclick=()=>openApp(b.dataset.app))}
+function renderHome(){const p=requireProfile();if(!p)return;const st=S.getProfileData(p.id,'paideia_state',{streak:0,icecubes:p.icecubes??2,last_completed:'',weekly_scores:[],monthly_scores:[],mastery:{}});const sync=AthSync.cfg(p.id),apps=allowedApps(p);const quick=apps.length?apps.map(a=>{const m=appMeta(a);const action=a==='paideia'?'Start sessie':'Open werkruimte';return `<div class="quick-app"><img src="${m.logo}"><div class="grow"><h3>${m.name}</h3><p>${m.desc}</p></div><button class="btn ${a==='paideia'?'gold':'primary'}" data-app="${a}">${action}</button></div>`}).join(''):`<div class="no-apps">Aan dit profiel zijn nog geen apps gekoppeld. Open <strong>Account</strong> om toegang toe te wijzen.</div>`;const paideia=hasApp('paideia',p)?`<div class="card"><h3>Vandaag</h3><p><strong>🏺 Oude geschiedenis — 20 min</strong><br><span class="muted">Structuren, evoluties, conjuncturen, personen, bronnen en historiografische problemen.</span></p><p><strong>🌍 Algemene geschiedenis — 10 min</strong><br><span class="muted">Dagelijks chronologisch raamwerk en synthese.</span></p><p class="tiny">Algemene kennis/skills verschijnt periodiek als extra sessie.</p></div><div class="card"><h3>Volgende evaluaties</h3><p>📅 <strong>Wekelijks examen</strong>: cumulatief en universitair van stijl.</p><p>🧠 <strong>Maandelijkse mastery check</strong>: synthese en langere open vragen.</p><p>🧊 Bij ≥75% verdien je een streak-freeze.</p></div>`:`<div class="card"><h3>Jouw Athenaeum</h3><p class="muted">Home blijft bewust compact: hier start je je toegewezen apps en zie je platformstatus. In <strong>Mijn apps</strong> staan de inhoudelijke voortgang en appdetails.</p></div><div class="card"><h3>Profieltoegang</h3><p>${apps.length?apps.map(a=>`✓ ${appMeta(a).name}`).join('<br>'):'Nog geen apps gekoppeld.'}</p></div>`;$('#page-home').innerHTML=`<div class="hero slide-up"><div class="spread"><div><div class="chip">ATHENAEUM V1.0.11</div><h2>Welkom terug, ${esc(p.name)}</h2><p>Je persoonlijke ingang naar onderzoek en leren. Alleen de apps die aan dit profiel zijn toegewezen verschijnen hier.</p></div><img src="${avatar(p)}" style="width:82px;height:82px;border-radius:50%"></div></div><div class="stat-grid"><div class="stat"><div class="k">🔥 Streak</div><div class="v">${hasApp('paideia',p)?(st.streak||0)+' dagen':'—'}</div></div><div class="stat"><div class="k">🧊 IJsblokjes</div><div class="v">${hasApp('paideia',p)?(st.icecubes??2):'—'}</div></div><div class="stat"><div class="k">Jouw apps</div><div class="v">${apps.length}</div></div><div class="stat"><div class="k">Cloudsync</div><div class="v" style="font-size:18px">${sync.enabled?'actief':'optioneel'}</div></div></div><div class="quick-apps">${quick}</div><div class="grid two" style="margin-top:18px">${paideia}</div>`;$$('[data-app]').forEach(b=>b.onclick=()=>openApp(b.dataset.app))}
 function renderApps(){const p=requireProfile();if(!p)return;const apps=allowedApps(p),st=S.getProfileData(p.id,'paideia_state',{streak:0,weekly_scores:[],monthly_scores:[],mastery:{}});const cards=apps.map(a=>{const m=appMeta(a);if(a==='scriptorium')return `<article class="app-detail"><div class="app-detail-head"><img src="${m.logo}"><div><h3>Scriptorium</h3><div class="tiny">Onderzoek & academische vaardigheden</div></div></div><div class="app-metrics"><div class="app-metric"><b>56</b><span>kernwerken</span></div><div class="app-metric"><b>56</b><span>geanalyseerd</span></div><div class="app-metric"><b>23</b><span>trainingsmodules</span></div></div><p class="muted">Beheer het corpus, zoek nieuwe werken en primaire bronnen, bestudeer theorie en train onderzoeksvaardigheden.</p><div class="row"><button class="btn primary" data-app="scriptorium">Open Scriptorium</button><span class="chip">toegang via dit profiel</span></div></article>`;const mastery=st.mastery||{};const avg=[mastery.ancient,mastery.general_history,mastery.general_knowledge].filter(x=>Number.isFinite(+x));const score=avg.length?Math.round(avg.reduce((x,y)=>x+(+y),0)/avg.length):0;return `<article class="app-detail"><div class="app-detail-head"><img src="${m.logo}"><div><h3>Paideia</h3><div class="tiny">Levenslang leren & kennisbehoud</div></div></div><div class="app-metrics"><div class="app-metric"><b>${st.streak||0}</b><span>streak</span></div><div class="app-metric"><b>${score}%</b><span>gem. mastery</span></div><div class="app-metric"><b>${(st.weekly_scores||[]).length}</b><span>weekexamens</span></div></div><p class="muted">Dagelijkse microcurricula, spaced repetition, kennisnetwerken, examencyclus en algemene kennis/skills.</p><div class="row"><button class="btn gold" data-app="paideia">Open Paideia</button><span class="chip">${st.last_completed?'recent gebruikt':'klaar om te starten'}</span></div></article>`}).join('');$('#page-apps').innerHTML=`<div class="hero"><div class="spread"><div><h2>Mijn apps</h2><p>Hier zie je alleen de toepassingen die aan ${esc(p.name)} zijn toegewezen. Home is de snelle ingang; deze pagina toont inhoud, voortgang en status per app.</p></div><button class="btn" id="manageAppAccess">Toegang beheren</button></div></div><div class="app-detail-grid">${cards||'<div class="no-apps">Nog geen apps toegewezen. Gebruik <strong>Toegang beheren</strong> om een app aan dit profiel te koppelen.</div>'}</div><div class="card" style="margin-top:18px"><h3>Profielen blijven gescheiden</h3><p class="muted">Een profiel krijgt alleen toegang tot zijn toegewezen modules. Latere farmacie- of vroegmoderne apps kunnen als nieuwe Athenaeum-modules worden toegevoegd zonder Scriptorium of Paideia automatisch voor iedereen zichtbaar te maken.</p></div>`;$('#manageAppAccess').onclick=()=>editProfile(p.id);$$('[data-app]').forEach(b=>b.onclick=()=>openApp(b.dataset.app))}
 function renderPrimarySourceResults(){
   const p=requireProfile();if(!p)return;
@@ -530,12 +1565,12 @@ function renderSettings(){
   const c=AthSync.cfg(p.id),n=AthTelegram.notify(p.id),d=AthSync.defaults();
   $('#page-settings').innerHTML=`<div class="hero"><h2>Instellingen</h2><p>Beheer je profiel, synchronisatie, Telegram en installatie. Grote PDF-bestanden blijven lokaal; voortgang en metadata kunnen veilig tussen apparaten worden samengevoegd.</p></div><div class="settings-section" style="margin-top:16px">
   <div class="card"><div class="spread"><div><h3>Account</h3><p class="muted">Naam, avatar, app-toegang en optionele PIN.</p></div><button class="btn" id="editAccount">Account aanpassen</button></div></div>
-  <div class="card"><div class="spread"><div><h3>Synchronisatie tussen apparaten</h3><p class="muted">Athenaeum gebruikt standaard dezelfde cloudserver. Vul normaal alleen je eigen e-mail en wachtwoord in. Een bestaand cloudprofiel wordt bijgewerkt in plaats van opnieuw aangemaakt.</p></div><span class="chip">smart merge v3</span></div>
+  <div class="card"><div class="spread"><div><h3>Synchronisatie tussen apparaten</h3><p class="muted">Athenaeum gebruikt een lichte realtime-profielsync en synchroniseert Scriptorium incrementeel per werk. Daardoor kunnen meerdere apparaten tegelijk actief zijn zonder telkens alle analyses opnieuw in het geheugen te laden.</p></div><span class="chip">split sync v4</span></div>
     <div class="cloud-default-note">☁️ <strong>Athenaeum Cloud</strong><span>server vooraf ingesteld</span></div>
     <div class="grid two"><div class="field"><label>E-mail</label><input id="sbEmail" type="email" value="${esc(c.email||'')}" autocomplete="username"></div><div class="field"><label>Wachtwoord</label><input id="sbPass" type="password" autocomplete="current-password"></div></div>
     <details class="advanced-cloud"><summary>Geavanceerde serverinstellingen</summary><div class="grid two" style="margin-top:10px"><div class="field"><label>Supabase URL</label><input id="sbUrl" value="${esc(c.url||d.url)}"></div><div class="field"><label>Publishable key</label><input id="sbKey" value="${esc(c.key||d.key)}"></div></div></details>
-    <div class="row" style="margin-top:12px"><button class="btn primary" id="signinBtn">Aanmelden & synchroniseren</button>${c.user?.id?'':'<button class="btn" id="signupBtn">Nieuw cloudaccount</button>'}<button class="btn" id="syncBtn">Nu synchroniseren</button><button class="btn" id="pullBtn">Cloud ophalen</button><button class="btn" id="pushBtn">Lokale versie uploaden</button><button class="btn" id="testSyncBtn">Test verbinding</button><button class="btn" id="signoutBtn">Afmelden</button></div>
-    <div class="tiny" id="syncStatus" style="margin-top:10px">${syncStatusHtml(p)}</div><div class="diag-box" id="cloudDiag"><strong>Clouddiagnose</strong><div class="tiny">Controleert server, Auth en databank afzonderlijk.</div></div><div class="row" style="margin-top:8px"><button class="btn" id="diagCloudBtn">Diagnose cloud</button><a class="btn" href="${esc(c.url||d.url)}" target="_blank">Open serveradres</a></div><div class="tiny" style="margin-top:6px">Op een nieuwe computer kies je op het profielscherm <strong>Cloudprofiel herstellen</strong>. Athenaeum herkent hetzelfde Supabase-account en gebruikt vervolgens hetzelfde lokale profiel.</div>
+    <div class="row" style="margin-top:12px"><button class="btn primary" id="signinBtn">Aanmelden & synchroniseren</button>${c.user?.id?'':'<button class="btn" id="signupBtn">Nieuw cloudaccount</button>'}<button class="btn" id="syncBtn">Alles synchroniseren</button><button class="btn" id="syncScriptBtn">Alleen Scriptorium</button><button class="btn" id="pullBtn">Cloud ophalen</button><button class="btn" id="pushBtn">Lokale versie uploaden</button><button class="btn" id="testSyncBtn">Test verbinding</button><button class="btn" id="signoutBtn">Afmelden</button></div>
+    <div class="tiny" id="syncStatus" style="margin-top:10px">${syncStatusHtml(p)}</div><div class="tiny" id="scriptSyncStatus" style="margin-top:5px">Scriptorium: ${c.last_scriptorium_sync?`laatst incrementeel ${new Date(c.last_scriptorium_sync).toLocaleString()}`:"nog niet incrementeel gesynchroniseerd"}${c.last_scriptorium_error?` · ⚠️ ${esc(c.last_scriptorium_error)}`:""}</div><div class="diag-box" id="cloudDiag"><strong>Clouddiagnose</strong><div class="tiny">Controleert server, Auth en databank afzonderlijk.</div></div><div class="row" style="margin-top:8px"><button class="btn" id="diagCloudBtn">Diagnose cloud</button><a class="btn" href="${esc(c.url||d.url)}" target="_blank">Open serveradres</a></div><div class="tiny" style="margin-top:6px">Op een nieuwe computer kies je op het profielscherm <strong>Cloudprofiel herstellen</strong>. Athenaeum herkent hetzelfde Supabase-account en gebruikt vervolgens hetzelfde lokale profiel.</div>
   </div>
   <div class="card"><div class="spread"><div><h3>Telegram voor Paideia</h3><p class="muted">Ochtendmelding, examenaftelling en een reminder als je dagsessie nog openstaat. De bot-token blijft server-side in Supabase.</p></div><span class="chip" id="telegramStateChip">status laden…</span></div><div class="grid three"><div class="field"><label>Ochtendmelding</label><input id="morningTime" type="time" value="${esc(n.morning||'08:00')}"></div><div class="field"><label>Reminder</label><input id="reminderTime" type="time" value="${esc(n.reminder||'18:00')}"></div><div class="field"><label>Tijdzone</label><input id="timezone" value="${esc(n.timezone||'Europe/Brussels')}"></div></div><div class="row" style="margin-top:12px"><button class="btn" id="saveNotify">Tijden bewaren</button><button class="btn primary" id="pairTelegram">Koppel Athenaeum Bot</button><button class="btn" id="testTelegram">Stuur testmelding</button><button class="btn" id="disconnectTelegram">Ontkoppel</button><button class="btn" id="diagTelegram">Diagnose Telegram</button><a class="btn" href="./docs/TELEGRAM_SETUP_V1_0_5.txt" target="_blank">Stappenplan</a></div><div class="tiny" id="telegramPairStatus" style="margin-top:8px"></div><div class="diag-box" id="telegramDiag"><strong>Telegramdiagnose</strong><div class="tiny">Cloudlogin → koppeltabel → Edge Function → bot.</div></div></div>
   <div class="card"><div class="spread"><div><h3>App installeren</h3><p class="muted" id="installDeviceInfo">Athenaeum controleert je apparaat…</p></div><span class="chip" id="installModeChip">PWA</span></div><div class="row" style="margin:12px 0"><button class="btn primary" id="installPwaBtn">Installeer Athenaeum</button><button class="btn" id="refreshDiag">Diagnose vernieuwen</button></div><div id="pwaDiag" class="grid two"></div><div class="tiny" style="margin-top:8px">Telefoon, tablet/iPad en laptop gebruiken dezelfde Athenaeum-installatie; de interface past zich automatisch aan het apparaat en de oriëntatie aan.</div></div>
@@ -556,21 +1591,34 @@ function bindSettings(){
   if(signup)signup.onclick=async()=>{try{
     saveSyncForm(p);
     const d=await AthSync.auth(p.id,$('#sbEmail').value.trim(),$('#sbPass').value,true);
-    if(d.access_token){await AthSync.syncNow(p.id);AthSync.startAuto(p.id);S.toast('Cloudaccount aangemaakt en gesynchroniseerd.')}
+    if(d.access_token){await AthSync.syncAll(p.id);AthSync.startAuto(p.id);S.toast('Cloudaccount aangemaakt en gesynchroniseerd.')}
     else S.toast('Account aangemaakt. Bevestig eventueel je e-mail en meld daarna aan.');
     renderSettings();
   }catch(e){S.toast(e.message)}};
   $('#signinBtn').onclick=async()=>{try{
     saveSyncForm(p);
     await AthSync.auth(p.id,$('#sbEmail').value.trim(),$('#sbPass').value,false);
-    await AthSync.syncNow(p.id);AthSync.startAuto(p.id);
+    await AthSync.syncAll(p.id);AthSync.startAuto(p.id);
     S.toast('Aangemeld en gesynchroniseerd.');renderSettings();
   }catch(e){S.toast(e.message)}};
-  $('#syncBtn').onclick=async()=>{try{$('#syncStatus').textContent='Synchroniseren…';await AthSync.syncNow(p.id);$('#syncStatus').textContent=syncStatusHtml(p);S.toast('Cloud en lokaal slim samengevoegd.')}catch(e){$('#syncStatus').textContent='⚠️ '+e.message}};
-  $('#pullBtn').onclick=async()=>{try{$('#syncStatus').textContent='Cloud ophalen…';await AthSync.pullOnly(p.id);$('#syncStatus').textContent=syncStatusHtml(p);S.toast('Cloudgegevens lokaal gemerged.')}catch(e){$('#syncStatus').textContent='⚠️ '+e.message}};
-  $('#pushBtn').onclick=async()=>{if(!confirm('Lokale gegevens nu als cloudbasis uploaden? Gebruik normaal “Nu synchroniseren”.'))return;try{await AthSync.pushOnly(p.id);$('#syncStatus').textContent=syncStatusHtml(p);S.toast('Lokale versie geüpload.')}catch(e){$('#syncStatus').textContent='⚠️ '+e.message}};
+  $('#syncBtn').onclick=async()=>{try{
+    $('#syncStatus').textContent='Lichte data + Scriptorium synchroniseren…';
+    await AthSync.syncAll(p.id);
+    $('#syncStatus').textContent=syncStatusHtml(p);
+    const sc=AthSync.cfg(p.id);
+    $('#scriptSyncStatus').textContent=sc.last_scriptorium_sync?`Scriptorium: laatst incrementeel ${new Date(sc.last_scriptorium_sync).toLocaleString()}`:'Scriptorium: nog niet gesynchroniseerd';
+    S.toast('Alles gesynchroniseerd zonder volledige corpusdump.');
+  }catch(e){$('#syncStatus').textContent='⚠️ '+e.message}};
+  $('#syncScriptBtn').onclick=async()=>{try{
+    $('#scriptSyncStatus').textContent='Scriptorium incrementeel synchroniseren…';
+    const r=await AthSync.syncScriptorium(p.id);
+    $('#scriptSyncStatus').textContent=`Scriptorium bijgewerkt · ↓${r.downloaded||0} ↑${r.uploaded||0} · instellingen ↓${r.settings_down||0} ↑${r.settings_up||0}`;
+    S.toast('Scriptorium incrementeel gesynchroniseerd.');
+  }catch(e){$('#scriptSyncStatus').textContent='⚠️ '+e.message}};
+  $('#pullBtn').onclick=async()=>{try{$('#syncStatus').textContent='Cloud ophalen…';await AthSync.pullOnly(p.id);$('#syncStatus').textContent=syncStatusHtml(p);S.toast('Profiel/Paideia cloudgegevens lokaal gemerged.')}catch(e){$('#syncStatus').textContent='⚠️ '+e.message}};
+  $('#pushBtn').onclick=async()=>{if(!confirm('Lokale gegevens nu als cloudbasis uploaden? Gebruik normaal “Nu synchroniseren”.'))return;try{await AthSync.pushOnly(p.id);$('#syncStatus').textContent=syncStatusHtml(p);S.toast('Profiel/Paideia lokaal naar cloud geüpload.')}catch(e){$('#syncStatus').textContent='⚠️ '+e.message}};
   $('#testSyncBtn').onclick=async()=>{try{const r=await AthSync.testConnection(p.id);S.toast(r.server?'Cloudserver bereikbaar.':'Cloudcontrole mislukt.')}catch(e){S.toast(e.message)}};
-  $('#diagCloudBtn').onclick=async()=>{const box=$('#cloudDiag');box.innerHTML='<strong>Clouddiagnose</strong><div class="tiny">Controleren…</div>';const r=await AthSync.diagnoseConnection(p.id);box.innerHTML=`<strong>${r.server?'✅ Cloudserver bereikbaar':'⚠️ Cloudprobleem'}</strong><div class="diag-steps">${(r.details||[]).map(x=>`<div>${esc(x)}</div>`).join('')}</div>${r.error?`<div class="tiny warn-text">${esc(r.error)}</div>`:''}`};
+  $('#diagCloudBtn').onclick=async()=>{const box=$('#cloudDiag');box.innerHTML='<strong>Clouddiagnose</strong><div class="tiny">Controleren…</div>';const r=await AthSync.diagnoseConnection(p.id);box.innerHTML=`<strong>${r.server&&r.scriptorium_tables?'✅ Cloud + split sync bereikbaar':r.server?'⚠️ Cloud bereikbaar, Scriptorium-sync controleren':'⚠️ Cloudprobleem'}</strong><div class="diag-steps">${(r.details||[]).map(x=>`<div>${esc(x)}</div>`).join('')}</div>${r.error?`<div class="tiny warn-text">${esc(r.error)}</div>`:''}`};
   $('#signoutBtn').onclick=async()=>{await AthSync.signOut(p.id);renderSettings();S.toast('Cloudsessie afgemeld.')};
   $('#saveNotify').onclick=async()=>{const n={morning:$('#morningTime').value,reminder:$('#reminderTime').value,timezone:$('#timezone').value};AthTelegram.saveNotify(p.id,n);try{await AthTelegram.updateSchedule(p.id,n)}catch{}S.toast('Meldingstijden bewaard.')};
   $('#pairTelegram').onclick=async()=>{const box=$('#telegramPairStatus');try{const r=await AthTelegram.pair(p.id);box.innerHTML=`Koppelcode: <strong>${r.code}</strong> (30 min geldig). ${r.link?`<a href="${r.link}" target="_blank">Open @${esc(r.bot_username)} in Telegram</a>`:'Open jouw Athenaeum Bot en stuur <strong>/start '+r.code+'</strong>.'}`;S.toast('Telegram-koppelcode gemaakt.')}catch(e){box.textContent=e.message}};
@@ -601,8 +1649,10 @@ async function restoreCloudProfile(){
     }
     AthSync.adoptSession(p.id,r);
     await AthSync.apply(p.id,{...r.payload,profile:{...rp,id:p.id,cloud_user_id:r.auth.user.id,cloud_email:(r.auth.user.email||r.email||'').toLowerCase()}});
+    status.textContent='Profiel hersteld. Scriptorium wordt per werk binnengehaald…';
+    await AthSync.syncScriptorium(p.id,{preferRemote:true});
     closeModal('cloudRestoreModal');renderProfiles();
-    S.toast('Cloudprofiel bijgewerkt. Geen nieuw duplicaat aangemaakt.');
+    S.toast('Cloudprofiel en Scriptorium hersteld zonder zware totaaldownload.');
   }catch(e){status.textContent='⚠️ '+e.message}
 }
 function runPwaDiag(){const box=$('#pwaDiag');if(!box)return;const standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;const checks=[['HTTPS',location.protocol==='https:'||location.hostname==='localhost'],['Manifest',!!document.querySelector('link[rel="manifest"]')],['Service worker',!!navigator.serviceWorker],['Standalone',standalone]];box.innerHTML=checks.map(([k,v])=>`<div class="card" style="padding:12px;box-shadow:none"><strong>${v?'✅':'⚠️'} ${k}</strong><div class="tiny">${v?'OK':'controle nodig'}</div></div>`).join('')}

@@ -53,6 +53,107 @@ html[data-display-mode="app"] body.device-phone .topbar{padding-top:max(8px,env(
 </style><style>
 .pa-shell{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.pa-side{background:linear-gradient(180deg,#32233b,#221b2b);color:#fff;padding:18px;position:sticky;top:0;height:100vh}.pa-side .nav button.active,.pa-side .nav button:hover{background:rgba(228,200,134,.15)}.pa-main{min-width:0}.pa-hero{background:linear-gradient(135deg,#fffaf0,#f2ebdf);border:1px solid #ded1bd;border-radius:28px;padding:24px;box-shadow:var(--shadow)}.daily-block{border:1px solid #ded2c0;border-radius:18px;padding:16px;background:#fffdf8}.daily-block h4{margin:0}.knowledge-tags{display:flex;gap:7px;flex-wrap:wrap}.knowledge-tags span{padding:6px 9px;border-radius:999px;background:#f1e8f4;color:#634d6b;font-size:12px}.exam-card{border-left:4px solid #c79b48}.question-card{background:#fffdf8;border:1px solid #dcd3c5;border-radius:22px;padding:20px}.option{display:block;width:100%;text-align:left;margin:8px 0;border:1px solid #d8d0c2;background:#fff;border-radius:12px;padding:10px}.option.selected{border-color:#8f6c2e;background:#fff8e8}.review-box{border:1px dashed #c8b98f;background:#fffaf0;border-radius:16px;padding:14px}.session-progress{height:10px;background:#e6dfd2;border-radius:999px;overflow:hidden}.session-progress>div{height:100%;background:linear-gradient(90deg,#6f517b,#c99b48)}
 @media(max-width:900px){.pa-shell{grid-template-columns:1fr}.pa-side{display:none}.page-wrap{padding-bottom:94px}.question-card{padding:16px}.topbar .tiny{display:none}}
+
+
+/* ==========================================================
+   PAIDEIA — V1.0.10 tablet/iPad rebuild
+   scoped to device-tablet; phone + desktop unchanged
+   ========================================================== */
+body.device-tablet .pa-shell{
+  display:grid!important;
+  grid-template-columns:190px minmax(0,1fr)!important;
+  min-height:100dvh!important;
+}
+body.device-tablet .pa-side{
+  display:block!important;
+  position:sticky!important;
+  top:0!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  overflow-y:auto!important;
+  padding:15px 11px!important;
+}
+body.device-tablet .pa-main{
+  min-width:0!important;
+  width:auto!important;
+}
+body.device-tablet .mobile-nav{
+  display:none!important;
+}
+body.device-tablet .topbar{
+  height:70px!important;
+  min-height:70px!important;
+  padding:0 18px!important;
+}
+body.device-tablet .topbar>.row{
+  flex-direction:row!important;
+}
+body.device-tablet .page-wrap{
+  padding:18px!important;
+  padding-bottom:28px!important;
+}
+body.device-tablet .question-card{
+  padding:18px!important;
+}
+body.device-tablet .stat-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+}
+body.device-tablet .grid.two,
+body.device-tablet .grid.three{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+}
+
+@media (orientation:portrait){
+  body.device-tablet .pa-shell{
+    grid-template-columns:154px minmax(0,1fr)!important;
+  }
+  body.device-tablet .pa-side{
+    padding:12px 8px!important;
+  }
+  body.device-tablet .pa-side .brand-lockup img{
+    width:34px!important;
+    height:34px!important;
+  }
+  body.device-tablet .pa-side .brand-lockup h1{
+    font-size:16px!important;
+  }
+  body.device-tablet .pa-side .nav button{
+    font-size:11.5px!important;
+    padding:8px 7px!important;
+  }
+  body.device-tablet .topbar{
+    height:66px!important;
+    min-height:66px!important;
+    padding:0 13px!important;
+  }
+  body.device-tablet .topbar h2{
+    font-size:22px!important;
+  }
+  body.device-tablet .page-wrap{
+    padding:14px!important;
+  }
+  body.device-tablet .stat-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  body.device-tablet .grid.two,
+  body.device-tablet .grid.three{
+    grid-template-columns:1fr!important;
+  }
+  body.device-tablet .pa-hero{
+    padding:18px!important;
+    border-radius:22px!important;
+  }
+}
+
+@media (orientation:landscape){
+  body.device-tablet .pa-shell{
+    grid-template-columns:205px minmax(0,1fr)!important;
+  }
+  body.device-tablet .page-wrap{
+    padding:20px 22px!important;
+  }
+}
+
 </style></head><body><script>(function(){const q=new URLSearchParams(location.search),pid=q.get('ath_profile')||'';let ok=false,locked=false;try{const ps=JSON.parse(localStorage.getItem('athenaeum_profiles_v1')||'[]'),p=ps.find(x=>x.id===pid);ok=!!p&&(!Array.isArray(p.apps)||p.apps.includes('paideia'));locked=!!p?.pin_hash&&!sessionStorage.getItem('athenaeum_unlocked_'+pid)}catch{}if(!ok||locked){location.replace('../../index.html'+(pid?'?profile='+encodeURIComponent(pid)+'&page=apps':'')+(locked?'&locked=1':''));return}localStorage.setItem('athenaeum_current_profile',pid);window.ATH_PROFILE_ID=pid;addEventListener('DOMContentLoaded',()=>{const a=document.getElementById('athBackLink');if(a)a.href='../../index.html?resume=1&profile='+encodeURIComponent(pid)+'&page=apps';});})();</script>
 <div class="pa-shell"><aside class="pa-side"><a class="app-back" href="../../index.html" id="athBackLink">← Athenaeum</a><div class="brand-lockup"><img src="../../assets/logos/paideia.svg"/><div><h1>Paideia</h1><small>Athenaeum</small></div></div><nav class="nav" style="margin-top:22px"><button data-page="home">🏠 Overzicht</button><button data-page="learn">📖 Leren</button><button data-page="exam">🎓 Examens</button><button data-page="knowledge">🧠 Kennisbank</button><button data-page="library">📚 Bronnen</button><button data-page="telegram">🔔 Telegram</button><button id="backAth">← Athenaeum</button></nav></aside><main class="pa-main"><header class="topbar"><div><h2 id="paTitle">Paideia</h2><div class="tiny" id="paSub">Snel, efficiënt en cumulatief leren</div></div><div class="row"><span class="chip" id="paMode">Web</span><button class="btn" id="backAthTop">Athenaeum</button></div></header><div class="page-wrap"><section id="p-home"></section><section class="hidden" id="p-learn"></section><section class="hidden" id="p-exam"></section><section class="hidden" id="p-knowledge"></section><section class="hidden" id="p-library"></section><section class="hidden" id="p-telegram"></section></div></main>
 <nav class="mobile-nav"><button data-page="home"><span class="ico">🏠</span>Home</button><button data-page="learn"><span class="ico">📖</span>Leren</button><button data-page="exam"><span class="ico">🎓</span>Examen</button><button data-page="knowledge"><span class="ico">🧠</span>Kennis</button><button data-page="telegram"><span class="ico">🔔</span>Telegram</button></nav></div>
