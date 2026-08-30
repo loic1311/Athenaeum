@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="Athenaeum"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="format-detection" content="telephone=no"/>
-<title>Athenaeum V1.0.11 — Persoonlijke leer- en onderzoeksomgeving</title><meta content="Athenaeum: profielen, Scriptorium, Paideia, kennisbank en synchronisatie." name="description"/>
+<title>Athenaeum V1.0.12 — Persoonlijke leer- en onderzoeksomgeving</title><meta content="Athenaeum: profielen, Scriptorium, Paideia, kennisbank en synchronisatie." name="description"/>
 <link href="./manifest.webmanifest" rel="manifest"/><link href="./assets/icons/apple-touch-icon.png" rel="apple-touch-icon"/><link href="./assets/icons/icon-192.png" rel="icon"/>
 <style id="athenaeum-core-style">
 :root{--ink:#102f32;--ink2:#17464a;--gold:#c79b48;--gold2:#e4c886;--cream:#f7f2e7;--paper:#fffdf8;--mist:#eef4f0;--line:#d9d2c3;--text:#19383a;--muted:#687a79;--good:#2e7c5c;--warn:#b47d2b;--bad:#a94e4e;--purple:#665074;--shadow:0 18px 44px rgba(17,48,50,.10);--r:22px}
@@ -23,7 +23,7 @@ body.force-mobile .shell{grid-template-columns:1fr}body.force-mobile .sidebar{di
 body.force-desktop .shell{grid-template-columns:265px minmax(0,1fr)}body.force-desktop .sidebar{display:block}body.force-desktop .mobile-nav{display:none}body.force-desktop .page-wrap{padding:24px}
 
 
-/* Athenaeum V1.0.11 — account/app separation and sidebar redesign */
+/* Athenaeum V1.0.12 — account/app separation and sidebar redesign */
 .sidebar{display:flex;flex-direction:column;overflow:hidden;padding:18px 16px;background:linear-gradient(180deg,#0d3437 0%,#0a292d 58%,#081f25 100%)}
 .side-brand{padding:4px 4px 16px!important;margin-bottom:6px;border-bottom:1px solid rgba(255,255,255,.08)}
 .side-brand.brand-lockup{gap:11px}.side-brand.brand-lockup img{width:44px;height:44px;border-radius:13px}.side-brand.brand-lockup h1{font-size:20px;letter-spacing:.02em}.side-brand.brand-lockup small{font-size:11px;color:#aac1ba}
@@ -41,7 +41,7 @@ body.force-desktop .shell{grid-template-columns:265px minmax(0,1fr)}body.force-d
 @media(max-width:900px){.side-apps,.side-section-label{display:none}.app-access-grid{grid-template-columns:1fr}.app-detail-grid{grid-template-columns:1fr}.app-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
 
-/* Athenaeum V1.0.11 — definitive mobile layout + simplified cloud settings */
+/* Athenaeum V1.0.12 — definitive mobile layout + simplified cloud settings */
 .cloud-default-note{display:flex;align-items:center;gap:10px;margin:12px 0 14px;padding:11px 13px;border:1px solid #cfe0da;background:#f2f8f5;border-radius:14px;color:#315b52}
 .cloud-default-note span{margin-left:auto;font-size:11px;color:#6d7f79}
 .advanced-cloud{margin-top:12px;border-top:1px solid #e3dccf;padding-top:10px}
@@ -79,14 +79,14 @@ body.force-desktop .shell{grid-template-columns:265px minmax(0,1fr)}body.force-d
   body .mobile-nav button .ico{font-size:20px!important}
 }
 
-/* V1.0.11 — input/touch reliability, source explorer and diagnostics */
+/* V1.0.12 — input/touch reliability, source explorer and diagnostics */
 input,textarea,select,.field input,.field textarea,.field select,.source-search-input{pointer-events:auto!important;touch-action:manipulation!important;position:relative;z-index:3}
 .primary-explorer{overflow:visible!important}.source-search-row{display:grid;grid-template-columns:minmax(260px,1fr) auto auto auto;gap:10px;align-items:center;margin-top:14px}.source-search-input{width:100%;min-width:0;border:1px solid #d8cfbe;border-radius:14px;padding:13px 14px;font:inherit;background:#fff;color:#17363d;outline:none}.source-search-input:focus{border-color:#5e8e82;box-shadow:0 0 0 4px rgba(59,117,102,.11)}
 .source-meta-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #e5decf}.source-empty{padding:14px;border:1px dashed #d8cfbe;border-radius:14px;background:#fbf8f1;color:#687b7c}.diag-box{margin-top:10px;padding:12px 14px;border:1px solid #d7ded8;border-radius:14px;background:#f6faf8}.diag-steps{display:grid;gap:5px;margin-top:7px;font-size:12px;color:#526b67}.warn-text{margin-top:8px;color:#a0553b}
 @media(max-width:900px){.source-search-row{grid-template-columns:1fr!important}.source-search-row .btn{width:100%!important}.primary-explorer{position:relative;z-index:5}.source-search-input{font-size:16px!important;min-height:48px!important}.diag-box{font-size:13px}}
 
 
-/* Athenaeum V1.0.11 — profielpoort is nu een echte lock */
+/* Athenaeum V1.0.12 — profielpoort is nu een echte lock */
 html.profile-locked,
 body.profile-locked{
   overflow:hidden!important;
@@ -143,7 +143,7 @@ body.profile-locked .sidebar{display:none!important}
 
 
 /* ==========================================================
-   Athenaeum V1.0.11 — device-adaptive interface
+   Athenaeum V1.0.12 — device-adaptive interface
    phone / tablet-iPad / desktop + installed PWA
    ========================================================== */
 
@@ -228,7 +228,7 @@ html[data-display-mode="app"] body.device-tablet .sidebar{
 }
 
 
-/* Athenaeum V1.0.11 — modal stack fix
+/* Athenaeum V1.0.12 — modal stack fix
    Profile gate = 1000, dialogs must always render above it. */
 .modal{
   z-index:1400!important;
@@ -242,7 +242,7 @@ html[data-display-mode="app"] body.device-tablet .sidebar{
 
 
 /* ==========================================================
-   ATHENAEUM V1.0.11 — TABLET/iPAD REBUILD
+   ATHENAEUM V1.0.12 — TABLET/iPAD REBUILD
    Intentionally scoped to .device-tablet only.
    Phone and desktop rules above remain untouched.
    ========================================================== */
@@ -564,13 +564,13 @@ body.device-tablet .profile-add{
   }
 }
 
-/* V1.0.11 memory-safe sync status */
+/* V1.0.12 memory-safe sync status */
 #scriptSyncStatus{color:#60736d}
 </style></head><body>
 <div class="profile-gate fade-in" id="profileGate"><div class="gate-box"><div class="gate-title"><img alt="Athenaeum" src="./assets/logos/athenaeum.svg"/><h1>Athenaeum</h1><p>Jouw persoonlijke leer- en onderzoeksomgeving. Selecteer een gebruiker.</p></div><div class="profile-grid" id="profileGrid"></div><div class="row" style="justify-content:center;margin-top:18px"><button class="btn" id="restoreCloudBtn">☁️ Cloudprofiel herstellen</button></div></div></div>
 <div class="shell hidden" id="mainShell" hidden inert aria-hidden="true">
 <aside class="sidebar">
-<div class="side-brand brand-lockup"><img alt="Athenaeum" src="./assets/logos/athenaeum.svg"/><div><h1>Athenaeum</h1><small>persoonlijke omgeving · V1.0.11</small></div></div>
+<div class="side-brand brand-lockup"><img alt="Athenaeum" src="./assets/logos/athenaeum.svg"/><div><h1>Athenaeum</h1><small>persoonlijke omgeving · V1.0.12</small></div></div>
 <div class="side-section-label">Navigatie</div>
 <nav class="nav" id="mainNav"><button data-page="home">🏠 Home</button><button data-page="apps">◈ Mijn apps</button><button data-page="library">📚 Bibliotheek</button><button data-page="progress">📈 Voortgang</button><button data-page="settings">⚙️ Instellingen</button></nav>
 <div class="side-section-label">Jouw apps</div><div class="side-apps" id="sideApps"></div>
@@ -1544,7 +1544,7 @@ function avatar(p){return assetAvatar(p.avatar)}
 function renderShell(){const p=current();if(!p)return leaveProfile();$('#sideUser').innerHTML=`<img src="${avatar(p)}"><div class="user-copy"><strong>${esc(p.name)}</strong><small>${p.pin_hash?'PIN beveiligd':'profiel actief'}</small></div><div class="side-user-actions"><button id="sideAccount">Account</button><button id="sideSwitch">Wissel</button></div>`;const sa=$('#sideApps');if(sa)sa.innerHTML=allowedApps(p).map(a=>{const m=appMeta(a);return `<button class="side-app-link" data-side-app="${a}"><img src="${m.logo}"><span>${m.name}</span></button>`}).join('')||'<div class="tiny" style="padding:6px 10px;color:#8aa39c">Geen apps toegewezen</div>';$$('[data-side-app]').forEach(b=>b.onclick=()=>openApp(b.dataset.sideApp));$('#sideAccount')?.addEventListener('click',()=>editProfile(p.id));$('#sideSwitch')?.addEventListener('click',leaveProfile);const s1=$('#sheetScriptorium'),s2=$('#sheetPaideia');if(s1)s1.classList.toggle('hidden',!hasApp('scriptorium',p));if(s2)s2.classList.toggle('hidden',!hasApp('paideia',p));updateMode()}
 function openApp(name){const p=current();if(!p)return;if(!hasApp(name,p))return S.toast(`${appMeta(name).name} is niet toegewezen aan dit profiel.`);const url=name==='scriptorium'?`./apps/scriptorium/index.html?ath_profile=${encodeURIComponent(p.id)}`:`./apps/paideia/index.html?ath_profile=${encodeURIComponent(p.id)}`;location.href=url}
 function todayISO(){return new Date().toISOString().slice(0,10)}
-function renderHome(){const p=requireProfile();if(!p)return;const st=S.getProfileData(p.id,'paideia_state',{streak:0,icecubes:p.icecubes??2,last_completed:'',weekly_scores:[],monthly_scores:[],mastery:{}});const sync=AthSync.cfg(p.id),apps=allowedApps(p);const quick=apps.length?apps.map(a=>{const m=appMeta(a);const action=a==='paideia'?'Start sessie':'Open werkruimte';return `<div class="quick-app"><img src="${m.logo}"><div class="grow"><h3>${m.name}</h3><p>${m.desc}</p></div><button class="btn ${a==='paideia'?'gold':'primary'}" data-app="${a}">${action}</button></div>`}).join(''):`<div class="no-apps">Aan dit profiel zijn nog geen apps gekoppeld. Open <strong>Account</strong> om toegang toe te wijzen.</div>`;const paideia=hasApp('paideia',p)?`<div class="card"><h3>Vandaag</h3><p><strong>🏺 Oude geschiedenis — 20 min</strong><br><span class="muted">Structuren, evoluties, conjuncturen, personen, bronnen en historiografische problemen.</span></p><p><strong>🌍 Algemene geschiedenis — 10 min</strong><br><span class="muted">Dagelijks chronologisch raamwerk en synthese.</span></p><p class="tiny">Algemene kennis/skills verschijnt periodiek als extra sessie.</p></div><div class="card"><h3>Volgende evaluaties</h3><p>📅 <strong>Wekelijks examen</strong>: cumulatief en universitair van stijl.</p><p>🧠 <strong>Maandelijkse mastery check</strong>: synthese en langere open vragen.</p><p>🧊 Bij ≥75% verdien je een streak-freeze.</p></div>`:`<div class="card"><h3>Jouw Athenaeum</h3><p class="muted">Home blijft bewust compact: hier start je je toegewezen apps en zie je platformstatus. In <strong>Mijn apps</strong> staan de inhoudelijke voortgang en appdetails.</p></div><div class="card"><h3>Profieltoegang</h3><p>${apps.length?apps.map(a=>`✓ ${appMeta(a).name}`).join('<br>'):'Nog geen apps gekoppeld.'}</p></div>`;$('#page-home').innerHTML=`<div class="hero slide-up"><div class="spread"><div><div class="chip">ATHENAEUM V1.0.11</div><h2>Welkom terug, ${esc(p.name)}</h2><p>Je persoonlijke ingang naar onderzoek en leren. Alleen de apps die aan dit profiel zijn toegewezen verschijnen hier.</p></div><img src="${avatar(p)}" style="width:82px;height:82px;border-radius:50%"></div></div><div class="stat-grid"><div class="stat"><div class="k">🔥 Streak</div><div class="v">${hasApp('paideia',p)?(st.streak||0)+' dagen':'—'}</div></div><div class="stat"><div class="k">🧊 IJsblokjes</div><div class="v">${hasApp('paideia',p)?(st.icecubes??2):'—'}</div></div><div class="stat"><div class="k">Jouw apps</div><div class="v">${apps.length}</div></div><div class="stat"><div class="k">Cloudsync</div><div class="v" style="font-size:18px">${sync.enabled?'actief':'optioneel'}</div></div></div><div class="quick-apps">${quick}</div><div class="grid two" style="margin-top:18px">${paideia}</div>`;$$('[data-app]').forEach(b=>b.onclick=()=>openApp(b.dataset.app))}
+function renderHome(){const p=requireProfile();if(!p)return;const st=S.getProfileData(p.id,'paideia_state',{streak:0,icecubes:p.icecubes??2,last_completed:'',weekly_scores:[],monthly_scores:[],mastery:{}});const sync=AthSync.cfg(p.id),apps=allowedApps(p);const quick=apps.length?apps.map(a=>{const m=appMeta(a);const action=a==='paideia'?'Start sessie':'Open werkruimte';return `<div class="quick-app"><img src="${m.logo}"><div class="grow"><h3>${m.name}</h3><p>${m.desc}</p></div><button class="btn ${a==='paideia'?'gold':'primary'}" data-app="${a}">${action}</button></div>`}).join(''):`<div class="no-apps">Aan dit profiel zijn nog geen apps gekoppeld. Open <strong>Account</strong> om toegang toe te wijzen.</div>`;const paideia=hasApp('paideia',p)?`<div class="card"><h3>Vandaag</h3><p><strong>🏺 Oude geschiedenis — 20 min</strong><br><span class="muted">Structuren, evoluties, conjuncturen, personen, bronnen en historiografische problemen.</span></p><p><strong>🌍 Algemene geschiedenis — 10 min</strong><br><span class="muted">Dagelijks chronologisch raamwerk en synthese.</span></p><p class="tiny">Algemene kennis/skills verschijnt periodiek als extra sessie.</p></div><div class="card"><h3>Volgende evaluaties</h3><p>📅 <strong>Wekelijks examen</strong>: cumulatief en universitair van stijl.</p><p>🧠 <strong>Maandelijkse mastery check</strong>: synthese en langere open vragen.</p><p>🧊 Bij ≥75% verdien je een streak-freeze.</p></div>`:`<div class="card"><h3>Jouw Athenaeum</h3><p class="muted">Home blijft bewust compact: hier start je je toegewezen apps en zie je platformstatus. In <strong>Mijn apps</strong> staan de inhoudelijke voortgang en appdetails.</p></div><div class="card"><h3>Profieltoegang</h3><p>${apps.length?apps.map(a=>`✓ ${appMeta(a).name}`).join('<br>'):'Nog geen apps gekoppeld.'}</p></div>`;$('#page-home').innerHTML=`<div class="hero slide-up"><div class="spread"><div><div class="chip">ATHENAEUM V1.0.12</div><h2>Welkom terug, ${esc(p.name)}</h2><p>Je persoonlijke ingang naar onderzoek en leren. Alleen de apps die aan dit profiel zijn toegewezen verschijnen hier.</p></div><img src="${avatar(p)}" style="width:82px;height:82px;border-radius:50%"></div></div><div class="stat-grid"><div class="stat"><div class="k">🔥 Streak</div><div class="v">${hasApp('paideia',p)?(st.streak||0)+' dagen':'—'}</div></div><div class="stat"><div class="k">🧊 IJsblokjes</div><div class="v">${hasApp('paideia',p)?(st.icecubes??2):'—'}</div></div><div class="stat"><div class="k">Jouw apps</div><div class="v">${apps.length}</div></div><div class="stat"><div class="k">Cloudsync</div><div class="v" style="font-size:18px">${sync.enabled?'actief':'optioneel'}</div></div></div><div class="quick-apps">${quick}</div><div class="grid two" style="margin-top:18px">${paideia}</div>`;$$('[data-app]').forEach(b=>b.onclick=()=>openApp(b.dataset.app))}
 function renderApps(){const p=requireProfile();if(!p)return;const apps=allowedApps(p),st=S.getProfileData(p.id,'paideia_state',{streak:0,weekly_scores:[],monthly_scores:[],mastery:{}});const cards=apps.map(a=>{const m=appMeta(a);if(a==='scriptorium')return `<article class="app-detail"><div class="app-detail-head"><img src="${m.logo}"><div><h3>Scriptorium</h3><div class="tiny">Onderzoek & academische vaardigheden</div></div></div><div class="app-metrics"><div class="app-metric"><b>56</b><span>kernwerken</span></div><div class="app-metric"><b>56</b><span>geanalyseerd</span></div><div class="app-metric"><b>23</b><span>trainingsmodules</span></div></div><p class="muted">Beheer het corpus, zoek nieuwe werken en primaire bronnen, bestudeer theorie en train onderzoeksvaardigheden.</p><div class="row"><button class="btn primary" data-app="scriptorium">Open Scriptorium</button><span class="chip">toegang via dit profiel</span></div></article>`;const mastery=st.mastery||{};const avg=[mastery.ancient,mastery.general_history,mastery.general_knowledge].filter(x=>Number.isFinite(+x));const score=avg.length?Math.round(avg.reduce((x,y)=>x+(+y),0)/avg.length):0;return `<article class="app-detail"><div class="app-detail-head"><img src="${m.logo}"><div><h3>Paideia</h3><div class="tiny">Levenslang leren & kennisbehoud</div></div></div><div class="app-metrics"><div class="app-metric"><b>${st.streak||0}</b><span>streak</span></div><div class="app-metric"><b>${score}%</b><span>gem. mastery</span></div><div class="app-metric"><b>${(st.weekly_scores||[]).length}</b><span>weekexamens</span></div></div><p class="muted">Dagelijkse microcurricula, spaced repetition, kennisnetwerken, examencyclus en algemene kennis/skills.</p><div class="row"><button class="btn gold" data-app="paideia">Open Paideia</button><span class="chip">${st.last_completed?'recent gebruikt':'klaar om te starten'}</span></div></article>`}).join('');$('#page-apps').innerHTML=`<div class="hero"><div class="spread"><div><h2>Mijn apps</h2><p>Hier zie je alleen de toepassingen die aan ${esc(p.name)} zijn toegewezen. Home is de snelle ingang; deze pagina toont inhoud, voortgang en status per app.</p></div><button class="btn" id="manageAppAccess">Toegang beheren</button></div></div><div class="app-detail-grid">${cards||'<div class="no-apps">Nog geen apps toegewezen. Gebruik <strong>Toegang beheren</strong> om een app aan dit profiel te koppelen.</div>'}</div><div class="card" style="margin-top:18px"><h3>Profielen blijven gescheiden</h3><p class="muted">Een profiel krijgt alleen toegang tot zijn toegewezen modules. Latere farmacie- of vroegmoderne apps kunnen als nieuwe Athenaeum-modules worden toegevoegd zonder Scriptorium of Paideia automatisch voor iedereen zichtbaar te maken.</p></div>`;$('#manageAppAccess').onclick=()=>editProfile(p.id);$$('[data-app]').forEach(b=>b.onclick=()=>openApp(b.dataset.app))}
 function renderPrimarySourceResults(){
   const p=requireProfile();if(!p)return;

@@ -1,17 +1,14 @@
 {
-  "version": "7.0",
-  "release": "V7",
+  "version": "7.1",
+  "release": "V7.1",
   "features": [
-    "premium_animations",
-    "fixed_desktop_sidebar",
-    "mobile_bottom_nav",
-    "ugent_search",
-    "author_search",
-    "bibliography_chain_search",
-    "source_search_tools",
-    "provenance_categories",
-    "theory_hub",
-    "telegram_share",
-    "settings_sync_merge"
+    "v7_full_integration",
+    "athenaeum_incremental_sync_only",
+    "legacy_full_corpus_sync_disabled",
+    "pre_init_local_compaction",
+    "h5p_iframe_exercises",
+    "same_origin_h5p_xapi_capture",
+    "shared_friend_metadata_catalog",
+    "stable_desktop_tablet_grid"
   ]
 }

@@ -185,11 +185,40 @@ function addSourceExplorer7(){
 
 function bindGlobal7(){q('corpusProvenance')?.addEventListener('change',()=>{state.corpusPage=1;window.renderCorpus()});bindTelegramButtons7();document.addEventListener('click',e=>{const tg=e.target.closest('#v7MobileTelegram');if(tg){e.preventDefault();window.open(telegramShareUrl7(location.href,'Scriptorium V7'),'_blank')}});}
 
+function brandV7(){
+  document.title='Scriptorium V7 — Academische Onderzoekscoach';
+  document.querySelectorAll('.version-pill').forEach(x=>x.textContent='V7');
+  const sm=document.querySelector('.brand small');
+  if(sm)sm.textContent='Academische onderzoekscoach · corpus · bronnen · theorie · training';
+  const sub=document.querySelector('.topbar-sub');
+  if(sub)sub.textContent='Scriptorium V7 · onderzoek, bronnen en vaardigheden in één werkruimte';
+}
 window.init=async function(){
-  if(V7_PREV_INIT)await V7_PREV_INIT();
-  document.title='Scriptorium V7 — Academische Onderzoekscoach';document.querySelectorAll('.version-pill').forEach(x=>x.textContent='V7');const sm=document.querySelector('.brand small');if(sm)sm.textContent='Academische onderzoekscoach · corpus · bronnen · theorie · training';const sub=document.querySelector('.topbar-sub');if(sub)sub.textContent='Onderzoek, bronnen en vaardigheden in één werkruimte';
-  await normalizeProvenance7();restructureNav7();patchMobileNav7();installAnimations7();mergeSyncIntoSettings7();renderSettingsV7();addSourceExplorer7();bindGlobal7();
-  const urlPage=new URL(location.href).searchParams.get('page');if(urlPage&&['dashboard','corpus','exchange','discovery','sources','atelier','training','progress','settings'].includes(urlPage)){v7HistoryLock=true;window.showPage(urlPage,{noHistory:true});v7HistoryLock=false}else{history.replaceState({page:currentPage7()},'',location.href)}
-  if(currentPage7()==='discovery')renderSearchHub7();if(currentPage7()==='atelier')renderTheoryHub7();window.renderCorpus();
+  brandV7();
+  try{
+    if(V7_PREV_INIT)await V7_PREV_INIT();
+  }catch(e){
+    console.error('V7 compatibility init',e);
+    const n=document.getElementById('bootNotice');
+    if(n){n.hidden=false;n.textContent='Een oude compatibiliteitslaag gaf een fout; V7 is in veilige modus verder gestart.'}
+  }
+  brandV7();
+  try{await normalizeProvenance7()}catch(e){console.warn('V7 provenance',e)}
+  try{restructureNav7()}catch(e){console.warn('V7 nav',e)}
+  try{patchMobileNav7()}catch(e){console.warn('V7 mobile nav',e)}
+  try{installAnimations7()}catch(e){console.warn('V7 animations',e)}
+  try{mergeSyncIntoSettings7()}catch(e){console.warn('V7 settings merge',e)}
+  try{renderSettingsV7()}catch(e){console.warn('V7 settings',e)}
+  try{addSourceExplorer7()}catch(e){console.warn('V7 source explorer',e)}
+  try{bindGlobal7()}catch(e){console.warn('V7 bindings',e)}
+  const urlPage=new URL(location.href).searchParams.get('page');
+  if(urlPage&&['dashboard','corpus','exchange','discovery','sources','atelier','training','progress','settings'].includes(urlPage)){
+    v7HistoryLock=true;window.showPage(urlPage,{noHistory:true});v7HistoryLock=false
+  }else{
+    history.replaceState({page:currentPage7()},'',location.href)
+  }
+  if(currentPage7()==='discovery')renderSearchHub7();
+  if(currentPage7()==='atelier')renderTheoryHub7();
+  window.renderCorpus();
 };
 })();

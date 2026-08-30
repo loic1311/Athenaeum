@@ -1,4 +1,4 @@
-const VERSION='athenaeum-v1.0.11-shell-1';
+const VERSION='athenaeum-v1.0.12-shell-1';
 const CORE=['./','./index.html','./manifest.webmanifest','./assets/icons/icon-192.png','./assets/icons/icon-512.png'];
 self.addEventListener('install',event=>event.waitUntil((async()=>{
   const c=await caches.open(VERSION);

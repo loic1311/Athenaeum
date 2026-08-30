@@ -1,12 +1,13 @@
 {
-  "version": "1.0.11",
-  "release": "Athenaeum V1.0.11",
+  "version": "1.0.12",
+  "release": "Athenaeum V1.0.12",
   "changes": [
-    "split_lightweight_and_scriptorium_sync",
-    "scriptorium_per_record_incremental_sync",
-    "memory_safe_multi_device_sync",
-    "no_full_20mb_payload_every_two_minutes",
-    "cloud_restore_streams_scriptorium_records",
-    "tablet_phone_desktop_layouts_preserved"
+    "scriptorium_v7_1_integrated",
+    "legacy_scriptorium_full_payload_sync_removed",
+    "scriptorium_memory_compaction_before_boot",
+    "h5p_embed_support",
+    "shared_friend_metadata_catalog",
+    "scriptorium_grid_crash_layout_fix",
+    "athenaeum_split_sync_v4_preserved"
   ]
 }

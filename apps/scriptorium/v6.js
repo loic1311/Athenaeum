@@ -628,21 +628,9 @@ async function sbEnsureAccess(){
   if(!c.refresh_token)throw new Error("Meld je eerst aan.");
   const d=await sbRequest("/auth/v1/token?grant_type=refresh_token",{method:"POST",body:JSON.stringify({refresh_token:c.refresh_token})});await sbStoreSession(d);return d.access_token;
 }
-async function sbSignUp(){
-  await sbSaveConfig();const c=await sbConfig(),pw=$("#sbPassword").value;
-  if(!c.email||!pw)throw new Error("E-mail en wachtwoord ontbreken.");
-  const d=await sbRequest("/auth/v1/signup",{method:"POST",body:JSON.stringify({email:c.email,password:pw})});
-  if(d.access_token)await sbStoreSession(d);sbStatus("Account aangemaakt. Als e-mailbevestiging actief is: bevestig eerst en meld daarna aan.","good");
-}
-async function sbSignIn(){
-  await sbSaveConfig();const c=await sbConfig(),pw=$("#sbPassword").value;
-  if(!c.email||!pw)throw new Error("E-mail en wachtwoord ontbreken.");
-  const d=await sbRequest("/auth/v1/token?grant_type=password",{method:"POST",body:JSON.stringify({email:c.email,password:pw})});await sbStoreSession(d);$("#sbPassword").value="";sbStatus(`Aangemeld als ${d.user?.email||c.email}.`,"good");
-}
-async function sbSignOut(){
-  const c=await sbConfig();if(c.access_token)try{await sbRequest("/auth/v1/logout",{method:"POST",headers:{Authorization:`Bearer ${c.access_token}`}})}catch{}
-  await v6SettingsPut("v6_sb_config",{url:c.url,key:c.key,email:c.email,updated_at:Date.now()});sbStatus("Afgemeld.");
-}
+async function sbSignUp(){sbStatus("Maak je cloudaccount aan in Athenaeum → Instellingen → Synchronisatie.","good")}
+async function sbSignIn(){sbStatus("Meld aan in Athenaeum → Instellingen → Synchronisatie. Scriptorium gebruikt daarna dezelfde sessie.","good")}
+async function sbSignOut(){sbStatus("Meld af via Athenaeum → Instellingen → Synchronisatie.","good")}
 async function sbPullPayload(){
   const c=await sbConfig(),token=await sbEnsureAccess(),uid=c.user?.id||(await sbConfig()).user?.id;if(!uid)throw new Error("Gebruikers-ID ontbreekt.");
   const d=await sbRequest(`/rest/v1/scriptorium_sync?user_id=eq.${encodeURIComponent(uid)}&select=payload,updated_at`,{headers:{Authorization:`Bearer ${token}`}});
@@ -653,11 +641,23 @@ async function sbPushPayload(payload){
   await sbRequest("/rest/v1/scriptorium_sync?on_conflict=user_id",{method:"POST",headers:{Authorization:`Bearer ${token}`,Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({user_id:uid,payload,updated_at:new Date().toISOString()})});
 }
 async function sbSync(mode="merge"){
-  sbStatus("Synchroniseren…");const local=await v6BuildSyncPayload();
-  if(mode==="push"){await sbPushPayload(local);sbStatus("Lokale gegevens naar cloud gestuurd.","good");return}
-  const remote=await sbPullPayload();
-  if(mode==="pull"){if(remote)await v6ApplySyncPayload(remote);sbStatus(remote?"Cloudgegevens lokaal samengevoegd.":"Nog geen cloudgegevens.","good");return}
-  const merged=remote?v6MergeSyncPayload(local,remote):local;await v6ApplySyncPayload(merged);await sbPushPayload(merged);sbStatus("Cloud en lokaal samengevoegd.","good");
+  const pid=window.ATH_PROFILE_ID||localStorage.getItem("athenaeum_current_profile")||"";
+  if(!pid||!window.AthSync)throw new Error("Open Scriptorium via Athenaeum om veilig te synchroniseren.");
+  const c=window.AthSync.cfg(pid);
+  if(!c?.enabled||!c?.user?.id)throw new Error("Meld eerst aan via Athenaeum → Instellingen → Synchronisatie.");
+  sbStatus("Athenaeum split-sync uitvoeren…");
+  if(mode==="pull"){
+    await window.AthSync.syncScriptorium(pid,{preferRemote:true});
+    sbStatus("Scriptorium incrementeel uit cloud bijgewerkt.","good");
+    return;
+  }
+  if(mode==="push"){
+    await window.AthSync.syncScriptorium(pid);
+    sbStatus("Gewijzigde Scriptorium-records incrementeel gesynchroniseerd.","good");
+    return;
+  }
+  await window.AthSync.syncAll(pid);
+  sbStatus("Athenaeum + Scriptorium incrementeel gesynchroniseerd.","good");
 }
 
 
@@ -744,8 +744,6 @@ window.init=async function(){
   if("serviceWorker" in navigator && (location.protocol==="https:"||location.hostname==="localhost")){
     navigator.serviceWorker.register("./sw.js").catch(console.warn);
   }
-  setTimeout(async()=>{const c=await sbConfig();if(c.access_token||c.refresh_token)sbSync("merge").catch(()=>{});},1800);
-  setInterval(async()=>{const c=await sbConfig();if(c.access_token||c.refresh_token)sbSync("merge").catch(()=>{});},300000);
 };
 
 window.openModuleTheory=openModuleTheory;
