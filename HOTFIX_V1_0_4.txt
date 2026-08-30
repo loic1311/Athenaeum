@@ -1,0 +1,12 @@
+ATHENAEUM V1.0.4
+
+- Mobiele weergave definitief gerepareerd: de desktop-sidebar kan op telefoon niet meer over de pagina vallen.
+- Cloud restore is idempotent: hetzelfde Supabase user_id wordt aan hetzelfde lokale profiel gekoppeld.
+- Dezelfde cloudgebruiker wordt bijgewerkt in plaats van als nieuw profiel toegevoegd.
+- Supabase URL en publishable key zijn vooraf ingevuld; normale gebruikers voeren alleen e-mail en wachtwoord in.
+- De service worker gebruikt network-first voor HTML/JS/CSS/JSON om oude PWA-versies sneller te vervangen.
+
+Standaard cloud:
+https://gtygqmzkwawuhcnlkzfk.supabase.co
+Publishable key:
+sb_publishable_4oklfaZ1KklugltkYxKtDA_bzTdDgs0

@@ -11,7 +11,7 @@ body.force-mobile .shell{grid-template-columns:1fr}body.force-mobile .sidebar{di
 body.force-desktop .shell{grid-template-columns:265px minmax(0,1fr)}body.force-desktop .sidebar{display:block}body.force-desktop .mobile-nav{display:none}body.force-desktop .page-wrap{padding:24px}
 
 
-/* Athenaeum V1.0.2 — account/app separation and sidebar redesign */
+/* Athenaeum V1.0.4 — account/app separation and sidebar redesign */
 .sidebar{display:flex;flex-direction:column;overflow:hidden;padding:18px 16px;background:linear-gradient(180deg,#0d3437 0%,#0a292d 58%,#081f25 100%)}
 .side-brand{padding:4px 4px 16px!important;margin-bottom:6px;border-bottom:1px solid rgba(255,255,255,.08)}
 .side-brand.brand-lockup{gap:11px}.side-brand.brand-lockup img{width:44px;height:44px;border-radius:13px}.side-brand.brand-lockup h1{font-size:20px;letter-spacing:.02em}.side-brand.brand-lockup small{font-size:11px;color:#aac1ba}
@@ -27,3 +27,42 @@ body.force-desktop .shell{grid-template-columns:265px minmax(0,1fr)}body.force-d
 .no-apps{padding:22px;text-align:center;border:1px dashed #cfc5b2;border-radius:20px;background:#fffaf0;color:var(--muted)}
 .app-back{display:inline-flex;align-items:center;gap:7px;text-decoration:none;border:1px solid rgba(199,155,72,.30);background:rgba(199,155,72,.08);color:inherit;border-radius:11px;padding:8px 10px;font-weight:750;font-size:12px;margin-bottom:12px}
 @media(max-width:900px){.side-apps,.side-section-label{display:none}.app-access-grid{grid-template-columns:1fr}.app-detail-grid{grid-template-columns:1fr}.app-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+
+/* Athenaeum V1.0.4 — definitive mobile layout + simplified cloud settings */
+.cloud-default-note{display:flex;align-items:center;gap:10px;margin:12px 0 14px;padding:11px 13px;border:1px solid #cfe0da;background:#f2f8f5;border-radius:14px;color:#315b52}
+.cloud-default-note span{margin-left:auto;font-size:11px;color:#6d7f79}
+.advanced-cloud{margin-top:12px;border-top:1px solid #e3dccf;padding-top:10px}
+.advanced-cloud summary{cursor:pointer;color:#6c725f;font-size:12px;font-weight:700}
+
+@media(max-width:900px){
+  body .shell{display:block!important;grid-template-columns:1fr!important;min-height:100dvh!important}
+  body .sidebar{display:none!important}
+  body .app-main{display:block!important;width:100%!important;min-height:100dvh!important;background:linear-gradient(135deg,#f9f6ef,#eef3ee)!important}
+  body .topbar{position:sticky!important;top:0!important;z-index:60!important;height:auto!important;min-height:70px!important;padding:12px 14px!important;display:flex!important;align-items:center!important;gap:10px!important;background:rgba(255,253,248,.97)!important;border-bottom:1px solid #e2dacb!important}
+  body .topbar>div:first-child{min-width:0!important;flex:1!important}
+  body .topbar h2{font-size:27px!important;line-height:1.05!important}
+  body .topbar .tiny{font-size:12px!important;line-height:1.25!important}
+  body .topbar>.row{display:flex!important;flex-direction:column!important;align-items:flex-end!important;gap:7px!important;flex:0 0 auto!important}
+  body .topbar .chip{font-size:11px!important;padding:5px 8px!important}
+  body #switchProfile{padding:8px 10px!important;font-size:12px!important}
+  body .page-wrap{padding:14px 14px calc(112px + env(safe-area-inset-bottom))!important;max-width:none!important}
+  body .hero{padding:18px!important;border-radius:22px!important}
+  body .hero h2{font-size:30px!important;line-height:1.08!important}
+  body .hero .spread{align-items:flex-start!important}
+  body .hero .spread>img{width:64px!important;height:64px!important;flex:none!important}
+  body .stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+  body .stat{padding:14px!important}
+  body .stat .v{font-size:24px!important}
+  body .quick-apps,body .app-detail-grid,body .grid.two,body .grid.three{grid-template-columns:1fr!important}
+  body .mobile-nav{display:grid!important}
+  body .bottom-sheet{display:block!important}
+}
+@media(max-width:480px){
+  body .topbar h2{font-size:24px!important}
+  body .page-wrap{padding-left:12px!important;padding-right:12px!important}
+  body .hero h2{font-size:28px!important}
+  body .mobile-nav{left:8px!important;right:8px!important;border-radius:22px!important}
+  body .mobile-nav button{font-size:10px!important;padding:7px 2px!important}
+  body .mobile-nav button .ico{font-size:20px!important}
+}

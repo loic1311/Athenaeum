@@ -1,13 +1,10 @@
 {
-  "version": "1.0.3",
-  "release": "Athenaeum V1.0.3",
-  "features": [
-    "profile_gate_on_launch",
-    "cloud_restore",
-    "smart_cross_device_merge",
-    "scriptorium_sync_without_pdfs",
-    "paideia_telegram",
-    "telegram_test_messages",
-    "stable_cloud_profile_key"
+  "version": "1.0.4",
+  "release": "Athenaeum V1.0.4",
+  "changes": [
+    "mobile-layout-fix",
+    "cloud-profile-deduplication",
+    "default-supabase-config",
+    "network-first-update-cache"
   ]
 }
