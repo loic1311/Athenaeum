@@ -1,12 +1,11 @@
 {
-  "version": "1.0.8",
-  "release": "Athenaeum V1.0.8",
+  "version": "1.0.9",
+  "release": "Athenaeum V1.0.9",
   "changes": [
-    "phone_tablet_ipad_desktop_device_detection",
-    "reliable_browser_vs_installed_app_label",
-    "ipad_apple_web_app_metadata",
-    "dedicated_tablet_layout_parent_paideia_scriptorium",
-    "pwa_install_guidance_and_install_button",
-    "profile_gate_and_mobile_library_progress_fix_from_v1_0_7"
+    "pin_modal_above_profile_gate",
+    "profile_editor_above_profile_gate",
+    "cloud_restore_modal_above_profile_gate",
+    "toast_layer_above_modals",
+    "retains_phone_tablet_ipad_desktop_layouts"
   ]
 }
