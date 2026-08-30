@@ -1,6 +1,6 @@
 {
-  "name": "Scriptorium V7.3 — AI-docent",
-  "short_name": "Scriptorium V7.3",
+  "name": "Scriptorium V7.5 — Academische Onderzoekscoach",
+  "short_name": "Scriptorium V7.5",
   "description": "Academische onderzoekscoach voor Oude Geschiedenis met corpusbeheer, UGent- en OpenAlex-zoekfuncties, bibliografieketens, authentieke primaire bronnen, theorie, training, voortgang en synchronisatie.",
   "id": "./",
   "start_url": "./index.html?source=pwa",

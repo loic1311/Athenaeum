@@ -1,14 +1,13 @@
 {
-  "version": "7.3",
-  "release": "V7.3 AI-docent",
+  "version": "7.5",
+  "release": "V7.5 Productiestabiel",
   "features": [
-    "teacher_only_ai",
-    "integrated_training_grading",
-    "atelier_feedback",
-    "no_chat_interface",
-    "safe_boot_v7_2",
-    "incremental_sync",
-    "h5p",
-    "shared_catalog"
+    "metadata_first_boot",
+    "lazy_full_analysis_hydration",
+    "safe_legacy_migration",
+    "deduplicating_analysis_merge",
+    "lazy_lesson_cache",
+    "ai_status_and_system_check",
+    "split_sync_only"
   ]
 }

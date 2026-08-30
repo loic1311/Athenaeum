@@ -1,12 +1,14 @@
 {
-  "version": "1.0.14",
-  "release": "Athenaeum V1.0.14",
+  "version": "1.0.16",
+  "release": "Athenaeum V1.0.16 Production Hardening",
   "changes": [
-    "athenaeum_ai_teacher_backend",
-    "paideia_open_answer_feedback",
-    "scriptorium_integrated_grading",
-    "scriptorium_atelier_feedback",
-    "daily_free_quota",
-    "no_chatbot_ui"
+    "scriptorium_metadata_first_boot",
+    "scriptorium_lazy_analysis_hydration",
+    "safe_legacy_migration",
+    "deduplicating_analysis_import",
+    "paideia_tablet_detection_restored",
+    "per_app_ai_status_and_system_checks",
+    "nonfatal_page_error_boundaries",
+    "performance_split_sync_preserved"
   ]
 }

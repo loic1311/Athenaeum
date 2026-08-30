@@ -433,3 +433,9 @@ body.device-tablet .app>main{grid-column:2!important;grid-row:1!important;min-wi
 #v72MemoryCard{contain:layout paint}
 
 #aiGradeTraining,#atelierAiReview{box-shadow:0 8px 20px rgba(38,84,66,.10)}#atelierAiFeedback .feedback-card{margin-top:10px}
+
+/* V7.4 AI status */
+.v74-ai-card{border-color:#cbd9d4!important;background:linear-gradient(135deg,#fbfdfc,#f4f8f6)!important}
+.v74-ai-led{display:inline-flex;align-items:center;gap:7px;font-weight:800}.v74-ai-led:before{content:"";width:10px;height:10px;border-radius:50%;background:#999}
+.v74-ai-led.ok:before{background:#3a9a70;box-shadow:0 0 0 4px rgba(58,154,112,.13)}.v74-ai-led.bad:before{background:#bd5e57;box-shadow:0 0 0 4px rgba(189,94,87,.13)}
+.v74-quota{margin-top:13px}.v74-meter{height:9px;background:#dfe8e4;border-radius:99px;overflow:hidden;margin-top:7px}.v74-meter>i{display:block;height:100%;background:linear-gradient(90deg,#315f65,#c29a4b);border-radius:99px}

@@ -1,0 +1,30 @@
+ATHENAEUM V1.0.16 — PRODUCTIEHARDENING
+
+Deze release behandelt Athenaeum niet meer als een reeks hotfixes maar als één product.
+
+SCRIPTORIUM V7.5
+- metadata-first startup: volledige analyses worden niet meer allemaal in RAM gehouden;
+- analyses worden alleen geladen wanneer je een werk opent of een benchmark echt nodig hebt;
+- legacy-migratie leest IDs/records één voor één;
+- analyse-import dedupliceert arrays en voorkomt opnieuw groeiende duplicaten;
+- leerprincipes worden lazy en werk-per-werk opgebouwd;
+- backup exporteert volledige records zonder ze permanent in state te houden;
+- Instellingen bevat AI-status, dagquota, reconnect en volledige systeemcontrole;
+- cloudsync blijft incrementeel en zwaar werk start pas nadat de UI bruikbaar is.
+
+PAIDEIA
+- lichte externe basisbestanden;
+- algemene kennis/skills lazy;
+- robuuste telefoon/tablet/iPad/desktopdetectie hersteld;
+- Instellingen bevat AI-status, dagquota, reconnect en systeemcontrole;
+- pagina-renderfouten worden als herstelbare melding getoond in plaats van de hele app vast te zetten.
+
+AI
+- ai-coach v2 staat server-side actief;
+- geen chatbot;
+- Paideia: max. 60 reguliere feedbackbeurten per gebruiker/dag;
+- Scriptorium: max. 10 diepe beoordelingen per gebruiker/dag;
+- statuspanelen tonen resterend budget, model, laatste gebruik en providerstatus.
+
+QA
+Zie RELEASE_AUDIT_V1_0_16.txt.

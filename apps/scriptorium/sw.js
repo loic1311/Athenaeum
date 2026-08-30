@@ -1,6 +1,6 @@
-const CACHE='scriptorium-v7-3-shell-1';
+const CACHE='scriptorium-v7-5-shell-1';
 const LOCAL_SHELL=[
-  './','./index.html','./desktop.html','./mobile.html','./v6.css','./v6.js','./v6_3.js','./v6_4.js','./v6_5.js','./v6_5_2.js','./v7.js','./v7_1.js','./v7_2.js','./v7_3.js','./sources.js',
+  './','./index.html','./desktop.html','./mobile.html','./v6.css','./v6.js','./v6_3.js','./v6_4.js','./v6_5.js','./v6_5_2.js','./v7.js','./v7_1.js','./v7_2.js','./v7_3.js','./v7_4.js','./v7_5.js','./sources.js',
   './manifest.webmanifest','./version.json','./corpus_seed.json','./bibliography_seed_v7.json','./Scriptorium_AI_Instructiegids_Vrienden.pdf',
   './scriptorium-logo.png','./scriptorium-logo-64.png','./icons/icon-192-v7.png','./icons/icon-512-v7.png','./icons/icon-maskable-192-v7.png','./icons/icon-maskable-512-v7.png','./icons/apple-touch-icon-v7.png','./icons/favicon-48-v7.png','./icons/favicon-32-v7.png'
 ];

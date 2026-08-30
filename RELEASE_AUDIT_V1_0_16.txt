@@ -1,0 +1,30 @@
+ATHENAEUM V1.0.16 — RELEASE AUDIT
+
+Resultaat: statische productcontrole GESLAAGD.
+
+Uitgevoerde controles:
+- JavaScript syntax: 20 bestanden OK
+- JSON parse: 10 bestanden OK
+- Lokale script/style/image-referenties in hoofdschermen: OK
+- Scriptorium service-worker assets: OK
+- Dubbele statische IDs index.html: geen
+- Dubbele statische IDs apps/paideia/index.html: geen
+- Dubbele statische IDs apps/scriptorium/index.html: geen
+
+Prestatiemaatregelen:
+- Scriptorium bewaart op start alleen metadata in state.works; volledige analyses worden per werk opgevraagd.
+- Legacy-databasecontrole gebruikt count/keys, niet getAll() van het volledige corpus.
+- Theorie/AI benchmarkcache wordt werk-per-werk en lazy opgebouwd.
+- Analyse-import dedupliceert arrays zodat dezelfde data niet opnieuw blijft groeien.
+- Paideia basisdata en aanvullende vragen blijven gescheiden/lazy.
+- Zware Scriptorium-sync draait alleen binnen Scriptorium en pas na UI-start.
+
+Bestandsgroottes:
+- root_index_kb: 150.2 KB
+- paideia_index_kb: 4.2 KB
+- paideia_js_kb: 32.1 KB
+- scriptorium_index_kb: 179.6 KB
+- scriptorium_v75_kb: 25.4 KB
+
+Beperking van deze audit:
+Een echte browser/end-to-end kliktest kon in deze uitvoeromgeving niet worden uitgevoerd omdat Chromium zowel localhost als file:// met ERR_BLOCKED_BY_ADMINISTRATOR blokkeert. Daarom claimt deze audit geen bewijs dat elk fysiek toestel/browser-combinatie foutloos is. De build bevat wel in-app systeemcontroles en niet-fatale foutafhandeling zodat resterende omgevingsproblemen zichtbaar worden zonder de volledige app te blokkeren.

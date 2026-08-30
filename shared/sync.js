@@ -11,7 +11,7 @@ const SCRIPTORIUM_INTERVAL=15*60*1000;
 
 let lightTimer=null,scriptTimer=null,dirtyTimer=null;
 let focusBound=false,visibilityBound=false,onlineBound=false;
-let activePid='';
+let activePid='',heavyAuto=false;
 let suspendDirty=false;
 
 const running=new Map();
@@ -652,55 +652,57 @@ function stopAuto(){
   clearInterval(scriptTimer);
   clearTimeout(dirtyTimer);
   lightTimer=scriptTimer=dirtyTimer=null;
-  activePid='';
+  activePid='';heavyAuto=false;
 }
 
-function startAuto(pid){
+function startAuto(pid,opts={}){
   stopAuto();
   activePid=pid;
+  heavyAuto=Boolean(opts?.scriptorium);
   const c=cfg(pid);
   if(!c.enabled)return;
 
   const light=()=>navigator.onLine&&syncNow(pid).catch(()=>{});
-  const heavy=()=>navigator.onLine&&syncScriptorium(pid).catch(()=>{});
+  const heavy=()=>heavyAuto&&navigator.onLine&&syncScriptorium(pid).catch(()=>{});
 
-  setTimeout(light,900);
-  setTimeout(heavy,5000);
+  setTimeout(light,1200);
   lightTimer=setInterval(light,LIGHT_INTERVAL);
-  scriptTimer=setInterval(heavy,SCRIPTORIUM_INTERVAL);
+
+  // Heavy IndexedDB/Scriptorium work is never started from Paideia or the parent shell.
+  // Inside Scriptorium it waits until the UI has been usable for a while.
+  if(heavyAuto){
+    setTimeout(heavy,45000);
+    scriptTimer=setInterval(heavy,SCRIPTORIUM_INTERVAL);
+  }
 
   if(!focusBound){
     window.addEventListener('focus',()=>{
       const id=S().currentProfileId();
       if(id&&cfg(id).enabled){
         syncNow(id).catch(()=>{});
-        const c=cfg(id);
-        if(Date.now()-(c.last_scriptorium_sync||0)>5*60*1000)syncScriptorium(id).catch(()=>{});
+        if(heavyAuto&&Date.now()-(cfg(id).last_scriptorium_sync||0)>10*60*1000)syncScriptorium(id).catch(()=>{});
       }
     });
     focusBound=true;
   }
-
   if(!visibilityBound){
     document.addEventListener('visibilitychange',()=>{
       if(document.visibilityState==='visible'){
         const id=S().currentProfileId();
         if(id&&cfg(id).enabled){
           syncNow(id).catch(()=>{});
-          const c=cfg(id);
-          if(Date.now()-(c.last_scriptorium_sync||0)>5*60*1000)syncScriptorium(id).catch(()=>{});
+          if(heavyAuto&&Date.now()-(cfg(id).last_scriptorium_sync||0)>10*60*1000)syncScriptorium(id).catch(()=>{});
         }
       }
     });
     visibilityBound=true;
   }
-
   if(!onlineBound){
     window.addEventListener('online',()=>{
       const id=S().currentProfileId();
       if(id&&cfg(id).enabled){
         syncNow(id).catch(()=>{});
-        syncScriptorium(id).catch(()=>{});
+        if(heavyAuto)syncScriptorium(id).catch(()=>{});
       }
     });
     onlineBound=true;

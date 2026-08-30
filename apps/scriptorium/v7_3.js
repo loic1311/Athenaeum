@@ -41,5 +41,6 @@ function bindAi73(){
   const b=document.getElementById('aiGradeTraining');if(b)b.onclick=aiGradeTraining;
   const a=document.getElementById('atelierAiReview');if(a)a.onclick=atelierAiReview;
 }
+window.SCRIPTORIUM_V73_ENHANCE=function(){brand73();bindAi73()};
 window.init=async function(){await PREV_INIT();brand73();bindAi73();document.addEventListener('click',e=>{const n=e.target.closest('[data-page],[data-go]');if(n)setTimeout(bindAi73,0)},true)};
 })();
