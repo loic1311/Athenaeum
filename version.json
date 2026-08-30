@@ -1,14 +1,12 @@
 {
-  "version": "1.0.16",
-  "release": "Athenaeum V1.0.16 Production Hardening",
+  "version": "1.0.17",
+  "release": "Athenaeum V1.0.17 — Clean Production Baseline",
   "changes": [
-    "scriptorium_metadata_first_boot",
-    "scriptorium_lazy_analysis_hydration",
-    "safe_legacy_migration",
-    "deduplicating_analysis_import",
-    "paideia_tablet_detection_restored",
-    "per_app_ai_status_and_system_checks",
-    "nonfatal_page_error_boundaries",
-    "performance_split_sync_preserved"
+    "hotfix_docs_consolidated",
+    "parent_html_externalized",
+    "scriptorium_single_runtime_bundle",
+    "scriptorium_single_stylesheet",
+    "unused_legacy_assets_removed",
+    "lean_service_workers"
   ]
 }

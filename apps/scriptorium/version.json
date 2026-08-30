@@ -1,13 +1,11 @@
 {
-  "version": "7.5",
-  "release": "V7.5 Productiestabiel",
+  "version": "7.6",
+  "release": "V7.6 Clean Production Bundle",
   "features": [
-    "metadata_first_boot",
-    "lazy_full_analysis_hydration",
-    "safe_legacy_migration",
-    "deduplicating_analysis_merge",
-    "lazy_lesson_cache",
-    "ai_status_and_system_check",
-    "split_sync_only"
+    "single_runtime_bundle",
+    "single_stylesheet",
+    "lean_service_worker",
+    "legacy_hotfix_files_removed",
+    "v7_5_runtime_features_preserved"
   ]
 }

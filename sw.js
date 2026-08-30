@@ -1,5 +1,5 @@
-const VERSION='athenaeum-v1.0.16-shell-1';
-const CORE=['./','./index.html','./manifest.webmanifest','./assets/icons/icon-192.png','./assets/icons/icon-512.png'];
+const VERSION='athenaeum-v1.0.17-shell-1';
+const CORE=['./','./index.html','./manifest.webmanifest','./shared/style.css','./shared/store.js','./shared/sync.js','./shared/telegram.js','./app.js','./assets/icons/icon-192.png','./assets/icons/icon-512.png'];
 self.addEventListener('install',event=>event.waitUntil((async()=>{
   const c=await caches.open(VERSION);
   for(const u of CORE){try{await c.add(new Request(u,{cache:'reload'}))}catch(e){console.warn('cache skip',u,e)}}

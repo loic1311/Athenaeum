@@ -1,0 +1,527 @@
+ATHENAEUM — GECONSOLIDEERDE CHANGELOG
+====================================
+
+Dit bestand vervangt de losse HOTFIX_*.txt-bestanden uit oudere releases.
+Die bestanden waren documentatie en werden nooit door de app uitgevoerd.
+
+Productiebasis:
+- Athenaeum V1.0.17
+- Scriptorium V7.6 Clean Bundle
+- Paideia V1.0.17
+- centrale Supabase split-sync
+- Telegram voor Paideia
+- geïntegreerde AI-docent, zonder chatbot
+- telefoon / tablet / iPad / desktop / PWA
+
+Historische notities volgen hieronder.
+
+
+========================================================================
+GITHUB_HOTFIX_V1_0_1.txt
+========================================================================
+
+ATHENAEUM V1.0.1 — GITHUB HOTFIX
+
+De screenshot met kale HTML bewijst dat de stylesheet niet geladen werd. Zonder de .hidden-regel worden profielkeuze, dashboard, menu en modals tegelijk zichtbaar; ook de kapotte logo's tonen dat nested assets ontbraken of niet bereikbaar waren.
+
+Deze hotfix maakt de hoofdschil failsafe:
+- volledige Athenaeum-CSS staat ook rechtstreeks in index.html;
+- store, sync en hoofd-JavaScript staan rechtstreeks in index.html;
+- kernlogo en avatars zijn ingebed;
+- Paideia is eveneens grotendeels self-contained;
+- het volledige Scriptorium V7-pakket zit onder apps/scriptorium/;
+- de service worker faalt niet meer volledig als één cachebestand ontbreekt.
+
+AANBEVOLEN PUBLICATIE
+Gebruik GitHub Desktop en kopieer de VOLLEDIGE uitgepakte inhoud van ATHENAEUM_V1_0_1_GITHUB_ROOT.zip naar dezelfde Athenaeum-repository. Commit en Push. Zo gaan submappen gegarandeerd mee.
+
+CONTROLE
+Open na publicatie: https://<gebruikersnaam>.github.io/Athenaeum/DEPLOY_CHECK.html
+Alle regels horen groen te zijn.
+
+
+========================================================================
+HOTFIX_V1_0_10_TABLET.txt
+========================================================================
+
+ATHENAEUM V1.0.10 — TABLET / iPAD REBUILD
+
+Deze release wijzigt bewust NIET de telefoon- of laptop/desktop-layout.
+
+Wat fout ging op iPad/tablet:
+- op <=900px activeerden oudere telefoonregels nog `display:block` op de shell;
+- de latere tabletregel veranderde alleen grid-kolommen, maar zette `display:grid`
+  niet opnieuw expliciet;
+- daardoor kwam de volledige sidebar in portrait boven de inhoud te staan;
+- in landscape was de interface bruikbaar, maar te compact en onvoldoende
+  tablet-specifiek.
+
+Wat V1.0.10 doet:
+ATHENAEUM
+- echte 2-koloms tablet-shell in portrait én landscape;
+- portrait: compacte linkerrail van ca. 158px;
+- landscape: linkerrail van ca. 210px;
+- geen mobiele bottom-nav op tablet;
+- tablet-topbar blijft horizontaal;
+- portrait gebruikt 2 statistiekkolommen en 1 inhoudskolom;
+- landscape gebruikt 4 statistiekkolommen en 2 inhoudskolommen;
+- profielkeuzescherm is opnieuw geschaald voor tablet/iPad.
+
+PAIDEIA
+- eigen tablet-shell, niet langer afhankelijk van telefoonmediaqueries;
+- portrait compacte rail + 1 kolom;
+- landscape bredere rail + 2 kolommen;
+- examens/vragen/modals krijgen tabletmarges.
+
+SCRIPTORIUM
+- eigen tablet-shell;
+- portrait compacte rail en enkelkoloms analysegedeelten;
+- landscape bredere rail en 2-koloms analysegedeelten;
+- focus/training op tablet wordt niet in een te smalle desktop-split geforceerd.
+
+APP EN WEB
+Dezelfde tablet-layout wordt gebruikt in Safari/Chrome én als geïnstalleerde PWA.
+Alleen de veilige app-marges/statusbalk verschillen.
+
+Telefoon en laptop/desktop zijn uitdrukkelijk ongemoeid gelaten.
+
+
+========================================================================
+HOTFIX_V1_0_11_MEMORY.txt
+========================================================================
+
+ATHENAEUM V1.0.11 — OUT OF MEMORY / MULTI-DEVICE FIX
+
+OORZAAK
+Het probleem lag niet simpelweg aan 'twee mensen tegelijk'.
+De echte oorzaak zat in de synchronisatie-architectuur.
+
+Tot V1.0.10 bevatte één athenaeum_state-record:
+- profiel/Paideia: ongeveer 571 bytes
+- Scriptorium: ongeveer 20,5 MB JSON
+- totaal: ongeveer 20,7 MB JSON
+
+Elke automatische sync deed vervolgens:
+1. alle 56 Scriptorium-werken uit IndexedDB in geheugen laden;
+2. de volledige 20+ MB cloudpayload downloaden;
+3. lokaal + cloud recursief mergen;
+4. de gemergde 20+ MB opnieuw in IndexedDB toepassen;
+5. de volledige payload opnieuw JSON.stringify'en en uploaden.
+
+Daarbij stonden lokaal, cloud, merge-resultaat en HTTP-body tijdelijk tegelijk
+in het browsergeheugen. Op iPad en ook in Edge kon dit de tab na korte tijd naar
+'Out of Memory' duwen.
+
+Met twee apparaten tegelijk trad het probleem sneller op, omdat beide clients
+dezelfde zware volledige syncs uitvoerden en elkaar vaker tot nieuwe merges
+brachten. Twee apparaten horen echter gewoon ondersteund te worden.
+
+V1.0.11
+- athenaeum_state bevat alleen nog lichte profiel/Paideia-data;
+- Scriptorium is opgesplitst in:
+  * athenaeum_scriptorium_works — één rij per werk;
+  * athenaeum_scriptorium_settings — één rij per instelling;
+- automatische profielsync blijft om de 2 minuten licht;
+- Scriptorium synchroniseert incrementeel om de 15 minuten;
+- bij een Scriptorium-sync worden alleen ID + updated_at van alle werken vergeleken;
+- alleen gewijzigde werken worden individueel gedownload/geüpload;
+- geen volledige 20 MB corpusdump meer in één merge;
+- gelijke versies worden niet opnieuw recursief gemerged;
+- dubbele analysis_ranges worden niet verder vermenigvuldigd;
+- een cloudrestore haalt Scriptorium werk per werk binnen.
+
+SERVER
+De migratie is reeds toegepast op het gekoppelde Athenaeum Supabase-project.
+De hoofdstate is daarbij van ongeveer 20,7 MB naar ongeveer 571 bytes gegaan.
+De 56 Scriptorium-werken blijven volledig bewaard, maar staan nu elk in een
+afzonderlijke beveiligde rij.
+
+BELANGRIJK
+Sluit vóór de update oude V1.0.10-tabs/apps op alle apparaten. V1.0.11 bevat
+de nieuwe clientarchitectuur. De server blokkeert bovendien dat oude clients
+Scriptorium opnieuw in de zware hoofdstate stoppen.
+
+
+========================================================================
+HOTFIX_V1_0_12_SCRIPTORIUM.txt
+========================================================================
+
+ATHENAEUM V1.0.12 — SCRIPTORIUM V7.1
+
+1. WAAROM SCRIPTORIUM NOG UITVIEL
+Athenaeum V1.0.11 had de centrale sync al opgesplitst, maar Scriptorium zelf
+bevatte nog een oude V6-cloudsync.
+
+Die oude code deed bij het openen na 1,8 seconde automatisch:
+- alle werken uit IndexedDB in één payload laden;
+- alle analyses/training/notities in één object zetten;
+- proberen te synchroniseren naar de oude tabel `scriptorium_sync`.
+
+Die tabel bestaat niet meer en de moderne Athenaeum-sync gebruikt
+`athenaeum_scriptorium_works` per werk. Toch werd de enorme payload nog vóór de
+mislukte netwerkcall in browsergeheugen gebouwd. Daarnaast werd dit iedere
+5 minuten opnieuw gepland.
+
+V1.0.12 schakelt deze legacy whole-corpus sync volledig uit.
+Alle Scriptorium-sync loopt nu via Athenaeum split-sync.
+
+2. V7.1 ECHT GEÏNTEGREERD
+- V7-branding wordt vóór oudere compatibiliteitslagen gezet;
+- fouten in een oudere laag verhinderen V7 niet meer volledig;
+- Scriptorium service-worker-cache is verhoogd naar `scriptorium-v7-1-shell-1`;
+- oude V6-syncinstellingen worden verborgen;
+- instellingen tonen nu de centrale Athenaeum-sync.
+
+3. EXTRA MEMORY FIX
+Vóór de normale Scriptorium-init wordt de lokale IndexedDB met een cursor
+gescand. Oude dubbele `analysis_ranges` / `pending_ranges` worden in-place
+gededupliceerd vóór `loadWorks()` ze in het browsergeheugen laadt.
+
+4. DESKTOP / ZOOM LAYOUT
+De grote lege strook uit de screenshot ontstond wanneer browserzoom of een
+smalle CSS-viewport een oude responsive regel activeerde. V7.1 zet sidebar en
+main expliciet op grid-kolom 1 en 2 bij desktop/tablet.
+
+5. H5P
+Training heeft nu een H5P-kaart:
+- plak een standaard iframe-embedcode of alleen de H5P-URL;
+- Scriptorium bewaart uitsluitend de iframe-URL, geen willekeurige HTML/JS;
+- externe H5P-embeds werken als interactieve oefening;
+- automatische score/xAPI wordt alleen gelezen als de H5P dezelfde origin heeft;
+- externe cross-origin H5P kan handmatig als voltooid worden gemarkeerd.
+
+H5P vervangt de native training NIET. Het is vooral geschikt voor gesloten,
+interactieve vraagtypes. Open historische redenering, bronkritiek,
+onderzoeksvragen, synthese en lange antwoorden blijven in de native training.
+
+6. PDF'S VAN VRIENDEN
+PDF-bestanden zelf blijven standaard lokaal. Dat is bewust wegens opslag,
+privacy en auteursrecht.
+
+Nieuw is de 'Gedeelde bibliotheek':
+- een gebruiker kan per werk 'Deel metadata' kiezen;
+- titel/auteur/jaar/pagina's/bronlink worden zichtbaar voor andere ingelogde
+  Athenaeum-gebruikers;
+- analyses, persoonlijke notities en PDF-bytes worden niet gedeeld;
+- ontvangers kunnen de metadata in hun eigen corpus importeren;
+- optioneel kan 'Deel metadata van nieuwe PDF's automatisch' worden aangezet.
+
+De Supabase-tabel voor deze gedeelde metadata is al server-side aangemaakt.
+
+
+========================================================================
+HOTFIX_V1_0_13_SCRIPTORIUM_SAFE_BOOT.txt
+========================================================================
+
+ATHENAEUM V1.0.13 — SCRIPTORIUM V7.2 SAFE BOOT
+
+De resterende blokkering zat lokaal in de Scriptorium-start, niet in Supabase.
+
+V1.0.12 had de oude zware CLOUD-sync uitgeschakeld, maar bij het openen werd nog
+steeds de historische init-keten uitgevoerd:
+core → V6 → V6.3 → V6.4 → V6.5 → V6.5.2 → V7 → V7.1.
+
+Daarnaast rendeerde core loadWorks() onmiddellijk alle verborgen pagina's:
+Corpus, Voortgang, Corpusanalyse, Theorie én Training.
+
+Belangrijker: een oud apparaat kon vóór de eerdere server-cleanup lokaal nog
+exact gedupliceerde analyse-items in IndexedDB hebben. Supabase kan dus schoon
+zijn terwijl een laptop/iPad lokaal nog een opgeblazen works-store heeft.
+
+V7.2:
+- schoont vóór de eerste getAll() ieder work record één voor één op;
+- dedupliceert primary_sources, secondary_literature, source_criticism,
+  argument_structure, writing_techniques, research_techniques, skill_lessons,
+  lessons_for_user, anti_patterns en weaknesses;
+- dedupliceert ook analysis_ranges/pending_ranges;
+- start alleen de schone core+V6 basis;
+- slaat de V6.3/V6.4/V6.5/V6.5.2 init-wrappers over;
+- past V7/V7.1 daarna selectief als UI-laag toe;
+- rendert verborgen zware pagina's pas wanneer je ze opent;
+- vergelijkt corpus_seed niet meer bij iedere appstart;
+- seedt de 56 ingebouwde werken alleen bij een volledig leeg profiel;
+- behoudt split-sync, H5P en Gedeelde bibliotheek.
+
+Meerdere gebruikers/apparaten blijven ondersteund.
+
+
+========================================================================
+HOTFIX_V1_0_14_AI_DOCENT.txt
+========================================================================
+
+ATHENAEUM V1.0.14 — GEÏNTEGREERDE AI-DOCENT
+
+GEEN CHATBOT
+De AI is uitsluitend een beoordelaar/docent. Er is geen vrij chatvenster en geen gespreksgeschiedenis. Iedere call hoort bij een concrete vraag, oefening of tekst die de gebruiker al zelf heeft geschreven.
+
+BACKEND
+- Supabase Edge Function: ai-coach (live gedeployed, JWT verplicht).
+- Secret: GROQ_API_KEY blijft uitsluitend server-side.
+- Paideia: openai/gpt-oss-20b, maximaal 60 beoordelingen per gebruiker per UTC-dag.
+- Scriptorium: openai/gpt-oss-120b, maximaal 10 diepe beoordelingen per gebruiker per UTC-dag; bij tijdelijke 120b-capaciteitsfout valt de docent terug op 20b.
+- Minimaal 3 seconden tussen AI-calls per gebruiker.
+- Structured Outputs / JSON-schema zodat de app feedback betrouwbaar kan opslaan.
+
+PAIDEIA
+Bij open vragen staat nu “AI-docent: geef feedback”. De docent beoordeelt alleen het reeds geschreven antwoord tegen de vraag, richtlijn/keywords en bronverwijzingen die Paideia aanlevert. De AI-score vult de sessiescore in en feedback toont: oordeel, sterke punten, ontbrekende punten, volgende actie en bronbinding. Meerkeuze blijft lokaal en verbruikt geen AI.
+
+SCRIPTORIUM
+- Training: “AI-docent beoordelen” vervangt het heen-en-weer kopiëren naar ChatGPT.
+- De bestaande 18+/20-rubric, didactische ontwerpinfo en corpusprincipes worden rechtstreeks meegestuurd.
+- Feedback wordt automatisch als grade bij de poging opgeslagen.
+- Atelier/eigen tekst: “AI-docent feedback” beoordeelt je eigen fragment en gebruikt maximaal vier geselecteerde benchmarkwerken als techniekcontext.
+- De docent mag geen volledig vervangend modelantwoord of kant-en-klare herschreven passage geven.
+
+GRATIS EN EFFICIËNT
+Native multiplechoice, H5P, flashcards, navigatie en zelfcorrectie gebruiken geen AI. Alleen open antwoorden/teksten roepen de docent aan. Er is een harde app-quota zodat de gedeelde gratis Groq-capaciteit niet door één gebruiker kan worden opgebruikt. Athenaeum schakelt niet automatisch over naar een betaalde provider.
+
+PRIVACY
+De browser krijgt de GROQ_API_KEY nooit te zien. De app stuurt geen volledige PDF mee: alleen de concrete vraag, het eigen antwoord, rubric/ankerpunten en beperkte relevante context.
+
+
+========================================================================
+HOTFIX_V1_0_15_PERFORMANCE_AI_STATUS.txt
+========================================================================
+
+ATHENAEUM V1.0.15 — PERFORMANCE + AI STATUS
+
+PERFORMANCE
+Paideia:
+- oude index.html bevatte ±160 KB inline avatars/logo's + 300 vragen + kopieën van store/sync/Telegram;
+- index is opgesplitst in externe cachebare bestanden;
+- basis-seed is ±4,5 KB;
+- alleen de 48 werkelijk gebruikte algemene-kennis/skillvragen blijven als model-supplement;
+- die aanvullende vragen worden pas geladen wanneer nodig / tijdens browser-idle;
+- 252 modelvragen Oude/Algemene Geschiedenis zijn uit runtime verwijderd, omdat geschiedenis brongebonden kennis-packs moet gebruiken.
+
+Scriptorium:
+- V7.4 start rechtstreeks vanaf de schone core in plaats van de oude V7.2 cleanup-keten te doorlopen;
+- pdf-lib en JSZip worden niet meer bij appstart gedownload/geparsed; alleen bij PDF-upload/export;
+- zware Scriptorium-cloudsync wordt niet meer vanuit Paideia of de Athenaeum-home gestart;
+- in Scriptorium zelf begint de incrementele zware sync pas na 45 seconden, zodat de UI eerst bruikbaar is.
+
+AI-DOCENT
+De serverfunctie ai-coach v2 geeft nu een echte status:
+- Supabase/JWT verbinding;
+- Groq bereikbaarheid en latency;
+- actief model;
+- dagelijks gebruikt/overgebleven quota;
+- laatste AI-call;
+- resetmoment.
+
+Paideia → Instellingen toont maximaal 60 normale feedbackbeurten/dag.
+Scriptorium → Instellingen toont maximaal 10 diepe beoordelingen/dag.
+Beide hebben Status verversen en Opnieuw verbinden.
+Opnieuw verbinden vernieuwt eerst de Supabase-sessie en test daarna de Groq-provider.
+
+Er is nog steeds GEEN chatbot.
+
+
+========================================================================
+HOTFIX_V1_0_2.txt
+========================================================================
+
+ATHENAEUM V1.0.2
+
+- Athenaeum-zijbalk volledig herwerkt: compacter, duidelijke navigatie, app-snelkoppelingen en profielkaart onderaan.
+- Accountknoppen in de zijbalk: Account en Wissel profiel.
+- Scriptorium en Paideia hebben nu een zichtbare “← Athenaeum”-knop.
+- App-toegang is per profiel instelbaar. Bestaande profielen zonder opgeslagen toegangsinstelling behouden voor compatibiliteit toegang tot Scriptorium + Paideia; nieuwe profielen kiezen expliciet hun apps.
+- Direct openen van een niet-toegewezen app wordt teruggestuurd naar Athenaeum.
+- Home is nu een compact startdashboard; Mijn apps bevat de inhoudelijke appstatus en voortgang.
+- Avatar “bij” toegevoegd; leeuw blijft beschikbaar.
+- Logo’s gebruiken nu de consistente vectorversies uit assets/logos.
+
+PUBLICATIE
+Gebruik ATHENAEUM_V1_0_2_GITHUB_ROOT.zip. Vervang alle bestanden in de lokale GitHub Desktop-repository en push.
+
+
+========================================================================
+HOTFIX_V1_0_4.txt
+========================================================================
+
+ATHENAEUM V1.0.6
+
+- Mobiele weergave definitief gerepareerd: de desktop-sidebar kan op telefoon niet meer over de pagina vallen.
+- Cloud restore is idempotent: hetzelfde Supabase user_id wordt aan hetzelfde lokale profiel gekoppeld.
+- Dezelfde cloudgebruiker wordt bijgewerkt in plaats van als nieuw profiel toegevoegd.
+- Supabase URL en publishable key zijn vooraf ingevuld; normale gebruikers voeren alleen e-mail en wachtwoord in.
+- De service worker gebruikt network-first voor HTML/JS/CSS/JSON om oude PWA-versies sneller te vervangen.
+
+Standaard cloud:
+https://gtvgqmzkwawuhcnlkzfk.supabase.co
+Publishable key:
+sb_publishable_4okIfaZ1KklugItkYxKtDA_bzTdDgs0
+
+
+========================================================================
+HOTFIX_V1_0_5.txt
+========================================================================
+
+ATHENAEUM V1.0.6
+- Clouddiagnose toont server/Auth/tabel apart en vervangt generieke Failed to fetch door een concrete fout.
+- Telegramdiagnose controleert cloudlogin → koppeltabel → Edge Function → bot → chatkoppeling.
+- Edge Function ondersteunt health en veilige server-side webhooksetup.
+- supabase/config.toml bevat verify_jwt=false zodat Telegram-webhooks de functie kunnen bereiken; gebruikerscalls worden in de functie zelf gevalideerd.
+- Bibliotheek bevat een werkende Primaire bronnenverkenner. Het zoekveld blijft actief als er nul bestanden zijn.
+- Mobiele inputvelden hebben expliciete pointer/touch-interactie.
+
+
+========================================================================
+HOTFIX_V1_0_6.txt
+========================================================================
+
+ATHENAEUM V1.0.6
+
+1. CLOUDSYNC
+De fout 'Failed to fetch' bleek veroorzaakt door een typefout in de ingebouwde Supabase project-ref. De app wees naar gtyg... terwijl het echte project gtvg... is. V1.0.6 gebruikt de project-URL en publishable key rechtstreeks van het actieve Athenaeum-project.
+
+2. TELEGRAM
+De telegram-bot Edge Function is gedeployed op het actieve Supabase-project. Bot-token en webhook/scheduler secrets blijven server-side en moeten in Supabase Secrets gezet worden.
+
+3. PAIDEIA
+Oude en Algemene Geschiedenis starten niet meer op modelinhoud wanneer nog geen gecontroleerde boeken/scans zijn geïmporteerd. Geschiedenistraining en examens vereisen brongebonden knowledge packs. Algemene kennis en praktische skills mogen modelaanvullingen gebruiken.
+
+Cloud URL: https://gtvgqmzkwawuhcnlkzfk.supabase.co
+
+
+========================================================================
+HOTFIX_V1_0_7.txt
+========================================================================
+
+ATHENAEUM V1.0.7
+
+PROBLEEM
+Op telefoon kon `body .shell { display:block!important }` de algemene
+`.hidden { display:none!important }` overschrijven. Daardoor was de mobiele
+Athenaeum-shell onder het profielkeuzescherm zichtbaar. Via scrollen of de
+onderste navigatie kon men Home/Bibliotheek/Voortgang zien zonder eerst het
+profiel te ontgrendelen.
+
+Omdat er dan nog géén actief profiel bestond, crashten Bibliotheek en Voortgang
+bij het opvragen van `p.id`. Daarom zag je op telefoon soms alleen de paginatitel
+en verder een lege pagina.
+
+FIX
+- profielkeuze is nu een fixed fullscreen lock;
+- achtergrondscroll is geblokkeerd zolang de lock actief is;
+- mainShell gebruikt tegelijk CSS hidden + HTML hidden + inert + aria-hidden;
+- de mobiele `display:block!important` regel kan de lock niet meer overschrijven;
+- navigatie en renderfuncties vereisen een actief profiel;
+- bij profiel wisselen wordt reeds gerenderde profielinhoud uit de DOM gewist;
+- Bibliotheek en Voortgang renderen na ontgrendeling opnieuw normaal.
+
+SECURITY-NOOT
+De profiel-PIN is een lokale toegangsbarrière voor de UI. Cloudgegevens blijven
+daarnaast door Supabase Auth/RLS per cloudgebruiker afgeschermd.
+
+
+========================================================================
+HOTFIX_V1_0_8.txt
+========================================================================
+
+ATHENAEUM V1.0.8
+
+1. PROFIELPOORT
+De V1.0.7 fix blijft behouden: zonder geselecteerd/ontgrendeld profiel is de
+Athenaeum-shell hidden + inert en kan je niet meer via scroll of mobiele navigatie
+Bibliotheek, Voortgang of andere profielinhoud bereiken.
+
+2. BIBLIOTHEEK EN VOORTGANG OP TELEFOON
+De lege schermen kwamen doordat de mobiele shell vroeger onder het profielscherm
+actief kon zijn zonder actief profiel. Renderfuncties zijn nu profiel-gated en
+worden pas na ontgrendeling uitgevoerd.
+
+3. TELEFOON
+Eigen compacte topbar, onderste navigatie, éénkoloms kaarten, veilige marges en
+safe-area ondersteuning voor geïnstalleerde PWA's.
+
+4. TABLET / IPAD
+Athenaeum detecteert tablets en iPads apart. De tabletversie gebruikt een
+persistente compacte zijbalk, ruimere inhoud, 2-koloms kaarten waar mogelijk en
+een aangepaste portrait-layout. Dezelfde aanpak is toegevoegd aan Paideia en
+Scriptorium.
+
+5. APP VERSUS BROWSER
+De statuschip controleert nu:
+- display-mode standalone/fullscreen/minimal-ui
+- iOS navigator.standalone
+- Android app-referrer
+Daarom toont een echte geïnstalleerde PWA 'App · telefoon/tablet/iPad/laptop'.
+Een normale Chrome/Safari-tab toont bewust 'Browser · ...'.
+
+De screenshot met een zichtbare Chrome-adresbalk is dus de browserversie, niet
+de geïnstalleerde standalone PWA.
+
+6. INSTALLATIE
+Android/Chrome: menu → App installeren.
+iPhone/iPad/Safari: Deel → Zet op beginscherm.
+Athenaeum bevat de vereiste Apple/PWA-meta-tags en past zich daarna automatisch
+aan telefoon, tablet/iPad of desktop aan.
+
+7. PREVIEW
+mobile.html  = geforceerde telefoonpreview
+tablet.html  = geforceerde tabletpreview
+ipad.html    = geforceerde iPad/tabletpreview
+desktop.html = geforceerde desktoppreview
+
+
+========================================================================
+HOTFIX_V1_0_9.txt
+========================================================================
+
+ATHENAEUM V1.0.9
+
+OORZAAK VAN 'IK KOM NIET VERDER DAN HET WELKOMSTSCHERM'
+In V1.0.7 werd de profielpoort terecht een fullscreen beveiligingslaag met
+z-index 1000. De bestaande modals (PIN, profiel bewerken, cloudprofiel herstellen)
+hadden echter nog z-index 100.
+
+Gevolg:
+- klikken op een profiel mét PIN opende de PIN-dialog wel,
+  maar die stond achter het welkomstscherm;
+- 'Nieuw profiel' en 'Cloudprofiel herstellen' konden hetzelfde probleem hebben;
+- visueel leek het alsof Athenaeum nergens op reageerde.
+
+FIX V1.0.9
+- modals: z-index 1400;
+- toasts: z-index 1500;
+- profielpoort blijft z-index 1000;
+- de beveiligingsfix zelf blijft dus intact;
+- telefoon/tablet/iPad/desktop-layouts van V1.0.8 blijven behouden.
+
+
+========================================================================
+RELEASE_V1_0_16.txt
+========================================================================
+
+ATHENAEUM V1.0.16 — PRODUCTIEHARDENING
+
+Deze release behandelt Athenaeum niet meer als een reeks hotfixes maar als één product.
+
+SCRIPTORIUM V7.5
+- metadata-first startup: volledige analyses worden niet meer allemaal in RAM gehouden;
+- analyses worden alleen geladen wanneer je een werk opent of een benchmark echt nodig hebt;
+- legacy-migratie leest IDs/records één voor één;
+- analyse-import dedupliceert arrays en voorkomt opnieuw groeiende duplicaten;
+- leerprincipes worden lazy en werk-per-werk opgebouwd;
+- backup exporteert volledige records zonder ze permanent in state te houden;
+- Instellingen bevat AI-status, dagquota, reconnect en volledige systeemcontrole;
+- cloudsync blijft incrementeel en zwaar werk start pas nadat de UI bruikbaar is.
+
+PAIDEIA
+- lichte externe basisbestanden;
+- algemene kennis/skills lazy;
+- robuuste telefoon/tablet/iPad/desktopdetectie hersteld;
+- Instellingen bevat AI-status, dagquota, reconnect en systeemcontrole;
+- pagina-renderfouten worden als herstelbare melding getoond in plaats van de hele app vast te zetten.
+
+AI
+- ai-coach v2 staat server-side actief;
+- geen chatbot;
+- Paideia: max. 60 reguliere feedbackbeurten per gebruiker/dag;
+- Scriptorium: max. 10 diepe beoordelingen per gebruiker/dag;
+- statuspanelen tonen resterend budget, model, laatste gebruik en providerstatus.
+
+QA
+Zie RELEASE_AUDIT_V1_0_16.txt.

@@ -1,0 +1,17 @@
+ATHENAEUM V1.0.17 — CLEAN PRODUCTION BASELINE
+==============================================
+
+Deze release consolideert de opgestapelde hotfixstructuur zonder functies weg
+te nemen.
+
+Opschoning:
+- losse HOTFIX-documenten → docs/CHANGELOG.txt
+- Scriptorium v6.js ... v7_5.js + sources.js → scriptorium.app.js
+- v6.css → scriptorium.css
+- ongebruikte oude Scriptorium-iconen/branding verwijderd
+- Athenaeum index.html gebruikt opnieuw cachebare externe CSS/JS in plaats van
+  grote ingebedde duplicaten
+- Scriptorium-serviceworker precachet alleen de essentiële app-shell
+
+De runtimefunctionaliteit van V1.0.16 blijft behouden; dit is een refactor naar
+één overzichtelijke productiecodebasis.
