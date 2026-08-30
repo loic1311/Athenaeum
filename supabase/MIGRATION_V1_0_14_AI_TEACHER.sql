@@ -1,0 +1,2 @@
+-- Athenaeum V1.0.14 AI teacher usage/quota. ALREADY APPLIED to the linked project.
+-- See Supabase migration history: athenaeum_ai_teacher_usage.

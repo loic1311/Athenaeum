@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="Scriptorium" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Scriptorium V7.2 — Academische Onderzoekscoach</title>
+<title>Scriptorium V7.3 — Academische Onderzoekscoach</title>
 <meta name="description" content="Lokale, sleutelvrije onderzoekscoach voor masterproeven en doctoraten." />
 <style>
 :root{--bg:#0d1117;--panel:#151b23;--panel2:#1c2430;--line:#2b3544;--text:#e7edf5;--muted:#9aabba;--accent:#9bd6c9;--accent2:#75b8aa;--warn:#f0c36b;--bad:#e88989;--good:#79c99e;--shadow:0 18px 60px rgba(0,0,0,.28);--r:16px}
@@ -280,7 +280,7 @@ body.device-tablet .focus-right{
   <a class="app-back" id="athBackLink" href="../../index.html">← Athenaeum</a>
   <div class="brand">
     <div class="logo"><img src="../../assets/logos/scriptorium.svg" alt="Scriptorium logo"></div>
-    <div class="brand-copy"><div class="brand-row"><h1>Scriptorium</h1><span class="version-pill">V7.2</span></div><small>V7.2 · onderzoek · corpus · H5P · gedeelde bibliotheek · incrementele sync</small></div>
+    <div class="brand-copy"><div class="brand-row"><h1>Scriptorium</h1><span class="version-pill">V7.3</span></div><small>V7.3 · onderzoek · corpus · H5P · gedeelde bibliotheek · incrementele sync</small></div>
   </div>
   <div class="nav" id="nav">
     <button class="active" data-page="dashboard">Home</button>
@@ -296,10 +296,10 @@ body.device-tablet .focus-right{
   <div class="side-note"><strong>18+-doel:</strong> niet antwoorden memoriseren maar vaardigheden transfereren. Training gebruikt wisselende taken en authentieke primaire bronnen; theorie bouwt voort op het geanalyseerde corpus.</div>
 </aside>
 <main>
-  <div class="topbar"><div class="topbar-left"><div class="topbar-mark"><img src="../../assets/logos/scriptorium.svg" alt="Scriptorium"></div><div><h2 id="pageTitle">Overzicht</h2><div class="topbar-sub">Scriptorium V7.2 · laptop, tablet/iPad en telefoon</div></div></div><div class="top-actions"><span class="install-chip mode-chip" id="installStatusChip">Apparaat detecteren…</span><button class="btn hide-sm" id="quickUpload">PDF's toevoegen</button><button class="btn primary" id="helpBtn">Werkwijze</button></div></div>
+  <div class="topbar"><div class="topbar-left"><div class="topbar-mark"><img src="../../assets/logos/scriptorium.svg" alt="Scriptorium"></div><div><h2 id="pageTitle">Overzicht</h2><div class="topbar-sub">Scriptorium V7.3 · laptop, tablet/iPad en telefoon</div></div></div><div class="top-actions"><span class="install-chip mode-chip" id="installStatusChip">Apparaat detecteren…</span><button class="btn hide-sm" id="quickUpload">PDF's toevoegen</button><button class="btn primary" id="helpBtn">Werkwijze</button></div></div>
   <div class="content"><div id="bootNotice" class="boot-notice" hidden></div>
     <section class="page active" id="page-dashboard">
-      <div class="hero"><div><h3>Onderzoek, train en bouw je corpus verder uit</h3><p>Scriptorium V7.2 brengt corpusbeheer, bronnen, theorie, training en gerichte academische zoekfuncties samen in één werkruimte. Je oorspronkelijke corpus blijft de didactische kern; nieuwe werken worden apart gelabeld en pas na beoordeling zwaarder gewogen.</p></div><span class="badge good">Corpus · bronnen · training · zoeken</span></div>
+      <div class="hero"><div><h3>Onderzoek, train en bouw je corpus verder uit</h3><p>Scriptorium V7.3 brengt corpusbeheer, bronnen, theorie, training en gerichte academische zoekfuncties samen in één werkruimte. Je oorspronkelijke corpus blijft de didactische kern; nieuwe werken worden apart gelabeld en pas na beoordeling zwaarder gewogen.</p></div><span class="badge good">Corpus · bronnen · training · zoeken</span></div>
       <div class="grid stats">
         <div class="stat"><div class="k">Werken</div><div class="v" id="statWorks">0</div></div>
         <div class="stat"><div class="k">Normatief</div><div class="v" id="statNorm">0</div></div>
@@ -490,14 +490,15 @@ body.device-tablet .focus-right{
               <div class="focus-actions">
                 <button class="btn" id="saveTrainingDraft">Concept bewaren</button>
                 <button class="btn" id="showTrainingHint">Eén hint</button>
-                <button class="btn primary" id="copyGradingPrompt">Laat streng beoordelen</button>
+                <button class="btn primary" id="aiGradeTraining">🧑‍🏫 AI-docent beoordelen</button>
+                <button class="btn" id="copyGradingPrompt">Handmatige fallback</button>
               </div>
               <button class="btn ghost-wide" id="copyExerciseOnly">Kopieer alleen oefening</button>
             </div>
 
             <div class="focus-card">
-              <div class="spread"><h4>Beoordeling</h4><span class="badge good">JSON</span></div>
-              <p class="tiny">Plak hier de JSON-feedback die ChatGPT na de strenge beoordeling teruggeeft.</p>
+              <div class="spread"><h4>Beoordeling</h4><span class="badge good">AI-docent</span></div>
+              <p class="tiny">De geïntegreerde AI-docent slaat feedback hier automatisch op. JSON-plakken blijft alleen als handmatige fallback beschikbaar.</p>
               <textarea id="trainingGradePaste" class="focus-grade-paste" placeholder='{"training_schema":1,"attempt_id":"...","score":17.4,...}'></textarea>
               <div class="row">
                 <button class="btn primary" id="importTrainingGrade">Beoordeling opslaan</button>
@@ -520,7 +521,7 @@ body.device-tablet .focus-right{
       <div class="hero compact-hero"><div><h3>Theorie</h3><p>Leer onderzoeksvaardigheden stap voor stap: begrijp het probleem, vergelijk meerdere corpusvoorbeelden en pas het principe daarna zelfstandig toe.</p></div><span class="badge accent">Voorbeeld → principe → oefening → eigen toepassing</span></div>
       <div class="grid two">
         <div id="v7TheoryHub"></div><div class="card"><div class="spread"><h4>Corpusprincipes</h4><select id="lessonFilter"><option value="normatief">Eerst normatief</option><option value="all">Alle analyses</option></select></div><div id="lessons" class="grid" style="gap:9px"></div></div>
-        <div class="card"><h4>Vergelijk mijn tekst via ChatGPT</h4><div class="field"><label>Kies benchmarkwerken (Ctrl/Cmd voor meerdere)</label><select id="benchmarkWorks" multiple size="7"></select></div><div class="field"><label>Jouw fragment</label><textarea id="ownText" placeholder="Plak hier een paragraaf, status quaestionis, onderzoeksvraag, bronkritiek..." style="min-height:180px"></textarea></div><div class="field"><label>Doel</label><select id="atelierGoal"><option>Argumentatie aanscherpen</option><option>Onderzoeksvraag verbeteren</option><option>Bronkritiek verdiepen</option><option>Status quaestionis verbeteren</option><option>Academische stijl verbeteren</option><option>Structuur van hoofdstuk verbeteren</option></select></div><button class="btn primary" id="copyComparePrompt">Kopieer vergelijkingsprompt</button></div>
+        <div class="card"><h4>Vergelijk mijn tekst via ChatGPT</h4><div class="field"><label>Kies benchmarkwerken (Ctrl/Cmd voor meerdere)</label><select id="benchmarkWorks" multiple size="7"></select></div><div class="field"><label>Jouw fragment</label><textarea id="ownText" placeholder="Plak hier een paragraaf, status quaestionis, onderzoeksvraag, bronkritiek..." style="min-height:180px"></textarea></div><div class="field"><label>Doel</label><select id="atelierGoal"><option>Argumentatie aanscherpen</option><option>Onderzoeksvraag verbeteren</option><option>Bronkritiek verdiepen</option><option>Status quaestionis verbeteren</option><option>Academische stijl verbeteren</option><option>Structuur van hoofdstuk verbeteren</option></select></div><div class="row"><button class="btn primary" id="atelierAiReview">🧑‍🏫 AI-docent feedback</button><button class="btn" id="copyComparePrompt">Handmatige prompt</button></div><div id="atelierAiFeedback" style="margin-top:12px"></div></div>
       </div>
     </section>
 
@@ -560,7 +561,7 @@ body.device-tablet .focus-right{
 
 <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-<script src="../../shared/store.js"></script><script src="../../shared/sync.js"></script>
+<script src="../../shared/store.js"></script><script src="../../shared/sync.js"></script><script src="../../shared/ai.js"></script>
 <script>
 'use strict';
 const LIMITS={count:12,fileMB:45,totalMB:240,maxChunk:45};
@@ -1394,6 +1395,7 @@ window.openDetail=openDetail;window.editWork=editWork;window.removeWork=removeWo
 <script src="./v7.js"></script>
 <script src="./v7_1.js"></script>
 <script src="./v7_2.js"></script>
+<script src="./v7_3.js"></script>
 <script>init();
 </script>
 

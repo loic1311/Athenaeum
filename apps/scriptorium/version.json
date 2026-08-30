@@ -1,12 +1,14 @@
 {
-  "version": "7.2",
-  "release": "V7.2 Safe Boot",
+  "version": "7.3",
+  "release": "V7.3 AI-docent",
   "features": [
-    "legacy_init_chain_bypassed",
-    "analysis_array_compaction_before_getAll",
-    "lazy_hidden_page_rendering",
-    "empty_profile_seed_only",
-    "split_sync_only",
-    "h5p_and_shared_catalog_preserved"
+    "teacher_only_ai",
+    "integrated_training_grading",
+    "atelier_feedback",
+    "no_chat_interface",
+    "safe_boot_v7_2",
+    "incremental_sync",
+    "h5p",
+    "shared_catalog"
   ]
 }

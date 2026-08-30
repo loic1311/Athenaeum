@@ -431,3 +431,5 @@ body.device-tablet .app>main{grid-column:2!important;grid-row:1!important;min-wi
 .page:not(.active){display:none!important;content-visibility:hidden}
 .page.active{content-visibility:auto}
 #v72MemoryCard{contain:layout paint}
+
+#aiGradeTraining,#atelierAiReview{box-shadow:0 8px 20px rgba(38,84,66,.10)}#atelierAiFeedback .feedback-card{margin-top:10px}

@@ -1,11 +1,12 @@
 {
-  "version": "1.0.13",
-  "release": "Athenaeum V1.0.13",
+  "version": "1.0.14",
+  "release": "Athenaeum V1.0.14",
   "changes": [
-    "scriptorium_v7_2_safe_boot",
-    "legacy_v63_v65_init_chain_bypassed",
-    "local_duplicate_analysis_compaction",
-    "lazy_scriptorium_page_rendering",
-    "parent_layout_unchanged"
+    "athenaeum_ai_teacher_backend",
+    "paideia_open_answer_feedback",
+    "scriptorium_integrated_grading",
+    "scriptorium_atelier_feedback",
+    "daily_free_quota",
+    "no_chatbot_ui"
   ]
 }
