@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
-<html lang="nl"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/><meta content="#3c2b45" name="theme-color"/><title>Paideia — Athenaeum</title><style id="athenaeum-core-style">
+<html lang="nl"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/><meta content="#3c2b45" name="theme-color"/>
+<meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-title" content="Paideia"/><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/><title>Paideia — Athenaeum</title><style id="athenaeum-core-style">
 
 :root{--ink:#102f32;--ink2:#17464a;--gold:#c79b48;--gold2:#e4c886;--cream:#f7f2e7;--paper:#fffdf8;--mist:#eef4f0;--line:#d9d2c3;--text:#19383a;--muted:#687a79;--good:#2e7c5c;--warn:#b47d2b;--bad:#a94e4e;--purple:#665074;--shadow:0 18px 44px rgba(17,48,50,.10);--r:22px}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(135deg,#f9f6ef,#eef3ee);color:var(--text)}button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:none!important}.app-shell{min-height:100vh}.fade-in{animation:fadeIn .34s ease both}.slide-up{animation:slideUp .38s cubic-bezier(.2,.75,.2,1) both}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}@keyframes glow{0%,100%{box-shadow:0 0 0 rgba(199,155,72,0)}50%{box-shadow:0 0 0 8px rgba(199,155,72,.12)}}
@@ -15,6 +16,40 @@ body.force-desktop .shell{grid-template-columns:265px minmax(0,1fr)}body.force-d
 
 
 .app-back{display:inline-flex;align-items:center;gap:6px;text-decoration:none;border:1px solid rgba(231,202,134,.22);background:rgba(255,255,255,.07);color:#f3e4b9;border-radius:11px;padding:8px 10px;font-weight:800;font-size:12px;margin-bottom:12px}.app-back:hover{background:rgba(255,255,255,.12)}
+
+/* Paideia V1.0.8 device layouts */
+body.device-phone .pa-shell{grid-template-columns:1fr!important}
+body.device-phone .pa-side{display:none!important}
+body.device-phone .mobile-nav{display:grid!important}
+body.device-phone .page-wrap{padding:14px 12px calc(100px + env(safe-area-inset-bottom))!important}
+body.device-phone .topbar{min-height:68px!important;height:auto!important;padding:10px 12px!important}
+body.device-phone .topbar h2{font-size:23px!important}
+body.device-phone .grid.two,body.device-phone .grid.three{grid-template-columns:1fr!important}
+body.device-phone .stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body.device-phone .question-card{padding:15px!important}
+body.device-phone .modal{padding:10px!important}
+body.device-phone .modal-box{width:100%!important;max-height:94dvh!important}
+
+body.device-tablet .pa-shell{grid-template-columns:210px minmax(0,1fr)!important}
+body.device-tablet .pa-side{display:block!important;padding:16px 12px!important}
+body.device-tablet .mobile-nav{display:none!important}
+body.device-tablet .page-wrap{padding:20px!important}
+body.device-tablet .topbar{height:72px!important;padding:0 20px!important}
+body.device-tablet .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body.device-tablet .grid.three{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body.device-tablet .stat-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+
+@media(max-width:860px){
+  body.device-tablet .pa-shell{grid-template-columns:184px minmax(0,1fr)!important}
+  body.device-tablet .grid.two,body.device-tablet .grid.three{grid-template-columns:1fr!important}
+  body.device-tablet .stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+
+body.device-desktop .pa-shell{grid-template-columns:250px minmax(0,1fr)!important}
+body.device-desktop .pa-side{display:block!important}
+body.device-desktop .mobile-nav{display:none!important}
+html[data-display-mode="app"] body.device-phone .topbar{padding-top:max(8px,env(safe-area-inset-top))!important}
+
 </style><style>
 .pa-shell{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.pa-side{background:linear-gradient(180deg,#32233b,#221b2b);color:#fff;padding:18px;position:sticky;top:0;height:100vh}.pa-side .nav button.active,.pa-side .nav button:hover{background:rgba(228,200,134,.15)}.pa-main{min-width:0}.pa-hero{background:linear-gradient(135deg,#fffaf0,#f2ebdf);border:1px solid #ded1bd;border-radius:28px;padding:24px;box-shadow:var(--shadow)}.daily-block{border:1px solid #ded2c0;border-radius:18px;padding:16px;background:#fffdf8}.daily-block h4{margin:0}.knowledge-tags{display:flex;gap:7px;flex-wrap:wrap}.knowledge-tags span{padding:6px 9px;border-radius:999px;background:#f1e8f4;color:#634d6b;font-size:12px}.exam-card{border-left:4px solid #c79b48}.question-card{background:#fffdf8;border:1px solid #dcd3c5;border-radius:22px;padding:20px}.option{display:block;width:100%;text-align:left;margin:8px 0;border:1px solid #d8d0c2;background:#fff;border-radius:12px;padding:10px}.option.selected{border-color:#8f6c2e;background:#fff8e8}.review-box{border:1px dashed #c8b98f;background:#fffaf0;border-radius:16px;padding:14px}.session-progress{height:10px;background:#e6dfd2;border-radius:999px;overflow:hidden}.session-progress>div{height:100%;background:linear-gradient(90deg,#6f517b,#c99b48)}
 @media(max-width:900px){.pa-shell{grid-template-columns:1fr}.pa-side{display:none}.page-wrap{padding-bottom:94px}.question-card{padding:16px}.topbar .tiny{display:none}}
@@ -228,8 +263,33 @@ function renderKnowledge(){const packs=S.getProfileData(PID,'knowledge_packs',[]
 function renderLibrary(){const packs=S.getProfileData(PID,'knowledge_packs',[]);$('#p-library').innerHTML=`<div class="hero"><h2>Bronnen</h2><p>Paideia geeft voorrang aan jouw gecontroleerde werken. Nieuwe contentpacks mogen pas als hoofdanker gelden wanneer titel, auteur en paginaverwijzingen controleerbaar zijn.</p></div><div class="grid two" style="margin-top:16px"><div class="card"><h3>Prioriteit</h3><p>1. Jouw scans/boeken<br>2. universitaire compendia<br>3. wetenschappelijke monografieën/artikels<br>4. modelkennis als aanvulling</p></div><div class="card"><h3>Geïmporteerd</h3><p>${packs.length} kennis-pack(s)</p><a class="btn" href="../../index.html">Importeer via Athenaeum Bibliotheek</a></div></div>`}
 async function renderTelegram(){const n=window.AthTelegram?.notify(PID)||{morning:'08:00',reminder:'18:00',timezone:'Europe/Brussels'};$('#p-telegram').innerHTML=`<div class="hero"><h2>Telegram</h2><p>Laat Athenaeum Bot je 's ochtends vertellen wat vandaag gepland staat, hoeveel dagen je streak telt en wanneer je volgende examen komt. Een tweede melding kan je later herinneren als de dagsessie nog openstaat.</p></div><div class="grid two" style="margin-top:16px"><div class="card"><h3>🔔 Meldingsschema</h3><div class="field"><label>Ochtend</label><input id="tgMorning" type="time" value="${esc(n.morning||'08:00')}"></div><div class="field" style="margin-top:10px"><label>Reminder</label><input id="tgReminder" type="time" value="${esc(n.reminder||'18:00')}"></div><div class="field" style="margin-top:10px"><label>Tijdzone</label><input id="tgTimezone" value="${esc(n.timezone||'Europe/Brussels')}"></div><button class="btn" id="tgSave" style="margin-top:12px">Bewaar schema</button></div><div class="card"><div class="spread"><h3>🤖 Athenaeum Bot</h3><span class="chip" id="tgState">controleren…</span></div><p class="muted" id="tgInfo">Telegram gebruikt dezelfde veilige Supabase-login als synchronisatie. Je bot-token staat nooit in de website.</p><div class="row"><button class="btn primary" id="tgPair">Koppelen</button><button class="btn" id="tgTest">Testmelding</button><button class="btn" id="tgDisconnect">Ontkoppelen</button><button class="btn" id="tgDiagnose">Diagnose</button><a class="btn" href="../../docs/TELEGRAM_SETUP_V1_0_5.txt" target="_blank">Stappenplan</a></div></div></div>`;const refresh=async()=>{const chip=$('#tgState'),info=$('#tgInfo');if(!window.AthTelegram){chip.textContent='niet beschikbaar';return}const s=await AthTelegram.status(PID);chip.textContent=s.connected?'✅ gekoppeld':'niet gekoppeld';info.textContent=s.connected?`Athenaeum Bot is gekoppeld${s.bot_username?' met @'+s.bot_username:''}.`:(s.error||'Koppel eerst de bot.')};$('#tgSave').onclick=async()=>{const x={morning:$('#tgMorning').value,reminder:$('#tgReminder').value,timezone:$('#tgTimezone').value};AthTelegram.saveNotify(PID,x);try{await AthTelegram.updateSchedule(PID,x)}catch{}toast('Meldingsschema bewaard.')};$('#tgPair').onclick=async()=>{try{const r=await AthTelegram.pair(PID);$('#tgInfo').innerHTML=`Koppelcode <strong>${r.code}</strong> is 30 minuten geldig. ${r.link?`<a href="${r.link}" target="_blank">Open @${esc(r.bot_username)} in Telegram</a>`:'Stuur in Athenaeum Bot: /start '+r.code}`;toast('Koppelcode gemaakt.')}catch(e){toast(e.message)}};$('#tgTest').onclick=async()=>{try{await AthTelegram.test(PID);toast('Testmelding verstuurd.')}catch(e){toast(e.message)}};$('#tgDisconnect').onclick=async()=>{try{await AthTelegram.disconnect(PID);toast('Telegram ontkoppeld.');refresh()}catch(e){toast(e.message)}};$('#tgDiagnose').onclick=async()=>{const r=await AthTelegram.diagnose(PID);$('#tgInfo').innerHTML=(r.steps||[]).map(x=>'• '+esc(x)).join('<br>')};refresh()}
 function showPage(n){['home','learn','exam','knowledge','library','telegram'].forEach(x=>$('#p-'+x).classList.toggle('hidden',x!==n));$$('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===n));const t={home:['Paideia','Snel, efficiënt en cumulatief leren'],learn:['Leren','Dagelijkse kennisblokken'],exam:['Examens','Wekelijks en maandelijks'],knowledge:['Kennisbank','Wat je duurzaam beheerst'],library:['Bronnen','Herkomst en kennis-packs'],telegram:['Telegram','Ochtendmeldingen, reminders en examenaftelling']}[n];$('#paTitle').textContent=t[0];$('#paSub').textContent=t[1];({home:renderHome,learn:renderLearn,exam:renderExam,knowledge:renderKnowledge,library:renderLibrary,telegram:renderTelegram}[n])();scrollTo({top:0,behavior:'smooth'})}
-function back(){location.href='../../index.html?resume=1&profile='+encodeURIComponent(PID)+'&page=apps'}function updateMode(){$('#paMode').textContent=(matchMedia('(display-mode: standalone)').matches?'App':'Web')+' · '+(innerWidth<=900?'telefoon':'laptop')}
-async function init(){if(!PID||!profile())return location.href='../../index.html';await loadSeed();loadState();checkStreak();window.AthSync?.startAuto(PID);showPage('home');$$('[data-page]').forEach(b=>b.onclick=()=>showPage(b.dataset.page));$('#backAth').onclick=back;$('#backAthTop').onclick=back;$('#mBack').onclick=back;$('#closeSession').onclick=()=>$('#sessionModal').classList.remove('open');$('#revealBtn').onclick=reveal;$('#nextBtn').onclick=nextQ2;$('#useFreeze').onclick=()=>{const n=state.pending_missed||1;if(state.icecubes>=n){state.icecubes-=n;state.last_completed=iso(new Date(Date.now()-86400000));state.pending_missed=0;save();$('#freezeModal').classList.remove('open');toast(`Streak bevroren met ${n} ijsblokje${n===1?'':'s'}.`);renderHome()}};$('#breakStreak').onclick=()=>{state.streak=0;state.last_completed='';save();$('#freezeModal').classList.remove('open');renderHome()};updateMode();addEventListener('resize',updateMode)}
+function back(){location.href='../../index.html?resume=1&profile='+encodeURIComponent(PID)+'&page=apps'}
+function paStandalone(){
+  return matchMedia('(display-mode: standalone)').matches
+      || matchMedia('(display-mode: fullscreen)').matches
+      || matchMedia('(display-mode: minimal-ui)').matches
+      || navigator.standalone===true
+      || document.referrer.startsWith('android-app://');
+}
+function paDevice(){
+  const ua=navigator.userAgent||'',touch=(navigator.maxTouchPoints||0)>0;
+  const ipad=/iPad/i.test(ua)||(navigator.platform==='MacIntel'&&touch);
+  const w=Math.round(visualViewport?.width||innerWidth),h=Math.round(visualViewport?.height||innerHeight);
+  if(ipad)return{kind:'tablet',label:'iPad'};
+  if(touch&&Math.min(w,h)>=600&&Math.max(w,h)<=1500)return{kind:'tablet',label:'tablet'};
+  if(w<=720)return{kind:'phone',label:'telefoon'};
+  if(touch&&w<=1180)return{kind:'tablet',label:'tablet'};
+  return{kind:'desktop',label:'laptop'};
+}
+function updateMode(){
+  const d=paDevice(),app=paStandalone();
+  document.body.classList.remove('device-phone','device-tablet','device-desktop');
+  document.body.classList.add('device-'+d.kind);
+  document.documentElement.dataset.device=d.kind;
+  document.documentElement.dataset.displayMode=app?'app':'web';
+  $('#paMode').textContent=(app?'App':'Browser')+' · '+d.label;
+}
+async function init(){if(!PID||!profile())return location.href='../../index.html';await loadSeed();loadState();checkStreak();window.AthSync?.startAuto(PID);showPage('home');$$('[data-page]').forEach(b=>b.onclick=()=>showPage(b.dataset.page));$('#backAth').onclick=back;$('#backAthTop').onclick=back;$('#mBack').onclick=back;$('#closeSession').onclick=()=>$('#sessionModal').classList.remove('open');$('#revealBtn').onclick=reveal;$('#nextBtn').onclick=nextQ2;$('#useFreeze').onclick=()=>{const n=state.pending_missed||1;if(state.icecubes>=n){state.icecubes-=n;state.last_completed=iso(new Date(Date.now()-86400000));state.pending_missed=0;save();$('#freezeModal').classList.remove('open');toast(`Streak bevroren met ${n} ijsblokje${n===1?'':'s'}.`);renderHome()}};$('#breakStreak').onclick=()=>{state.streak=0;state.last_completed='';save();$('#freezeModal').classList.remove('open');renderHome()};updateMode();addEventListener('resize',updateMode);visualViewport?.addEventListener('resize',updateMode)}
 init();
 })();
 

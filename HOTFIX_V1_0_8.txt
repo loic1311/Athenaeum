@@ -1,0 +1,44 @@
+ATHENAEUM V1.0.8
+
+1. PROFIELPOORT
+De V1.0.7 fix blijft behouden: zonder geselecteerd/ontgrendeld profiel is de
+Athenaeum-shell hidden + inert en kan je niet meer via scroll of mobiele navigatie
+Bibliotheek, Voortgang of andere profielinhoud bereiken.
+
+2. BIBLIOTHEEK EN VOORTGANG OP TELEFOON
+De lege schermen kwamen doordat de mobiele shell vroeger onder het profielscherm
+actief kon zijn zonder actief profiel. Renderfuncties zijn nu profiel-gated en
+worden pas na ontgrendeling uitgevoerd.
+
+3. TELEFOON
+Eigen compacte topbar, onderste navigatie, éénkoloms kaarten, veilige marges en
+safe-area ondersteuning voor geïnstalleerde PWA's.
+
+4. TABLET / IPAD
+Athenaeum detecteert tablets en iPads apart. De tabletversie gebruikt een
+persistente compacte zijbalk, ruimere inhoud, 2-koloms kaarten waar mogelijk en
+een aangepaste portrait-layout. Dezelfde aanpak is toegevoegd aan Paideia en
+Scriptorium.
+
+5. APP VERSUS BROWSER
+De statuschip controleert nu:
+- display-mode standalone/fullscreen/minimal-ui
+- iOS navigator.standalone
+- Android app-referrer
+Daarom toont een echte geïnstalleerde PWA 'App · telefoon/tablet/iPad/laptop'.
+Een normale Chrome/Safari-tab toont bewust 'Browser · ...'.
+
+De screenshot met een zichtbare Chrome-adresbalk is dus de browserversie, niet
+de geïnstalleerde standalone PWA.
+
+6. INSTALLATIE
+Android/Chrome: menu → App installeren.
+iPhone/iPad/Safari: Deel → Zet op beginscherm.
+Athenaeum bevat de vereiste Apple/PWA-meta-tags en past zich daarna automatisch
+aan telefoon, tablet/iPad of desktop aan.
+
+7. PREVIEW
+mobile.html  = geforceerde telefoonpreview
+tablet.html  = geforceerde tabletpreview
+ipad.html    = geforceerde iPad/tabletpreview
+desktop.html = geforceerde desktoppreview

@@ -1,0 +1,25 @@
+ATHENAEUM V1.0.7
+
+PROBLEEM
+Op telefoon kon `body .shell { display:block!important }` de algemene
+`.hidden { display:none!important }` overschrijven. Daardoor was de mobiele
+Athenaeum-shell onder het profielkeuzescherm zichtbaar. Via scrollen of de
+onderste navigatie kon men Home/Bibliotheek/Voortgang zien zonder eerst het
+profiel te ontgrendelen.
+
+Omdat er dan nog géén actief profiel bestond, crashten Bibliotheek en Voortgang
+bij het opvragen van `p.id`. Daarom zag je op telefoon soms alleen de paginatitel
+en verder een lege pagina.
+
+FIX
+- profielkeuze is nu een fixed fullscreen lock;
+- achtergrondscroll is geblokkeerd zolang de lock actief is;
+- mainShell gebruikt tegelijk CSS hidden + HTML hidden + inert + aria-hidden;
+- de mobiele `display:block!important` regel kan de lock niet meer overschrijven;
+- navigatie en renderfuncties vereisen een actief profiel;
+- bij profiel wisselen wordt reeds gerenderde profielinhoud uit de DOM gewist;
+- Bibliotheek en Voortgang renderen na ontgrendeling opnieuw normaal.
+
+SECURITY-NOOT
+De profiel-PIN is een lokale toegangsbarrière voor de UI. Cloudgegevens blijven
+daarnaast door Supabase Auth/RLS per cloudgebruiker afgeschermd.

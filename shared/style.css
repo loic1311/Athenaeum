@@ -11,7 +11,7 @@ body.force-mobile .shell{grid-template-columns:1fr}body.force-mobile .sidebar{di
 body.force-desktop .shell{grid-template-columns:265px minmax(0,1fr)}body.force-desktop .sidebar{display:block}body.force-desktop .mobile-nav{display:none}body.force-desktop .page-wrap{padding:24px}
 
 
-/* Athenaeum V1.0.6 — account/app separation and sidebar redesign */
+/* Athenaeum V1.0.8 — account/app separation and sidebar redesign */
 .sidebar{display:flex;flex-direction:column;overflow:hidden;padding:18px 16px;background:linear-gradient(180deg,#0d3437 0%,#0a292d 58%,#081f25 100%)}
 .side-brand{padding:4px 4px 16px!important;margin-bottom:6px;border-bottom:1px solid rgba(255,255,255,.08)}
 .side-brand.brand-lockup{gap:11px}.side-brand.brand-lockup img{width:44px;height:44px;border-radius:13px}.side-brand.brand-lockup h1{font-size:20px;letter-spacing:.02em}.side-brand.brand-lockup small{font-size:11px;color:#aac1ba}
@@ -29,7 +29,7 @@ body.force-desktop .shell{grid-template-columns:265px minmax(0,1fr)}body.force-d
 @media(max-width:900px){.side-apps,.side-section-label{display:none}.app-access-grid{grid-template-columns:1fr}.app-detail-grid{grid-template-columns:1fr}.app-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
 
-/* Athenaeum V1.0.6 — definitive mobile layout + simplified cloud settings */
+/* Athenaeum V1.0.8 — definitive mobile layout + simplified cloud settings */
 .cloud-default-note{display:flex;align-items:center;gap:10px;margin:12px 0 14px;padding:11px 13px;border:1px solid #cfe0da;background:#f2f8f5;border-radius:14px;color:#315b52}
 .cloud-default-note span{margin-left:auto;font-size:11px;color:#6d7f79}
 .advanced-cloud{margin-top:12px;border-top:1px solid #e3dccf;padding-top:10px}
@@ -67,8 +67,150 @@ body.force-desktop .shell{grid-template-columns:265px minmax(0,1fr)}body.force-d
   body .mobile-nav button .ico{font-size:20px!important}
 }
 
-/* V1.0.6 — input/touch reliability, source explorer and diagnostics */
+/* V1.0.8 — input/touch reliability, source explorer and diagnostics */
 input,textarea,select,.field input,.field textarea,.field select,.source-search-input{pointer-events:auto!important;touch-action:manipulation!important;position:relative;z-index:3}
 .primary-explorer{overflow:visible!important}.source-search-row{display:grid;grid-template-columns:minmax(260px,1fr) auto auto auto;gap:10px;align-items:center;margin-top:14px}.source-search-input{width:100%;min-width:0;border:1px solid #d8cfbe;border-radius:14px;padding:13px 14px;font:inherit;background:#fff;color:#17363d;outline:none}.source-search-input:focus{border-color:#5e8e82;box-shadow:0 0 0 4px rgba(59,117,102,.11)}
 .source-meta-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #e5decf}.source-empty{padding:14px;border:1px dashed #d8cfbe;border-radius:14px;background:#fbf8f1;color:#687b7c}.diag-box{margin-top:10px;padding:12px 14px;border:1px solid #d7ded8;border-radius:14px;background:#f6faf8}.diag-steps{display:grid;gap:5px;margin-top:7px;font-size:12px;color:#526b67}.warn-text{margin-top:8px;color:#a0553b}
 @media(max-width:900px){.source-search-row{grid-template-columns:1fr!important}.source-search-row .btn{width:100%!important}.primary-explorer{position:relative;z-index:5}.source-search-input{font-size:16px!important;min-height:48px!important}.diag-box{font-size:13px}}
+
+
+/* Athenaeum V1.0.8 — profielpoort is nu een echte lock */
+html.profile-locked,
+body.profile-locked{
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+  height:100%!important;
+}
+.profile-gate{
+  position:fixed!important;
+  inset:0!important;
+  width:100%!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  z-index:1000!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+}
+.profile-gate.hidden{display:none!important}
+
+#mainShell.hidden,
+#mainShell[hidden],
+body #mainShell.hidden,
+body #mainShell[hidden],
+body.profile-locked #mainShell{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+body.profile-locked .mobile-nav,
+body.profile-locked .topbar,
+body.profile-locked .sidebar{display:none!important}
+
+@media(max-width:900px){
+  body #mainShell.shell.hidden,
+  body #mainShell.shell[hidden],
+  body.profile-locked #mainShell.shell{
+    display:none!important;
+  }
+  .profile-gate{padding:20px 14px!important}
+  .gate-box{margin:auto!important}
+}
+
+/* Mobiele inhoud alleen zichtbaar ná echte profielontgrendeling */
+@media(max-width:900px){
+  body:not(.profile-locked) #mainShell:not([hidden]){display:block!important}
+  body:not(.profile-locked) .page:not(.hidden){display:block!important}
+  body:not(.profile-locked) #page-library .card,
+  body:not(.profile-locked) #page-progress .card,
+  body:not(.profile-locked) #page-progress .stat-grid{
+    visibility:visible!important;
+    opacity:1!important;
+  }
+}
+
+
+/* ==========================================================
+   Athenaeum V1.0.8 — device-adaptive interface
+   phone / tablet-iPad / desktop + installed PWA
+   ========================================================== */
+
+/* Phone: native-like bottom navigation and single-column content */
+body.device-phone .shell{grid-template-columns:1fr!important}
+body.device-phone .sidebar{display:none!important}
+body.device-phone .mobile-nav{display:grid!important}
+body.device-phone .page-wrap{padding:14px 12px calc(106px + env(safe-area-inset-bottom))!important}
+body.device-phone .app-cards,
+body.device-phone .quick-apps,
+body.device-phone .app-detail-grid,
+body.device-phone .grid.two,
+body.device-phone .grid.three{grid-template-columns:1fr!important}
+body.device-phone .stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body.device-phone .topbar{min-height:68px!important;height:auto!important;padding:10px 12px!important}
+body.device-phone .topbar h2{font-size:24px!important}
+body.device-phone .topbar>.row{gap:6px!important}
+body.device-phone #modeChip{font-size:10px!important}
+body.device-phone #switchProfile{font-size:11px!important;padding:8px 9px!important}
+body.device-phone .hero{padding:17px!important;border-radius:20px!important}
+body.device-phone .hero h2{font-size:28px!important}
+body.device-phone .modal{padding:10px!important}
+body.device-phone .modal-box{width:100%!important;max-height:94dvh!important;border-radius:20px!important}
+body.device-phone .profile-gate{padding:18px 12px calc(24px + env(safe-area-inset-bottom))!important}
+body.device-phone .gate-box{max-width:560px!important}
+body.device-phone .profile-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
+body.device-phone .profile-card{padding:14px 10px!important}
+body.device-phone .profile-card img{width:82px!important;height:82px!important}
+
+/* Tablet/iPad: persistent left navigation, denser cards and larger touch targets */
+body.device-tablet .shell{grid-template-columns:210px minmax(0,1fr)!important}
+body.device-tablet .sidebar{
+  display:flex!important;
+  width:auto!important;
+  padding:14px 12px!important;
+}
+body.device-tablet .mobile-nav{display:none!important}
+body.device-tablet .page-wrap{padding:20px!important;max-width:1180px!important}
+body.device-tablet .topbar{height:72px!important;padding:0 20px!important}
+body.device-tablet .topbar h2{font-size:25px!important}
+body.device-tablet .side-brand.brand-lockup img{width:40px!important;height:40px!important}
+body.device-tablet .side-brand.brand-lockup h1{font-size:18px!important}
+body.device-tablet .nav button{padding:10px!important;font-size:13px!important}
+body.device-tablet .side-app-link{padding:8px!important}
+body.device-tablet .quick-apps{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body.device-tablet .app-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body.device-tablet .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body.device-tablet .grid.three{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body.device-tablet .stat-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+body.device-tablet .card{padding:17px!important}
+body.device-tablet .hero{padding:22px!important}
+body.device-tablet .modal-box{width:min(760px,94vw)!important}
+
+/* Narrow tablet/iPad portrait: retain sidebar, but reduce card columns */
+@media(max-width:860px){
+  body.device-tablet .shell{grid-template-columns:184px minmax(0,1fr)!important}
+  body.device-tablet .page-wrap{padding:16px!important}
+  body.device-tablet .quick-apps,
+  body.device-tablet .app-detail-grid,
+  body.device-tablet .grid.two,
+  body.device-tablet .grid.three{grid-template-columns:1fr!important}
+  body.device-tablet .stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  body.device-tablet .side-apps{display:none!important}
+  body.device-tablet .side-section-label{display:block!important}
+}
+
+/* Desktop/laptop */
+body.device-desktop .shell{grid-template-columns:265px minmax(0,1fr)!important}
+body.device-desktop .sidebar{display:flex!important}
+body.device-desktop .mobile-nav{display:none!important}
+body.device-desktop .page-wrap{padding:24px!important}
+
+/* Installed PWA gets safe-area awareness on iPhone/iPad/Android */
+html[data-display-mode="app"] body .topbar{
+  padding-top:max(0px,env(safe-area-inset-top));
+}
+html[data-display-mode="app"] body.device-phone .topbar{
+  min-height:calc(68px + env(safe-area-inset-top))!important;
+}
+html[data-display-mode="app"] body.device-tablet .sidebar{
+  padding-top:max(14px,calc(10px + env(safe-area-inset-top)))!important;
+}

@@ -1,13 +1,12 @@
 {
-  "name": "Athenaeum V1.0.6 — Persoonlijke leer- en onderzoeksomgeving",
+  "name": "Athenaeum V1.0.8 — Persoonlijke leer- en onderzoeksomgeving",
   "short_name": "Athenaeum",
-  "description": "Athenaeum met profielgebonden apps, betrouwbare cloudsynchronisatie en geoptimaliseerde desktop- en telefoonweergave.",
+  "description": "Athenaeum voor laptop, telefoon en tablet/iPad, met profielbeveiliging, cloudsynchronisatie en Paideia Telegram.",
   "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "display_override": [
-    "window-controls-overlay",
     "standalone",
     "minimal-ui"
   ],
@@ -66,5 +65,11 @@
         }
       ]
     }
-  ]
+  ],
+  "launch_handler": {
+    "client_mode": [
+      "navigate-existing",
+      "auto"
+    ]
+  }
 }

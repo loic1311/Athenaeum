@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Scriptorium" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <title>Scriptorium V7 — Academische Onderzoekscoach</title>
 <meta name="description" content="Lokale, sleutelvrije onderzoekscoach voor masterproeven en doctoraten." />
 <style>
@@ -120,6 +124,38 @@ body.training-focus-mode .content{padding:0;max-width:none}
 
 
 .app-back{display:inline-flex;align-items:center;gap:6px;text-decoration:none;border:1px solid #d7caa9;background:#fffaf0;color:#21485a;border-radius:11px;padding:8px 10px;font-weight:800;font-size:12px;margin-bottom:12px}.app-back:hover{background:#f4ead0}
+
+/* Scriptorium — dedicated phone/tablet/iPad/desktop adaptation */
+body.device-phone .app{grid-template-columns:1fr!important}
+body.device-phone .sidebar{position:relative!important;height:auto!important;border-right:0!important;border-bottom:1px solid var(--line)!important;padding:12px!important}
+body.device-phone .nav{grid-template-columns:1fr 1fr!important}
+body.device-phone .side-note{display:none!important}
+body.device-phone .content{padding:14px 12px!important}
+body.device-phone .topbar{padding:0 12px!important}
+body.device-phone .grid.stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body.device-phone .two,body.device-phone .three,body.device-phone .analysis-grid,body.device-phone .discovery{grid-template-columns:1fr!important}
+body.device-phone .toolbar input{min-width:100%!important;width:100%!important}
+
+body.device-tablet .app{grid-template-columns:220px minmax(0,1fr)!important}
+body.device-tablet .sidebar{position:sticky!important;top:0!important;height:100dvh!important;border-right:1px solid var(--line)!important;border-bottom:0!important;padding:14px!important}
+body.device-tablet .nav{grid-template-columns:1fr!important}
+body.device-tablet .side-note{display:none!important}
+body.device-tablet .content{padding:20px!important}
+body.device-tablet .grid.stats{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+body.device-tablet .two{grid-template-columns:1.1fr .9fr!important}
+body.device-tablet .three{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body.device-tablet .analysis-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+body.device-tablet .discovery{grid-template-columns:1fr!important}
+
+@media(max-width:860px){
+  body.device-tablet .app{grid-template-columns:188px minmax(0,1fr)!important}
+  body.device-tablet .two,body.device-tablet .three,body.device-tablet .analysis-grid{grid-template-columns:1fr!important}
+  body.device-tablet .grid.stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+
+body.device-desktop .app{grid-template-columns:270px 1fr!important}
+body.device-desktop .sidebar{position:sticky!important;top:0!important;height:100vh!important}
+
 </style>
 
 
@@ -158,7 +194,7 @@ body.training-focus-mode .content{padding:0;max-width:none}
   <div class="side-note"><strong>18+-doel:</strong> niet antwoorden memoriseren maar vaardigheden transfereren. Training gebruikt wisselende taken en authentieke primaire bronnen; theorie bouwt voort op het geanalyseerde corpus.</div>
 </aside>
 <main>
-  <div class="topbar"><div class="topbar-left"><div class="topbar-mark"><img src="../../assets/logos/scriptorium.svg" alt="Scriptorium"></div><div><h2 id="pageTitle">Overzicht</h2><div class="topbar-sub">Scriptorium V7 · op laptop en telefoon</div></div></div><div class="top-actions"><span class="install-chip mode-chip" id="installStatusChip">Appweergave</span><button class="btn hide-sm" id="quickUpload">PDF's toevoegen</button><button class="btn primary" id="helpBtn">Werkwijze</button></div></div>
+  <div class="topbar"><div class="topbar-left"><div class="topbar-mark"><img src="../../assets/logos/scriptorium.svg" alt="Scriptorium"></div><div><h2 id="pageTitle">Overzicht</h2><div class="topbar-sub">Scriptorium V7 · laptop, tablet/iPad en telefoon</div></div></div><div class="top-actions"><span class="install-chip mode-chip" id="installStatusChip">Apparaat detecteren…</span><button class="btn hide-sm" id="quickUpload">PDF's toevoegen</button><button class="btn primary" id="helpBtn">Werkwijze</button></div></div>
   <div class="content"><div id="bootNotice" class="boot-notice" hidden></div>
     <section class="page active" id="page-dashboard">
       <div class="hero"><div><h3>Onderzoek, train en bouw je corpus verder uit</h3><p>Scriptorium V7 brengt corpusbeheer, bronnen, theorie, training en gerichte academische zoekfuncties samen in één werkruimte. Je oorspronkelijke corpus blijft de didactische kern; nieuwe werken worden apart gelabeld en pas na beoordeling zwaarder gewogen.</p></div><span class="badge good">Corpus · bronnen · training · zoeken</span></div>
@@ -1245,5 +1281,41 @@ window.openDetail=openDetail;window.editWork=editWork;window.removeWork=removeWo
 <script src="./v7.js"></script>
 <script>init();
 </script>
+
+<script>
+(function(){
+  function standalone(){
+    return matchMedia('(display-mode: standalone)').matches
+      || matchMedia('(display-mode: fullscreen)').matches
+      || matchMedia('(display-mode: minimal-ui)').matches
+      || navigator.standalone===true
+      || document.referrer.startsWith('android-app://');
+  }
+  function device(){
+    const ua=navigator.userAgent||'',touch=(navigator.maxTouchPoints||0)>0;
+    const ipad=/iPad/i.test(ua)||(navigator.platform==='MacIntel'&&touch);
+    const w=Math.round(visualViewport?.width||innerWidth),h=Math.round(visualViewport?.height||innerHeight);
+    if(ipad)return{kind:'tablet',label:'iPad'};
+    if(touch&&Math.min(w,h)>=600&&Math.max(w,h)<=1500)return{kind:'tablet',label:'tablet'};
+    if(w<=720)return{kind:'phone',label:'telefoon'};
+    if(touch&&w<=1180)return{kind:'tablet',label:'tablet'};
+    return{kind:'desktop',label:'laptop'};
+  }
+  function apply(){
+    const d=device(),a=standalone();
+    document.body.classList.remove('device-phone','device-tablet','device-desktop');
+    document.body.classList.add('device-'+d.kind);
+    document.documentElement.dataset.device=d.kind;
+    document.documentElement.dataset.displayMode=a?'app':'web';
+    const chip=document.getElementById('installStatusChip');
+    if(chip)chip.textContent=(a?'App':'Browser')+' · '+d.label;
+  }
+  addEventListener('resize',apply);
+  visualViewport?.addEventListener('resize',apply);
+  addEventListener('DOMContentLoaded',apply);
+  apply();
+})();
+</script>
+
 </body>
 </html>
