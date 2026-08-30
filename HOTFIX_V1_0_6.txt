@@ -1,0 +1,12 @@
+ATHENAEUM V1.0.6
+
+1. CLOUDSYNC
+De fout 'Failed to fetch' bleek veroorzaakt door een typefout in de ingebouwde Supabase project-ref. De app wees naar gtyg... terwijl het echte project gtvg... is. V1.0.6 gebruikt de project-URL en publishable key rechtstreeks van het actieve Athenaeum-project.
+
+2. TELEGRAM
+De telegram-bot Edge Function is gedeployed op het actieve Supabase-project. Bot-token en webhook/scheduler secrets blijven server-side en moeten in Supabase Secrets gezet worden.
+
+3. PAIDEIA
+Oude en Algemene Geschiedenis starten niet meer op modelinhoud wanneer nog geen gecontroleerde boeken/scans zijn geïmporteerd. Geschiedenistraining en examens vereisen brongebonden knowledge packs. Algemene kennis en praktische skills mogen modelaanvullingen gebruiken.
+
+Cloud URL: https://gtvgqmzkwawuhcnlkzfk.supabase.co

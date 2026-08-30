@@ -1,0 +1,7 @@
+ATHENAEUM V1.0.6
+- Clouddiagnose toont server/Auth/tabel apart en vervangt generieke Failed to fetch door een concrete fout.
+- Telegramdiagnose controleert cloudlogin → koppeltabel → Edge Function → bot → chatkoppeling.
+- Edge Function ondersteunt health en veilige server-side webhooksetup.
+- supabase/config.toml bevat verify_jwt=false zodat Telegram-webhooks de functie kunnen bereiken; gebruikerscalls worden in de functie zelf gevalideerd.
+- Bibliotheek bevat een werkende Primaire bronnenverkenner. Het zoekveld blijft actief als er nul bestanden zijn.
+- Mobiele inputvelden hebben expliciete pointer/touch-interactie.

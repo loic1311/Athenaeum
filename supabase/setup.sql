@@ -65,3 +65,9 @@ create policy "telegram delete own" on public.athenaeum_telegram_pairing for del
 --     body := jsonb_build_object('mode','schedule','secret',(select decrypted_secret from vault.decrypted_secrets where name='scheduler_secret'))
 --   );
 -- $$);
+
+
+grant select, insert, update, delete on public.athenaeum_state to authenticated;
+grant select, insert, update, delete on public.athenaeum_telegram_pairing to authenticated;
+grant usage, select on sequence public.athenaeum_telegram_pairing_id_seq to authenticated;
+notify pgrst, 'reload schema';

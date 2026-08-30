@@ -11,7 +11,7 @@ body.force-mobile .shell{grid-template-columns:1fr}body.force-mobile .sidebar{di
 body.force-desktop .shell{grid-template-columns:265px minmax(0,1fr)}body.force-desktop .sidebar{display:block}body.force-desktop .mobile-nav{display:none}body.force-desktop .page-wrap{padding:24px}
 
 
-/* Athenaeum V1.0.4 — account/app separation and sidebar redesign */
+/* Athenaeum V1.0.6 — account/app separation and sidebar redesign */
 .sidebar{display:flex;flex-direction:column;overflow:hidden;padding:18px 16px;background:linear-gradient(180deg,#0d3437 0%,#0a292d 58%,#081f25 100%)}
 .side-brand{padding:4px 4px 16px!important;margin-bottom:6px;border-bottom:1px solid rgba(255,255,255,.08)}
 .side-brand.brand-lockup{gap:11px}.side-brand.brand-lockup img{width:44px;height:44px;border-radius:13px}.side-brand.brand-lockup h1{font-size:20px;letter-spacing:.02em}.side-brand.brand-lockup small{font-size:11px;color:#aac1ba}
@@ -29,7 +29,7 @@ body.force-desktop .shell{grid-template-columns:265px minmax(0,1fr)}body.force-d
 @media(max-width:900px){.side-apps,.side-section-label{display:none}.app-access-grid{grid-template-columns:1fr}.app-detail-grid{grid-template-columns:1fr}.app-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}
 
 
-/* Athenaeum V1.0.4 — definitive mobile layout + simplified cloud settings */
+/* Athenaeum V1.0.6 — definitive mobile layout + simplified cloud settings */
 .cloud-default-note{display:flex;align-items:center;gap:10px;margin:12px 0 14px;padding:11px 13px;border:1px solid #cfe0da;background:#f2f8f5;border-radius:14px;color:#315b52}
 .cloud-default-note span{margin-left:auto;font-size:11px;color:#6d7f79}
 .advanced-cloud{margin-top:12px;border-top:1px solid #e3dccf;padding-top:10px}
@@ -66,3 +66,9 @@ body.force-desktop .shell{grid-template-columns:265px minmax(0,1fr)}body.force-d
   body .mobile-nav button{font-size:10px!important;padding:7px 2px!important}
   body .mobile-nav button .ico{font-size:20px!important}
 }
+
+/* V1.0.6 — input/touch reliability, source explorer and diagnostics */
+input,textarea,select,.field input,.field textarea,.field select,.source-search-input{pointer-events:auto!important;touch-action:manipulation!important;position:relative;z-index:3}
+.primary-explorer{overflow:visible!important}.source-search-row{display:grid;grid-template-columns:minmax(260px,1fr) auto auto auto;gap:10px;align-items:center;margin-top:14px}.source-search-input{width:100%;min-width:0;border:1px solid #d8cfbe;border-radius:14px;padding:13px 14px;font:inherit;background:#fff;color:#17363d;outline:none}.source-search-input:focus{border-color:#5e8e82;box-shadow:0 0 0 4px rgba(59,117,102,.11)}
+.source-meta-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #e5decf}.source-empty{padding:14px;border:1px dashed #d8cfbe;border-radius:14px;background:#fbf8f1;color:#687b7c}.diag-box{margin-top:10px;padding:12px 14px;border:1px solid #d7ded8;border-radius:14px;background:#f6faf8}.diag-steps{display:grid;gap:5px;margin-top:7px;font-size:12px;color:#526b67}.warn-text{margin-top:8px;color:#a0553b}
+@media(max-width:900px){.source-search-row{grid-template-columns:1fr!important}.source-search-row .btn{width:100%!important}.primary-explorer{position:relative;z-index:5}.source-search-input{font-size:16px!important;min-height:48px!important}.diag-box{font-size:13px}}

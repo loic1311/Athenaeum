@@ -1,10 +1,11 @@
 {
-  "version": "1.0.4",
-  "release": "Athenaeum V1.0.4",
+  "version": "1.0.6",
+  "release": "Athenaeum V1.0.6",
   "changes": [
-    "mobile-layout-fix",
-    "cloud-profile-deduplication",
-    "default-supabase-config",
-    "network-first-update-cache"
+    "correct_supabase_project_ref",
+    "correct_publishable_key",
+    "telegram_edge_function_live",
+    "source_grounded_paideia_history",
+    "history_locked_until_knowledge_packs"
   ]
 }

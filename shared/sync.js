@@ -2,8 +2,9 @@
 'use strict';
 const S=()=>window.AthStore;
 const CLOUD_KEY='main';
-const DEFAULT_URL='https://gtygqmzkwawuhcnlkzfk.supabase.co';
-const DEFAULT_KEY='sb_publishable_4oklfaZ1KklugltkYxKtDA_bzTdDgs0';
+const DEFAULT_URL='https://gtvgqmzkwawuhcnlkzfk.supabase.co';
+const DEFAULT_KEY='sb_publishable_4okIfaZ1KklugItkYxKtDA_bzTdDgs0';
+const REQUEST_TIMEOUT=12000;
 let timer=null,dirtyTimer=null,focusBound=false,visibilityBound=false,onlineBound=false,activePid='';
 const running=new Map();
 let suspendDirty=false;
@@ -22,7 +23,27 @@ function linkProfileToCloud(pid,user,email=''){
   S().saveProfiles(ps);
 }
 function baseHeaders(key,extra={}){return{'apikey':key,'Content-Type':'application/json',...extra}}
-async function rawRequest(url,key,path,opt={}){if(!url||!key)throw new Error('Supabase URL/key ontbreken.');const r=await fetch(url.replace(/\/$/,'')+path,{...opt,headers:baseHeaders(key,opt.headers||{})});let data=null;try{data=await r.json()}catch{}if(!r.ok)throw new Error(data?.msg||data?.message||data?.error_description||data?.error||`${r.status} ${r.statusText}`);return data}
+async function rawRequest(url,key,path,opt={}){
+  if(!url||!key)throw new Error('Supabase URL/key ontbreken.');
+  const endpoint=url.replace(/\/$/,'')+path;
+  const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),REQUEST_TIMEOUT);
+  let r;
+  try{
+    r=await fetch(endpoint,{...opt,mode:'cors',credentials:'omit',cache:'no-store',signal:ctl.signal,headers:baseHeaders(key,opt.headers||{})});
+  }catch(e){
+    clearTimeout(tm);
+    if(e?.name==='AbortError')throw new Error('Cloudserver antwoordt niet binnen 12 seconden. Controleer of het Supabase-project actief is.');
+    throw new Error(`Cloudserver niet bereikbaar (${url.replace(/\/$/,'')}). Controleer de project-URL, internetverbinding en eventuele adblock/privacyfilter. Technisch: ${e?.message||'Failed to fetch'}`);
+  }
+  clearTimeout(tm);
+  let data=null,text='';
+  try{text=await r.text();data=text?JSON.parse(text):null}catch{data=text||null}
+  if(!r.ok){
+    const msg=(data&&typeof data==='object'&&(data.msg||data.message||data.error_description||data.error))||String(data||'').slice(0,240)||`${r.status} ${r.statusText}`;
+    throw new Error(`${r.status}: ${msg}`);
+  }
+  return data;
+}
 async function request(pid,path,opt={}){const c=cfg(pid);return rawRequest(c.url,c.key,path,opt)}
 async function storeSession(pid,d){
   const c=cfg(pid);
@@ -69,7 +90,27 @@ async function signOut(pid){const c=cfg(pid);try{if(c.access_token)await request
 function markDirty(pid){if(suspendDirty||!pid)return;const c=cfg(pid);saveCfg(pid,{...c,dirty_at:Date.now()});if(!c.enabled||!navigator.onLine)return;clearTimeout(dirtyTimer);dirtyTimer=setTimeout(()=>syncNow(pid).catch(()=>{}),2500)}
 function stopAuto(){clearInterval(timer);clearTimeout(dirtyTimer);timer=null;dirtyTimer=null;activePid=''}
 function startAuto(pid){stopAuto();activePid=pid;const c=cfg(pid);if(!c.enabled)return;const run=()=>navigator.onLine&&syncNow(pid).catch(()=>{});setTimeout(run,900);timer=setInterval(run,2*60*1000);if(!focusBound){window.addEventListener('focus',()=>{const id=S().currentProfileId();if(id&&cfg(id).enabled)syncNow(id).catch(()=>{})});focusBound=true}if(!visibilityBound){document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){const id=S().currentProfileId();if(id&&cfg(id).enabled)syncNow(id).catch(()=>{})}});visibilityBound=true}if(!onlineBound){window.addEventListener('online',()=>{const id=S().currentProfileId();if(id&&cfg(id).enabled)syncNow(id).catch(()=>{})});onlineBound=true}}
-async function testConnection(pid){const token=await access(pid),c=cfg(pid);const d=await request(pid,'/auth/v1/user',{headers:{Authorization:`Bearer ${token}`}});return d||c.user}
+async function diagnoseConnection(pid){
+  const c=cfg(pid),report={url:c.url,key_present:!!c.key,online:navigator.onLine,server:false,auth:false,table:false,signed_in:!!c.user?.id,details:[]};
+  if(!c.url||!c.key)return {...report,error:'Supabase URL/key ontbreken.'};
+  try{
+    await rawRequest(c.url,c.key,'/auth/v1/settings',{method:'GET'});
+    report.server=true;report.details.push('Cloudserver en Auth-endpoint bereikbaar.');
+  }catch(e){report.error=e.message;report.details.push(e.message);return report}
+  if(c.user?.id){
+    try{
+      const token=await access(pid);
+      await request(pid,'/auth/v1/user',{headers:{Authorization:`Bearer ${token}`}});
+      report.auth=true;report.details.push('Gebruikerssessie geldig.');
+      try{
+        await request(pid,`/rest/v1/athenaeum_state?user_id=eq.${encodeURIComponent(c.user.id)}&profile_key=eq.${CLOUD_KEY}&select=user_id&limit=1`,{headers:{Authorization:`Bearer ${token}`}});
+        report.table=true;report.details.push('athenaeum_state bereikbaar.');
+      }catch(e){report.details.push('Databasetabel: '+e.message)}
+    }catch(e){report.details.push('Aanmelding: '+e.message)}
+  }else report.details.push('Nog niet aangemeld; servercontrole is wel geslaagd.');
+  return report;
+}
+async function testConnection(pid){const rep=await diagnoseConnection(pid);if(!rep.server)throw new Error(rep.error||'Cloudserver niet bereikbaar.');if(cfg(pid).user?.id&&!rep.auth)throw new Error(rep.details.join(' '));return rep}
 async function restoreRemote({url,key,email,password}){const d=await rawRequest(url,key,'/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})});if(!d.access_token||!d.user?.id)throw new Error('Aanmelden mislukt.');let rows=await rawRequest(url,key,`/rest/v1/athenaeum_state?user_id=eq.${encodeURIComponent(d.user.id)}&profile_key=eq.${CLOUD_KEY}&select=payload,updated_at`,{headers:{Authorization:`Bearer ${d.access_token}`}});if(!(Array.isArray(rows)&&rows[0]))rows=await rawRequest(url,key,`/rest/v1/athenaeum_state?user_id=eq.${encodeURIComponent(d.user.id)}&select=payload,updated_at&order=updated_at.desc&limit=1`,{headers:{Authorization:`Bearer ${d.access_token}`}});const payload=Array.isArray(rows)&&rows[0]?.payload?rows[0].payload:null;if(!payload)throw new Error('Voor dit cloudaccount is nog geen Athenaeum-profiel opgeslagen.');return{auth:d,payload,url,key,email}}
 function adoptSession(pid,r){
   saveCfg(pid,{...cfg(pid),url:r.url||DEFAULT_URL,key:r.key||DEFAULT_KEY,email:r.email,access_token:r.auth.access_token,refresh_token:r.auth.refresh_token,user:r.auth.user,expires_at:Date.now()+((r.auth.expires_in||3600)*1000),enabled:true,cloud_profile_key:CLOUD_KEY,last_error:''});
@@ -77,5 +118,5 @@ function adoptSession(pid,r){
 }
 window.addEventListener('athenaeum-local-change',e=>{const pid=e.detail?.profile_id;if(pid)markDirty(pid)});
 window.addEventListener('athenaeum-profile-change',()=>{const pid=S().currentProfileId();if(pid)markDirty(pid)});
-window.AthSync={cfg,saveCfg,status,auth,access,request,rawRequest,syncNow,startAuto,stopAuto,collect,pull,push,pullOnly,pushOnly,testConnection,signOut,markDirty,restoreRemote,adoptSession,apply,merge,cloudKey:()=>CLOUD_KEY,defaults:()=>({url:DEFAULT_URL,key:DEFAULT_KEY}),linkProfileToCloud};
+window.AthSync={cfg,saveCfg,status,auth,access,request,rawRequest,syncNow,startAuto,stopAuto,collect,pull,push,pullOnly,pushOnly,testConnection,diagnoseConnection,signOut,markDirty,restoreRemote,adoptSession,apply,merge,cloudKey:()=>CLOUD_KEY,defaults:()=>({url:DEFAULT_URL,key:DEFAULT_KEY}),linkProfileToCloud};
 })();
