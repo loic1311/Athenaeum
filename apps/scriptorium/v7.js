@@ -193,15 +193,7 @@ function brandV7(){
   const sub=document.querySelector('.topbar-sub');
   if(sub)sub.textContent='Scriptorium V7 · onderzoek, bronnen en vaardigheden in één werkruimte';
 }
-window.init=async function(){
-  brandV7();
-  try{
-    if(V7_PREV_INIT)await V7_PREV_INIT();
-  }catch(e){
-    console.error('V7 compatibility init',e);
-    const n=document.getElementById('bootNotice');
-    if(n){n.hidden=false;n.textContent='Een oude compatibiliteitslaag gaf een fout; V7 is in veilige modus verder gestart.'}
-  }
+async function modernizeV7(){
   brandV7();
   try{await normalizeProvenance7()}catch(e){console.warn('V7 provenance',e)}
   try{restructureNav7()}catch(e){console.warn('V7 nav',e)}
@@ -219,6 +211,19 @@ window.init=async function(){
   }
   if(currentPage7()==='discovery')renderSearchHub7();
   if(currentPage7()==='atelier')renderTheoryHub7();
-  window.renderCorpus();
+  if(currentPage7()==='corpus')window.renderCorpus();
+}
+window.SCRIPTORIUM_V7_MODERNIZE=modernizeV7;
+
+window.init=async function(){
+  brandV7();
+  try{
+    if(V7_PREV_INIT)await V7_PREV_INIT();
+  }catch(e){
+    console.error('V7 compatibility init',e);
+    const n=document.getElementById('bootNotice');
+    if(n){n.hidden=false;n.textContent='Een oude compatibiliteitslaag gaf een fout; V7 is in veilige modus verder gestart.'}
+  }
+  await modernizeV7();
 };
 })();

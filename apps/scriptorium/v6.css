@@ -426,3 +426,8 @@ body.device-tablet .app>main{grid-column:2!important;grid-row:1!important;min-wi
   .v71-sync-grid{grid-template-columns:1fr}
   .v71-h5p-frame-wrap{height:62vh}
 }
+
+/* Scriptorium V7.2 performance isolation */
+.page:not(.active){display:none!important;content-visibility:hidden}
+.page.active{content-visibility:auto}
+#v72MemoryCard{contain:layout paint}

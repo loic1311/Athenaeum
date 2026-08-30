@@ -1,0 +1,30 @@
+ATHENAEUM V1.0.13 — SCRIPTORIUM V7.2 SAFE BOOT
+
+De resterende blokkering zat lokaal in de Scriptorium-start, niet in Supabase.
+
+V1.0.12 had de oude zware CLOUD-sync uitgeschakeld, maar bij het openen werd nog
+steeds de historische init-keten uitgevoerd:
+core → V6 → V6.3 → V6.4 → V6.5 → V6.5.2 → V7 → V7.1.
+
+Daarnaast rendeerde core loadWorks() onmiddellijk alle verborgen pagina's:
+Corpus, Voortgang, Corpusanalyse, Theorie én Training.
+
+Belangrijker: een oud apparaat kon vóór de eerdere server-cleanup lokaal nog
+exact gedupliceerde analyse-items in IndexedDB hebben. Supabase kan dus schoon
+zijn terwijl een laptop/iPad lokaal nog een opgeblazen works-store heeft.
+
+V7.2:
+- schoont vóór de eerste getAll() ieder work record één voor één op;
+- dedupliceert primary_sources, secondary_literature, source_criticism,
+  argument_structure, writing_techniques, research_techniques, skill_lessons,
+  lessons_for_user, anti_patterns en weaknesses;
+- dedupliceert ook analysis_ranges/pending_ranges;
+- start alleen de schone core+V6 basis;
+- slaat de V6.3/V6.4/V6.5/V6.5.2 init-wrappers over;
+- past V7/V7.1 daarna selectief als UI-laag toe;
+- rendert verborgen zware pagina's pas wanneer je ze opent;
+- vergelijkt corpus_seed niet meer bij iedere appstart;
+- seedt de 56 ingebouwde werken alleen bij een volledig leeg profiel;
+- behoudt split-sync, H5P en Gedeelde bibliotheek.
+
+Meerdere gebruikers/apparaten blijven ondersteund.

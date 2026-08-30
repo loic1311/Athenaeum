@@ -403,19 +403,27 @@ window.showPage=function(name,opts={}){
   return r;
 };
 
-window.init=async function(){
-  brand71();
-  const compact=await compactLocalBeforeInit();
-  if(compact.changed)console.info(`Scriptorium V7.1 compacted ${compact.changed} local work records before load.`);
-  await PREV_INIT();
+async function enhanceV71(){
   brand71();
   installCentralSyncCard();
   installH5P();
   installSharedCatalog();
   enforceDeviceGrid();
-  addEventListener('resize',enforceDeviceGrid,{passive:true});
-  window.visualViewport?.addEventListener('resize',enforceDeviceGrid,{passive:true});
+  if(!document.documentElement.dataset.v71gridbound){
+    document.documentElement.dataset.v71gridbound='1';
+    addEventListener('resize',enforceDeviceGrid,{passive:true});
+    window.visualViewport?.addEventListener('resize',enforceDeviceGrid,{passive:true});
+  }
   setTimeout(()=>{patchShareButtons();renderSharedCatalog()},120);
+}
+window.SCRIPTORIUM_V71_ENHANCE=enhanceV71;
+
+window.init=async function(){
+  brand71();
+  const compact=await compactLocalBeforeInit();
+  if(compact.changed)console.info(`Scriptorium V7.1 compacted ${compact.changed} local work records before load.`);
+  await PREV_INIT();
+  await enhanceV71();
 };
 
 })();

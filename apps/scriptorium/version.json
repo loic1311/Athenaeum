@@ -1,14 +1,12 @@
 {
-  "version": "7.1",
-  "release": "V7.1",
+  "version": "7.2",
+  "release": "V7.2 Safe Boot",
   "features": [
-    "v7_full_integration",
-    "athenaeum_incremental_sync_only",
-    "legacy_full_corpus_sync_disabled",
-    "pre_init_local_compaction",
-    "h5p_iframe_exercises",
-    "same_origin_h5p_xapi_capture",
-    "shared_friend_metadata_catalog",
-    "stable_desktop_tablet_grid"
+    "legacy_init_chain_bypassed",
+    "analysis_array_compaction_before_getAll",
+    "lazy_hidden_page_rendering",
+    "empty_profile_seed_only",
+    "split_sync_only",
+    "h5p_and_shared_catalog_preserved"
   ]
 }

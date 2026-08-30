@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="Scriptorium" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Scriptorium V7.1 — Academische Onderzoekscoach</title>
+<title>Scriptorium V7.2 — Academische Onderzoekscoach</title>
 <meta name="description" content="Lokale, sleutelvrije onderzoekscoach voor masterproeven en doctoraten." />
 <style>
 :root{--bg:#0d1117;--panel:#151b23;--panel2:#1c2430;--line:#2b3544;--text:#e7edf5;--muted:#9aabba;--accent:#9bd6c9;--accent2:#75b8aa;--warn:#f0c36b;--bad:#e88989;--good:#79c99e;--shadow:0 18px 60px rgba(0,0,0,.28);--r:16px}
@@ -280,7 +280,7 @@ body.device-tablet .focus-right{
   <a class="app-back" id="athBackLink" href="../../index.html">← Athenaeum</a>
   <div class="brand">
     <div class="logo"><img src="../../assets/logos/scriptorium.svg" alt="Scriptorium logo"></div>
-    <div class="brand-copy"><div class="brand-row"><h1>Scriptorium</h1><span class="version-pill">V7.1</span></div><small>V7.1 · onderzoek · corpus · H5P · gedeelde bibliotheek · incrementele sync</small></div>
+    <div class="brand-copy"><div class="brand-row"><h1>Scriptorium</h1><span class="version-pill">V7.2</span></div><small>V7.2 · onderzoek · corpus · H5P · gedeelde bibliotheek · incrementele sync</small></div>
   </div>
   <div class="nav" id="nav">
     <button class="active" data-page="dashboard">Home</button>
@@ -296,10 +296,10 @@ body.device-tablet .focus-right{
   <div class="side-note"><strong>18+-doel:</strong> niet antwoorden memoriseren maar vaardigheden transfereren. Training gebruikt wisselende taken en authentieke primaire bronnen; theorie bouwt voort op het geanalyseerde corpus.</div>
 </aside>
 <main>
-  <div class="topbar"><div class="topbar-left"><div class="topbar-mark"><img src="../../assets/logos/scriptorium.svg" alt="Scriptorium"></div><div><h2 id="pageTitle">Overzicht</h2><div class="topbar-sub">Scriptorium V7.1 · laptop, tablet/iPad en telefoon</div></div></div><div class="top-actions"><span class="install-chip mode-chip" id="installStatusChip">Apparaat detecteren…</span><button class="btn hide-sm" id="quickUpload">PDF's toevoegen</button><button class="btn primary" id="helpBtn">Werkwijze</button></div></div>
+  <div class="topbar"><div class="topbar-left"><div class="topbar-mark"><img src="../../assets/logos/scriptorium.svg" alt="Scriptorium"></div><div><h2 id="pageTitle">Overzicht</h2><div class="topbar-sub">Scriptorium V7.2 · laptop, tablet/iPad en telefoon</div></div></div><div class="top-actions"><span class="install-chip mode-chip" id="installStatusChip">Apparaat detecteren…</span><button class="btn hide-sm" id="quickUpload">PDF's toevoegen</button><button class="btn primary" id="helpBtn">Werkwijze</button></div></div>
   <div class="content"><div id="bootNotice" class="boot-notice" hidden></div>
     <section class="page active" id="page-dashboard">
-      <div class="hero"><div><h3>Onderzoek, train en bouw je corpus verder uit</h3><p>Scriptorium V7.1 brengt corpusbeheer, bronnen, theorie, training en gerichte academische zoekfuncties samen in één werkruimte. Je oorspronkelijke corpus blijft de didactische kern; nieuwe werken worden apart gelabeld en pas na beoordeling zwaarder gewogen.</p></div><span class="badge good">Corpus · bronnen · training · zoeken</span></div>
+      <div class="hero"><div><h3>Onderzoek, train en bouw je corpus verder uit</h3><p>Scriptorium V7.2 brengt corpusbeheer, bronnen, theorie, training en gerichte academische zoekfuncties samen in één werkruimte. Je oorspronkelijke corpus blijft de didactische kern; nieuwe werken worden apart gelabeld en pas na beoordeling zwaarder gewogen.</p></div><span class="badge good">Corpus · bronnen · training · zoeken</span></div>
       <div class="grid stats">
         <div class="stat"><div class="k">Werken</div><div class="v" id="statWorks">0</div></div>
         <div class="stat"><div class="k">Normatief</div><div class="v" id="statNorm">0</div></div>
@@ -1231,7 +1231,17 @@ function buildBatchPlan(){const size=Math.max(15,Math.min(LIMITS.maxChunk,parseI
 function statusBadge(w){const s=analysisStatus(w);return s==='compleet'?'<span class="badge good">Analyse compleet</span>':s==='gedeeltelijk'?'<span class="badge warn">Gedeeltelijk</span>':'<span class="badge">Geen analyse</span>'}
 function weightHTML(w){const v=w.weight||'onbekend';return `<span class="source-weight ${esc(v)}">${esc(v)}</span>`}
 
-async function loadWorks(){state.works=(await idbGetAll('works')).sort((a,b)=>(b.updated_at||0)-(a.updated_at||0));renderAll()}
+async function loadWorks(){
+  state.works=(await idbGetAll('works')).sort((a,b)=>(b.updated_at||0)-(a.updated_at||0));
+  renderStats();
+  renderRecent();
+  if(document.querySelector('#page-corpus')?.classList.contains('active'))renderCorpus();
+  if(document.querySelector('#page-progress')?.classList.contains('active'))renderProgress();
+  if(document.querySelector('#page-exchange')?.classList.contains('active'))renderCorpusExport();
+  if(document.querySelector('#page-atelier')?.classList.contains('active'))renderLessons();
+  if(document.querySelector('#page-training')?.classList.contains('active'))renderTraining();
+  renderStorage();
+}
 function renderAll(){renderStats();renderRecent();renderCorpus();renderSelects();renderProgress();renderCorpusExport();renderLessons();renderTraining();renderStorage()}
 function renderStats(){const ws=state.works;$('#statWorks').textContent=ws.length;$('#statNorm').textContent=ws.filter(w=>w.weight==='normatief').length;$('#statNear').textContent=ws.filter(w=>w.weight==='vaknabij').length;$('#statExtra').textContent=ws.filter(w=>w.weight==='aanvullend').length;$('#statDone').textContent=ws.filter(w=>analysisStatus(w)==='compleet').length;let msg=ws.length===0?'Begin met het corpus. Voeg je geselecteerde proeven in uploadrondes toe.':ws.some(w=>analysisStatus(w)!=='compleet')?'Maak één corpuspakket met de volledige nog niet afgewerkte PDF’s. ChatGPT beheert de interne paginadeling; jij hoeft geen reeks 45-pagina-ZIP’s meer te maken.':'Je corpusanalyse is compleet. Gebruik het Leeratelier om terugkerende onderzoeks- en schrijfprincipes actief te oefenen op je eigen werk.';$('#nextStep').innerHTML='<strong>'+esc(msg)+'</strong>'}
 function renderRecent(){const el=$('#recentWorks'),ws=state.works.slice(0,5);el.innerHTML=ws.length?ws.map(workCard).join(''):'<div class="empty">Nog geen werken toegevoegd.</div>'}
@@ -1376,12 +1386,14 @@ window.openDetail=openDetail;window.editWork=editWork;window.removeWork=removeWo
 </script>
 <script src="./sources.js"></script>
 <script src="./v6.js"></script>
+<script>window.SCRIPTORIUM_V6_INIT=window.init;</script>
 <script src="./v6_3.js"></script>
 <script src="./v6_4.js"></script>
 <script src="./v6_5.js"></script>
 <script src="./v6_5_2.js"></script>
 <script src="./v7.js"></script>
 <script src="./v7_1.js"></script>
+<script src="./v7_2.js"></script>
 <script>init();
 </script>
 
