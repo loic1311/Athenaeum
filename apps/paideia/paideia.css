@@ -113,3 +113,20 @@ body.device-tablet .grid.three{
 .ai-quota{display:grid;gap:8px;margin-top:14px}.ai-quota-line{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
 .ai-meter{grid-column:1/-1;height:9px;background:#e7dfeb;border-radius:99px;overflow:hidden}.ai-meter>i{display:block;height:100%;background:linear-gradient(90deg,#765585,#c59b49);border-radius:99px}
 .performance-note{border:1px solid #d9dfda;background:#f6faf7;border-radius:16px;padding:13px}
+
+/* Paideia V1.1 final UX */
+.history-detail-list{display:grid;gap:9px;margin-top:12px}
+.history-detail{border:1px solid #dfd5c7;border-radius:15px;padding:12px;background:rgba(255,255,255,.68)}
+.history-detail .tiny{margin-top:5px}
+.score-pill{font-weight:900;border-radius:99px;background:#eef4f1;padding:5px 10px}
+.mobile-app-back{display:none}
+.page-wrap section:not(.hidden){animation:paPageIn .2s ease-out both}
+@keyframes paPageIn{from{opacity:.7;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media(max-width:720px){
+  .mobile-app-back{display:inline-flex!important;border:1px solid #dbcdb9;background:#fffaf0;border-radius:11px;padding:7px 9px;font-weight:800;color:#3c2b45}
+  .topbar{gap:8px!important}.topbar>div:first-of-type{min-width:0}
+}
+@media(prefers-reduced-motion:reduce){.page-wrap section:not(.hidden){animation:none!important}}
+
+/* V1.2 learning paths */
+.path-settings{display:grid;gap:10px;margin-top:12px}.path-setting{border:1px solid var(--line,#ded6c8);border-radius:16px;padding:13px;background:rgba(255,255,255,.7)}.path-toggle{display:flex;gap:10px;align-items:flex-start}.path-toggle>span{display:grid;gap:3px}.path-toggle small{color:var(--muted);line-height:1.45}.path-controls{display:grid;grid-template-columns:1fr 120px auto auto;gap:9px;align-items:end;margin-top:10px}.path-controls label{display:grid;gap:4px;font-size:11px;font-weight:700}.path-controls select,.path-controls input[type=number]{min-height:38px;border:1px solid var(--line,#d8d0c2);border-radius:10px;background:#fff;padding:6px 9px}.path-controls .mini-check{display:flex;align-items:center;gap:6px;min-height:38px}.history-detail,.path-setting,.daily-block,.card{animation:paFadeIn .18s ease both}@keyframes paFadeIn{from{opacity:.55;transform:translateY(3px)}to{opacity:1;transform:none}}@media(max-width:760px){.path-controls{grid-template-columns:1fr 1fr}.path-setting{padding:11px}}@media(prefers-reduced-motion:reduce){.history-detail,.path-setting,.daily-block,.card{animation:none!important}}

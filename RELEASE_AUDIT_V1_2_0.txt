@@ -1,0 +1,39 @@
+ATHENAEUM V1.2.0 — STATIC RELEASE AUDIT
+
+Checks: 31
+Failed: 0
+
+PASS JSON version.json
+PASS JSON manifest.webmanifest
+PASS JSON apps/scriptorium/version.json
+PASS JSON apps/scriptorium/manifest.webmanifest
+PASS JSON apps/paideia/seed_core.json
+PASS JSON content/knowledge_pack_schema.json
+PASS FILE index.html
+PASS FILE app.js
+PASS FILE shared/ai.js
+PASS FILE shared/sync.js
+PASS FILE shared/telegram.js
+PASS FILE apps/paideia/index.html
+PASS FILE apps/paideia/paideia.js
+PASS FILE apps/scriptorium/index.html
+PASS FILE apps/scriptorium/scriptorium.app.js
+PASS FILE supabase/functions/telegram-bot/index.ts
+PASS PAIDEIA Vroegmoderne Tijd
+PASS PAIDEIA Algemene Vaardigheden
+PASS PAIDEIA learning_paths
+PASS PAIDEIA saveLearningPaths
+PASS PAIDEIA Examenhistoriek
+PASS PAIDEIA AI-vraaggenerator
+PASS SCRIPTORIUM Gedetecteerd:
+PASS SCRIPTORIUM jouw volledige antwoord blijft behouden
+PASS SCRIPTORIUM H5P-lab
+PASS SCRIPTORIUM AI nieuwe transfervraag
+PASS SCRIPTORIUM Minitools · snelle werksjablonen
+PASS TELEGRAM early_modern
+PASS TELEGRAM profileKey
+PASS TELEGRAM Algemene Vaardigheden
+PASS AI compact context
+
+Runtime note: browser smoke-test could not be executed inside this sandbox because Chromium localhost navigation is administratively blocked. JavaScript syntax was separately validated with node --check for app.js, Paideia, Scriptorium, shared AI and Telegram client.
+Deployment note: deploy the updated telegram-bot Edge Function for personalized path messages/profile_key behavior. The ai-coach production source is not present in this repository (README says it is deployed server-side), so this release hardens/compacts AI requests client-side without replacing the remote function.

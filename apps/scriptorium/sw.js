@@ -1,4 +1,4 @@
-const CACHE='scriptorium-v7-6-shell-1';
+const CACHE='scriptorium-v8.1-shell-1';
 const LOCAL_SHELL=[
   './','./index.html','./scriptorium.css','./scriptorium.app.js',
   './manifest.webmanifest','./version.json',

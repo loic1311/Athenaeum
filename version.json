@@ -1,12 +1,15 @@
 {
-  "version": "1.0.17",
-  "release": "Athenaeum V1.0.17 — Clean Production Baseline",
+  "version": "1.2.0",
+  "release": "Athenaeum V1.2.0 — Multi-path Final Learning Platform",
   "changes": [
-    "hotfix_docs_consolidated",
-    "parent_html_externalized",
-    "scriptorium_single_runtime_bundle",
-    "scriptorium_single_stylesheet",
-    "unused_legacy_assets_removed",
-    "lean_service_workers"
+    "profile_app_access_and_paideia_learning_paths",
+    "personalized_telegram_by_learning_path",
+    "device_mode_with_viewport_diagnostics",
+    "ai_aux_context_compaction_and_rate_limit_retry",
+    "paideia_learning_and_exam_history",
+    "university_question_blueprints",
+    "scriptorium_h5p_guided_workflow",
+    "lightweight_animations",
+    "multi_profile_telegram_and_sync_hardening"
   ]
 }

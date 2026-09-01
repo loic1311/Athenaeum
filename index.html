@@ -8,13 +8,14 @@
 <meta name="apple-mobile-web-app-title" content="Athenaeum"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="format-detection" content="telephone=no"/>
-<title>Athenaeum V1.0.17 — Persoonlijke leer- en onderzoeksomgeving</title><meta content="Athenaeum: profielen, Scriptorium, Paideia, kennisbank en synchronisatie." name="description"/>
+<title>Athenaeum V1.2.0 — Persoonlijke leer- en onderzoeksomgeving</title><meta content="Athenaeum: profielen, Scriptorium, Paideia, kennisbank en synchronisatie." name="description"/>
 <link href="./manifest.webmanifest" rel="manifest"/><link href="./assets/icons/apple-touch-icon.png" rel="apple-touch-icon"/><link href="./assets/icons/icon-192.png" rel="icon"/>
 <link rel="stylesheet" href="./shared/style.css"/></head><body>
 <div class="profile-gate fade-in" id="profileGate"><div class="gate-box"><div class="gate-title"><img alt="Athenaeum" src="./assets/logos/athenaeum.svg"/><h1>Athenaeum</h1><p>Jouw persoonlijke leer- en onderzoeksomgeving. Selecteer een gebruiker.</p></div><div class="profile-grid" id="profileGrid"></div><div class="row" style="justify-content:center;margin-top:18px"><button class="btn" id="restoreCloudBtn">☁️ Cloudprofiel herstellen</button></div></div></div>
 <div class="shell hidden" id="mainShell" hidden inert aria-hidden="true">
 <aside class="sidebar">
-<div class="side-brand brand-lockup"><img alt="Athenaeum" src="./assets/logos/athenaeum.svg"/><div><h1>Athenaeum</h1><small>persoonlijke omgeving · V1.0.17</small></div></div>
+<button class="app-back parent-back" id="parentProfileBack" type="button">← Profielen</button>
+<div class="side-brand brand-lockup"><img alt="Athenaeum" src="./assets/logos/athenaeum.svg"/><div><h1>Athenaeum</h1><small>persoonlijke omgeving · V1.2.0</small></div></div>
 <div class="side-section-label">Navigatie</div>
 <nav class="nav" id="mainNav"><button data-page="home">🏠 Home</button><button data-page="apps">◈ Mijn apps</button><button data-page="library">📚 Bibliotheek</button><button data-page="progress">📈 Voortgang</button><button data-page="settings">⚙️ Instellingen</button></nav>
 <div class="side-section-label">Jouw apps</div><div class="side-apps" id="sideApps"></div>
@@ -22,7 +23,7 @@
 <div class="sidebar-foot">Local-first · profieldata en app-toegang blijven gescheiden. Synchronisatie is optioneel.</div>
 <div class="side-user" id="sideUser"></div>
 </aside>
-<main class="app-main"><header class="topbar"><div><h2 id="pageTitle">Home</h2><div class="tiny" id="pageSubtitle">Jouw leer- en onderzoeksomgeving</div></div><div class="row"><span class="chip" id="modeChip">Web · laptop</span><button class="btn" id="switchProfile">Profiel wisselen</button></div></header><div class="page-wrap">
+<main class="app-main"><header class="topbar"><button class="mobile-app-back parent-mobile-back" id="parentMobileBack" type="button">← Profielen</button><div><h2 id="pageTitle">Home</h2><div class="tiny" id="pageSubtitle">Jouw leer- en onderzoeksomgeving</div></div><div class="row"><span class="chip" id="modeChip">Web · laptop</span><button class="btn" id="switchProfile">Profiel wisselen</button></div></header><div class="page-wrap">
 <section class="page fade-in" id="page-home"></section><section class="page hidden" id="page-apps"></section><section class="page hidden" id="page-library"></section><section class="page hidden" id="page-progress"></section><section class="page hidden" id="page-settings"></section>
 </div></main>
 <nav class="mobile-nav" id="mobileNav"><button data-page="home"><span class="ico">🏠</span>Home</button><button data-page="apps"><span class="ico">◈</span>Mijn apps</button><button data-page="library"><span class="ico">📚</span>Bibliotheek</button><button data-page="progress"><span class="ico">📈</span>Voortgang</button><button id="mobileMore"><span class="ico">☰</span>Meer</button></nav>

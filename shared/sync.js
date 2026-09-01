@@ -8,6 +8,7 @@ const DEFAULT_KEY='sb_publishable_4okIfaZ1KklugItkYxKtDA_bzTdDgs0';
 const REQUEST_TIMEOUT=15000;
 const LIGHT_INTERVAL=2*60*1000;
 const SCRIPTORIUM_INTERVAL=15*60*1000;
+const jitter=(base,spread=12000)=>base+Math.floor(Math.random()*spread);
 
 let lightTimer=null,scriptTimer=null,dirtyTimer=null;
 let focusBound=false,visibilityBound=false,onlineBound=false;
@@ -665,13 +666,13 @@ function startAuto(pid,opts={}){
   const light=()=>navigator.onLine&&syncNow(pid).catch(()=>{});
   const heavy=()=>heavyAuto&&navigator.onLine&&syncScriptorium(pid).catch(()=>{});
 
-  setTimeout(light,1200);
+  setTimeout(light,jitter(900,5000));
   lightTimer=setInterval(light,LIGHT_INTERVAL);
 
   // Heavy IndexedDB/Scriptorium work is never started from Paideia or the parent shell.
   // Inside Scriptorium it waits until the UI has been usable for a while.
   if(heavyAuto){
-    setTimeout(heavy,45000);
+    setTimeout(heavy,jitter(45000,15000));
     scriptTimer=setInterval(heavy,SCRIPTORIUM_INTERVAL);
   }
 

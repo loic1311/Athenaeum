@@ -439,3 +439,20 @@ body.device-tablet .app>main{grid-column:2!important;grid-row:1!important;min-wi
 .v74-ai-led{display:inline-flex;align-items:center;gap:7px;font-weight:800}.v74-ai-led:before{content:"";width:10px;height:10px;border-radius:50%;background:#999}
 .v74-ai-led.ok:before{background:#3a9a70;box-shadow:0 0 0 4px rgba(58,154,112,.13)}.v74-ai-led.bad:before{background:#bd5e57;box-shadow:0 0 0 4px rgba(189,94,87,.13)}
 .v74-quota{margin-top:13px}.v74-meter{height:9px;background:#dfe8e4;border-radius:99px;overflow:hidden;margin-top:7px}.v74-meter>i{display:block;height:100%;background:linear-gradient(90deg,#315f65,#c29a4b);border-radius:99px}
+
+/* Scriptorium V8 final device profiles */
+html[data-display-mode="app"] body.device-desktop .content{max-width:1600px;margin:auto}
+html[data-display-mode="app"] body.device-desktop.training-focus-mode .focus-main{display:grid!important;grid-template-columns:minmax(0,1.55fr) minmax(360px,.85fr)!important;gap:18px!important;padding:18px!important}
+html[data-display-mode="app"] body.device-tablet.training-focus-mode .focus-main{display:grid!important;grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr)!important;gap:12px!important;padding:12px!important}
+html[data-display-mode="app"] body.device-phone.training-focus-mode .focus-main{display:block!important;padding:8px!important}
+html[data-display-mode="app"] body.device-phone.training-focus-mode .focus-right{position:relative!important;top:auto!important;margin-top:12px!important}
+.focus-right{min-width:0}.focus-answer{min-height:220px}
+.device-desktop .focus-answer{min-height:300px}
+.device-tablet .focus-answer{min-height:260px}
+.device-phone .focus-answer{min-height:180px}
+.h5p-purpose-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}.h5p-purpose-grid>div{border:1px solid var(--line);border-radius:12px;padding:10px;background:#f8fbf9}.h5p-purpose-grid strong,.h5p-purpose-grid span{display:block}.h5p-purpose-grid span{font-size:11px;color:var(--muted);margin-top:4px}
+.utility-explain-grid button{display:flex!important;flex-direction:column!important;align-items:flex-start!important;text-align:left!important;gap:3px!important}.utility-explain-grid button span{font-size:10px;color:var(--muted);font-weight:500}
+.page.active,.card,.training-focus{animation:scIn .18s ease-out both}@keyframes scIn{from{opacity:.76;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media(max-width:850px){.h5p-purpose-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.h5p-purpose-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.page.active,.card,.training-focus{animation:none!important}}

@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="Scriptorium" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Scriptorium V7.6 — Academische Onderzoekscoach</title>
+<title>Scriptorium V8.1 — Academische Onderzoekscoach</title>
 <meta name="description" content="Lokale, sleutelvrije onderzoekscoach voor masterproeven en doctoraten." />
 <style>
 :root{--bg:#0d1117;--panel:#151b23;--panel2:#1c2430;--line:#2b3544;--text:#e7edf5;--muted:#9aabba;--accent:#9bd6c9;--accent2:#75b8aa;--warn:#f0c36b;--bad:#e88989;--good:#79c99e;--shadow:0 18px 60px rgba(0,0,0,.28);--r:16px}
@@ -280,7 +280,7 @@ body.device-tablet .focus-right{
   <a class="app-back" id="athBackLink" href="../../index.html">← Athenaeum</a>
   <div class="brand">
     <div class="logo"><img src="../../assets/logos/scriptorium.svg" alt="Scriptorium logo"></div>
-    <div class="brand-copy"><div class="brand-row"><h1>Scriptorium</h1><span class="version-pill">V7.6</span></div><small>V7.6 · onderzoek · corpus · H5P · gedeelde bibliotheek · incrementele sync</small></div>
+    <div class="brand-copy"><div class="brand-row"><h1>Scriptorium</h1><span class="version-pill">V8.1</span></div><small>V8.1 · onderzoek · corpus · H5P · gedeelde bibliotheek · incrementele sync</small></div>
   </div>
   <div class="nav" id="nav">
     <button class="active" data-page="dashboard">Home</button>
@@ -296,10 +296,10 @@ body.device-tablet .focus-right{
   <div class="side-note"><strong>18+-doel:</strong> niet antwoorden memoriseren maar vaardigheden transfereren. Training gebruikt wisselende taken en authentieke primaire bronnen; theorie bouwt voort op het geanalyseerde corpus.</div>
 </aside>
 <main>
-  <div class="topbar"><div class="topbar-left"><div class="topbar-mark"><img src="../../assets/logos/scriptorium.svg" alt="Scriptorium"></div><div><h2 id="pageTitle">Overzicht</h2><div class="topbar-sub">Scriptorium V7.6 · laptop, tablet/iPad en telefoon</div></div></div><div class="top-actions"><span class="install-chip mode-chip" id="installStatusChip">Apparaat detecteren…</span><button class="btn hide-sm" id="quickUpload">PDF's toevoegen</button><button class="btn primary" id="helpBtn">Werkwijze</button></div></div>
+  <div class="topbar"><div class="topbar-left"><div class="topbar-mark"><img src="../../assets/logos/scriptorium.svg" alt="Scriptorium"></div><div><h2 id="pageTitle">Overzicht</h2><div class="topbar-sub">Scriptorium V8.1 · laptop, tablet/iPad en telefoon</div></div></div><div class="top-actions"><span class="install-chip mode-chip" id="installStatusChip">Apparaat detecteren…</span><button class="btn hide-sm" id="quickUpload">PDF's toevoegen</button><button class="btn primary" id="helpBtn">Werkwijze</button></div></div>
   <div class="content"><div id="bootNotice" class="boot-notice" hidden></div>
     <section class="page active" id="page-dashboard">
-      <div class="hero"><div><h3>Onderzoek, train en bouw je corpus verder uit</h3><p>Scriptorium V7.6 brengt corpusbeheer, bronnen, theorie, training en gerichte academische zoekfuncties samen in één werkruimte. Je oorspronkelijke corpus blijft de didactische kern; nieuwe werken worden apart gelabeld en pas na beoordeling zwaarder gewogen.</p></div><span class="badge good">Corpus · bronnen · training · zoeken</span></div>
+      <div class="hero"><div><h3>Onderzoek, train en bouw je corpus verder uit</h3><p>Scriptorium V8.1 brengt corpusbeheer, bronnen, theorie, training en gerichte academische zoekfuncties samen in één werkruimte. Je oorspronkelijke corpus blijft de didactische kern; nieuwe werken worden apart gelabeld en pas na beoordeling zwaarder gewogen.</p></div><span class="badge good">Corpus · bronnen · training · zoeken</span></div>
       <div class="grid stats">
         <div class="stat"><div class="k">Werken</div><div class="v" id="statWorks">0</div></div>
         <div class="stat"><div class="k">Normatief</div><div class="v" id="statNorm">0</div></div>
@@ -490,7 +490,7 @@ body.device-tablet .focus-right{
               <div class="focus-actions">
                 <button class="btn" id="saveTrainingDraft">Concept bewaren</button>
                 <button class="btn" id="showTrainingHint">Eén hint</button>
-                <button class="btn primary" id="aiGradeTraining">🧑‍🏫 AI-docent beoordelen</button>
+                <button class="btn primary" id="aiGradeTraining">🧑‍🏫 AI-docent beoordelen</button><button class="btn" id="aiGenerateTransfer">🧠 AI nieuwe transfervraag</button>
                 <button class="btn" id="copyGradingPrompt">Handmatige fallback</button>
               </div>
               <button class="btn ghost-wide" id="copyExerciseOnly">Kopieer alleen oefening</button>
@@ -506,7 +506,7 @@ body.device-tablet .focus-right{
               </div>
             </div>
 
-            <div id="trainingFeedback"></div>
+            <div id="aiTransferQuestion"></div><div id="trainingFeedback"></div>
 
             <div class="focus-card session-next-card" id="sessionNextCard">
               <div class="spread"><div><h4 id="sessionNextTitle">Sessieverloop</h4><p class="tiny" id="sessionNextText">Na beoordeling kun je doorgaan naar een nieuwe variant.</p></div><span class="badge accent" id="sessionScoreBadge">actief</span></div>
@@ -532,7 +532,7 @@ body.device-tablet .focus-right{
         <div class="card"><h4>Opslag</h4><p id="storageInfo">Opslaginformatie laden...</p><div class="row"><button class="btn" id="cleanupOrphans">Wees-PDF's opruimen</button><button class="btn danger" id="resetAll">Alles wissen</button></div></div>
       </div>
       <div class="grid two" style="margin-top:14px">
-        <div class="card tools-card"><div class="spread"><div><h4>Praktische studietools</h4><p>Snelle hulpmiddelen om vlotter te werken zonder het leerdoel uit het oog te verliezen.</p></div><span class="badge accent">toolbox</span></div><div class="utility-grid"><button class="btn" id="copyBronChecklist">Kopieer bronkritiek-checklist</button><button class="btn" id="copySQChecklist">Kopieer SQ-debatkaart</button><button class="btn" id="copyPlannerPrompt">Kopieer onderzoeksplanner</button><button class="btn" id="copyOralDefensePrompt">Kopieer mondelinge-verdedigingcheck</button><button class="btn" id="startPomodoro25">Start 25 min focus</button><button class="btn" id="stopPomodoro">Stop timer</button></div><p class="tiny" id="pomodoroStatus">Geen actieve focustimer.</p></div>
+        <div class="card tools-card"><div class="spread"><div><h4>Minitools · snelle werksjablonen</h4><p>Geen AI: kopieer een compact werkraam of start een lokale focustimer.</p></div><span class="badge accent">lichtgewicht</span></div><div class="utility-grid utility-explain-grid"><button class="btn" id="copyBronChecklist"><strong>Bronkritiek-checklist</strong><span>productie, doel, bias, bewijscapaciteit</span></button><button class="btn" id="copySQChecklist"><strong>SQ-debatkaart</strong><span>orden secundaire literatuur als debat</span></button><button class="btn" id="copyPlannerPrompt"><strong>Onderzoeksplanner</strong><span>vraag → corpus → methode → inferentie</span></button><button class="btn" id="copyOralDefensePrompt"><strong>Mondelinge verdediging</strong><span>promotorvragen en zwakke plekken</span></button><button class="btn" id="startPomodoro25"><strong>25 min focus</strong><span>lokale timer, geen cloud</span></button><button class="btn" id="stopPomodoro"><strong>Stop timer</strong><span>annuleert alleen de lokale timer</span></button></div><p class="tiny" id="pomodoroStatus">Geen actieve focustimer.</p></div>
         <div class="card"><div class="spread"><div><h4>Weergavemodus</h4><p>Kies desgewenst expliciet een laptop- of telefoonweergave. Standaard gebruikt Scriptorium automatische responsieve weergave.</p></div><span class="badge">interface</span></div><div class="row"><a class="btn" href="./desktop.html">Open laptopweergave</a><a class="btn" href="./mobile.html">Open telefoonweergave</a><button class="btn" id="clearForcedView">Automatisch</button></div><p class="tiny">De bovenste badge toont welke weergave actief is. Je hoeft voor normale updates niets opnieuw te installeren.</p></div>
       </div>
       <div class="grid two" style="margin-top:14px">

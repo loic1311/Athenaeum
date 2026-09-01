@@ -1,4 +1,4 @@
-/* SCRIPTORIUM V7.6 CLEAN PRODUCTION BUNDLE
+/* SCRIPTORIUM V8.1 CLEAN PRODUCTION BUNDLE
    Samengevoegd uit de historisch gegroeide runtime-lagen.
    Niet geminified: secties blijven onderhoudbaar. */
 
@@ -347,9 +347,13 @@ function moduleMastery(id){
 }
 
 function trainingBenchmarks(module){
-  const ls=collectLessons(),keys=module.keywords||[];
-  const scored=ls.map(x=>{const txt=JSON.stringify(x).toLowerCase();let s=keys.reduce((n,k)=>n+(txt.includes(k.toLowerCase())?2:0),0);if(x.work?.weight==="normatief")s+=2;return{x,s}}).filter(z=>z.s>0).sort((a,b)=>b.s-a.s).slice(0,8);
-  return scored.map(z=>{const x=z.x,ev=x.evidence||x.references||[];return{principle:x.transferable_principle||x.lesson||x.technique||x.description||x.pattern||"",why:x.why_effective||"",limit:x.limits||x.when_not_to_use||x.risk||"",source:x.work?.author||"",work:x.work?.title||x.work?.filename||"",evidence:ev.slice(0,2)}});
+  const ls=collectLessons(),keys=module.keywords||[],seen=new Set(),out=[];
+  const scored=ls.map(x=>{const txt=JSON.stringify(x).toLowerCase();let s=keys.reduce((n,k)=>n+(txt.includes(k.toLowerCase())?2:0),0);if(x.work?.weight==="normatief")s+=2;return{x,s}}).filter(z=>z.s>0).sort((a,b)=>b.s-a.s);
+  for(const z of scored){
+    const x=z.x,ev=x.evidence||x.references||[],item={principle:x.transferable_principle||x.lesson||x.technique||x.description||x.pattern||"",why:x.why_effective||"",limit:x.limits||x.when_not_to_use||x.risk||"",source:x.work?.author||"",work:x.work?.title||x.work?.filename||"",evidence:ev.slice(0,1)};
+    const k=[item.principle,item.source,item.work].join('|').toLowerCase();if(!item.principle||seen.has(k))continue;seen.add(k);out.push(item);if(out.length>=5)break
+  }
+  return out
 }
 
 function gradingRubric(module,difficulty){
@@ -4751,7 +4755,7 @@ async function saveH5P(st){
 }
 function parseH5PInput(raw){
   const text=String(raw||'').trim();
-  if(!text)throw new Error('Plak een H5P iframe-code of URL.');
+  if(!text)throw new Error('Plak een H5P-URL of iframe-code.');
   let src=text;
   if(text.includes('<')){
     const d=new DOMParser().parseFromString(text,'text/html');
@@ -4840,30 +4844,21 @@ async function renderH5PList(){
   });
 }
 function installH5P(){
-  const page=document.getElementById('page-training');
-  if(!page||document.getElementById('v71H5PCard'))return;
-  const card=document.createElement('div');
-  card.id='v71H5PCard';
-  card.className='card v71-h5p-card';
-  card.innerHTML=`<div class="spread"><div><h4>🧩 H5P interactieve oefeningen</h4>
-    <p class="tiny">Voeg een H5P iframe-code of URL toe. Scriptorium injecteert nooit willekeurige embed-code: alleen de iframe-URL wordt opgeslagen.</p></div>
-    <span class="badge accent">aanvullend op native training</span></div>
-    <div class="form-grid" style="margin-top:12px"><div class="field"><label>Titel<input id="v71H5PName" placeholder="bv. Epigrafische bronkritiek"></label></div>
-    <div class="field"><label>H5P iframe-code of URL<textarea id="v71H5PCode" placeholder='<iframe src="https://…"></iframe>'></textarea></label></div></div>
-    <div class="row"><button class="btn primary" id="v71H5PAdd">H5P toevoegen</button></div>
-    <div class="callout" style="margin-top:12px"><strong>Wanneer H5P?</strong> Goed voor meerkeuze, slepen, hotspots, invulvragen, interactieve video en korte retrieval. De bestaande Scriptorium-training blijft beter voor open historische redenering, bronkritiek, onderzoeksopzet en lange antwoorden.</div>
-    <div id="v71H5PList" style="margin-top:12px"></div>`;
-  const launch=page.querySelector('.training-launch-card');
-  if(launch)launch.insertAdjacentElement('afterend',card);else page.appendChild(card);
-  card.querySelector('#v71H5PAdd').onclick=async()=>{
-    try{
-      const url=parseH5PInput(card.querySelector('#v71H5PCode').value);
-      const st=await h5pState();
-      st.items.push({id:'h5p_'+Date.now().toString(36)+Math.random().toString(36).slice(2,7),title:card.querySelector('#v71H5PName').value.trim()||'H5P-oefening',url,created_at:Date.now(),updated_at:Date.now()});
-      await saveH5P(st);card.querySelector('#v71H5PName').value='';card.querySelector('#v71H5PCode').value='';renderH5PList();toast71('H5P-oefening toegevoegd.','good');
-    }catch(e){toast71(e.message,'bad')}
-  };
-  renderH5PList();
+  const page=document.getElementById('page-training');if(!page||document.getElementById('v71H5PCard'))return;
+  const card=document.createElement('div');card.id='v71H5PCard';card.className='card v71-h5p-card';
+  card.innerHTML=`<div class="spread"><div><h4>🧩 H5P-lab <span class="badge">optioneel</span></h4><p>H5P is aanvullend op Scriptorium, niet de kern. Gebruik het voor korte interactieve retrieval; open historische redenering blijft in de native training.</p></div><span class="badge accent">licht geladen: alleen embed bij openen</span></div>
+  <div class="h5p-purpose-grid">
+    <div><strong>Multiple choice / invulvraag</strong><span>snelle feitenretrieval en begrippen</span></div>
+    <div><strong>Drag & drop / ordenen</strong><span>chronologie, categorieën, processen</span></div>
+    <div><strong>Image hotspots</strong><span>kaart, inscriptie, munt of object observeren</span></div>
+    <div><strong>Interactive video</strong><span>alleen nuttig bij colleges/beeldmateriaal</span></div>
+  </div>
+  <div class="callout warn" style="margin-top:12px"><strong>Efficiëntste werkwijze voor Athenaeum:</strong> maak H5P in Lumi of een H5P-platform. Publiceer/exporteer de oefening vervolgens als webpagina en gebruik bij voorkeur een URL onder hetzelfde Athenaeum-domein. Same-origin oefeningen kunnen xAPI-score en voltooiing automatisch doorgeven; externe embeds blijven veilig geïsoleerd en worden desnoods handmatig voltooid. De zware H5P-editor wordt bewust niet in deze PWA ingebouwd.</div>
+  <div class="grid two" style="margin-top:12px"><div class="field"><label>Doel / type<select id="v71H5PType"><option>Feitenretrieval</option><option>Chronologie / ordening</option><option>Bronobservatie</option><option>Interactieve video</option><option>Anders</option></select></label><label style="margin-top:8px">Titel<input id="v71H5PName" placeholder="bv. Epigrafische bronkritiek"></label></div><div class="field"><label>H5P-URL of iframe-code<textarea id="v71H5PCode" placeholder='<iframe src="https://…"></iframe>'></textarea></label></div></div>
+  <div class="row"><button class="btn primary" id="v71H5PAdd">H5P toevoegen</button></div><div id="v71H5PList" style="margin-top:12px"></div>`;
+  const launch=page.querySelector('.training-launch-card');if(launch)launch.insertAdjacentElement('afterend',card);else page.appendChild(card);
+  card.querySelector('#v71H5PAdd').onclick=async()=>{try{const url=parseH5PInput(card.querySelector('#v71H5PCode').value),st=await h5pState();st.items.push({id:'h5p_'+Date.now().toString(36)+Math.random().toString(36).slice(2,7),title:card.querySelector('#v71H5PName').value.trim()||'H5P-oefening',content_type:card.querySelector('#v71H5PType').value,url,created_at:Date.now(),updated_at:Date.now()});await saveH5P(st);card.querySelector('#v71H5PName').value='';card.querySelector('#v71H5PCode').value='';renderH5PList();toast71('H5P-oefening toegevoegd.','good')}catch(e){toast71(e.message,'bad')}};
+  renderH5PList()
 }
 
 /* ---------- shared friend catalog: metadata only ---------- */
@@ -5236,7 +5231,7 @@ window.init=async function(){
 const PID=window.ATH_PROFILE_ID||localStorage.getItem('athenaeum_current_profile')||'';
 const PREV_INIT=window.init;
 const esc3=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-function brand73(){document.title='Scriptorium V7.3 — AI-docent';document.querySelectorAll('.version-pill').forEach(x=>x.textContent='V7.3');const sm=document.querySelector('.brand small');if(sm)sm.textContent='V7.3 · AI-docent · veilige start · incrementele sync · H5P';}
+function brand73(){document.title='Scriptorium V8.1 — AI-docent';document.querySelectorAll('.version-pill').forEach(x=>x.textContent='V8.1');const sm=document.querySelector('.brand small');if(sm)sm.textContent='V8.1 · AI-docent · veilige start · incrementele sync · H5P';}
 function gradeHtml(g,quota){
   const cls=g.score>=18?'good':g.score>=14?'warn':'bad';
   const dims=Object.entries(g.dimension_scores||{}).map(([k,v])=>`<div class="dimension"><strong>${esc3(k)}</strong><span>${Number(v).toFixed(1)}/20</span></div>`).join('');
@@ -5349,10 +5344,10 @@ let lessonCache=null,lessonCachePromise=null;
 const fullCache=new Map();
 
 function brand75(){
-  document.title='Scriptorium V7.5 — Productiestabiel';
-  document.querySelectorAll('.version-pill').forEach(x=>x.textContent='V7.5');
-  const sm=document.querySelector('.brand small');if(sm)sm.textContent='V7.5 · productiestabiel · AI-docent · incrementele sync · H5P';
-  const sub=document.querySelector('.topbar-sub');if(sub)sub.textContent='Scriptorium V7.5 · metadata-first: zware analyses alleen laden wanneer nodig';
+  document.title='Scriptorium V8.1 — Eindversie';
+  document.querySelectorAll('.version-pill').forEach(x=>x.textContent='V8.1');
+  const sm=document.querySelector('.brand small');if(sm)sm.textContent='V8.1 · eindversie · AI-docent · incrementele sync · H5P';
+  const sub=document.querySelector('.topbar-sub');if(sub)sub.textContent='Scriptorium V8.1 · apparaatbewust · metadata-first · AI-docent';
 }
 function esc75(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function storeCount(name){return new Promise((res,rej)=>{try{const r=tx(name).count();r.onsuccess=()=>res(r.result||0);r.onerror=()=>rej(r.error)}catch(e){rej(e)}})}
@@ -5474,7 +5469,7 @@ async function renderLessons75(){
 
 async function selectedBenchmarkPayload75(){
   const ids=[...(document.getElementById('benchmarkWorks')?.selectedOptions||[])].map(o=>String(o.value)).slice(0,4),out=[];
-  for(const id of ids){const w=await fullWork(id);if(!w?.analysis)continue;out.push({author:w.author,title:w.title,weight:w.weight,skill_lessons:(w.analysis.skill_lessons||[]).slice(0,12),writing_techniques:(w.analysis.writing_techniques||[]).slice(0,12),research_techniques:(w.analysis.research_techniques||[]).slice(0,12),anti_patterns:(w.analysis.anti_patterns||[]).slice(0,8)})}
+  for(const id of ids){const w=await fullWork(id);if(!w?.analysis)continue;out.push({author:w.author,title:w.title,weight:w.weight,skill_lessons:(w.analysis.skill_lessons||[]).slice(0,5),writing_techniques:(w.analysis.writing_techniques||[]).slice(0,5),research_techniques:(w.analysis.research_techniques||[]).slice(0,5),anti_patterns:(w.analysis.anti_patterns||[]).slice(0,3)})}
   return out;
 }
 async function atelierAi75(){
@@ -5482,9 +5477,34 @@ async function atelierAi75(){
   try{const context=await selectedBenchmarkPayload75();const r=await AthAI.feedback(PID,{mode:'scriptorium_grade',attempt_id:'atelier_'+Date.now(),question:`Beoordeel dit eigen academische tekstfragment met doel: ${goal}. Geef alleen feedback en revisieacties; schrijf het fragment niet voor de student om.`,answer:text,expected:'Zelfstandig, precies, bronkritisch, methodologisch coherent en academisch helder.',context:JSON.stringify(context,null,2),rubric:'Gebruik de zes Scriptorium-dimensies. Master-niveau geschiedenis; 18+ is uitzonderlijk.'});if(box&&window.gradeHtml)box.innerHTML=gradeHtml(r.feedback,r.quota);else if(box)box.innerHTML=`<div class="callout good"><strong>${r.feedback.score}/20</strong><br>${esc75(r.feedback.verdict||'')}</div>`}catch(e){if(box)box.innerHTML=`<div class="callout bad">${esc75(e.message)}</div>`}finally{if(btn){btn.disabled=false;btn.textContent='🧑‍🏫 AI-docent feedback'}}
 }
 async function aiGrade75(){
-  const ex=state.currentExercise;if(!ex)return toast('Genereer eerst een oefening.','warn');const answer=document.getElementById('trainingAnswer')?.value.trim()||'';if(answer.length<80)return toast('Werk je antwoord eerst voldoende uit.','warn');const btn=document.getElementById('aiGradeTraining');if(btn){btn.disabled=true;btn.textContent='AI-docent beoordeelt…'}
-  try{await buildLessonCache();const attempt=await saveCurrentAttempt(answer,true),module=TRAINING_MODULES.find(m=>m.id===ex.module_id),bench=trainingBenchmarks(module),rubric=gradingRubric(module,ex.difficulty),r=await AthAI.feedback(PID,{mode:'scriptorium_grade',attempt_id:attempt.attempt_id,question:exerciseText(ex),answer,expected:JSON.stringify(ex.expected||{},null,2),context:JSON.stringify(bench||[],null,2),rubric:JSON.stringify(rubric||{},null,2)}),g=r.feedback;g.pass_18plus=Boolean(g.score>=18&&(g.critical_issues||[]).length===0);attempt.grade=g;attempt.ai_model=r.model_used;attempt.graded_at=Date.now();const s=activeSession();if(s&&attempt.module_id===s.module_id&&!s.graded_ids.includes(attempt.attempt_id))s.graded_ids.push(attempt.attempt_id);await saveTrainingState();renderTraining();renderTrainingFocus();const el=document.getElementById('trainingFeedback');if(el&&window.gradeHtml)el.innerHTML=gradeHtml(g,r.quota);toast(`AI-docent: ${Number(g.score).toFixed(1)}/20.`,g.score>=18?'good':g.score>=14?'warn':'bad')}catch(e){toast(e.message,'bad')}finally{if(btn){btn.disabled=false;btn.textContent='🧑‍🏫 AI-docent beoordelen'}}
+  const ex=state.currentExercise;if(!ex)return toast('Genereer eerst een oefening.','warn');
+  const answer=document.getElementById('trainingAnswer')?.value.trim()||'';if(answer.length<80)return toast('Werk je antwoord eerst voldoende uit.','warn');
+  const btn=document.getElementById('aiGradeTraining');if(btn){btn.disabled=true;btn.textContent='AI-docent beoordeelt…'}
+  try{
+    await buildLessonCache();
+    const attempt=await saveCurrentAttempt(answer,true),module=TRAINING_MODULES.find(m=>m.id===ex.module_id),bench=trainingBenchmarks(module),rubric=gradingRubric(module,ex.difficulty);
+    const compactRubric={standard:rubric.standard,dimensions:rubric.dimensions,caps:(rubric.caps||[]).slice(0,6),difficulty:rubric.difficulty};
+    const r=await AthAI.feedback(PID,{mode:'scriptorium_grade',attempt_id:attempt.attempt_id,question:exerciseText(ex),answer,expected:JSON.stringify(ex.expected||{}),context:JSON.stringify(bench),rubric:JSON.stringify(compactRubric)}),g=r.feedback;
+    g.pass_18plus=Boolean(g.score>=18&&(g.critical_issues||[]).length===0);attempt.grade=g;attempt.ai_model=r.model_used;attempt.graded_at=Date.now();
+    const s=activeSession();if(s&&attempt.module_id===s.module_id&&!s.graded_ids.includes(attempt.attempt_id))s.graded_ids.push(attempt.attempt_id);
+    await saveTrainingState();renderTraining();renderTrainingFocus();const el=document.getElementById('trainingFeedback');if(el&&window.gradeHtml)el.innerHTML=gradeHtml(g,r.quota);
+    toast(`AI-docent: ${Number(g.score).toFixed(1)}/20.`,g.score>=18?'good':g.score>=14?'warn':'bad')
+  }catch(e){toast(e.message,'bad')}finally{if(btn){btn.disabled=false;btn.textContent='🧑‍🏫 AI-docent beoordelen'}}
 }
+
+async function aiGenerateTransfer80(){
+  const ex=state.currentExercise;if(!ex)return toast('Open eerst een Scriptorium-oefening.','warn');
+  const btn=document.getElementById('aiGenerateTransfer');if(btn){btn.disabled=true;btn.textContent='AI maakt transfervraag…'}
+  try{
+    const module=TRAINING_MODULES.find(m=>m.id===ex.module_id),sourceContext=(ex.materials||[]).map(m=>({label:m.label,text:m.text,translation:m.translation||'',source_type:m.source_type||'',authentic:m.authentic!==false,provenance:m.original_source_url||m.source_url||''})).slice(0,4);
+    const r=await AthAI.generate(PID,{mode:'scriptorium_generate',goal:`Maak een nieuwe transfervraag voor module ${module?.n||''}: ${module?.title||''}. De vraag moet dezelfde vaardigheid in een andere redeneringshoek testen en feitenkennis koppelen aan bronkritiek/inferentie.`,module:module?.title||'',question_type:'methodologie',difficulty:Math.min(5,Math.max(2,ex.difficulty||3)),context:JSON.stringify(sourceContext),recent:JSON.stringify((state.training?.attempts||[]).filter(a=>a.module_id===ex.module_id).slice(-6).map(a=>a.exercise?.prompt||''))});
+    const f=r.feedback,newEx={...ex,exercise_id:'tr_ai_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7),signature:`ai|${ex.module_id}|${Date.now()}`,title:`AI-transfervraag · ${module?.title||ex.title}`,prompt:f.question,family:'ai-'+(f.question_type||'transfer'),difficulty:f.difficulty||ex.difficulty,mode:'guided',intro:`Nieuwe universitaire transfervraag. ${f.source_grounding||''}`,expected:{anchor_points:f.expected_points||[],follow_up:f.follow_up_prompt||'',ai_generated:true},created_at:Date.now()};
+    state.currentExercise=newEx;state.training.current=newEx;await saveTrainingState();renderTrainingFocus();renderTraining();
+    const box=document.getElementById('aiTransferQuestion');if(box)box.innerHTML=`<div class="callout good"><strong>Nieuwe transfervraag actief</strong><div class="tiny">${esc(f.question_type||'toepassing')} · niveau ${f.difficulty}/5 · ±${f.time_minutes} min</div></div>`;
+    toast('Nieuwe AI-transfervraag geladen.','good')
+  }catch(e){toast(e.message,'bad')}finally{if(btn){btn.disabled=false;btn.textContent='🧠 AI nieuwe transfervraag'}}
+}
+
 async function copyCompare75(){
   const text=$('#ownText').value.trim(),goal=$('#atelierGoal').value;if(!text)return toast('Plak eerst je eigen tekst.','warn');const summary=await selectedBenchmarkPayload75();if(!summary.length)return toast('Kies minstens één geanalyseerd benchmarkwerk.','warn');const prompt=`Je bent mijn academische COACH, niet mijn ghostwriter. Vergelijk mijn tekst met geabstraheerde vaardigheden uit onderstaande Scriptorium-benchmarks. Doel: ${goal}.\n\nBENCHMARKVAARDIGHEDEN\n${JSON.stringify(summary,null,2)}\n\nMIJN TEKST\n${text}\n\nGeef diagnose, maximaal 5 overdraagbare verbeterprincipes, contextgrenzen, oefeningen en revisievolgorde. Schrijf mijn passage niet voor mij.`;await copyText(prompt);toast('Coachingsprompt gekopieerd.','good');
 }
@@ -5494,8 +5514,12 @@ async function exportBackup75(){
 }
 
 function aiPanel75(s){
-  const q=s?.quota||{},used=q.deep_used||0,limit=q.deep_limit||10,rem=q.deep_remaining??Math.max(0,limit-used),pct=limit?Math.round(used/limit*100):0,p=s?.provider;
-  return `<div class="card v74-ai-card"><div class="spread"><div><h4>🧑‍🏫 AI-docent</h4><p>Feedbackdienst voor eigen antwoorden; geen chatbot.</p></div><span class="v74-ai-led ${p?.reachable===false?'bad':'ok'}">${p?.reachable===false?'storing':'verbonden'}</span></div><div class="v74-quota"><div class="spread"><strong>Vandaag</strong><span><b>${rem}</b> van ${limit} diepe beoordelingen over</span></div><div class="v74-meter"><i style="width:${pct}%"></i></div></div><div class="grid two" style="margin-top:12px"><div class="callout"><strong>Model</strong><div class="tiny">${esc75(s?.models?.scriptorium||'openai/gpt-oss-120b')}</div></div><div class="callout"><strong>Laatste gebruik</strong><div class="tiny">${q.last_request_at?new Date(q.last_request_at).toLocaleString('nl-BE'):'nog geen vandaag'}</div></div></div><div class="row" style="margin-top:12px"><button class="btn primary" id="v75AiRefresh">Status verversen</button><button class="btn" id="v75AiReconnect">Opnieuw verbinden</button></div><div class="tiny" style="margin-top:8px">${p?.latency_ms!=null?'Provider '+p.latency_ms+' ms · ':''}quota reset dagelijks.</div></div>`;
+  const q=s?.quota||{},deepUsed=q.deep_used||0,deepLimit=q.deep_limit||10,deepRem=q.deep_remaining??Math.max(0,deepLimit-deepUsed),deepPct=deepLimit?Math.round(deepUsed/deepLimit*100):0,regUsed=q.regular_used||0,regLimit=q.regular_limit||60,regRem=q.regular_remaining??Math.max(0,regLimit-regUsed),regPct=regLimit?Math.round(regUsed/regLimit*100):0,p=s?.provider;
+  return `<div class="card v74-ai-card"><div class="spread"><div><h4>🧑‍🏫 AI-docent</h4><p>Strenge feedback + nieuwe transfervragen. Geen chatbot en geen ghostwriter.</p></div><span class="v74-ai-led ${p?.reachable===false?'bad':'ok'}">${p?.reachable===false?'storing':'verbonden'}</span></div>
+  <div class="v74-quota"><div class="spread"><strong>Diepe Scriptorium-feedback</strong><span><b>${deepRem}</b> van ${deepLimit} over</span></div><div class="v74-meter"><i style="width:${deepPct}%"></i></div></div>
+  <div class="v74-quota"><div class="spread"><strong>AI-vraaggenerator / normale AI-acties</strong><span><b>${regRem}</b> van ${regLimit} over</span></div><div class="v74-meter"><i style="width:${regPct}%"></i></div></div>
+  <div class="grid two" style="margin-top:12px"><div class="callout"><strong>Feedbackmodel</strong><div class="tiny">${esc75(s?.models?.scriptorium||'openai/gpt-oss-120b')}</div></div><div class="callout"><strong>Vraaggenerator</strong><div class="tiny">${esc75(s?.models?.generator||'openai/gpt-oss-20b')}</div></div></div>
+  <div class="row" style="margin-top:12px"><button class="btn primary" id="v75AiRefresh">Status verversen</button><button class="btn" id="v75AiReconnect">Opnieuw verbinden</button></div><div class="tiny" style="margin-top:8px">${p?.latency_ms!=null?'Provider '+p.latency_ms+' ms · ':''}jouw volledige antwoord blijft behouden; alleen benchmarkcontext, rubric en herhaalde metadata worden compact gehouden om de TPM-limiet niet onnodig te overschrijden.</div></div>`;
 }
 async function refreshAi75(probe=false){
   const host=document.getElementById('v75AiHost');if(!host)return;host.innerHTML='<div class="card"><div class="empty">AI-status controleren…</div></div>';
@@ -5518,7 +5542,7 @@ function bind75(){
   const b=document.getElementById('aiGradeTraining');if(b)b.onclick=aiGrade75;
   const a=document.getElementById('atelierAiReview');if(a)a.onclick=atelierAi75;
   const c=document.getElementById('copyComparePrompt');if(c)c.onclick=copyCompare75;
-  const e=document.getElementById('exportBackup');if(e)e.onclick=exportBackup75;
+  const e=document.getElementById('exportBackup');if(e)e.onclick=exportBackup75;const g=document.getElementById('aiGenerateTransfer');if(g)g.onclick=aiGenerateTransfer80;
 }
 function installErrorBoundary75(){
   if(document.documentElement.dataset.v75errors)return;document.documentElement.dataset.v75errors='1';
@@ -5552,7 +5576,7 @@ window.init=async function(){
     document.addEventListener('click',e=>{const n=e.target.closest('[data-page],[data-go]');if(!n)return;setTimeout(()=>{bind75();if((n.dataset.page||n.dataset.go)==='settings')installSettings75()},0)},true);
     if('requestIdleCallback'in window)requestIdleCallback(()=>buildLessonCache().catch(()=>{}),{timeout:30000});
     if(PID&&window.AthSync?.cfg?.(PID)?.enabled)window.AthSync.startAuto(PID,{scriptorium:true});
-  }catch(e){console.error('V7.5 boot',e);const n=document.getElementById('bootNotice');if(n){n.hidden=false;n.className='boot-notice bad';n.textContent='Scriptorium kon niet starten: '+(e.message||e)}}
+  }catch(e){console.error('V8.1 boot',e);const n=document.getElementById('bootNotice');if(n){n.hidden=false;n.className='boot-notice bad';n.textContent='Scriptorium kon niet starten: '+(e.message||e)}}
 };
 })();
 
@@ -5572,11 +5596,11 @@ init();
     const ua=navigator.userAgent||'',touch=(navigator.maxTouchPoints||0)>0;
     const ipad=/iPad/i.test(ua)||(navigator.platform==='MacIntel'&&touch);
     const w=Math.round(visualViewport?.width||innerWidth),h=Math.round(visualViewport?.height||innerHeight);
-    if(ipad)return{kind:'tablet',label:'iPad'};
-    if(touch&&Math.min(w,h)>=600&&Math.max(w,h)<=1500)return{kind:'tablet',label:'tablet'};
-    if(w<=720)return{kind:'phone',label:'telefoon'};
-    if(touch&&w<=1180)return{kind:'tablet',label:'tablet'};
-    return{kind:'desktop',label:'laptop'};
+    if(ipad)return{kind:'tablet',label:'iPad',profile:'touch-tablet'};
+    if(touch&&Math.min(w,h)>=600&&Math.max(w,h)<=1500)return{kind:'tablet',label:'tablet',profile:'touch-tablet'};
+    if(w<=720)return{kind:'phone',label:'telefoon',profile:'compact-touch'};
+    if(touch&&w<=1180)return{kind:'tablet',label:'tablet',profile:'touch-tablet'};
+    return{kind:'desktop',label:'laptop/desktop',profile:'wide-pointer'};
   }
   function apply(){
     const d=device(),a=standalone();
@@ -5585,10 +5609,35 @@ init();
     document.documentElement.dataset.device=d.kind;
     document.documentElement.dataset.displayMode=a?'app':'web';
     const chip=document.getElementById('installStatusChip');
-    if(chip)chip.textContent=(a?'App':'Browser')+' · '+d.label;
+    if(chip)chip.textContent=(a?'App':'Browser')+' · '+d.label;document.documentElement.dataset.deviceProfile=d.profile||d.kind;
   }
   addEventListener('resize',apply);
   visualViewport?.addEventListener('resize',apply);
   addEventListener('DOMContentLoaded',apply);
   apply();
+})();
+
+
+/* ===== V8.1 FINAL PRODUCT ENHANCEMENTS ===== */
+(function(){
+  const PIDF=window.ATH_PROFILE_ID||localStorage.getItem('athenaeum_current_profile')||'';
+  function deviceLabelF(){const m=document.getElementById('installStatusChip')?.textContent||'automatisch';const p=document.documentElement.dataset.deviceProfile||document.documentElement.dataset.device||'auto';return{mode:m,profile:p}}
+  function installDeviceCardF(){
+    const page=document.getElementById('page-settings');if(!page||document.getElementById('finalDeviceCard'))return;
+    const d=deviceLabelF(),card=document.createElement('div');card.className='card';card.id='finalDeviceCard';card.style.marginTop='14px';
+    card.innerHTML=`<div class="spread"><div><h4>📱 Apparaat & automatische modus</h4><p>Scriptorium detecteert het toestel zelf en past layout en achtergrondwerk aan.</p></div><span class="badge good">${d.mode}</span></div>
+    <div class="grid three" style="margin-top:10px"><div class="callout"><strong>Interface</strong><div class="tiny">${d.profile}</div></div><div class="callout"><strong>AI-feedback</strong><div class="tiny">cloud via Supabase/Groq · onafhankelijk van dit toestel</div></div><div class="callout"><strong>Corpus/sync</strong><div class="tiny">lokale PDF's · incrementele sync · zwaar werk vertraagd gestart</div></div></div>
+    <div class="tiny" style="margin-top:8px"><strong>Gedetecteerd:</strong> ${Math.round(window.visualViewport?.width||innerWidth)}×${Math.round(window.visualViewport?.height||innerHeight)} · touch ${navigator.maxTouchPoints||0} · ${screen.orientation?.type||'oriëntatie onbekend'}<br>Vier of meer gelijktijdige gebruikers werken met gescheiden Supabase-accounts en gescheiden lokale databases. Syncstarts krijgen jitter zodat clients niet tegelijk dezelfde backendpiek veroorzaken.</div>`;
+    const sys=document.getElementById('v75SystemCard');if(sys)sys.insertAdjacentElement('afterend',card);else page.appendChild(card)
+  }
+  function explainToolsF(){
+    const c=document.querySelector('.tools-card');if(!c||c.dataset.finalized)return;c.dataset.finalized='1';
+    c.querySelector('h4').textContent='Minitools · snelle werksjablonen';
+    const p=c.querySelector('.spread p');if(p)p.textContent='Deze tools gebruiken geen AI. Ze kopiëren een compacte checklist of starten een lokale focustimer, zodat je sneller kunt werken zonder nieuwe afhankelijkheden.';
+    const map={copyBronChecklist:['Bronkritiek-checklist','productie, doel, bias, bewijscapaciteit'],copySQChecklist:['SQ-debatkaart','orden secundaire literatuur als debat'],copyPlannerPrompt:['Onderzoeksplanner','vraag → corpus → methode → inferentie'],copyOralDefensePrompt:['Mondelinge verdediging','promotorvragen en zwakke plekken'],startPomodoro25:['25 min focus','lokale timer, geen cloud'],stopPomodoro:['Stop timer','annuleert alleen de lokale timer']};
+    const grid=c.querySelector('.utility-grid');if(grid){grid.classList.add('utility-explain-grid');for(const b of grid.querySelectorAll('button')){const x=map[b.id];if(x)b.innerHTML=`<strong>${x[0]}</strong><span>${x[1]}</span>`}}
+  }
+  function addTransferBoxF(){const b=document.getElementById('aiGradeTraining');if(!b||document.getElementById('aiGenerateTransfer'))return;const g=document.createElement('button');g.className='btn';g.id='aiGenerateTransfer';g.textContent='🧠 AI nieuwe transfervraag';b.insertAdjacentElement('afterend',g);const box=document.createElement('div');box.id='aiTransferQuestion';box.style.marginTop='8px';g.parentElement?.insertAdjacentElement('afterend',box);g.onclick=aiGenerateTransfer80}
+  const obs=new MutationObserver(()=>{installDeviceCardF();explainToolsF();addTransferBoxF()});obs.observe(document.body,{childList:true,subtree:true});
+  setTimeout(()=>{installDeviceCardF();explainToolsF();addTransferBoxF()},100);
 })();

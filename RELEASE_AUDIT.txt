@@ -1,45 +1,35 @@
-ATHENAEUM V1.0.17 — RELEASE AUDIT
+ATHENAEUM V1.2.0 — RELEASE AUDIT
+=================================
 
-Resultaat: statische productcontrole GESLAAGD.
+STATIC CHECKS
+- JavaScript syntax: OK
+- JSON/webmanifest parse: OK
+- Local HTML references: OK
+- Duplicate static HTML IDs: none
+- Scriptorium V8 AI transfer generator: present
+- Paideia AI question generator: present
+- Telegram removed from Paideia main navigation: yes
+- universal back buttons: present
+- H5P guided lab: present
+- Paideia learning/exam history: present
 
-Uitgevoerde controles:
-- JavaScript syntax: 20 bestanden OK
-- JSON parse: 10 bestanden OK
-- Lokale script/style/image-referenties in hoofdschermen: OK
-- Scriptorium service-worker assets: OK
-- Dubbele statische IDs index.html: geen
-- Dubbele statische IDs apps/paideia/index.html: geen
-- Dubbele statische IDs apps/scriptorium/index.html: geen
+PERFORMANCE ARCHITECTURE
+- Paideia data remains split/lazy.
+- Scriptorium metadata-first/lazy analysis remains active.
+- AI context is compacted client-side and server-side.
+- Scriptorium heavy sync remains incremental and delayed.
+- automatic sync starts have client jitter.
+- no animation library added; motion is CSS-only.
 
-Prestatiemaatregelen:
-- Scriptorium bewaart op start alleen metadata in state.works; volledige analyses worden per werk opgevraagd.
-- Legacy-databasecontrole gebruikt count/keys, niet getAll() van het volledige corpus.
-- Theorie/AI benchmarkcache wordt werk-per-werk en lazy opgebouwd.
-- Analyse-import dedupliceert arrays zodat dezelfde data niet opnieuw blijft groeien.
-- Paideia basisdata en aanvullende vragen blijven gescheiden/lazy.
-- Zware Scriptorium-sync draait alleen binnen Scriptorium en pas na UI-start.
+SIZES
+- Athenaeum index.html: 7,134 bytes
+- Paideia index.html: 4,167 bytes
+- Paideia JS: 42,824 bytes
+- Scriptorium index.html: 55,701 bytes
+- Scriptorium JS: 449,437 bytes
 
-Bestandsgroottes:
-- root_index_kb: 150.2 KB
-- paideia_index_kb: 4.2 KB
-- paideia_js_kb: 32.1 KB
-- scriptorium_index_kb: 179.6 KB
-- scriptorium_v75_kb: 25.4 KB
-
-Beperking van deze audit:
-Een echte browser/end-to-end kliktest kon in deze uitvoeromgeving niet worden uitgevoerd omdat Chromium zowel localhost als file:// met ERR_BLOCKED_BY_ADMINISTRATOR blokkeert. Daarom claimt deze audit geen bewijs dat elk fysiek toestel/browser-combinatie foutloos is. De build bevat wel in-app systeemcontroles en niet-fatale foutafhandeling zodat resterende omgevingsproblemen zichtbaar worden zonder de volledige app te blokkeren.
-
-V1.0.17 CLEANUP-AUDIT
----------------------
-Bestanden in productie: 155 → 90
-Athenaeum index.html: 153,758 → 6,930 bytes
-Scriptorium index.html: 183,909 → 55,221 bytes
-Scriptorium runtime: 11 versie-JS-bestanden + sources.js → 1 bundle (441,661 bytes)
-Losse HOTFIX-documenten: geconsolideerd in docs/CHANGELOG.txt
-
-Validaties:
-- alle JavaScriptbestanden: node --check OK
-- alle JSON/webmanifestbestanden: parse OK
-- lokale HTML src/href-referenties: aanwezig
-- service-worker shell-referenties: aanwezig
-- ZIP-integriteit: wordt na packaging gecontroleerd
+BROWSER NOTE
+A full physical-browser click test cannot be executed in this container because
+local browser access is restricted. Syntax, references and critical feature
+presence are validated statically. Final visual/device verification should be
+done after GitHub Pages deployment on one phone, one tablet/iPad and one laptop.

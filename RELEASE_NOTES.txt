@@ -1,17 +1,55 @@
-ATHENAEUM V1.0.17 — CLEAN PRODUCTION BASELINE
-==============================================
+ATHENAEUM V1.2.0 — FINAL LEARNING PLATFORM
+===========================================
 
-Deze release consolideert de opgestapelde hotfixstructuur zonder functies weg
-te nemen.
+Dit is de nieuwe functionele basis voor verdere apps.
 
-Opschoning:
-- losse HOTFIX-documenten → docs/CHANGELOG.txt
-- Scriptorium v6.js ... v7_5.js + sources.js → scriptorium.app.js
-- v6.css → scriptorium.css
-- ongebruikte oude Scriptorium-iconen/branding verwijderd
-- Athenaeum index.html gebruikt opnieuw cachebare externe CSS/JS in plaats van
-  grote ingebedde duplicaten
-- Scriptorium-serviceworker precachet alleen de essentiële app-shell
+ATHENAEUM
+- universele terugknop boven het Athenaeum-logo;
+- lichte CSS-animaties, automatisch uit bij prefers-reduced-motion;
+- multi-client syncstarts met jitter zodat meerdere gebruikers niet tegelijk
+  dezelfde backendpiek veroorzaken.
 
-De runtimefunctionaliteit van V1.0.16 blijft behouden; dit is een refactor naar
-één overzichtelijke productiecodebasis.
+SCRIPTORIUM V8.1
+- apparaatprofielen voor app/browser + telefoon/tablet/iPad/laptop;
+- training-focus layout verschilt per apparaat;
+- AI-context wordt lokaal én server-side gededupliceerd/gecompacteerd;
+- 120B-feedback valt bij TPM-problemen gecontroleerd terug op 20B;
+- AI kan nieuwe transfervragen genereren;
+- H5P is een optionele interactieve laag, niet de primaire examenomgeving;
+- H5P-lab legt uit waarvoor MCQ, drag/drop, hotspots en interactive video dienen;
+- minitools zijn uitgelegd en blijven volledig lokaal;
+- lichte animaties terug zonder zware libraries.
+
+PAIDEIA
+- Telegram volledig onder Instellingen;
+- Leren toont sessiehistoriek: datum, score, vragen, duur, AI, onderwerpen en bronnen;
+- Examens tonen type, weging, datum, score, bevraagde thema's, aantal vragen,
+  AI-beoordelingen en verdiende streak-freeze;
+- examenindex: laatste vier weekexamens 40%, laatste mastery check 60%;
+- AI kan brongebonden universiteitsvragen genereren;
+- vragen richten zich op feitenkennis én toepassing: structuren, conjuncturen,
+  evoluties, revoluties, processen, causaliteit, vergelijking en synthese.
+
+AI-COACH SERVER V3
+- per-user quota blijven gescheiden;
+- status/health blijven beschikbaar;
+- contextdeduplicatie voorkomt onnodige TPM-overschrijding;
+- nieuwe modi paideia_generate en scriptorium_generate;
+- geen chatbot.
+
+CONCURRENTIE
+Vier of meer gelijktijdige gebruikers zijn architecturaal gescheiden via
+Supabase Auth/RLS, profielgebonden lokale opslag en incrementele sync. De apps
+sturen geen volledige corpusdump bij iedere synchronisatie.
+
+
+V1.2.0 ADDITIONS
+- Paideia now supports per-profile learning paths: Ancient History, Early Modern History, General History, General Knowledge, Pharmacy (WIP), and General Skills.
+- Each path has active/priority/minutes/exam/Telegram preferences.
+- Paideia Home/Learn/Exam views are generated from those preferences and keep detailed learning/exam history.
+- Telegram stays inside Paideia Settings and one bot personalizes the morning plan to selected paths.
+- Telegram server calls now carry profile_key so multiple profiles/accounts remain separated.
+- Device chips report app/browser, device class and viewport dimensions; Scriptorium Settings adds touch/orientation diagnostics.
+- AI keeps the learner answer intact while compacting auxiliary context and retrying short TPM rate-limit waits.
+- Scriptorium benchmark payloads were reduced to avoid wasting tokens; H5P guidance favors light external creation and same-origin publication for xAPI.
+- Motion remains CSS-only and respects reduced-motion preferences.

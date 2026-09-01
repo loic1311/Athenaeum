@@ -1,11 +1,16 @@
 {
-  "version": "7.6",
-  "release": "V7.6 Clean Production Bundle",
+  "version": "8.1",
+  "release": "V8.1 Final Research Coach",
   "features": [
-    "single_runtime_bundle",
-    "single_stylesheet",
-    "lean_service_worker",
-    "legacy_hotfix_files_removed",
-    "v7_5_runtime_features_preserved"
+    "device_specific_app_profiles",
+    "compact_ai_context",
+    "ai_transfer_question_generator",
+    "guided_h5p_lab",
+    "explained_minitools",
+    "lightweight_motion",
+    "multi_client_safe_sync",
+    "viewport_device_diagnostics",
+    "ai_rate_limit_hardening",
+    "h5p_same_origin_guidance"
   ]
 }
