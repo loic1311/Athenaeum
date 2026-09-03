@@ -1,1 +1,2209 @@
-[{"id":"q0233","domain":"general_knowledge","topic":"Psychology","type":"short","prompt":"Wat betekent memory in Psychology? Geef een correct, eenvoudig voorbeeld.","answer":"","keywords":["memory"],"options":[],"correct":null,"tags":["general knowledge"],"provenance":"model_supplement","source_refs":[]},{"id":"q0234","domain":"general_knowledge","topic":"Psychology","type":"short","prompt":"Wat betekent bias in Psychology? Geef een correct, eenvoudig voorbeeld.","answer":"","keywords":["bias"],"options":[],"correct":null,"tags":["general knowledge"],"provenance":"model_supplement","source_refs":[]},{"id":"q0235","domain":"general_knowledge","topic":"Psychology","type":"short","prompt":"Wat betekent learning in Psychology? Geef een correct, eenvoudig voorbeeld.","answer":"","keywords":["learning"],"options":[],"correct":null,"tags":["general knowledge"],"provenance":"model_supplement","source_refs":[]},{"id":"q0236","domain":"general_knowledge","topic":"Psychology","type":"short","prompt":"Wat betekent decision-making in Psychology? Geef een correct, eenvoudig voorbeeld.","answer":"","keywords":["decision-making"],"options":[],"correct":null,"tags":["general knowledge"],"provenance":"model_supplement","source_refs":[]},{"id":"q0237","domain":"general_knowledge","topic":"Psychology","type":"open","prompt":"Welke misvatting over Psychology zou een leek makkelijk maken? Corrigeer ze kort en duidelijk.","answer":"","keywords":["misconception"],"options":[],"correct":null,"tags":["general knowledge"],"provenance":"model_supplement","source_refs":[]},{"id":"q0238","domain":"general_knowledge","topic":"Psychology","type":"self","prompt":"Maak een kaartje met 4 kernideeën uit Psychology en verbind ze met pijlen.","answer":"","keywords":[],"options":[],"correct":null,"tags":["general knowledge","retrieval"],"provenance":"model_supplement","source_refs":[]},{"id":"q0239","domain":"general_knowledge","topic":"Biology","type":"short","prompt":"Wat betekent cell in Biology? Geef een correct, eenvoudig voorbeeld.","answer":"","keywords":["cell"],"options":[],"correct":null,"tags":["general knowledge"],"provenance":"model_supplement","source_refs":[]},{"id":"q0240","domain":"general_knowledge","topic":"Biology","type":"short","prompt":"Wat betekent genetics in Biology? Geef een correct, eenvoudig voorbeeld.","answer":"","keywords":["genetics"],"options":[],"correct":null,"tags":["general knowledge"],"provenance":"model_supplement","source_refs":[]},{"id":"q0241","domain":"general_knowledge","topic":"Biology","type":"short","prompt":"Wat betekent evolution in Biology? Geef een correct, eenvoudig voorbeeld.","answer":"","keywords":["evolution"],"options":[],"correct":null,"tags":["general knowledge"],"provenance":"model_supplement","source_refs":[]},{"id":"q0242","domain":"general_knowledge","topic":"Biology","type":"short","prompt":"Wat betekent homeostasis in Biology? Geef een correct, eenvoudig voorbeeld.","answer":"","keywords":["homeostasis"],"options":[],"correct":null,"tags":["general knowledge"],"provenance":"model_supplement","source_refs":[]},{"id":"q0243","domain":"general_knowledge","topic":"Biology","type":"open","prompt":"Welke misvatting over Biology zou een leek makkelijk maken? Corrigeer ze kort en duidelijk.","answer":"","keywords":["misconception"],"options":[],"correct":null,"tags":["general knowledge"],"provenance":"model_supplement","source_refs":[]},{"id":"q0244","domain":"general_knowledge","topic":"Biology","type":"self","prompt":"Maak een kaartje met 4 kernideeën uit Biology en verbind ze met pijlen.","answer":"","keywords":[],"options":[],"correct":null,"tags":["general knowledge","retrieval"],"provenance":"model_supplement","source_refs":[]},{"id":"q0245","domain":"general_knowledge","topic":"Law","type":"short","prompt":"Wat betekent legal systems in Law? Geef een correct, eenvoudig voorbeeld.","answer":"","keywords":["legal systems"],"options":[],"correct":null,"tags":["general knowledge"],"provenance":"model_supplement","source_refs":[]},{"id":"q0246","domain":"general_knowledge","topic":"Law","type":"short","prompt":"Wat betekent contracts in Law? Geef een correct, eenvoudig voorbeeld.","answer":"","keywords":["contracts"],"options":[],"correct":null,"tags":["general knowledge"],"provenance":"model_supplement","source_refs":[]},{"id":"q0247","domain":"general_knowledge","topic":"Law","type":"short","prompt":"Wat betekent criminal law in Law? Geef een correct, eenvoudig voorbeeld.","answer":"","keywords":["criminal law"],"options":[],"correct":null,"tags":["general knowledge"],"provenance":"model_supplement","source_refs":[]},{"id":"q0248","domain":"general_knowledge","topic":"Law","type":"short","prompt":"Wat betekent rights in Law? Geef een correct, eenvoudig voorbeeld.","answer":"","keywords":["rights"],"options":[],"correct":null,"tags":["general knowledge"],"provenance":"model_supplement","source_refs":[]},{"id":"q0249","domain":"general_knowledge","topic":"Law","type":"open","prompt":"Welke misvatting over Law zou een leek makkelijk maken? Corrigeer ze kort en duidelijk.","answer":"","keywords":["misconception"],"options":[],"correct":null,"tags":["general knowledge"],"provenance":"model_supplement","source_refs":[]},{"id":"q0250","domain":"general_knowledge","topic":"Law","type":"self","prompt":"Maak een kaartje met 4 kernideeën uit Law en verbind ze met pijlen.","answer":"","keywords":[],"options":[],"correct":null,"tags":["general knowledge","retrieval"],"provenance":"model_supplement","source_refs":[]},{"id":"q0251","domain":"general_knowledge","topic":"Medicine","type":"short","prompt":"Wat betekent anatomy in Medicine? Geef een correct, eenvoudig voorbeeld.","answer":"","keywords":["anatomy"],"options":[],"correct":null,"tags":["general knowledge"],"provenance":"model_supplement","source_refs":[]},{"id":"q0252","domain":"general_knowledge","topic":"Medicine","type":"short","prompt":"Wat betekent infection in Medicine? Geef een correct, eenvoudig voorbeeld.","answer":"","keywords":["infection"],"options":[],"correct":null,"tags":["general knowledge"],"provenance":"model_supplement","source_refs":[]},{"id":"q0253","domain":"general_knowledge","topic":"Medicine","type":"short","prompt":"Wat betekent risk in Medicine? Geef een correct, eenvoudig voorbeeld.","answer":"","keywords":["risk"],"options":[],"correct":null,"tags":["general knowledge"],"provenance":"model_supplement","source_refs":[]},{"id":"q0254","domain":"general_knowledge","topic":"Medicine","type":"short","prompt":"Wat betekent public health in Medicine? Geef een correct, eenvoudig voorbeeld.","answer":"","keywords":["public health"],"options":[],"correct":null,"tags":["general knowledge"],"provenance":"model_supplement","source_refs":[]},{"id":"q0255","domain":"general_knowledge","topic":"Medicine","type":"open","prompt":"Welke misvatting over Medicine zou een leek makkelijk maken? Corrigeer ze kort en duidelijk.","answer":"","keywords":["misconception"],"options":[],"correct":null,"tags":["general knowledge"],"provenance":"model_supplement","source_refs":[]},{"id":"q0256","domain":"general_knowledge","topic":"Medicine","type":"self","prompt":"Maak een kaartje met 4 kernideeën uit Medicine en verbind ze met pijlen.","answer":"","keywords":[],"options":[],"correct":null,"tags":["general knowledge","retrieval"],"provenance":"model_supplement","source_refs":[]},{"id":"q0257","domain":"skill","topic":"Change a car wheel","type":"short","prompt":"Waarom is “safety” belangrijk bij de vaardigheid “Change a car wheel”?","answer":"","keywords":["safety"],"options":[],"correct":null,"tags":["skill"],"provenance":"model_supplement","source_refs":[]},{"id":"q0258","domain":"skill","topic":"Change a car wheel","type":"short","prompt":"Waarom is “jack points” belangrijk bij de vaardigheid “Change a car wheel”?","answer":"","keywords":["jack points"],"options":[],"correct":null,"tags":["skill"],"provenance":"model_supplement","source_refs":[]},{"id":"q0259","domain":"skill","topic":"Change a car wheel","type":"short","prompt":"Waarom is “wheel bolts” belangrijk bij de vaardigheid “Change a car wheel”?","answer":"","keywords":["wheel bolts"],"options":[],"correct":null,"tags":["skill"],"provenance":"model_supplement","source_refs":[]},{"id":"q0260","domain":"skill","topic":"Change a car wheel","type":"short","prompt":"Waarom is “torque” belangrijk bij de vaardigheid “Change a car wheel”?","answer":"","keywords":["torque"],"options":[],"correct":null,"tags":["skill"],"provenance":"model_supplement","source_refs":[]},{"id":"q0261","domain":"skill","topic":"Change a car wheel","type":"open","prompt":"Zet “Change a car wheel” in een veilige theoretische volgorde. Benoem vooraf twee risico’s.","answer":"","keywords":["safety","sequence"],"options":[],"correct":null,"tags":["skill","safety"],"provenance":"model_supplement","source_refs":[]},{"id":"q0262","domain":"skill","topic":"Change a car wheel","type":"self","prompt":"Visualiseer de stappen van “Change a car wheel” zonder praktisch uit te voeren. Welke stap zou je eerst opnieuw controleren vóór je het echt doet?","answer":"","keywords":[],"options":[],"correct":null,"tags":["skill"],"provenance":"model_supplement","source_refs":[]},{"id":"q0263","domain":"skill","topic":"Repair a bicycle puncture","type":"short","prompt":"Waarom is “tube” belangrijk bij de vaardigheid “Repair a bicycle puncture”?","answer":"","keywords":["tube"],"options":[],"correct":null,"tags":["skill"],"provenance":"model_supplement","source_refs":[]},{"id":"q0264","domain":"skill","topic":"Repair a bicycle puncture","type":"short","prompt":"Waarom is “tyre levers” belangrijk bij de vaardigheid “Repair a bicycle puncture”?","answer":"","keywords":["tyre levers"],"options":[],"correct":null,"tags":["skill"],"provenance":"model_supplement","source_refs":[]},{"id":"q0265","domain":"skill","topic":"Repair a bicycle puncture","type":"short","prompt":"Waarom is “patch” belangrijk bij de vaardigheid “Repair a bicycle puncture”?","answer":"","keywords":["patch"],"options":[],"correct":null,"tags":["skill"],"provenance":"model_supplement","source_refs":[]},{"id":"q0266","domain":"skill","topic":"Repair a bicycle puncture","type":"short","prompt":"Waarom is “pressure” belangrijk bij de vaardigheid “Repair a bicycle puncture”?","answer":"","keywords":["pressure"],"options":[],"correct":null,"tags":["skill"],"provenance":"model_supplement","source_refs":[]},{"id":"q0267","domain":"skill","topic":"Repair a bicycle puncture","type":"open","prompt":"Zet “Repair a bicycle puncture” in een veilige theoretische volgorde. Benoem vooraf twee risico’s.","answer":"","keywords":["safety","sequence"],"options":[],"correct":null,"tags":["skill","safety"],"provenance":"model_supplement","source_refs":[]},{"id":"q0268","domain":"skill","topic":"Repair a bicycle puncture","type":"self","prompt":"Visualiseer de stappen van “Repair a bicycle puncture” zonder praktisch uit te voeren. Welke stap zou je eerst opnieuw controleren vóór je het echt doet?","answer":"","keywords":[],"options":[],"correct":null,"tags":["skill"],"provenance":"model_supplement","source_refs":[]},{"id":"q0269","domain":"skill","topic":"Basic home repair","type":"short","prompt":"Waarom is “fasteners” belangrijk bij de vaardigheid “Basic home repair”?","answer":"","keywords":["fasteners"],"options":[],"correct":null,"tags":["skill"],"provenance":"model_supplement","source_refs":[]},{"id":"q0270","domain":"skill","topic":"Basic home repair","type":"short","prompt":"Waarom is “drilling” belangrijk bij de vaardigheid “Basic home repair”?","answer":"","keywords":["drilling"],"options":[],"correct":null,"tags":["skill"],"provenance":"model_supplement","source_refs":[]},{"id":"q0271","domain":"skill","topic":"Basic home repair","type":"short","prompt":"Waarom is “measuring” belangrijk bij de vaardigheid “Basic home repair”?","answer":"","keywords":["measuring"],"options":[],"correct":null,"tags":["skill"],"provenance":"model_supplement","source_refs":[]},{"id":"q0272","domain":"skill","topic":"Basic home repair","type":"short","prompt":"Waarom is “safety” belangrijk bij de vaardigheid “Basic home repair”?","answer":"","keywords":["safety"],"options":[],"correct":null,"tags":["skill"],"provenance":"model_supplement","source_refs":[]},{"id":"q0273","domain":"skill","topic":"Basic home repair","type":"open","prompt":"Zet “Basic home repair” in een veilige theoretische volgorde. Benoem vooraf twee risico’s.","answer":"","keywords":["safety","sequence"],"options":[],"correct":null,"tags":["skill","safety"],"provenance":"model_supplement","source_refs":[]},{"id":"q0274","domain":"skill","topic":"Basic home repair","type":"self","prompt":"Visualiseer de stappen van “Basic home repair” zonder praktisch uit te voeren. Welke stap zou je eerst opnieuw controleren vóór je het echt doet?","answer":"","keywords":[],"options":[],"correct":null,"tags":["skill"],"provenance":"model_supplement","source_refs":[]},{"id":"q0275","domain":"skill","topic":"Vegetable gardening","type":"short","prompt":"Waarom is “soil” belangrijk bij de vaardigheid “Vegetable gardening”?","answer":"","keywords":["soil"],"options":[],"correct":null,"tags":["skill"],"provenance":"model_supplement","source_refs":[]},{"id":"q0276","domain":"skill","topic":"Vegetable gardening","type":"short","prompt":"Waarom is “crop rotation” belangrijk bij de vaardigheid “Vegetable gardening”?","answer":"","keywords":["crop rotation"],"options":[],"correct":null,"tags":["skill"],"provenance":"model_supplement","source_refs":[]},{"id":"q0277","domain":"skill","topic":"Vegetable gardening","type":"short","prompt":"Waarom is “watering” belangrijk bij de vaardigheid “Vegetable gardening”?","answer":"","keywords":["watering"],"options":[],"correct":null,"tags":["skill"],"provenance":"model_supplement","source_refs":[]},{"id":"q0278","domain":"skill","topic":"Vegetable gardening","type":"short","prompt":"Waarom is “seasonality” belangrijk bij de vaardigheid “Vegetable gardening”?","answer":"","keywords":["seasonality"],"options":[],"correct":null,"tags":["skill"],"provenance":"model_supplement","source_refs":[]},{"id":"q0279","domain":"skill","topic":"Vegetable gardening","type":"open","prompt":"Zet “Vegetable gardening” in een veilige theoretische volgorde. Benoem vooraf twee risico’s.","answer":"","keywords":["safety","sequence"],"options":[],"correct":null,"tags":["skill","safety"],"provenance":"model_supplement","source_refs":[]},{"id":"q0280","domain":"skill","topic":"Vegetable gardening","type":"self","prompt":"Visualiseer de stappen van “Vegetable gardening” zonder praktisch uit te voeren. Welke stap zou je eerst opnieuw controleren vóór je het echt doet?","answer":"","keywords":[],"options":[],"correct":null,"tags":["skill"],"provenance":"model_supplement","source_refs":[]}]
+[
+  {
+    "id": "gk_psy_memory",
+    "domain": "general_knowledge",
+    "topic": "Psychology",
+    "type": "short",
+    "prompt": "Wat is geheugen in de psychologie? Geef daarna één concreet voorbeeld.",
+    "answer": "Geheugen omvat het coderen, opslaan en later ophalen van informatie. Voorbeeld: je leert een naam, bewaart die informatie en haalt de naam later weer op.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "general knowledge"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je benoemt minstens twee kernprocessen: coderen, opslaan of ophalen.",
+        "aliases": [
+          "coderen",
+          "encoding",
+          "opslaan",
+          "storage",
+          "ophalen",
+          "retrieval",
+          "terughalen"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je geeft een concreet voorbeeld van informatie die later wordt herinnerd.",
+        "aliases": [
+          "naam",
+          "woord",
+          "studeren",
+          "leren",
+          "herinner",
+          "onthoud",
+          "terughalen"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "gk_psy_bias",
+    "domain": "general_knowledge",
+    "topic": "Psychology",
+    "type": "short",
+    "prompt": "Wat is een cognitieve bias? Geef één herkenbaar voorbeeld.",
+    "answer": "Een cognitieve bias is een systematische vertekening in hoe informatie wordt geselecteerd of beoordeeld. Voorbeeld: bij confirmation bias zoek je vooral informatie die je bestaande overtuiging bevestigt.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "general knowledge"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je beschrijft een systematische vertekening van waarneming, informatieverwerking of oordeel.",
+        "aliases": [
+          "systematisch",
+          "vertekening",
+          "bias",
+          "oordeel",
+          "informatieverwerking"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je geeft een passend voorbeeld, zoals confirmation bias of availability bias.",
+        "aliases": [
+          "confirmation",
+          "bevestigings",
+          "availability",
+          "beschikbaarheids"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "gk_psy_learning",
+    "domain": "general_knowledge",
+    "topic": "Psychology",
+    "type": "short",
+    "prompt": "Wat bedoelt psychologie met leren? Geef één mechanisme of voorbeeld.",
+    "answer": "Leren is een relatief duurzame verandering in kennis of gedrag door ervaring. Dat kan bijvoorbeeld ontstaan door oefening en feedback, klassieke conditionering of operante conditionering.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "general knowledge"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je noemt een relatief duurzame verandering in kennis of gedrag door ervaring.",
+        "aliases": [
+          "duurzaam",
+          "relatief",
+          "verandering",
+          "kennis",
+          "gedrag",
+          "ervaring"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je noemt een mechanisme of voorbeeld van leren.",
+        "aliases": [
+          "oefening",
+          "feedback",
+          "conditionering",
+          "beloning",
+          "herhaling"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "gk_psy_decision",
+    "domain": "general_knowledge",
+    "topic": "Psychology",
+    "type": "short",
+    "prompt": "Wat is besluitvorming in de psychologie en waarom spelen heuristieken daarin een rol?",
+    "answer": "Besluitvorming is het kiezen tussen opties op basis van doelen en beschikbare informatie. Heuristieken zijn snelle vuistregels die keuzes eenvoudiger maken, maar soms systematische fouten of biases veroorzaken.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "general knowledge"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je beschrijft kiezen of afwegen tussen opties met doelen/informatie.",
+        "aliases": [
+          "kiezen",
+          "keuze",
+          "opties",
+          "afwegen",
+          "doel",
+          "informatie"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je legt uit dat heuristieken snelle vuistregels zijn met mogelijke vertekening.",
+        "aliases": [
+          "heuristiek",
+          "vuistregel",
+          "snel",
+          "bias",
+          "fout",
+          "vertekening"
+        ],
+        "min_matches": 2
+      }
+    ]
+  },
+  {
+    "id": "gk_psy_misconception",
+    "domain": "general_knowledge",
+    "topic": "Psychology",
+    "type": "open",
+    "prompt": "Corrigeer deze misvatting: “Psychologie is vooral gezond verstand en mensen lezen.”",
+    "answer": "Psychologie is geen methode om gedachten rechtstreeks te lezen. Het is een empirische wetenschap die gedrag en mentale processen onderzoekt met systematische observatie, meting en onderzoeksmethoden. Gezond-verstandverklaringen kunnen hypotheses opleveren, maar moeten worden getoetst.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "general knowledge"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je verwerpt gedachten lezen of louter gezond verstand.",
+        "aliases": [
+          "geen gedachten",
+          "niet gedachten",
+          "niet alleen",
+          "gezond verstand",
+          "mind reading"
+        ],
+        "min_matches": 1
+      },
+      {
+        "label": "Je benoemt psychologie als empirisch/systematisch onderzoek van gedrag of mentale processen.",
+        "aliases": [
+          "empirisch",
+          "systematisch",
+          "onderzoek",
+          "gedrag",
+          "mentale processen",
+          "meting"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je vermeldt toetsing of bewijs.",
+        "aliases": [
+          "toets",
+          "bewijs",
+          "data",
+          "observatie",
+          "hypothese"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "gk_psy_connect",
+    "domain": "general_knowledge",
+    "topic": "Psychology",
+    "type": "connect",
+    "prompt": "Verbind de vier kernbegrippen uit Psychology. Maak drie verschillende verbanden en leg per verband in één zin uit waarom ze samenhangen.",
+    "answer": "Modelverbanden: leren beïnvloedt wat in het geheugen wordt gecodeerd en opgeslagen; biases kunnen besluitvorming vertekenen; informatie die uit het geheugen wordt opgehaald beïnvloedt welke opties en argumenten beschikbaar lijken.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "retrieval",
+      "connection"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [],
+    "nodes": [
+      {
+        "id": "memory",
+        "label": "Geheugen"
+      },
+      {
+        "id": "learning",
+        "label": "Leren"
+      },
+      {
+        "id": "bias",
+        "label": "Bias"
+      },
+      {
+        "id": "decision",
+        "label": "Besluitvorming"
+      }
+    ],
+    "expected_connections": [
+      {
+        "a": "learning",
+        "b": "memory",
+        "why_aliases": [
+          "leren",
+          "geheugen",
+          "opslaan",
+          "ophalen",
+          "ervaring"
+        ]
+      },
+      {
+        "a": "bias",
+        "b": "decision",
+        "why_aliases": [
+          "bias",
+          "keuze",
+          "besluit",
+          "oordeel",
+          "heuristiek"
+        ]
+      },
+      {
+        "a": "memory",
+        "b": "decision",
+        "why_aliases": [
+          "herinner",
+          "informatie",
+          "keuze",
+          "beschikbaar"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gk_bio_cell",
+    "domain": "general_knowledge",
+    "topic": "Biology",
+    "type": "short",
+    "prompt": "Wat is een cel? Noem twee kenmerken die duidelijk maken waarom zij een basiseenheid van leven is.",
+    "answer": "Een cel is de kleinste structurele en functionele basiseenheid van leven. Cellen zijn begrensd door een membraan en bevatten onder meer genetisch materiaal en moleculaire systemen voor stofwisseling en regulatie.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "general knowledge"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je noemt de cel een structurele/functionele basiseenheid van leven.",
+        "aliases": [
+          "basiseenheid",
+          "structureel",
+          "functioneel",
+          "leven"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je noemt minstens één concreet cellulair kenmerk.",
+        "aliases": [
+          "membraan",
+          "dna",
+          "genetisch",
+          "stofwisseling",
+          "metabolisme",
+          "cytoplasma"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "gk_bio_genetics",
+    "domain": "general_knowledge",
+    "topic": "Biology",
+    "type": "short",
+    "prompt": "Wat onderzoekt genetica? Leg het verschil uit tussen een gen en een allel.",
+    "answer": "Genetica onderzoekt erfelijkheid en biologische variatie. Een gen is een DNA-segment met een functionele rol; een allel is een variant van een bepaald gen.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "general knowledge"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je koppelt genetica aan erfelijkheid of variatie.",
+        "aliases": [
+          "erfelijkheid",
+          "variatie",
+          "overerving",
+          "genetica"
+        ],
+        "min_matches": 1
+      },
+      {
+        "label": "Je beschrijft een gen als DNA-segment of erfelijke eenheid.",
+        "aliases": [
+          "gen",
+          "dna",
+          "segment"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je beschrijft een allel als variant van een gen.",
+        "aliases": [
+          "allel",
+          "variant"
+        ],
+        "min_matches": 2
+      }
+    ]
+  },
+  {
+    "id": "gk_bio_evolution",
+    "domain": "general_knowledge",
+    "topic": "Biology",
+    "type": "short",
+    "prompt": "Wat betekent evolutie in biologische zin? Noem twee processen die evolutionaire verandering kunnen veroorzaken.",
+    "answer": "Biologische evolutie is verandering in erfelijke kenmerken of allelfrequenties van populaties over generaties. Processen zijn onder meer natuurlijke selectie, mutatie, genetische drift en genenstroom.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "general knowledge"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je situeert evolutie bij populaties en over generaties.",
+        "aliases": [
+          "populatie",
+          "generaties",
+          "erfelijk",
+          "allelfrequent"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je noemt minstens twee mechanismen.",
+        "aliases": [
+          "natuurlijke selectie",
+          "selectie",
+          "mutatie",
+          "drift",
+          "genenstroom",
+          "gene flow"
+        ],
+        "min_matches": 2
+      }
+    ]
+  },
+  {
+    "id": "gk_bio_homeostasis",
+    "domain": "general_knowledge",
+    "topic": "Biology",
+    "type": "short",
+    "prompt": "Wat is homeostase? Geef één voorbeeld van een gereguleerde variabele.",
+    "answer": "Homeostase is de regulatie van interne omstandigheden binnen functionele grenzen, vaak via negatieve feedback. Voorbeelden zijn lichaamstemperatuur, bloedglucose, pH of waterbalans.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "general knowledge"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je beschrijft regulatie van interne omstandigheden rond functionele waarden.",
+        "aliases": [
+          "regulatie",
+          "intern",
+          "evenwicht",
+          "grenzen",
+          "stabiel",
+          "homeostase"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je geeft een passend voorbeeld.",
+        "aliases": [
+          "temperatuur",
+          "glucose",
+          "ph",
+          "waterbalans",
+          "bloeddruk"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "gk_bio_misconception",
+    "domain": "general_knowledge",
+    "topic": "Biology",
+    "type": "open",
+    "prompt": "Corrigeer deze misvatting: “Individuele organismen evolueren omdat ze zich tijdens hun leven aanpassen.”",
+    "answer": "Individuele organismen kunnen zich tijdens hun leven aanpassen of acclimatiseren, maar biologische evolutie verwijst naar veranderingen in erfelijke kenmerken van populaties over opeenvolgende generaties.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "general knowledge"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je onderscheidt individuele aanpassing/acclimatisatie van evolutie.",
+        "aliases": [
+          "individu",
+          "aanpassen",
+          "acclimatis",
+          "niet evolu"
+        ],
+        "min_matches": 1
+      },
+      {
+        "label": "Je situeert evolutie bij erfelijke verandering in populaties over generaties.",
+        "aliases": [
+          "erfelijk",
+          "populatie",
+          "generaties"
+        ],
+        "min_matches": 2
+      }
+    ]
+  },
+  {
+    "id": "gk_bio_connect",
+    "domain": "general_knowledge",
+    "topic": "Biology",
+    "type": "connect",
+    "prompt": "Verbind de vier kernbegrippen uit Biology. Maak drie verschillende verbanden en leg per verband in één zin uit waarom ze samenhangen.",
+    "answer": "Modelverbanden: genetische informatie bevindt zich in cellen; erfelijke variatie is materiaal waarop evolutionaire processen werken; cellen reguleren interne omstandigheden en dragen zo bij aan homeostase.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "retrieval",
+      "connection"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [],
+    "nodes": [
+      {
+        "id": "cell",
+        "label": "Cel"
+      },
+      {
+        "id": "genetics",
+        "label": "Genetica"
+      },
+      {
+        "id": "evolution",
+        "label": "Evolutie"
+      },
+      {
+        "id": "homeostasis",
+        "label": "Homeostase"
+      }
+    ],
+    "expected_connections": [
+      {
+        "a": "cell",
+        "b": "genetics",
+        "why_aliases": [
+          "dna",
+          "gen",
+          "cel",
+          "genetisch"
+        ]
+      },
+      {
+        "a": "genetics",
+        "b": "evolution",
+        "why_aliases": [
+          "erfelijk",
+          "variatie",
+          "allel",
+          "populatie"
+        ]
+      },
+      {
+        "a": "cell",
+        "b": "homeostasis",
+        "why_aliases": [
+          "regulatie",
+          "intern",
+          "membraan",
+          "cel"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gk_law_system",
+    "domain": "general_knowledge",
+    "topic": "Law",
+    "type": "short",
+    "prompt": "Wat is een rechtsstelsel? Noem minstens twee onderdelen.",
+    "answer": "Een rechtsstelsel is het geheel van rechtsbronnen, instellingen, procedures en beginselen waarmee regels worden gemaakt, geïnterpreteerd en afgedwongen. Voorbeelden van onderdelen zijn wetgeving, rechtbanken en rechtsprocedures.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "general knowledge"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je beschrijft een georganiseerd geheel van regels/rechtsbronnen en instituties.",
+        "aliases": [
+          "rechtsstelsel",
+          "regels",
+          "rechtsbronnen",
+          "instituties",
+          "instellingen"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je noemt minstens twee concrete onderdelen.",
+        "aliases": [
+          "wet",
+          "wetgeving",
+          "rechtbank",
+          "procedure",
+          "grondwet",
+          "rechtspraak"
+        ],
+        "min_matches": 2
+      }
+    ]
+  },
+  {
+    "id": "gk_law_contract",
+    "domain": "general_knowledge",
+    "topic": "Law",
+    "type": "short",
+    "prompt": "Wat is een contract in juridische zin en waarom is toestemming relevant?",
+    "answer": "Een contract is een juridisch relevante overeenkomst tussen partijen. Toestemming is relevant omdat partijen in beginsel werkelijk met de afspraak moeten instemmen; precieze geldigheidsvoorwaarden verschillen per rechtsstelsel.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "general knowledge"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je omschrijft een contract als juridisch relevante overeenkomst tussen partijen.",
+        "aliases": [
+          "overeenkomst",
+          "partijen",
+          "juridisch",
+          "afspraak"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je legt toestemming/instemming uit.",
+        "aliases": [
+          "toestemming",
+          "instemming",
+          "wil",
+          "akkoord"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "gk_law_criminal",
+    "domain": "general_knowledge",
+    "topic": "Law",
+    "type": "short",
+    "prompt": "Wat onderscheidt strafrecht van een gewone private betwisting tussen partijen?",
+    "answer": "Strafrecht bepaalt welke gedragingen strafbaar zijn en welke sancties en procedurele waarborgen gelden. Een private betwisting gaat doorgaans over rechten of verplichtingen tussen partijen en leidt niet automatisch tot een strafrechtelijke sanctie.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "general knowledge"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je koppelt strafrecht aan strafbare feiten en sancties.",
+        "aliases": [
+          "strafbaar",
+          "sanctie",
+          "straf",
+          "misdrijf"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je onderscheidt een private/civiele betwisting tussen partijen.",
+        "aliases": [
+          "privaat",
+          "civiel",
+          "partijen",
+          "betwisting",
+          "schadevergoeding"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "gk_law_rights",
+    "domain": "general_knowledge",
+    "topic": "Law",
+    "type": "short",
+    "prompt": "Wat is een juridisch recht? Geef één voorbeeld en leg uit dat rechten grenzen kunnen hebben.",
+    "answer": "Een juridisch recht beschermt een aanspraak, belang of vrijheid die door een rechtsorde wordt erkend. Bijvoorbeeld vrijheid van meningsuiting; de concrete uitoefening kan wettelijke beperkingen kennen wanneer aan de daarvoor geldende voorwaarden is voldaan.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "general knowledge"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je beschrijft een beschermde aanspraak, belang of vrijheid.",
+        "aliases": [
+          "aanspraak",
+          "vrijheid",
+          "bescherm",
+          "recht"
+        ],
+        "min_matches": 1
+      },
+      {
+        "label": "Je geeft een juridisch voorbeeld.",
+        "aliases": [
+          "meningsuiting",
+          "privacy",
+          "eigendom",
+          "gelijkheid",
+          "eerlijk proces"
+        ],
+        "min_matches": 1
+      },
+      {
+        "label": "Je erkent dat rechten niet altijd onbeperkt zijn.",
+        "aliases": [
+          "beperking",
+          "grens",
+          "voorwaarden",
+          "niet absoluut"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "gk_law_misconception",
+    "domain": "general_knowledge",
+    "topic": "Law",
+    "type": "open",
+    "prompt": "Corrigeer deze misvatting: “Als iets oneerlijk voelt, is het automatisch onwettig.”",
+    "answer": "Morele of persoonlijke oneerlijkheid is niet automatisch hetzelfde als juridische onrechtmatigheid. Of iets onwettig is hangt af van toepasselijke rechtsregels, feiten, bewijs, bevoegdheid en procedure.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "general knowledge"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je onderscheidt morele oneerlijkheid van juridische onrechtmatigheid.",
+        "aliases": [
+          "oneerlijk",
+          "onwettig",
+          "juridisch",
+          "moreel",
+          "niet automatisch"
+        ],
+        "min_matches": 1
+      },
+      {
+        "label": "Je verwijst naar toepasselijke regels én feiten/bewijs/procedure.",
+        "aliases": [
+          "regel",
+          "wet",
+          "feiten",
+          "bewijs",
+          "procedure",
+          "bevoegd"
+        ],
+        "min_matches": 2
+      }
+    ]
+  },
+  {
+    "id": "gk_law_connect",
+    "domain": "general_knowledge",
+    "topic": "Law",
+    "type": "connect",
+    "prompt": "Verbind de vier kernbegrippen uit Law. Maak drie verschillende verbanden en leg per verband in één zin uit waarom ze samenhangen.",
+    "answer": "Modelverbanden: het rechtsstelsel bepaalt welke rechten erkend en afgedwongen worden; strafrecht functioneert via regels en procedures van het rechtsstelsel; contracten creëren of concretiseren rechten en verplichtingen tussen partijen.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "retrieval",
+      "connection"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [],
+    "nodes": [
+      {
+        "id": "system",
+        "label": "Rechtsstelsel"
+      },
+      {
+        "id": "contract",
+        "label": "Contract"
+      },
+      {
+        "id": "criminal",
+        "label": "Strafrecht"
+      },
+      {
+        "id": "rights",
+        "label": "Rechten"
+      }
+    ],
+    "expected_connections": [
+      {
+        "a": "system",
+        "b": "rights",
+        "why_aliases": [
+          "rechtsbron",
+          "grondwet",
+          "wet",
+          "bescherm"
+        ]
+      },
+      {
+        "a": "system",
+        "b": "criminal",
+        "why_aliases": [
+          "straf",
+          "procedure",
+          "rechtbank",
+          "wet"
+        ]
+      },
+      {
+        "a": "contract",
+        "b": "rights",
+        "why_aliases": [
+          "partijen",
+          "aanspraak",
+          "verplichting",
+          "overeenkomst"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gk_med_anatomy",
+    "domain": "general_knowledge",
+    "topic": "Medicine",
+    "type": "short",
+    "prompt": "Wat is anatomie en hoe verschilt anatomie van fysiologie?",
+    "answer": "Anatomie bestudeert de bouw en onderlinge ligging van lichaamsstructuren. Fysiologie bestudeert vooral hoe die structuren en systemen functioneren.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "general knowledge"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je koppelt anatomie aan bouw/structuur/ligging.",
+        "aliases": [
+          "bouw",
+          "structuur",
+          "ligging",
+          "anatomie"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je koppelt fysiologie aan functie/werking.",
+        "aliases": [
+          "fysiologie",
+          "functie",
+          "werking"
+        ],
+        "min_matches": 2
+      }
+    ]
+  },
+  {
+    "id": "gk_med_infection",
+    "domain": "general_knowledge",
+    "topic": "Medicine",
+    "type": "short",
+    "prompt": "Wat is een infectie en waarom is infectie niet hetzelfde als ziekte?",
+    "answer": "Een infectie ontstaat wanneer een ziekteverwekker een gastheer binnendringt en zich daar vermenigvuldigt. Niet iedere infectie veroorzaakt merkbare ziekte of symptomen; ziekte verwijst naar verstoring of klinische gevolgen.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "general knowledge"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je noemt binnendringen/aanwezigheid én vermenigvuldiging van pathogenen.",
+        "aliases": [
+          "ziekteverwekker",
+          "pathogeen",
+          "binnendring",
+          "vermenigvuldig",
+          "infectie"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je onderscheidt infectie van symptomen/ziekte.",
+        "aliases": [
+          "niet elke",
+          "symptomen",
+          "ziekte",
+          "asymptom"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "gk_med_risk",
+    "domain": "general_knowledge",
+    "topic": "Medicine",
+    "type": "short",
+    "prompt": "Wat betekent medisch risico? Leg kort het verschil uit tussen absoluut en relatief risico.",
+    "answer": "Medisch risico is de kans op een bepaalde uitkomst, samen met de mogelijke gevolgen. Absoluut risico geeft de werkelijke kans in een groep; relatief risico vergelijkt kansen tussen groepen of situaties.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "general knowledge"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je koppelt risico aan kans op een uitkomst.",
+        "aliases": [
+          "kans",
+          "uitkomst",
+          "risico"
+        ],
+        "min_matches": 1
+      },
+      {
+        "label": "Je beschrijft absoluut risico als werkelijke kans.",
+        "aliases": [
+          "absoluut",
+          "werkelijke",
+          "kans"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je beschrijft relatief risico als vergelijking tussen groepen/situaties.",
+        "aliases": [
+          "relatief",
+          "vergelijk",
+          "groep"
+        ],
+        "min_matches": 2
+      }
+    ]
+  },
+  {
+    "id": "gk_med_public",
+    "domain": "general_knowledge",
+    "topic": "Medicine",
+    "type": "short",
+    "prompt": "Wat is volksgezondheid? Geef twee voorbeelden van maatregelen op populatieniveau.",
+    "answer": "Volksgezondheid richt zich op het beschermen en verbeteren van gezondheid van populaties. Voorbeelden zijn vaccinatieprogramma’s, schoon drinkwater, epidemiologische surveillance, verkeersveiligheidsbeleid of georganiseerde screening.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "general knowledge"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je situeert volksgezondheid op populatieniveau en preventie.",
+        "aliases": [
+          "populatie",
+          "preventie",
+          "volksgezondheid",
+          "gezondheid"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je noemt minstens twee maatregelen.",
+        "aliases": [
+          "vaccin",
+          "drinkwater",
+          "surveillance",
+          "screening",
+          "verkeersveilig",
+          "sanitair"
+        ],
+        "min_matches": 2
+      }
+    ]
+  },
+  {
+    "id": "gk_med_misconception",
+    "domain": "general_knowledge",
+    "topic": "Medicine",
+    "type": "open",
+    "prompt": "Corrigeer deze misvatting: “Een hogere relatieve risicostijging betekent automatisch een groot persoonlijk gevaar.”",
+    "answer": "Een relatieve risicostijging zegt hoe sterk twee kansen van elkaar verschillen, maar zonder absoluut basisrisico weet je niet hoe groot het persoonlijke risico werkelijk is. Een verdubbeling van 1 op 100.000 naar 2 op 100.000 is relatief groot maar absoluut klein.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "general knowledge"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je zegt dat relatief risico zonder absoluut basisrisico onvoldoende context geeft.",
+        "aliases": [
+          "relatief",
+          "absoluut",
+          "basisrisico",
+          "context"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je legt uit dat een grote relatieve verandering absoluut klein kan zijn.",
+        "aliases": [
+          "groot relatief",
+          "klein absoluut",
+          "verdubbel",
+          "1 op",
+          "2 op"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "gk_med_connect",
+    "domain": "general_knowledge",
+    "topic": "Medicine",
+    "type": "connect",
+    "prompt": "Verbind de vier kernbegrippen uit Medicine. Maak drie verschillende verbanden en leg per verband in één zin uit waarom ze samenhangen.",
+    "answer": "Modelverbanden: anatomische structuren bepalen waar infecties kunnen optreden en verspreiden; infectiekans en ziektegevolg zijn risico’s die moeten worden gekwantificeerd; volksgezondheid gebruikt risicogegevens om preventie op populatieniveau te sturen.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "retrieval",
+      "connection"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [],
+    "nodes": [
+      {
+        "id": "anatomy",
+        "label": "Anatomie"
+      },
+      {
+        "id": "infection",
+        "label": "Infectie"
+      },
+      {
+        "id": "risk",
+        "label": "Risico"
+      },
+      {
+        "id": "public",
+        "label": "Volksgezondheid"
+      }
+    ],
+    "expected_connections": [
+      {
+        "a": "anatomy",
+        "b": "infection",
+        "why_aliases": [
+          "weefsel",
+          "orgaan",
+          "lichaam",
+          "infectie"
+        ]
+      },
+      {
+        "a": "infection",
+        "b": "risk",
+        "why_aliases": [
+          "kans",
+          "infectie",
+          "ziekte",
+          "uitkomst"
+        ]
+      },
+      {
+        "a": "risk",
+        "b": "public",
+        "why_aliases": [
+          "populatie",
+          "preventie",
+          "risico",
+          "beleid"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sk_wheel_1",
+    "domain": "skill",
+    "topic": "Change a car wheel",
+    "type": "short",
+    "prompt": "Waarom komt veiligheid vóór het losmaken of opkrikken van de auto?",
+    "answer": "Omdat een auto kan rollen, verschuiven of van de krik vallen. Parkeer daarom op stabiele vlakke ondergrond, zet handrem/parkeerstand of versnelling in en beveilig de werkplek.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "practical skill",
+      "safety"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je noemt risico op rollen, verschuiven of vallen.",
+        "aliases": [
+          "rollen",
+          "verschuif",
+          "vallen",
+          "krik"
+        ],
+        "min_matches": 1
+      },
+      {
+        "label": "Je noemt minstens twee preventieve maatregelen.",
+        "aliases": [
+          "vlak",
+          "stabiel",
+          "handrem",
+          "parkeerstand",
+          "versnelling",
+          "gevarendriehoek"
+        ],
+        "min_matches": 2
+      }
+    ]
+  },
+  {
+    "id": "sk_wheel_2",
+    "domain": "skill",
+    "topic": "Change a car wheel",
+    "type": "short",
+    "prompt": "Waarom moet je het door de fabrikant aangegeven krikpunt gebruiken?",
+    "answer": "Het krikpunt is ontworpen om de belasting veilig op te nemen. Een verkeerd punt kan carrosserie of onderstel beschadigen en de auto instabiel maken.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "practical skill",
+      "safety"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je noemt veilige belasting/stabiliteit.",
+        "aliases": [
+          "belasting",
+          "stabiel",
+          "veilig",
+          "dragen"
+        ],
+        "min_matches": 1
+      },
+      {
+        "label": "Je noemt risico op schade of wegglijden.",
+        "aliases": [
+          "schade",
+          "carrosserie",
+          "onderstel",
+          "glijden",
+          "vallen"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "sk_wheel_3",
+    "domain": "skill",
+    "topic": "Change a car wheel",
+    "type": "short",
+    "prompt": "Waarom worden wielbouten gecontroleerd en doorgaans kruislings vastgezet?",
+    "answer": "Kruislings en stapsgewijs vastzetten helpt het wiel gelijkmatig tegen de naaf te centreren. De exacte procedure volgt de voertuighandleiding.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "practical skill",
+      "safety"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je noemt gelijkmatige bevestiging/centrering.",
+        "aliases": [
+          "kruislings",
+          "gelijkmatig",
+          "centr",
+          "naaf"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je verwijst naar correcte procedure/handleiding.",
+        "aliases": [
+          "handleiding",
+          "procedure",
+          "fabrikant"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "sk_wheel_4",
+    "domain": "skill",
+    "topic": "Change a car wheel",
+    "type": "short",
+    "prompt": "Wat betekent het juiste aanhaalmoment bij wielbouten?",
+    "answer": "Het aanhaalmoment is het voorgeschreven draaimoment waarmee de bouten worden vastgezet. Te los kan onveilig zijn; te vast kan bouten, draad of wiel beschadigen. Gebruik de voertuigspecificatie.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "practical skill",
+      "safety"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je legt aanhaalmoment/draaimoment uit.",
+        "aliases": [
+          "aanhaalmoment",
+          "draaimoment",
+          "torque"
+        ],
+        "min_matches": 1
+      },
+      {
+        "label": "Je noemt risico van te los én te vast of verwijst naar specificatie.",
+        "aliases": [
+          "te los",
+          "te vast",
+          "beschadig",
+          "specificatie",
+          "handleiding"
+        ],
+        "min_matches": 2
+      }
+    ]
+  },
+  {
+    "id": "sk_wheel_seq",
+    "domain": "skill",
+    "topic": "Change a car wheel",
+    "type": "open",
+    "prompt": "Zet “Change a car wheel” in een veilige theoretische volgorde. Noem eerst twee concrete risico’s en geef daarna de belangrijkste stappen.",
+    "answer": "Risico’s zijn onder meer rollen van de auto, instabiliteit van de krik en onjuiste bevestiging. Veilige hoofdvolgorde: werkplek beveiligen; voertuighandleiding raadplegen; wielbouten volgens procedure voorbereiden; krik op correct punt plaatsen en auto heffen; wiel wisselen; bouten handvast/kruislings aantrekken; auto gecontroleerd laten zakken; definitief vastzetten op voorgeschreven aanhaalmoment en later zo nodig nacontrole uitvoeren.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "practical skill",
+      "safety",
+      "sequence"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je noemt minstens twee relevante risico’s.",
+        "aliases": [
+          "rollen",
+          "vallen",
+          "krik",
+          "verkeer",
+          "instabiel",
+          "bout",
+          "schade"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je beschrijft een logische voorbereidings- en uitvoeringsvolgorde.",
+        "aliases": [
+          "eerst",
+          "daarna",
+          "vervolgens",
+          "controle",
+          "veilig"
+        ],
+        "min_matches": 2
+      }
+    ]
+  },
+  {
+    "id": "sk_wheel_conn",
+    "domain": "skill",
+    "topic": "Change a car wheel",
+    "type": "connect",
+    "prompt": "Verbind de vier kernbegrippen uit Change a car wheel. Maak drie verschillende verbanden en leg per verband in één zin uit waarom ze samenhangen.",
+    "answer": "Modelverbanden: Veiligheid en krikpunt hangen samen omdat verkeerd opkrikken instabiliteit veroorzaakt. Krikpunt en wielbouten horen in één gecontroleerde hef- en montagevolgorde. Wielbouten worden uiteindelijk met het juiste aanhaalmoment vastgezet.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "retrieval",
+      "connection"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [],
+    "nodes": [
+      {
+        "id": "safety",
+        "label": "Veiligheid"
+      },
+      {
+        "id": "jack",
+        "label": "Krikpunt"
+      },
+      {
+        "id": "bolts",
+        "label": "Wielbouten"
+      },
+      {
+        "id": "torque",
+        "label": "Aanhaalmoment"
+      }
+    ],
+    "expected_connections": [
+      {
+        "a": "safety",
+        "b": "jack",
+        "why_aliases": [
+          "stabiel",
+          "vallen",
+          "krik",
+          "veilig"
+        ],
+        "model": "Veiligheid en krikpunt hangen samen omdat verkeerd opkrikken instabiliteit veroorzaakt."
+      },
+      {
+        "a": "jack",
+        "b": "bolts",
+        "why_aliases": [
+          "wiel",
+          "heffen",
+          "bout",
+          "los"
+        ],
+        "model": "Krikpunt en wielbouten horen in één gecontroleerde hef- en montagevolgorde."
+      },
+      {
+        "a": "bolts",
+        "b": "torque",
+        "why_aliases": [
+          "vast",
+          "moment",
+          "bout",
+          "kruislings"
+        ],
+        "model": "Wielbouten worden uiteindelijk met het juiste aanhaalmoment vastgezet."
+      }
+    ]
+  },
+  {
+    "id": "sk_bike_1",
+    "domain": "skill",
+    "topic": "Repair a bicycle puncture",
+    "type": "short",
+    "prompt": "Waarom moet je na een lek niet alleen de binnenband herstellen maar ook de oorzaak zoeken?",
+    "answer": "Omdat glas, een doorn, een beschadigd velglint of ander scherp materiaal de herstelde of nieuwe binnenband meteen opnieuw kan lek prikken.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "practical skill",
+      "safety"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je noemt het risico op herhaling van het lek.",
+        "aliases": [
+          "opnieuw",
+          "herhaling",
+          "weer lek"
+        ],
+        "min_matches": 1
+      },
+      {
+        "label": "Je noemt minstens één mogelijke oorzaak in buitenband/velg.",
+        "aliases": [
+          "glas",
+          "doorn",
+          "velglint",
+          "scherp",
+          "buitenband"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "sk_bike_2",
+    "domain": "skill",
+    "topic": "Repair a bicycle puncture",
+    "type": "short",
+    "prompt": "Waarvoor dienen bandenlichters en welk risico vermijd je bij gebruik?",
+    "answer": "Bandenlichters helpen de buitenband gecontroleerd over de velgrand te tillen. Je gebruikt ze voorzichtig om de binnenband, velg of band niet extra te beschadigen.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "practical skill",
+      "safety"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je beschrijft verwijderen/liften van de buitenband.",
+        "aliases": [
+          "buitenband",
+          "velg",
+          "lichten",
+          "verwijder"
+        ],
+        "min_matches": 1
+      },
+      {
+        "label": "Je noemt voorzichtig gebruik om schade te vermijden.",
+        "aliases": [
+          "voorzichtig",
+          "beschadig",
+          "binnenband",
+          "velg"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "sk_bike_3",
+    "domain": "skill",
+    "topic": "Repair a bicycle puncture",
+    "type": "short",
+    "prompt": "Welke voorwaarden maken een plakker op een binnenband betrouwbaar?",
+    "answer": "Het lek moet correct gelokaliseerd zijn en het oppervlak moet schoon, droog en volgens de plakinstructies voorbereid zijn; lijm of zelfklevende patch moet de opgegeven tijd en werkwijze volgen.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "practical skill",
+      "safety"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je noemt locatie en voorbereiding van het oppervlak.",
+        "aliases": [
+          "lokaliseer",
+          "schoon",
+          "droog",
+          "voorbereid",
+          "schuren"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je volgt productinstructies voor lijm/patch.",
+        "aliases": [
+          "lijm",
+          "patch",
+          "plakker",
+          "instructie",
+          "droogtijd"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "sk_bike_4",
+    "domain": "skill",
+    "topic": "Repair a bicycle puncture",
+    "type": "short",
+    "prompt": "Waarom controleer je na montage de bandendruk én de zitting van de buitenband?",
+    "answer": "De juiste druk ondersteunt grip, comfort en bescherming tegen stootlekken. Een slecht zittende buitenband kan ongelijk lopen of bij oppompen problemen geven; blijf binnen het aangegeven drukbereik.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "practical skill",
+      "safety"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je koppelt druk aan functioneren/veiligheid.",
+        "aliases": [
+          "druk",
+          "grip",
+          "comfort",
+          "stootlek",
+          "veilig"
+        ],
+        "min_matches": 1
+      },
+      {
+        "label": "Je controleert bandzitting en aanbevolen bereik.",
+        "aliases": [
+          "zitting",
+          "velg",
+          "bereik",
+          "psi",
+          "bar",
+          "aangegeven"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "sk_bike_seq",
+    "domain": "skill",
+    "topic": "Repair a bicycle puncture",
+    "type": "open",
+    "prompt": "Zet “Repair a bicycle puncture” in een veilige theoretische volgorde. Noem eerst twee concrete risico’s en geef daarna de belangrijkste stappen.",
+    "answer": "Risico’s zijn onder meer opnieuw lek rijden door achtergebleven scherp materiaal en beschadiging van binnenband/velg bij demontage. Veilige hoofdvolgorde: wiel/band beoordelen; oorzaak zoeken; buitenband gecontroleerd losmaken; binnenband uitnemen en lek lokaliseren; repareren volgens patchinstructie of binnenband vervangen; buitenband en velglint controleren; binnenband licht oppompen en monteren; bandzitting controleren; tot aanbevolen druk oppompen en op lekkage controleren.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "practical skill",
+      "safety",
+      "sequence"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je noemt minstens twee relevante risico’s.",
+        "aliases": [
+          "scherp",
+          "glas",
+          "doorn",
+          "beschadig",
+          "druk",
+          "velg",
+          "band"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je beschrijft een logische voorbereidings- en uitvoeringsvolgorde.",
+        "aliases": [
+          "eerst",
+          "daarna",
+          "vervolgens",
+          "controle",
+          "veilig"
+        ],
+        "min_matches": 2
+      }
+    ]
+  },
+  {
+    "id": "sk_bike_conn",
+    "domain": "skill",
+    "topic": "Repair a bicycle puncture",
+    "type": "connect",
+    "prompt": "Verbind de vier kernbegrippen uit Repair a bicycle puncture. Maak drie verschillende verbanden en leg per verband in één zin uit waarom ze samenhangen.",
+    "answer": "Modelverbanden: Bandenlichters geven toegang tot de binnenband maar moeten schade voorkomen. De plakker herstelt het gelokaliseerde lek in de binnenband. Na montage moet de binnenband binnen het aanbevolen drukbereik worden opgepompt.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "retrieval",
+      "connection"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [],
+    "nodes": [
+      {
+        "id": "tube",
+        "label": "Binnenband"
+      },
+      {
+        "id": "levers",
+        "label": "Bandenlichters"
+      },
+      {
+        "id": "patch",
+        "label": "Plakker"
+      },
+      {
+        "id": "pressure",
+        "label": "Bandendruk"
+      }
+    ],
+    "expected_connections": [
+      {
+        "a": "tube",
+        "b": "levers",
+        "why_aliases": [
+          "binnenband",
+          "buitenband",
+          "verwijder",
+          "schade"
+        ],
+        "model": "Bandenlichters geven toegang tot de binnenband maar moeten schade voorkomen."
+      },
+      {
+        "a": "tube",
+        "b": "patch",
+        "why_aliases": [
+          "lek",
+          "plak",
+          "repar",
+          "binnenband"
+        ],
+        "model": "De plakker herstelt het gelokaliseerde lek in de binnenband."
+      },
+      {
+        "a": "tube",
+        "b": "pressure",
+        "why_aliases": [
+          "oppomp",
+          "druk",
+          "band",
+          "lek"
+        ],
+        "model": "Na montage moet de binnenband binnen het aanbevolen drukbereik worden opgepompt."
+      }
+    ]
+  },
+  {
+    "id": "sk_home_1",
+    "domain": "skill",
+    "topic": "Basic home repair",
+    "type": "short",
+    "prompt": "Waarom kies je schroef, plug of anker op basis van materiaal én belasting?",
+    "answer": "Omdat verschillende wandmaterialen en belastingen andere bevestigingsmiddelen vereisen. Een verkeerde combinatie kan loskomen of het materiaal beschadigen.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "practical skill",
+      "safety"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je koppelt keuze aan wand/materiaal.",
+        "aliases": [
+          "wand",
+          "materiaal",
+          "hout",
+          "steen",
+          "gips"
+        ],
+        "min_matches": 1
+      },
+      {
+        "label": "Je koppelt keuze aan belasting en risico op loskomen.",
+        "aliases": [
+          "belasting",
+          "gewicht",
+          "loskomen",
+          "anker",
+          "plug"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "sk_home_2",
+    "domain": "skill",
+    "topic": "Basic home repair",
+    "type": "short",
+    "prompt": "Welke controles doe je vóór je in een wand boort?",
+    "answer": "Controleer meetpunt en maat, kies boor en bevestiging voor het materiaal en beoordeel waar elektrische kabels of water/gasleidingen kunnen lopen. Schakel relevante voorzieningen uit wanneer de taak dat vereist.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "practical skill",
+      "safety"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je controleert positie/maat en passend gereedschap.",
+        "aliases": [
+          "meet",
+          "maat",
+          "boor",
+          "materiaal"
+        ],
+        "min_matches": 1
+      },
+      {
+        "label": "Je controleert kabels/leidingen of schakelt voorziening uit.",
+        "aliases": [
+          "kabel",
+          "leiding",
+          "elektr",
+          "water",
+          "gas",
+          "uitschakel"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "sk_home_3",
+    "domain": "skill",
+    "topic": "Basic home repair",
+    "type": "short",
+    "prompt": "Waarom is “twee keer meten, één keer boren of zagen” een nuttige regel?",
+    "answer": "Meten en markeren zijn omkeerbaar; boren en zagen niet. Een tweede controle voorkomt veel maat- en uitlijnfouten voordat materiaal blijvend wordt aangepast.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "practical skill",
+      "safety"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je noemt voorkomen van maat/uitlijnfouten.",
+        "aliases": [
+          "maat",
+          "uitlijn",
+          "fout",
+          "controle"
+        ],
+        "min_matches": 1
+      },
+      {
+        "label": "Je onderscheidt omkeerbare voorbereiding van onomkeerbare bewerking.",
+        "aliases": [
+          "omkeer",
+          "blijvend",
+          "boren",
+          "zagen"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "sk_home_4",
+    "domain": "skill",
+    "topic": "Basic home repair",
+    "type": "short",
+    "prompt": "Wanneer moet je bij een basisreparatie stoppen en hulp of documentatie zoeken?",
+    "answer": "Stop wanneer je materiaal, belasting, verborgen leidingen, elektrische situatie of gereedschap niet betrouwbaar kunt beoordelen, of wanneer de taak structurele, gas- of complexe elektrische risico’s heeft.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "practical skill",
+      "safety"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je noemt concrete onzekerheid/risicocategorie.",
+        "aliases": [
+          "leiding",
+          "elektr",
+          "gas",
+          "structureel",
+          "belasting",
+          "gereedschap"
+        ],
+        "min_matches": 1
+      },
+      {
+        "label": "Je zegt dat je dan stopt en documentatie/vakpersoon raadpleegt.",
+        "aliases": [
+          "stop",
+          "handleiding",
+          "documentatie",
+          "vakpersoon",
+          "hulp"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "sk_home_seq",
+    "domain": "skill",
+    "topic": "Basic home repair",
+    "type": "open",
+    "prompt": "Zet “Basic home repair” in een veilige theoretische volgorde. Noem eerst twee concrete risico’s en geef daarna de belangrijkste stappen.",
+    "answer": "Risico’s zijn onder meer verborgen kabels/leidingen, verkeerde bevestiging en letsel door gereedschap. Veilige hoofdvolgorde: taak en belasting bepalen; materiaal identificeren; meten en markeren; verborgen voorzieningen controleren; passend gereedschap/bevestiging kiezen; relevante stroom/water uitschakelen indien nodig; gecontroleerd uitvoeren; bevestiging en resultaat testen zonder te overbelasten.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "practical skill",
+      "safety",
+      "sequence"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je noemt minstens twee relevante risico’s.",
+        "aliases": [
+          "kabel",
+          "leiding",
+          "elektr",
+          "gas",
+          "gereedschap",
+          "loskomen",
+          "letsel"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je beschrijft een logische voorbereidings- en uitvoeringsvolgorde.",
+        "aliases": [
+          "eerst",
+          "daarna",
+          "vervolgens",
+          "controle",
+          "veilig"
+        ],
+        "min_matches": 2
+      }
+    ]
+  },
+  {
+    "id": "sk_home_conn",
+    "domain": "skill",
+    "topic": "Basic home repair",
+    "type": "connect",
+    "prompt": "Verbind de vier kernbegrippen uit Basic home repair. Maak drie verschillende verbanden en leg per verband in één zin uit waarom ze samenhangen.",
+    "answer": "Modelverbanden: Meten en markeren moeten vóór boren gebeuren. Boordiameter en -diepte moeten passen bij het gekozen bevestigingsmiddel. Veiligheidscontrole voorkomt boren in verborgen kabels of leidingen.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "retrieval",
+      "connection"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [],
+    "nodes": [
+      {
+        "id": "fasteners",
+        "label": "Bevestigingsmateriaal"
+      },
+      {
+        "id": "drilling",
+        "label": "Boren"
+      },
+      {
+        "id": "measuring",
+        "label": "Meten"
+      },
+      {
+        "id": "safety",
+        "label": "Veiligheid"
+      }
+    ],
+    "expected_connections": [
+      {
+        "a": "measuring",
+        "b": "drilling",
+        "why_aliases": [
+          "meet",
+          "markeer",
+          "boor",
+          "positie"
+        ],
+        "model": "Meten en markeren moeten vóór boren gebeuren."
+      },
+      {
+        "a": "fasteners",
+        "b": "drilling",
+        "why_aliases": [
+          "plug",
+          "anker",
+          "gat",
+          "boor"
+        ],
+        "model": "Boordiameter en -diepte moeten passen bij het gekozen bevestigingsmiddel."
+      },
+      {
+        "a": "safety",
+        "b": "drilling",
+        "why_aliases": [
+          "kabel",
+          "leiding",
+          "veilig",
+          "boor"
+        ],
+        "model": "Veiligheidscontrole voorkomt boren in verborgen kabels of leidingen."
+      }
+    ]
+  },
+  {
+    "id": "sk_garden_1",
+    "domain": "skill",
+    "topic": "Vegetable gardening",
+    "type": "short",
+    "prompt": "Waarom is bodem meer dan alleen “grond waar de plant in staat”?",
+    "answer": "Bodem bepaalt onder meer waterbeschikbaarheid, beluchting, wortelruimte, voedingsstoffen en microbiële activiteit. Structuur en organische stof beïnvloeden hoe goed planten groeien.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "practical skill",
+      "safety"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je noemt minstens twee functies: water, lucht, voeding of wortelruimte.",
+        "aliases": [
+          "water",
+          "lucht",
+          "beluchting",
+          "voeding",
+          "wortel",
+          "nutriënt"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je noemt structuur of organische stof.",
+        "aliases": [
+          "structuur",
+          "organische stof",
+          "humus"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "sk_garden_2",
+    "domain": "skill",
+    "topic": "Vegetable gardening",
+    "type": "short",
+    "prompt": "Wat is het doel van vruchtwisseling in een moestuin?",
+    "answer": "Vruchtwisseling betekent gewasgroepen over bedden of percelen laten roteren. Dat kan druk van bepaalde ziekten en plagen verlagen en helpt eenzijdige nutriëntenuitputting te beperken.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "practical skill",
+      "safety"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je beschrijft rotatie van gewasgroepen over plaatsen/seizoenen.",
+        "aliases": [
+          "rotatie",
+          "wissel",
+          "gewasgroep",
+          "bed",
+          "perceel"
+        ],
+        "min_matches": 1
+      },
+      {
+        "label": "Je noemt ziekte/plagen of nutriënten als reden.",
+        "aliases": [
+          "ziekte",
+          "plaag",
+          "nutriënt",
+          "uitputting"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "sk_garden_3",
+    "domain": "skill",
+    "topic": "Vegetable gardening",
+    "type": "short",
+    "prompt": "Waarom is “elke dag een beetje water” geen universele regel?",
+    "answer": "Waterbehoefte hangt af van gewas, ontwikkelingsfase, bodemtype, temperatuur, wind en neerslag. Te weinig water veroorzaakt stress, maar permanent natte bodem kan wortelproblemen en zuurstoftekort veroorzaken.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "practical skill",
+      "safety"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je noemt dat behoefte afhangt van omstandigheden.",
+        "aliases": [
+          "gewas",
+          "bodem",
+          "weer",
+          "temperatuur",
+          "regen",
+          "fase"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je noemt risico van zowel te droog als te nat.",
+        "aliases": [
+          "te weinig",
+          "droog",
+          "stress",
+          "te nat",
+          "wortel",
+          "zuurstof"
+        ],
+        "min_matches": 2
+      }
+    ]
+  },
+  {
+    "id": "sk_garden_4",
+    "domain": "skill",
+    "topic": "Vegetable gardening",
+    "type": "short",
+    "prompt": "Waarom is seizoensplanning belangrijk bij zaaien en uitplanten?",
+    "answer": "Gewassen verschillen in kiemtemperatuur, vorstgevoeligheid, daglengtereactie en groeiduur. Zaaien of uitplanten buiten het geschikte venster kan kieming, groei of oogst beperken.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "practical skill",
+      "safety"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je noemt minstens twee seizoensfactoren.",
+        "aliases": [
+          "temperatuur",
+          "vorst",
+          "daglengte",
+          "groeiduur"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je koppelt timing aan kieming/groei/oogst.",
+        "aliases": [
+          "zaai",
+          "uitplant",
+          "kiem",
+          "groei",
+          "oogst"
+        ],
+        "min_matches": 1
+      }
+    ]
+  },
+  {
+    "id": "sk_garden_seq",
+    "domain": "skill",
+    "topic": "Vegetable gardening",
+    "type": "open",
+    "prompt": "Zet “Vegetable gardening” in een veilige theoretische volgorde. Noem eerst twee concrete risico’s en geef daarna de belangrijkste stappen.",
+    "answer": "Risico’s zijn onder meer verkeerd gebruik van gereedschap, overbelasting en onveilige toepassing van bestrijdingsmiddelen. Veilige hoofdvolgorde: locatie en seizoen beoordelen; bodem analyseren en voorbereiden; gewassen en rotatie plannen; zaaien/uitplanten op geschikt moment; gericht water geven; onkruid, plagen en groei observeren; oogsten en resultaten gebruiken voor de volgende teeltcyclus.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "practical skill",
+      "safety",
+      "sequence"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [
+      {
+        "label": "Je noemt minstens twee relevante risico’s.",
+        "aliases": [
+          "gereedschap",
+          "bestrijd",
+          "rug",
+          "snij",
+          "overbelasting",
+          "veilig"
+        ],
+        "min_matches": 2
+      },
+      {
+        "label": "Je beschrijft een logische voorbereidings- en uitvoeringsvolgorde.",
+        "aliases": [
+          "eerst",
+          "daarna",
+          "vervolgens",
+          "controle",
+          "veilig"
+        ],
+        "min_matches": 2
+      }
+    ]
+  },
+  {
+    "id": "sk_garden_conn",
+    "domain": "skill",
+    "topic": "Vegetable gardening",
+    "type": "connect",
+    "prompt": "Verbind de vier kernbegrippen uit Vegetable gardening. Maak drie verschillende verbanden en leg per verband in één zin uit waarom ze samenhangen.",
+    "answer": "Modelverbanden: Bodemstructuur bepaalt hoeveel water beschikbaar blijft en hoe snel het afvoert. Vruchtwisseling beïnvloedt nutriëntenbalans en bodemgebonden ziekte-/plaagdruk. Seizoen en weer veranderen de waterbehoefte van gewassen.",
+    "keywords": [],
+    "options": [],
+    "correct": null,
+    "tags": [
+      "retrieval",
+      "connection"
+    ],
+    "provenance": "model_supplement",
+    "source_refs": [],
+    "rubric_points": [],
+    "nodes": [
+      {
+        "id": "soil",
+        "label": "Bodem"
+      },
+      {
+        "id": "rotation",
+        "label": "Vruchtwisseling"
+      },
+      {
+        "id": "watering",
+        "label": "Watergift"
+      },
+      {
+        "id": "season",
+        "label": "Seizoen"
+      }
+    ],
+    "expected_connections": [
+      {
+        "a": "soil",
+        "b": "watering",
+        "why_aliases": [
+          "bodem",
+          "water",
+          "drain",
+          "vasthouden"
+        ],
+        "model": "Bodemstructuur bepaalt hoeveel water beschikbaar blijft en hoe snel het afvoert."
+      },
+      {
+        "a": "rotation",
+        "b": "soil",
+        "why_aliases": [
+          "nutriënt",
+          "bodem",
+          "uitputting",
+          "gewas"
+        ],
+        "model": "Vruchtwisseling beïnvloedt nutriëntenbalans en bodemgebonden ziekte-/plaagdruk."
+      },
+      {
+        "a": "season",
+        "b": "watering",
+        "why_aliases": [
+          "warm",
+          "regen",
+          "seizoen",
+          "water"
+        ],
+        "model": "Seizoen en weer veranderen de waterbehoefte van gewassen."
+      }
+    ]
+  }
+]

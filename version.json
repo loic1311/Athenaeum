@@ -1,15 +1,6 @@
 {
-  "version": "1.2.0",
-  "release": "Athenaeum V1.2.0 — Multi-path Final Learning Platform",
-  "changes": [
-    "profile_app_access_and_paideia_learning_paths",
-    "personalized_telegram_by_learning_path",
-    "device_mode_with_viewport_diagnostics",
-    "ai_aux_context_compaction_and_rate_limit_retry",
-    "paideia_learning_and_exam_history",
-    "university_question_blueprints",
-    "scriptorium_h5p_guided_workflow",
-    "lightweight_animations",
-    "multi_profile_telegram_and_sync_hardening"
-  ]
+  "version": "1.2.1",
+  "channel": "test",
+  "release": "Athenaeum V1.2.1 — Testbuild UX, personal planning & reliable assessment",
+  "scriptorium": "8.1"
 }

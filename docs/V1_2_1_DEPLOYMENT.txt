@@ -1,0 +1,9 @@
+ATHENAEUM V1.2.1 TEST — DEPLOYMENT
+
+1. Maak eerst een export/backup van het huidige profiel.
+2. Vervang de GitHub Pages-root door de volledige inhoud van deze build.
+3. Wacht tot GitHub Pages klaar is. Sluit daarna bestaande Athenaeum/PWA-vensters volledig en open opnieuw. De cache-id is athenaeum-v1.2.1-test-shell-2.
+4. Supabase: Edge Functions → telegram-bot → Code. Vervang index.ts door supabase/functions/telegram-bot/index.ts uit deze build en deploy. verify_jwt blijft false voor de Telegram webhook zoals in supabase/config.toml.
+5. Geen SQL-migratie nodig. Nieuwe planning/exameninstellingen staan in profielgebonden paideia_state.
+6. Test met minstens twee afzonderlijke accounts/profielen voordat je Telegram breed gebruikt.
+7. Gebruik Athenaeum → Instellingen → Test & diagnose als een gebruiker een probleem meldt. Dit rapport bevat geen wachtwoorden/tokens/API-sleutels.

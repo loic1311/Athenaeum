@@ -1,0 +1,47 @@
+ATHENAEUM V1.2.1 — PRAKTIJKTESTPLAN
+
+A. NIEUWE GEBRUIKER
+[ ] Nieuw profiel maken, alleen gewenste apps kiezen.
+[ ] Installatiewizard doorlopen; minstens één Paideia-leerpad kiezen.
+[ ] Eigen cloudaccount maken/aanmelden.
+[ ] Telegram koppelen en testmelding ontvangen.
+
+B. PAIDEIA LEREN
+[ ] Normale sessie toont theorie vóór de eerste vraag.
+[ ] Fout MCQ-antwoord scoort 0 en toont correcte optie.
+[ ] Open onzinantwoord (bv. 'aardappel') krijgt geen kunstmatige 75%.
+[ ] Richtlijn toont concreet richtantwoord/rubric.
+[ ] Verbindingstaak toont vier kaarten + drie echte verbindingen.
+[ ] Korte inhoudelijke tekst kan naar AI-docent.
+[ ] AI-fout blokkeert lokale beoordeling niet.
+
+C. PLANNING
+[ ] Per leerpad trainingsdagen/minuten/prioriteit aanpassen; ander profiel blijft onveranderd.
+[ ] Dagbudget respecteren.
+[ ] Zelfgekozen rustdag breekt de streak niet; gemiste geplande studiedag wordt wel herkend.
+[ ] Weekexamen en mastery op eigen dagen instellen.
+[ ] Slechts één examentype actief => weging 100%.
+[ ] Examen toont timer en historiek met weging/duur/betrouwbaarheid.
+[ ] Tijdens examen zijn correctie en AI-feedback niet zichtbaar; na afloop zijn vragen/correcties in historiek openklapbaar.
+
+D. TELEGRAM
+[ ] Twee verschillende gebruikers koppelen dezelfde bot met eigen accounts.
+[ ] Ochtendmelding verschilt volgens hun eigen leerpaden.
+[ ] Rustdag zonder nabije examenwaarschuwing geeft geen nutteloze ochtendmelding.
+[ ] Reminder alleen als die gebruiker vandaag een geplande sessie heeft en ze nog openstaat.
+
+E. SCRIPTORIUM
+[ ] Telefoon/tablet/iPad/laptop toont correct apparaat + viewport.
+[ ] ?view=desktop of ?view=mobile toont 'handmatig'; wissen geeft 'auto'.
+[ ] Geen Telegramconfiguratie meer in Scriptorium-instellingen.
+[ ] AI-beoordeling bewaart volledig gebruikersantwoord; grote context wordt gecompact.
+[ ] H5P embed werkt; same-origin completion wordt waar mogelijk automatisch gelezen.
+
+F. MULTI-USER / SYNC
+[ ] Vier aparte gebruikers kunnen gelijktijdig dezelfde app openen.
+[ ] Wijziging in profiel A verschijnt niet in profiel B/C/D.
+[ ] Cloudsync en Scriptorium split sync slagen zonder globale corpusdump.
+
+G. DIAGNOSE / BACKUP
+[ ] Profiel exporteren en importeren: naam, avatar, apps, ijsblokjes en profieldata blijven behouden.
+[ ] Diagnoserapport bevat apparaat/cloudstatus maar geen wachtwoord, Supabase-key of Telegram-token.

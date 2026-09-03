@@ -1,15 +1,13 @@
-ATHENAEUM V1 - GITHUB RELEASE CHECKLIST
+ATHENAEUM V1.2.1 TEST — GITHUB RELEASE CHECKLIST
 
-[ ] Gebruik een nieuwe repository, bij voorkeur 'Athenaeum'.
-[ ] Pak ATHENAEUM_V1_GITHUB_ROOT.zip uit.
-[ ] index.html staat direct in de repository-root.
-[ ] Commit + push naar main.
-[ ] GitHub Settings > Pages > main > /(root).
-[ ] Open de nieuwe HTTPS URL in desktopbrowser.
-[ ] Maak een testprofiel en open Paideia.
-[ ] Controleer Instellingen > PWA diagnose.
-[ ] Open dezelfde URL in de gewone Chrome-app op Android.
-[ ] Kies Chrome > Installeren en snelkoppelingen > Installeren.
-[ ] Configureer pas daarna optioneel Supabase/Telegram.
+[ ] Backup huidige GitHub-root.
+[ ] Upload alle bestanden uit de ZIP naar dezelfde repository-root.
+[ ] Controleer GitHub Pages deployment.
+[ ] Sluit PWA/browser volledig en open opnieuw.
+[ ] Bovenaan staat V1.2.1 · TESTBUILD.
+[ ] Doorloop docs/TESTPLAN_V1_2_1.txt.
+[ ] Deploy supabase/functions/telegram-bot/index.ts opnieuw.
+[ ] Test Telegram met twee afzonderlijke accounts.
+[ ] Pas na geslaagde echte gebruikstest kandidaat promoveren naar V1.3.
 
-Gebruik voor deze eerste Athenaeum-release NIET dezelfde Pages-path als een oude Scriptorium-PWA als je oude service-workerproblemen volledig wilt vermijden.
+Geen SQL-migratie nodig voor V1.2.1.

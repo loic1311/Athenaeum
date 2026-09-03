@@ -4559,7 +4559,7 @@ async function hydrateSync7(){
     if(q('sbStatus')&&c.access_token)q('sbStatus').textContent=`Cloudsessie beschikbaar${c.user?.email?` voor ${c.user.email}`:''}.`;
   }catch(e){console.warn('V7 sync hydrate',e)}
 }
-function renderSettingsV7(){renderTelegramCard7();renderPwaInstall7();hydrateSync7()}
+function renderSettingsV7(){document.getElementById('v7TelegramCard')?.remove();renderPwaInstall7();hydrateSync7()}
 
 function addSourceExplorer7(){
   const page=q('page-sources');
@@ -5585,48 +5585,23 @@ init();
 
 /* ===== DEVICE / PWA DETECTION ===== */
 (function(){
-  function standalone(){
-    return matchMedia('(display-mode: standalone)').matches
-      || matchMedia('(display-mode: fullscreen)').matches
-      || matchMedia('(display-mode: minimal-ui)').matches
-      || navigator.standalone===true
-      || document.referrer.startsWith('android-app://');
-  }
-  function device(){
-    const ua=navigator.userAgent||'',touch=(navigator.maxTouchPoints||0)>0;
-    const ipad=/iPad/i.test(ua)||(navigator.platform==='MacIntel'&&touch);
-    const w=Math.round(visualViewport?.width||innerWidth),h=Math.round(visualViewport?.height||innerHeight);
-    if(ipad)return{kind:'tablet',label:'iPad',profile:'touch-tablet'};
-    if(touch&&Math.min(w,h)>=600&&Math.max(w,h)<=1500)return{kind:'tablet',label:'tablet',profile:'touch-tablet'};
-    if(w<=720)return{kind:'phone',label:'telefoon',profile:'compact-touch'};
-    if(touch&&w<=1180)return{kind:'tablet',label:'tablet',profile:'touch-tablet'};
-    return{kind:'desktop',label:'laptop/desktop',profile:'wide-pointer'};
-  }
-  function apply(){
-    const d=device(),a=standalone();
-    document.body.classList.remove('device-phone','device-tablet','device-desktop');
-    document.body.classList.add('device-'+d.kind);
-    document.documentElement.dataset.device=d.kind;
-    document.documentElement.dataset.displayMode=a?'app':'web';
-    const chip=document.getElementById('installStatusChip');
-    if(chip)chip.textContent=(a?'App':'Browser')+' · '+d.label;document.documentElement.dataset.deviceProfile=d.profile||d.kind;
-  }
-  addEventListener('resize',apply);
-  visualViewport?.addEventListener('resize',apply);
-  addEventListener('DOMContentLoaded',apply);
-  apply();
+  function standalone(){return matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||matchMedia('(display-mode: minimal-ui)').matches||navigator.standalone===true||document.referrer.startsWith('android-app://')}
+  function forcedMode(){const q=new URL(location.href).searchParams.get('view');if(q==='desktop'||q==='mobile'){localStorage.setItem('scriptorium_interface_mode',q);return q}const v=localStorage.getItem('scriptorium_interface_mode')||'auto';return v==='desktop'||v==='mobile'?v:'auto'}
+  function autoDevice(){const ua=navigator.userAgent||'',touch=(navigator.maxTouchPoints||0)>0,ipad=/iPad/i.test(ua)||(navigator.platform==='MacIntel'&&touch),w=Math.round(visualViewport?.width||innerWidth),h=Math.round(visualViewport?.height||innerHeight);if(ipad)return{kind:'tablet',label:'iPad',profile:'touch-tablet',w,h};if(touch&&Math.min(w,h)>=600&&Math.max(w,h)<=1500)return{kind:'tablet',label:'tablet',profile:'touch-tablet',w,h};if(w<=720)return{kind:'phone',label:'telefoon',profile:'compact-touch',w,h};if(touch&&w<=1180)return{kind:'tablet',label:'tablet',profile:'touch-tablet',w,h};return{kind:'desktop',label:'laptop/desktop',profile:'wide-pointer',w,h}}
+  function device(){const a=autoDevice(),forced=forcedMode();if(forced==='mobile')return{...a,kind:'phone',label:'telefoonlayout',profile:'forced-mobile',forced};if(forced==='desktop')return{...a,kind:'desktop',label:'desktoplayout',profile:'forced-desktop',forced};return{...a,forced:'auto'}}
+  function apply(){const d=device(),a=standalone();document.body.classList.remove('device-phone','device-tablet','device-desktop','force-mobile','force-desktop');document.body.classList.add('device-'+d.kind);if(d.forced==='mobile')document.body.classList.add('force-mobile');if(d.forced==='desktop')document.body.classList.add('force-desktop');document.documentElement.dataset.device=d.kind;document.documentElement.dataset.displayMode=a?'app':'web';document.documentElement.dataset.deviceProfile=d.profile||d.kind;document.documentElement.dataset.interfaceSource=d.forced==='auto'?'automatic':'manual';const chip=document.getElementById('installStatusChip');if(chip)chip.textContent=`${a?'App':'Browser'} · ${d.label} · ${d.w}×${d.h} · ${d.forced==='auto'?'auto':'handmatig'}`}
+  addEventListener('resize',apply);visualViewport?.addEventListener('resize',apply);addEventListener('orientationchange',apply);addEventListener('DOMContentLoaded',apply);apply();
 })();
-
 
 /* ===== V8.1 FINAL PRODUCT ENHANCEMENTS ===== */
 (function(){
   const PIDF=window.ATH_PROFILE_ID||localStorage.getItem('athenaeum_current_profile')||'';
-  function deviceLabelF(){const m=document.getElementById('installStatusChip')?.textContent||'automatisch';const p=document.documentElement.dataset.deviceProfile||document.documentElement.dataset.device||'auto';return{mode:m,profile:p}}
+  function deviceLabelF(){const m=document.getElementById('installStatusChip')?.textContent||'automatisch',p=document.documentElement.dataset.deviceProfile||document.documentElement.dataset.device||'auto',src=document.documentElement.dataset.interfaceSource||'automatic';return{mode:m,profile:p,source:src}}
   function installDeviceCardF(){
     const page=document.getElementById('page-settings');if(!page||document.getElementById('finalDeviceCard'))return;
     const d=deviceLabelF(),card=document.createElement('div');card.className='card';card.id='finalDeviceCard';card.style.marginTop='14px';
     card.innerHTML=`<div class="spread"><div><h4>📱 Apparaat & automatische modus</h4><p>Scriptorium detecteert het toestel zelf en past layout en achtergrondwerk aan.</p></div><span class="badge good">${d.mode}</span></div>
-    <div class="grid three" style="margin-top:10px"><div class="callout"><strong>Interface</strong><div class="tiny">${d.profile}</div></div><div class="callout"><strong>AI-feedback</strong><div class="tiny">cloud via Supabase/Groq · onafhankelijk van dit toestel</div></div><div class="callout"><strong>Corpus/sync</strong><div class="tiny">lokale PDF's · incrementele sync · zwaar werk vertraagd gestart</div></div></div>
+    <div class="grid three" style="margin-top:10px"><div class="callout"><strong>Interface</strong><div class="tiny">${d.profile} · ${d.source==='manual'?'handmatig geforceerd':'automatisch gedetecteerd'}</div></div><div class="callout"><strong>AI-feedback</strong><div class="tiny">cloud via Supabase/Groq · onafhankelijk van dit toestel</div></div><div class="callout"><strong>Corpus/sync</strong><div class="tiny">lokale PDF's · incrementele sync · zwaar werk vertraagd gestart</div></div></div>
     <div class="tiny" style="margin-top:8px"><strong>Gedetecteerd:</strong> ${Math.round(window.visualViewport?.width||innerWidth)}×${Math.round(window.visualViewport?.height||innerHeight)} · touch ${navigator.maxTouchPoints||0} · ${screen.orientation?.type||'oriëntatie onbekend'}<br>Vier of meer gelijktijdige gebruikers werken met gescheiden Supabase-accounts en gescheiden lokale databases. Syncstarts krijgen jitter zodat clients niet tegelijk dezelfde backendpiek veroorzaken.</div>`;
     const sys=document.getElementById('v75SystemCard');if(sys)sys.insertAdjacentElement('afterend',card);else page.appendChild(card)
   }

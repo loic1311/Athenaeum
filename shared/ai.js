@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const TIMEOUT=60000;
+const TIMEOUT=60000;let AI_QUEUE=Promise.resolve();
 function S(){return window.AthSync}
 
 function compactString(v,max=9000){if(typeof v!=='string')return v;if(v.length<=max)return v;return v.slice(0,Math.floor(max*.7))+'\n…[context compacted]…\n'+v.slice(-Math.floor(max*.3))}
@@ -53,6 +53,8 @@ function percent(q,kind){
   const lim=kind==='deep'?(q.deep_limit??10):(q.regular_limit??60);
   return lim?Math.min(100,Math.round(used/lim*100)):0;
 }
-async function generate(pid,payload){return call(pid,payload,60000)}
-window.AthAI={feedback:call,generate,call,health,status,reconnect,quotaText,remaining,percent};
+function enqueue(task){const run=AI_QUEUE.then(task,task);AI_QUEUE=run.catch(()=>{});return run}
+async function feedback(pid,payload,timeout=TIMEOUT){return enqueue(()=>call(pid,payload,timeout))}
+async function generate(pid,payload){return enqueue(()=>call(pid,payload,60000))}
+window.AthAI={feedback,generate,call,health,status,reconnect,quotaText,remaining,percent};
 })();

@@ -1,3 +1,6 @@
+ATHENAEUM V1.2.1 TEST
+- kandidaat-V1.3 eerst als testbuild; zie RELEASE_NOTES_V1_2_1.txt.
+
 ATHENAEUM — GECONSOLIDEERDE CHANGELOG
 ====================================
 

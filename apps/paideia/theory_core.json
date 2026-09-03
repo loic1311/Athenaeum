@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "general_knowledge": {
+    "Psychology": {
+      "title": "Psychologie: geheugen, leren, bias en beslissen",
+      "summary": "Psychologie onderzoekt gedrag en mentale processen systematisch. Vier nuttige basisbegrippen hangen sterk samen: geheugen bepaalt welke informatie beschikbaar blijft; leren verandert kennis of gedrag door ervaring; cognitieve biases kunnen waarneming en oordeel systematisch vertekenen; besluitvorming gebruikt informatie, doelen en vaak heuristieken om tussen opties te kiezen.",
+      "key_points": [
+        "Geheugen omvat processen zoals coderen, opslaan en later ophalen van informatie; herinneringen zijn niet altijd letterlijke kopieën.",
+        "Leren is een relatief duurzame verandering in kennis of gedrag door ervaring, oefening, feedback of conditionering.",
+        "Een cognitieve bias is een systematische vertekening in informatieverwerking, bijvoorbeeld confirmation bias of availability bias.",
+        "Besluitvorming vergelijkt opties onder beperkingen; heuristieken kunnen efficiënt zijn maar ook tot voorspelbare fouten leiden."
+      ],
+      "must_know": [
+        "definieer elk kernbegrip in eigen woorden",
+        "geef een eenvoudig voorbeeld",
+        "leg minstens twee verbanden tussen de vier begrippen uit"
+      ],
+      "source": "Paideia basiskennis · modelaanvulling"
+    },
+    "Biology": {
+      "title": "Biologie: cel, genetica, evolutie en homeostase",
+      "summary": "Biologie bestudeert levende systemen op verschillende niveaus. Cellen vormen de basiseenheden van organismen; genetische informatie wordt via DNA en genen doorgegeven; evolutie beschrijft veranderingen in erfelijke eigenschappen van populaties over generaties; homeostase houdt interne omstandigheden binnen functionele grenzen.",
+      "key_points": [
+        "Een cel is de kleinste structurele en functionele basiseenheid van leven en is begrensd door een membraan.",
+        "Genetica onderzoekt erfelijkheid en variatie: genen zijn DNA-segmenten en allelen zijn varianten van een gen.",
+        "Evolutie is verandering in erfelijke kenmerken van populaties over generaties, onder meer door natuurlijke selectie, mutatie, genetische drift en genenstroom.",
+        "Homeostase is regulatie van interne variabelen, zoals temperatuur of glucose, rond functionele waarden via feedbackmechanismen."
+      ],
+      "must_know": [
+        "onderscheid cel, gen en organisme",
+        "leg evolutie op populatieniveau uit",
+        "geef een voorbeeld van negatieve feedback bij homeostase"
+      ],
+      "source": "Paideia basiskennis · modelaanvulling"
+    },
+    "Law": {
+      "title": "Recht: rechtsstelsels, contracten, strafrecht en rechten",
+      "summary": "Recht ordent maatschappelijke verhoudingen via regels, instituties en procedures. Een rechtsstelsel bepaalt onder meer welke bronnen en rechtbanken gezag hebben. Contracten regelen afdwingbare afspraken tussen partijen. Strafrecht bepaalt welk gedrag strafbaar is en welke procedurele waarborgen gelden. Rechten begrenzen wat overheid en anderen mogen doen en kunnen aanspraken of vrijheden beschermen.",
+      "key_points": [
+        "Een rechtsstelsel omvat rechtsbronnen, instellingen, procedures en beginselen waarmee regels worden gemaakt, uitgelegd en afgedwongen.",
+        "Een contract is een juridisch relevante overeenkomst; geldigheid en afdwingbaarheid hangen af van het toepasselijke recht en voorwaarden zoals toestemming en geoorloofde inhoud.",
+        "Strafrecht omschrijft strafbare feiten, sancties en procedurele waarborgen; schuld en bewijs moeten volgens het toepasselijke stelsel worden vastgesteld.",
+        "Rechten beschermen belangen of vrijheden en kunnen voortkomen uit grondwet, wet, verdragen of andere rechtsbronnen."
+      ],
+      "must_know": [
+        "onderscheid civiele afspraak en strafbaar feit",
+        "verklaar waarom procedure belangrijk is",
+        "geef een voorbeeld van een recht en de bijbehorende plicht of beperking"
+      ],
+      "source": "Paideia basiskennis · modelaanvulling"
+    },
+    "Medicine": {
+      "title": "Geneeskunde: anatomie, infectie, risico en volksgezondheid",
+      "summary": "Geneeskunde combineert kennis van het lichaam met diagnose, behandeling, preventie en populatiezorg. Anatomie beschrijft de bouw van het lichaam. Infectie ontstaat wanneer ziekteverwekkers een gastheer binnendringen en zich vermenigvuldigen. Medisch risico gaat over kans én mogelijke ernst van een uitkomst. Volksgezondheid richt zich op gezondheid van populaties via preventie, beleid, surveillance en omgevingsmaatregelen.",
+      "key_points": [
+        "Anatomie beschrijft structuren en hun onderlinge ligging; fysiologie beschrijft vooral functies.",
+        "Een infectie is aanwezigheid en vermenigvuldiging van pathogenen; infectie is niet automatisch hetzelfde als ziekte of symptomen.",
+        "Risico combineert kans op een gebeurtenis met de mogelijke gevolgen; absolute en relatieve risico's zijn niet hetzelfde.",
+        "Volksgezondheid werkt op populatieniveau, bijvoorbeeld via vaccinatieprogramma's, screening, sanitaire maatregelen en epidemiologische surveillance."
+      ],
+      "must_know": [
+        "onderscheid anatomie en fysiologie",
+        "onderscheid infectie en ziekte",
+        "leg uit waarom absolute risico's belangrijk zijn",
+        "geef een voorbeeld van populatiepreventie"
+      ],
+      "source": "Paideia basiskennis · modelaanvulling"
+    }
+  },
+  "skill": {
+    "Change a car wheel": {
+      "title": "Autowiel wisselen: veilige volgorde en controlepunten",
+      "summary": "Een wiel wisselen is vooral een veiligheidsprocedure. De auto moet stabiel en op een geschikte plaats staan, het juiste krikpunt moet worden gebruikt en wielbouten moeten gecontroleerd en volgens de voertuigspecificatie worden vastgezet. Raadpleeg altijd de handleiding van het voertuig voor krikpunten en aanhaalmoment.",
+      "key_points": [
+        "Parkeer op een vlakke, stabiele en veilige ondergrond; zet de auto in parkeerstand of versnelling, activeer de handrem en gebruik gevarendriehoek of veiligheidsmaatregelen waar nodig.",
+        "Maak wielbouten alleen zover los dat ze kunnen worden verwijderd voordat het wiel volledig van de grond is, als de handleiding dat voorschrijft.",
+        "Plaats de krik uitsluitend op het door de fabrikant aangegeven krikpunt en ga nooit onder een auto die alleen door een krik wordt gedragen.",
+        "Monteer het wiel, draai bouten kruislings voorlopig vast, laat de auto zakken en gebruik het voorgeschreven aanhaalmoment met geschikt gereedschap."
+      ],
+      "must_know": [
+        "noem minstens twee veiligheidsmaatregelen",
+        "herken waarom het krikpunt essentieel is",
+        "leg kruislings vastzetten uit",
+        "controleer het juiste aanhaalmoment in de voertuigdocumentatie"
+      ],
+      "source": "Paideia praktische basiskennis · controleer altijd voertuighandleiding"
+    },
+    "Repair a bicycle puncture": {
+      "title": "Fietsband herstellen: diagnose, reparatie en druk",
+      "summary": "Bij een lekke binnenband zoek je eerst de oorzaak zodat een nieuwe of herstelde binnenband niet meteen opnieuw lek raakt. Bandenlichters helpen de buitenband gecontroleerd van de velg te nemen; een plakker hecht alleen goed op een schone, voorbereide zone; correcte bandendruk voorkomt veel problemen.",
+      "key_points": [
+        "Controleer buitenband en velglint op glas, doorn, spaakrand of ander scherp materiaal voordat je de binnenband terugplaatst.",
+        "Gebruik bandenlichters voorzichtig zodat je de binnenband niet extra beschadigt; metalen scherpe hulpmiddelen kunnen schade veroorzaken.",
+        "Voor een klassieke plakker moet het lek gelokaliseerd, het oppervlak voorbereid en de lijm volgens de productinstructies gebruikt worden.",
+        "Pomp op tot een druk binnen het bereik dat op de band of in de fietsdocumentatie staat en controleer dat de buitenband overal correct in de velg zit."
+      ],
+      "must_know": [
+        "vind eerst de oorzaak",
+        "bescherm binnenband en velg bij demontage",
+        "volg plakinstructies",
+        "controleer bandzitting en druk"
+      ],
+      "source": "Paideia praktische basiskennis"
+    },
+    "Basic home repair": {
+      "title": "Basisreparaties thuis: meten, bevestigen, boren en veiligheid",
+      "summary": "Kleine herstellingen slagen vooral door voorbereiding. Eerst bepaal je materiaal, maat en belasting; daarna kies je passend bevestigingsmateriaal en gereedschap. Voor boren controleer je waar leidingen of kabels kunnen lopen. Meten en markeren komt vóór irreversibele handelingen zoals boren of zagen.",
+      "key_points": [
+        "Bevestigingsmateriaal zoals schroeven, pluggen en ankers moet passen bij wandmateriaal en belasting.",
+        "Meet minstens tweemaal en markeer duidelijk voordat je boort, zaagt of bevestigt.",
+        "Gebruik een geschikte boor en instelling voor hout, metaal, steen of andere materialen; forceer gereedschap niet.",
+        "Controleer elektriciteits- en leidingrisico's, draag passende bescherming en schakel stroom of water uit wanneer de taak dat vereist."
+      ],
+      "must_know": [
+        "kies bevestiging op basis van materiaal en belasting",
+        "meet vóór je boort",
+        "noem risico's van verborgen leidingen/kabels",
+        "stop bij twijfel en raadpleeg documentatie of vakpersoon"
+      ],
+      "source": "Paideia praktische basiskennis"
+    },
+    "Vegetable gardening": {
+      "title": "Moestuin: bodem, rotatie, water en seizoen",
+      "summary": "Een productieve moestuin hangt af van bodemstructuur, voedingsstoffen, water, licht en timing. Vruchtwisseling helpt druk van sommige bodemgebonden ziekten en plagen te beperken en voorkomt eenzijdige uitputting. Water geven is effectiever wanneer het gericht en afgestemd op bodem en weer gebeurt. Gewassen hebben verschillende zaaien oogstvensters.",
+      "key_points": [
+        "Bodem moet voldoende lucht, water en voedingsstoffen beschikbaar maken; organische stof kan structuur en watervasthoudend vermogen verbeteren.",
+        "Vruchtwisseling betekent dat je gewasgroepen niet voortdurend op exact dezelfde plaats teelt; het is één hulpmiddel tegen ziekten, plagen en nutriëntenproblemen.",
+        "Geef liever gericht aan de wortelzone en pas hoeveelheid en frequentie aan bodem, gewas en weer aan; permanent natte bodem kan ook problemen veroorzaken.",
+        "Seizoensgebonden planning houdt rekening met temperatuur, vorstgevoeligheid, daglengte en groeiduur van het gewas."
+      ],
+      "must_know": [
+        "beoordeel bodem en water",
+        "leg doel van vruchtwisseling uit",
+        "pas watergift aan omstandigheden aan",
+        "plan zaaien en planten volgens seizoen"
+      ],
+      "source": "Paideia praktische basiskennis"
+    }
+  }
+}

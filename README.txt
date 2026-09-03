@@ -1,32 +1,11 @@
-ATHENAEUM V1.2.0 — FINAL LEARNING PLATFORM
-==========================================
+ATHENAEUM V1.2.1 — TESTBUILD
 
-Hoofdapps
-- Scriptorium V8.1: onderzoek, corpus, authentieke bronnen, theorie, training,
-  H5P, AI-docent en AI-transfervragen.
-- Paideia V1.2.0: dagelijks leren, universiteitsexamens, knowledge packs,
-  leergeschiedenis, Telegram en AI-docent.
+Volledige GitHub Pages-root voor Athenaeum, Scriptorium V8.1 en Paideia.
 
-Navigatie
-- Iedere app heeft de terugknop boven het eigen logo.
-- Telefoon krijgt dezelfde terugactie in de mobiele topbar.
+Deze build test de kandidaat-V1.3-functies eerst in de praktijk. Zie RELEASE_NOTES_V1_2_1.txt en docs/TESTPLAN_V1_2_1.txt.
 
-AI
-- Geen chatbot.
-- Feedback en nieuwe vragen.
-- Server-side contextcompactie voorkomt onnodige Groq-TPM-fouten.
-- Scriptorium deep feedback gebruikt 120B met gecontroleerde 20B fallback.
-- Quota zijn per Supabase-gebruiker.
-
-Concurrent gebruik
-- Auth/RLS scheidt gebruikers.
-- lokale opslag is profielgebonden.
-- Scriptorium-sync is per werk incrementeel.
-- automatische syncstarts hebben jitter.
-- ontworpen voor minstens vier gelijktijdige gebruikers zonder gedeelde
-  browserstate of volledige corpusdump.
-
-H5P
-- optionele aanvullende interactieve laag;
-- native training blijft de kern voor universitaire open redenering;
-- embeds worden pas geladen wanneer de gebruiker ze opent.
+Belangrijk:
+- Upload de volledige inhoud van deze map naar dezelfde GitHub Pages-root.
+- Deploy de bijgewerkte Supabase Edge Function supabase/functions/telegram-bot/index.ts opnieuw.
+- Geen nieuwe SQL-migratie nodig voor V1.2.1.
+- Doe na deploy een harde refresh / sluit de geïnstalleerde PWA volledig en open opnieuw zodat de nieuwe service-worker cache actief wordt.
