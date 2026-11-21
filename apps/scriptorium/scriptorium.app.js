@@ -5425,7 +5425,20 @@ async function openDetail75(id){
   state.currentWork=w;$('#detailTitle').textContent=w.title||w.filename;const a=w.analysis||{};
   const meta=`<div class="analysis-grid"><div class="analysis-block"><h5>Auteur</h5>${esc75(w.author||'Onbekend')}</div><div class="analysis-block"><h5>Instelling / jaar</h5>${esc75(w.institution||'Onbekend')} · ${esc75(w.year||'?')}</div><div class="analysis-block"><h5>Document</h5>${esc75(w.document_type||'')} · ${w.page_count||'?'} fysieke PDF-pagina's</div><div class="analysis-block"><h5>Brongewicht</h5>${weightHTML(w)} · ${esc75(w.field||'vakgebied onbekend')}</div>${w.rug01?`<div class="analysis-block"><h5>UGent catalogus</h5>RUG01-${esc75(w.rug01)}${w.source_url?` · <a href="${esc75(w.source_url)}" target="_blank" style="color:var(--accent)">open bron</a>`:''}</div>`:''}<div class="analysis-block"><h5>Analysevoortgang</h5>${coverage(w.analysis_ranges||[])}/${w.page_count||'?'} fysieke pagina's</div></div>`;
   const analysis=a&&Object.keys(a).length?renderAnalysis(a,w):'<div class="empty">Nog geen inhoudelijke analyse geïmporteerd.</div>';
-  $('#detailBody').innerHTML=`<div class="tabs"><button class="active" data-tab="meta">Metadata</button><button data-tab="analysis">Analyse</button><button data-tab="notes">Notities</button></div><div id="tab-meta">${meta}<div class="row" style="margin-top:14px"><button class="btn" onclick="editWork('${esc75(w.id)}')">Metadata bewerken</button><button class="btn primary" onclick="goCorpusExport()">Naar corpusanalyse</button></div></div><div id="tab-analysis" style="display:none">${analysis}</div><div id="tab-notes" style="display:none"><div class="callout">${w.notes?esc75(w.notes):'Nog geen notities.'}</div></div>`;
+  $('#detailBody').innerHTML=`<div class="tabs"><button class="active" data-tab="meta">Metadata</button><button data-tab="analysis">Analyse</button><button data-tab="notes">Notities</button></div><div id="tab-meta">${meta}<div class="row" style="margin-top:14px"><button class="btn" onclick="editWork('${esc75(w.id)}')">Metadata bewerken</button><button class="btn primary" onclick="goCorpusExport()">Naar corpusanalyse</button><button class="btn" id="copyResearchWork" type="button">Kopieer voor onderzoeksdossier</button></div></div><div id="tab-analysis" style="display:none">${analysis}</div><div id="tab-notes" style="display:none"><div class="callout">${w.notes?esc75(w.notes):'Nog geen notities.'}</div></div>`;
+
+  $('#copyResearchWork').onclick = async () => {
+    const text = JSON.stringify({
+      format: 'athenaeum-scriptorium-v1',
+      work: {
+        id: w.id, title: String(w.title || w.filename || 'Werk zonder titel').slice(0, 400),
+        author: String(w.author || '').slice(0, 350), year: String(w.year || '').slice(0, 80),
+        url: String(w.source_url || '').slice(0, 2000), filename: String(w.filename || '').slice(0, 250),
+      },
+    });
+    const copied = await copyText(text);
+    toast(copied ? 'Werk gekopieerd. Plak het in Athenaeum bij Scriptorium.' : 'Kopiëren is niet gelukt.', copied ? 'good' : 'warn');
+  };
   $$('#detailBody .tabs button').forEach(b=>b.onclick=()=>{$$('#detailBody .tabs button').forEach(x=>x.classList.remove('active'));b.classList.add('active');['meta','analysis','notes'].forEach(t=>$('#tab-'+t).style.display=t===b.dataset.tab?'block':'none')});openModal('detailModal');
 }
 async function saveEdit75(){

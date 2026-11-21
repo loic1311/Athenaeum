@@ -274,7 +274,7 @@ body.device-tablet .focus-right{
 <link rel="stylesheet" href="./scriptorium.css">
 
 </head>
-<body><script>(function(){const q=new URLSearchParams(location.search),pid=q.get('ath_profile')||'';let ok=false,locked=false;try{const ps=JSON.parse(localStorage.getItem('athenaeum_profiles_v1')||'[]'),p=ps.find(x=>x.id===pid);ok=!!p&&(!Array.isArray(p.apps)||p.apps.includes('scriptorium'));locked=!!p?.pin_hash&&!sessionStorage.getItem('athenaeum_unlocked_'+pid)}catch{}if(!ok||locked){location.replace('../../index.html'+(pid?'?profile='+encodeURIComponent(pid)+'&page=apps':'')+(locked?'&locked=1':''));return}localStorage.setItem('athenaeum_current_profile',pid);addEventListener('DOMContentLoaded',()=>{const a=document.getElementById('athBackLink');if(a)a.href='../../index.html?resume=1&profile='+encodeURIComponent(pid)+'&page=apps';});window.ATH_PROFILE_ID=pid;})();</script>
+<body><script>(function(){const q=new URLSearchParams(location.search),pid=q.get('ath_profile')||'';let ok=false,locked=false;try{const ps=JSON.parse(localStorage.getItem('athenaeum_profiles_v1')||'[]'),p=ps.find(x=>x.id===pid);ok=!!p&&(!Array.isArray(p.apps)||p.apps.includes('scriptorium'));locked=!!p?.pin_hash&&!sessionStorage.getItem('athenaeum_unlocked_'+pid)}catch{}if(!ok||locked){location.replace('../../index.html?open=scriptorium'+(locked?'&profile='+encodeURIComponent(pid)+'&locked=1':''));return}localStorage.setItem('athenaeum_current_profile',pid);addEventListener('DOMContentLoaded',()=>{const a=document.getElementById('athBackLink');if(a)a.href='../../index.html?resume=1&profile='+encodeURIComponent(pid)+'&page=apps';});window.ATH_PROFILE_ID=pid;})();</script>
 <div class="app">
 <aside class="sidebar">
   <a class="app-back" id="athBackLink" href="../../index.html">← Athenaeum</a>
@@ -563,6 +563,6 @@ body.device-tablet .focus-right{
 
 
 
-<script src="./scriptorium.app.js"></script>
+<script src="./scriptorium.app.js?v=13r1"></script>
 </body>
 </html>

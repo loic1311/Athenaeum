@@ -1,6 +1,6 @@
-const CACHE='scriptorium-v8.1-shell-1';
+const CACHE='scriptorium-v8.1-shell-2';
 const LOCAL_SHELL=[
-  './','./index.html','./scriptorium.css','./scriptorium.app.js',
+  './','./index.html','./scriptorium.css','./scriptorium.app.js?v=13r1',
   './manifest.webmanifest','./version.json',
   './icons/icon-192-v7.png','./icons/icon-512-v7.png',
   './icons/icon-maskable-192-v7.png','./icons/icon-maskable-512-v7.png',
