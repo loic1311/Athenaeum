@@ -1,13 +1,13 @@
-const VERSION = 'athenaeum-learning-v1.3.0';
+const VERSION = 'athenaeum-learning-v1.3.1';
 const BASE = new URL(self.registration.scope);
 const CORE = [
   './', './index.html', './leer/', './manifest.webmanifest', './classic.html', './app.js', './shared/style.css', './shared/telegram.js',
-  './academy/style.css?v=13r1', './academy/app.js?v=13r1', './academy/views.js?v=13r1', './academy/daily.js?v=13r1', './academy/daily-view.js?v=13r1', './academy/research.js?v=13r1',
+  './academy/style.css?v=13r1', './academy/app.js?v=13r2', './academy/views.js?v=13r2', './academy/daily.js?v=13r1', './academy/daily-view.js?v=13r1', './academy/research.js?v=13r1',
   './academy/research-data.js?v=13r1', './academy/research-import.js?v=13r1', './academy/scriptorium.js?v=13r1',
   './academy/practice.js?v=13r1', './academy/practice-content.js?v=13r1',
   './academy/language-topics.js?v=13r1', './academy/language-lessons.js?v=13r1',
   './academy/content/fr-pharmacie.js?v=13r1', './academy/content/it-spreken.js?v=13r1',
-  './academy/storage.js', './academy/learning.js', './academy/learning.js?v=13r1', './academy/cloud.js', './academy/importer.js',
+  './academy/storage.js', './academy/learning.js', './academy/learning.js?v=13r1', './academy/cloud.js?v=13r2', './academy/importer.js',
   './shared/store.js', './shared/sync.js', './assets/icons/icon-192.png', './assets/icons/icon-512.png',
   './assets/logos/athenaeum.svg', './assets/logos/athenaeum-192.png',
 ];

@@ -4,8 +4,8 @@ import { languageLessons } from './language-lessons.js?v=13r1';
 import { LANGUAGE_SKILLS } from './language-topics.js?v=13r1';
 import { record, readRecords, storeRecords, forgetRecords, backups, syncLearning, clearCloudLearning } from './storage.js';
 import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js';
-import { authenticate, authMessage, makeGuest } from './cloud.js';
-import * as view from './views.js?v=13r1';
+import { authenticate, authMessage, makeGuest } from './cloud.js?v=13r2';
+import * as view from './views.js?v=13r2';
 import { PACE, DAY_FOCI, STAGES, dayKey, archivedPlans, planDay, advanceDay, drillQuestions, tipsFor } from './daily.js?v=13r1';
 import { checkSelection, completeSelection, practiceOptions, workedExample } from './practice.js?v=13r1';
 import { dailyPage } from './daily-view.js?v=13r1';
@@ -110,8 +110,8 @@ function applyNavigation(section, label) {
     ['voortgang', 'Voortgang', 'graph'], ['importeren', 'Eigen leerstof', 'import'],
   ].map(n => view.nav(n, section)).join('');
   const name = document.querySelector('#account');
-  name.textContent = profile?.name || 'Aanmelden';
-  name.title = profile ? 'Profiel en account' : 'Aanmelden';
+  name.textContent = cloudUser() ? profile.name : 'Account';
+  name.title = cloudUser() ? 'Profiel en account' : 'Account maken of aanmelden';
   updateConnection();
 }
 
@@ -1145,7 +1145,7 @@ const actions = {
   'resume': () => { session = activeSession(); jump('sessie'); },
   'close-dialog': () => dialog.close(),
   'account': () => cloudUser() ? jump('meer') : showAccount(),
-  'auth-mode': value => showAccount(value),
+  'auth-mode': value => showAccount(value, dialog.querySelector('#email')?.value ?? ''),
   'profiles': showProfiles,
   'choose-profile': chooseProfile,
   'level': setLevel,
@@ -1401,7 +1401,8 @@ document.addEventListener('submit', event => {
       try {
         const result = await authenticate({ ...values, mode: form.dataset.mode, current: profile });
         if (result.needsConfirmation) {
-          inlineMessage(form.querySelector('#auth-message'), 'Bevestig je e-mailadres via je inbox. Meld je daarna hier aan.');
+          showAccount('login', values.email);
+          inlineMessage(dialog.querySelector('#auth-message'), 'Open de bevestigingsmail en klik op de link. Meld je daarna hier aan met je wachtwoord.');
           return;
         }
         await transitionCloud(result);
@@ -1578,7 +1579,13 @@ async function boot() {
   else if (intent === 'scriptorium' && !location.hash) jump('scriptorium');
   else if (!location.hash && query.get('page') === 'settings') jump('meer');
   else if (!location.hash && query.get('page') === 'apps') jump('scriptorium');
-  if (p && !profile) showProfiles();
+  if (query.get('account') === 'signup') {
+    const next = new URL(location.href);
+    next.searchParams.delete('account');
+    history.replaceState(null, '', next.href);
+    if (cloudUser()) jump('meer');
+    else showAccount('signup');
+  } else if (p && !profile) showProfiles();
 }
 
 boot().catch(error => {

@@ -553,7 +553,7 @@ export function settings(info) {
           'Oefen meteen op dit toestel. Met een cloudaccount neem je je leerstof en voortgang mee.'}</p>
         ${p ? '<p class="small-text"><strong>' + esc(p.name) + '</strong> · ' + (info.cloud ? esc(info.syncLabel) : 'Op dit toestel') + '</p>' : ''}
         <div class="row">${info.cloud ? button('sync', 'Nu bijwerken', 'primary') + button('logout', 'Afmelden', 'quiet') :
-          button('account', 'Aanmelden of account maken', 'primary')}</div>
+          button('auth-mode', 'Maak een account', 'primary', 'signup') + button('account', 'Aanmelden', 'quiet')}</div>
         ${info.profileCount > Number(!!p) ? button('profiles', 'Ander profiel kiezen', 'small quiet') : ''}
       </section>
       <section class="panel stack">
@@ -587,18 +587,19 @@ export function settings(info) {
 
 export function accountDialog(mode, email = '') {
   const signup = mode === 'signup';
-  return `<div class="dialog-inner stack"><div class="topline"><h2 id="dialog-title">${signup ? 'Cloudaccount maken' : 'Aanmelden'}</h2>
+  return `<div class="dialog-inner stack"><div class="topline"><h2 id="dialog-title">${signup ? 'Maak een account' : 'Aanmelden'}</h2>
     <button type="button" class="button icon-only" aria-label="Sluiten" data-action="close-dialog">${icon('close')}</button></div>
+    <p class="small-text muted">${signup ? 'Kies een wachtwoord van minstens 10 tekens en bevestig daarna je e-mailadres.' : 'Meld je aan om verder te oefenen op je andere toestellen.'}</p>
     <form id="account-form" data-mode="${signup ? 'signup' : 'login'}" class="stack">
-      ${signup ? '<div class="field"><label for="name">Naam</label><input id="name" name="name" autocomplete="nickname" maxlength="40"></div>' : ''}
       <div class="field"><label for="email">E-mail</label><input id="email" name="email" value="${esc(email)}" type="email" required autocomplete="username"></div>
       <div class="field"><label for="password">Wachtwoord</label><input id="password" name="password" type="password" required ${signup ? 'minlength="10" autocomplete="new-password"' : 'autocomplete="current-password"'}></div>
       <p id="auth-message" class="notice" hidden role="status"></p>
       <button type="submit" class="button primary">${signup ? 'Account maken' : 'Aanmelden'}</button>
     </form>
     <div class="row">
-      ${signup ? button('auth-mode', 'Ik heb al een account', 'small quiet', 'login') : button('auth-mode', 'Registreren met e-mail', 'small quiet', 'signup')}
-    </div><p class="small-text muted">Aanmelden bewaart je leerstof en voortgang onder jouw account. Je kunt ook lokaal blijven oefenen.</p>
+      ${signup ? button('auth-mode', 'Ik heb al een account', 'quiet', 'login') : button('auth-mode', 'Maak een account', 'quiet', 'signup')}
+      ${button('close-dialog', 'Verder zonder account', 'quiet')}
+    </div>
   </div>`;
 }
 

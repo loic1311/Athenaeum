@@ -1,4 +1,4 @@
-import { esc, heading, sourceView } from './views.js?v=13r1';
+import { esc, heading, sourceView } from './views.js?v=13r2';
 import { MATERIAL_TYPES, COMPARISON_RELATIONS, evidenceList, MAX_EXCERPT, MAX_COMPARISON_ROWS } from './research-data.js?v=13r1';
 
 export const RESEARCH_TABS = {
