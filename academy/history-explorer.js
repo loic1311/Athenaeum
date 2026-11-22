@@ -1,10 +1,21 @@
 import { belongsToHistoryTrack, chronologyYear, HISTORICAL_TRACKS, timelineScope } from './history-chronology.js?v=13r9';
 
-export const EXPLORER_PAGES = {
-  atlas: 'Atlas',
-  tijdvakken: 'Tijdvakken',
-  bronnen: 'Bronnenatelier',
-  leerplan: 'Leerplan',
+export const HISTORY_SECTIONS = {
+  chronologie: ['Chronologia', 'Chronologisch leren', 'clock', 'Volg kernlessen en casussen op volgorde.'],
+  atlas: ['Atlas historicus', 'Historische wereldbol', 'globe', 'Verken steden en open een plaatsgebonden leerpad.'],
+  bronnen: ['Officina fontium', 'Bronnenatelier', 'scriptorium', 'Lees en analyseer historische bronnen.'],
+  tijdvakken: ['Aetates', 'Tijdvakken', 'castle', 'Kies een tijdvak en verdiep je in de lessen.'],
+  leerplan: ['Curriculum', 'Thematisch leerplan', 'knowledge', 'Volg historische thema’s door de tijd.'],
+};
+export const EXPLORER_PAGES = Object.fromEntries(Object.entries(HISTORY_SECTIONS)
+  .filter(([page]) => page !== 'chronologie').map(([page, [title]]) => [page, title]));
+
+export const ATLAS_VIEWS = {
+  wereld: { label: 'Wereld', center: [14, 28], zoom: 1 },
+  europa: { label: 'Europa', center: [12, 48], zoom: 4.6 },
+  frankrijk: { label: 'Frankrijk', center: [2.4, 46.7], zoom: 9 },
+  iberie: { label: 'Iberisch Schiereiland', center: [-3.5, 41], zoom: 8 },
+  middellandsezee: { label: 'Middellandse Zee', center: [16, 38], zoom: 4.8 },
 };
 
 export const ATLAS_PLACES = [
@@ -12,6 +23,36 @@ export const ATLAS_PLACES = [
     id: 'marseille', name: 'Marseille', region: 'Zuid-Frankrijk · Middellandse Zee', coordinates: [5.3698, 43.2965],
     text: 'Van de Griekse haven Massalia tot quarantaine, industriële dokken, wederopbouw en migratie in de twintigste eeuw.',
     lessons: ['atlas-marseille-massalia', 'atlas-marseille-rome', 'atlas-marseille-provence', 'atlas-marseille-quarantaine', 'atlas-marseille-industrie', 'atlas-marseille-hedendaags'],
+  },
+  {
+    id: 'parijs', name: 'Parijs', region: 'Frankrijk · Seine', coordinates: [2.3522, 48.8566], aliases: 'Paris Lutèce Lutetia Île-de-France',
+    text: 'Bekijk de Romeinse stad aan de Seine en onderzoek hoe de ingrepen van Haussmann Parijs in de negentiende eeuw veranderden.',
+    lessons: ['atlas-parijs-lutece', 'atlas-parijs-haussmann'],
+  },
+  {
+    id: 'toulouse', name: 'Toulouse', region: 'Zuid-Frankrijk · Occitanië', coordinates: [1.4442, 43.6047], aliases: 'Tolosa Garonne Canal du Midi',
+    text: 'Volg het tracé van de Romeinse stadswal en onderzoek hoe het Canal du Midi nieuwe routes voor handel schiep.',
+    lessons: ['atlas-toulouse-tolosa', 'atlas-toulouse-canal'],
+  },
+  {
+    id: 'madrid', name: 'Madrid', region: 'Spanje · Meseta', coordinates: [-3.7038, 40.4168], aliases: 'Mayrit Mairit Manzanares',
+    text: 'Volg Madrid van Mayrit, een versterking aan de grens van al-Andalus, tot de vestiging van het koninklijk hof.',
+    lessons: ['atlas-madrid-mayrit', 'atlas-madrid-hof'],
+  },
+  {
+    id: 'barcelona', name: 'Barcelona', region: 'Spanje · Catalonië', coordinates: [2.1734, 41.3851], aliases: 'Barcino Bàrcino Catalunya Eixample Cerdà',
+    text: 'Lees de archeologische resten van Barcino en vergelijk het negentiende-eeuwse uitbreidingsplan met de gebouwde stad.',
+    lessons: ['atlas-barcelona-barcino', 'atlas-barcelona-cerda'],
+  },
+  {
+    id: 'lyon', name: 'Lyon', region: 'Frankrijk · Rhône en Saône', coordinates: [4.8357, 45.7640], aliases: 'Lugdunum Fourvière',
+    text: 'Onderzoek hoe twee rivieren, een Romeinse stichting en publieke gebouwen de stad vormgaven.',
+    lessons: ['atlas-lyon-lugdunum'],
+  },
+  {
+    id: 'lissabon', name: 'Lissabon', region: 'Portugal · Taag', coordinates: [-9.1393, 38.7223], aliases: 'Lisboa Lisbon Baixa Pombalina',
+    text: 'Bekijk hoe Lissabon na de aardbeving van 1755 het handelscentrum opnieuw inrichtte.',
+    lessons: ['atlas-lissabon-wederopbouw'],
   },
   {
     id: 'athene', name: 'Athene', region: 'Griekenland · Attica', coordinates: [23.7275, 37.9838],

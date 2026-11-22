@@ -1,24 +1,27 @@
 import './vendor/d3-array.min.mjs';
 import './vendor/d3-geo.min.mjs';
+import { ATLAS_VIEWS } from './history-explorer.js?v=13r10';
 
-const { geoDistance, geoGraticule10, geoOrthographic, geoPath } = globalThis.d3;
+const { geoCentroid, geoDistance, geoGraticule10, geoOrthographic, geoPath } = globalThis.d3;
 const sphere = { type: 'Sphere' };
 const graticule = geoGraticule10();
+const maxZoom = 28;
+const clamp = (number, min, max) => Math.max(min, Math.min(max, number));
+const longitude = value => (value + 540) % 360 - 180;
+const distance = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 let geography;
 
 function loadGeography() {
   geography ??= fetch(new URL('./content/atlas-land.json?v=13r9', import.meta.url))
-    .then(reply => {
-      if (!reply.ok) throw new Error('Kaartgegevens konden niet laden.');
-      return reply.json();
+    .then(response => {
+      if (!response.ok) throw new Error('Kaartgegevens konden niet laden.');
+      return response.json();
     }).catch(error => {
       geography = undefined;
       throw error;
     });
   return geography;
 }
-
-const clamp = (number, min, max) => Math.max(min, Math.min(max, number));
 
 export async function mountAtlasGlobe(frame, places, selected, onSelect) {
   const world = await loadGeography();
@@ -29,15 +32,24 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect) {
   const controls = new AbortController();
   const listen = (element, event, handler, options = {}) =>
     element.addEventListener(event, handler, { ...options, signal: controls.signal });
-  const projection = geoOrthographic().precision(.25).clipAngle(90);
+  const projection = geoOrthographic().precision(.3).clipAngle(90);
   const path = geoPath(projection, context);
   const active = places.find(place => place.id === selected);
-  let center = active ? [...active.coordinates] : [14, 28];
-  let zoom = active ? 3.4 : 1;
-  let width = 0, height = 0;
-  let visible = [];
-  let gesture;
+  const mapStatus = frame.querySelector('#atlas-map-status');
+  const presetButtons = [...frame.querySelectorAll('[data-map-view]')];
+  const zoomButtons = [...frame.querySelectorAll('[data-map-zoom]')];
   const pointers = new Map();
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  let center = active?.coordinates ?? ATLAS_VIEWS.wereld.center;
+  let zoom = active ? 9 : 1;
+  let width = 0;
+  let height = 0;
+  let markers = [];
+  let gesture;
+  let animation = 0;
+  let hover;
+  let filter = new Set(places.map(place => place.id));
+  let mapLabel = active?.name ?? 'Wereld';
 
   function shape(geometry, fill, stroke, line = 1) {
     context.beginPath();
@@ -46,48 +58,92 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect) {
     if (stroke) { context.strokeStyle = stroke; context.lineWidth = line; context.stroke(); }
   }
 
+  function makeMarkers() {
+    const points = places.filter(place => filter.has(place.id) && geoDistance(center, place.coordinates) < Math.PI / 2)
+      .map(place => ({ place, point: projection(place.coordinates) }))
+      .filter(({ point: [x, y] }) => x > 10 && x < width - 10 && y > 10 && y < height - 10);
+    const groups = [];
+    for (const { place, point } of points) {
+      const group = zoom < 19 && place !== active && groups.find(mark =>
+        !mark.places.includes(active) && distance(mark.point, point) < 29);
+      if (group) {
+        const previousCount = group.places.length;
+        group.point = group.point.map((n, axis) => (n * previousCount + point[axis]) / (previousCount + 1));
+        group.places.push(place);
+      } else {
+        groups.push({ places: [place], point });
+      }
+    }
+    return groups.sort((a, b) => Number(b.places.includes(active)) - Number(a.places.includes(active)));
+  }
+
+  function drawMarkers() {
+    markers = makeMarkers();
+    const labels = [];
+    for (const marker of markers) {
+      const { places: list, point: [x, y] } = marker;
+      const cluster = list.length > 1;
+      const focus = list[0] === active;
+      const highlighted = list[0].id === hover;
+      const radius = cluster ? 13 : focus ? 8 : 5.4;
+      if (focus || highlighted) {
+        context.beginPath();
+        context.arc(x, y, 15, 0, Math.PI * 2);
+        context.fillStyle = '#eec87c55';
+        context.fill();
+      }
+      context.beginPath();
+      context.arc(x, y, radius, 0, Math.PI * 2);
+      context.fillStyle = focus || highlighted ? '#ffda89' : cluster ? '#f3dfac' : '#f2fff8';
+      context.fill();
+      context.lineWidth = 1.8;
+      context.strokeStyle = '#142f35';
+      context.stroke();
+      context.textBaseline = 'middle';
+      if (cluster) {
+        context.font = '750 12px system-ui';
+        context.textAlign = 'center';
+        context.fillStyle = '#21382b';
+        context.fillText(String(list.length), x, y + .5);
+        context.textAlign = 'start';
+        continue;
+      }
+      const label = list[0].name;
+      context.font = '650 13px system-ui';
+      const labelWidth = context.measureText(label).width + 4;
+      const options = [[x + 12, y], [x - labelWidth - 12, y], [x + 7, y - 16], [x + 7, y + 16]];
+      const position = options.find(([left, middle]) => left > 3 && left + labelWidth < width - 2 &&
+        middle > 9 && middle < height - 9 && !labels.some(([other, positionY, size]) =>
+          Math.abs(middle - positionY) < 17 && left < other + size + 4 && left + labelWidth > other - 4));
+      if (!position) continue;
+      const [left, middle] = position;
+      context.lineWidth = 4.5;
+      context.lineJoin = 'round';
+      context.strokeStyle = '#10313b';
+      context.strokeText(label, left, middle);
+      context.fillStyle = focus ? '#ffde9b' : '#ffffff';
+      context.fillText(label, left, middle);
+      labels.push([left, middle, labelWidth]);
+      marker.label = [left, middle, labelWidth];
+    }
+  }
+
   function draw() {
     if (!width || !height) return;
     const ratio = canvas.width / width;
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
     context.clearRect(0, 0, width, height);
-    const radius = Math.min(width, height) * .45 * zoom;
-    projection.translate([width / 2, height / 2]).scale(radius).rotate([-center[0], -center[1]]);
+    projection.translate([width / 2, height / 2]).scale(Math.min(width, height) * .44 * zoom).rotate([-center[0], -center[1]]);
     const sea = context.createLinearGradient(0, 0, width, height);
-    sea.addColorStop(0, '#326673');
-    sea.addColorStop(1, '#123844');
-    shape(sphere, sea, '#e4f7ef', 1.25);
-    shape(graticule, null, '#c8ebe044', .65);
-    shape(world, '#9dbaaa', '#d5e7d3', .58);
-
-    visible = places.filter(place => geoDistance(center, place.coordinates) < Math.PI / 2)
-      .map(place => ({ place, point: projection(place.coordinates) }))
-      .filter(({ point: [x, y] }) => x > 0 && x < width && y > 0 && y < height)
-      .sort((a, b) => Number(b.place === active) - Number(a.place === active));
-    const labels = [];
-    context.font = '600 12px system-ui';
-    context.textBaseline = 'middle';
-    for (const { place, point: [x, y] } of visible) {
-      const focus = place === active;
-      context.beginPath();
-      context.arc(x, y, focus ? 7.5 : 4.6, 0, 2 * Math.PI);
-      context.fillStyle = focus ? '#f4cb80' : '#f2fff7';
-      context.fill();
-      context.lineWidth = focus ? 2.5 : 1.5;
-      context.strokeStyle = '#123944';
-      context.stroke();
-      const labelW = context.measureText(place.name).width + 6;
-      const left = x + labelW + 13 < width ? x + 11 : x - labelW - 10;
-      const top = y - 7;
-      if (left < 2 || labels.some(label => Math.abs(label.y - top) < 16 &&
-          left < label.right + 3 && left + labelW > label.left - 3)) continue;
-      context.lineWidth = 3;
-      context.strokeStyle = '#153e48';
-      context.strokeText(place.name, left, y);
-      context.fillStyle = focus ? '#ffe2ad' : '#f5fff6';
-      context.fillText(place.name, left, y);
-      labels.push({ left, right: left + labelW, y: top });
-    }
+    sea.addColorStop(0, '#3f7480');
+    sea.addColorStop(1, '#183c4b');
+    shape(sphere, sea, '#a3c4bd', 1.3);
+    shape(graticule, null, '#c4e4db44', .65);
+    const land = context.createLinearGradient(width * .2, 0, width * .9, height);
+    land.addColorStop(0, '#adbe98');
+    land.addColorStop(1, '#779d91');
+    shape(world, land, '#d6e4ce', .8);
+    drawMarkers();
   }
 
   function resize() {
@@ -100,51 +156,120 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect) {
     draw();
   }
 
-  function setZoom(value) {
-    zoom = clamp(value, 1, 9);
+  function updateControls(preset = '') {
+    for (const button of presetButtons) button.setAttribute('aria-pressed', String(button.dataset.mapView === preset));
+    zoomButtons[0].disabled = zoom >= maxZoom;
+    zoomButtons[1].disabled = zoom <= 1;
+    mapStatus.textContent = mapLabel + (zoom > 1.01 ? ' · ' + new Intl.NumberFormat('nl-BE', { maximumFractionDigits: 1 }).format(zoom) + '×' : '');
+  }
+
+  function stopAnimation() {
+    cancelAnimationFrame(animation);
+    animation = 0;
+  }
+
+  function fly(target, targetZoom, label, preset = '') {
+    stopAnimation();
+    const start = center;
+    const startZoom = zoom;
+    const delta = longitude(target[0] - start[0]);
+    const destinationZoom = clamp(targetZoom, 1, maxZoom);
+    const began = performance.now();
+    mapLabel = label;
+    function step(time) {
+      const fraction = reducedMotion.matches ? 1 : Math.min(1, (time - began) / 340);
+      const ease = 1 - (1 - fraction) ** 3;
+      center = [longitude(start[0] + delta * ease), start[1] + (target[1] - start[1]) * ease];
+      zoom = fraction === 1 ? destinationZoom : startZoom * (destinationZoom / startZoom) ** ease;
+      draw();
+      if (fraction < 1) animation = requestAnimationFrame(step);
+      else {
+        animation = 0;
+        updateControls(preset);
+      }
+    }
+    animation = requestAnimationFrame(step);
+  }
+
+  function zoomAt(value, point) {
+    zoom = clamp(value, 1, maxZoom);
+    if (point) {
+      const location = projection.invert(point);
+      if (location.every(Number.isFinite)) center = [longitude(location[0]), clamp(location[1], -85, 85)];
+      mapLabel = 'Kaart';
+    }
     draw();
+    updateControls();
   }
 
   function translate(dx, dy) {
     const degrees = 180 / (Math.PI * Math.max(1, projection.scale()));
-    center = [
-      (center[0] - dx * degrees + 540) % 360 - 180,
-      clamp(center[1] + dy * degrees, -83, 83),
-    ];
+    center = [longitude(center[0] - dx * degrees / Math.max(.4, Math.cos(center[1] * Math.PI / 180))),
+      clamp(center[1] + dy * degrees, -85, 85)];
+    mapLabel = 'Kaart';
     draw();
+    updateControls();
   }
 
-  function pick(event) {
+  function canvasPoint(event) {
     const bounds = canvas.getBoundingClientRect();
-    const x = event.clientX - bounds.left, y = event.clientY - bounds.top;
-    const closest = visible.map(({ place, point }) => ({ place, distance: Math.hypot(x - point[0], y - point[1]) }))
-      .sort((a, b) => a.distance - b.distance)[0];
-    if (closest?.distance < 17) onSelect(closest.place.id);
+    return [event.clientX - bounds.left, event.clientY - bounds.top];
+  }
+
+  function hit(point) {
+    const markersByDistance = markers.map(marker => ({ marker, distance: distance(point, marker.point) }))
+      .sort((a, b) => a.distance - b.distance);
+    const selectedMarker = markersByDistance[0];
+    if (selectedMarker?.distance < (selectedMarker.marker.places.length > 1 ? 18 : 14)) return selectedMarker.marker;
+    return markers.find(({ label }) => label && Math.abs(label[1] - point[1]) <= 8 &&
+      point[0] >= label[0] - 2 && point[0] <= label[0] + label[2]);
+  }
+
+  function pick(marker) {
+    if (!marker) return;
+    if (marker.places.length === 1) {
+      onSelect(marker.places[0].id);
+      return;
+    }
+    const target = geoCentroid({ type: 'MultiPoint', coordinates: marker.places.map(place => place.coordinates) });
+    fly(target, zoom * 2.25, marker.places.length + ' plaatsen');
   }
 
   function pinchDistance() {
-    const [first, second] = [...pointers.values()];
-    return Math.hypot(first.x - second.x, first.y - second.y);
+    const [first, second] = pointers.values();
+    return distance(first, second);
   }
 
   listen(canvas, 'pointerdown', event => {
     if (event.button > 0 || pointers.size >= 2) return;
-    pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    stopAnimation();
+    pointers.set(event.pointerId, canvasPoint(event));
     canvas.setPointerCapture(event.pointerId);
-    if (pointers.size === 1) gesture = { moved: false };
-    else gesture = { moved: true, initialZoom: zoom, distance: Math.max(1, pinchDistance()) };
+    gesture = pointers.size === 1 ? { moved: false } :
+      { moved: true, initialZoom: zoom, distance: Math.max(1, pinchDistance()) };
     canvas.classList.add('grabbing');
   });
 
   listen(canvas, 'pointermove', event => {
-    const old = pointers.get(event.pointerId);
-    if (!old) return;
-    const dx = event.clientX - old.x, dy = event.clientY - old.y;
-    if (pointers.size === 1 && !gesture.moved && Math.hypot(dx, dy) < 4) return;
-    pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    const point = canvasPoint(event);
+    const previous = pointers.get(event.pointerId);
+    if (!previous) {
+      if (pointers.size || event.pointerType === 'touch') return;
+      const marker = hit(point);
+      const nextHover = marker?.places.length === 1 ? marker.places[0].id : undefined;
+      canvas.classList.toggle('over-marker', Boolean(marker));
+      if (nextHover !== hover) { hover = nextHover; draw(); }
+      return;
+    }
+    if (pointers.size === 1 && !gesture.moved && distance(point, previous) < 4) return;
+    pointers.set(event.pointerId, point);
     gesture.moved = true;
-    if (pointers.size === 2) setZoom(gesture.initialZoom * pinchDistance() / gesture.distance);
-    else translate(dx, dy);
+    if (pointers.size === 2) {
+      mapLabel = 'Kaart';
+      zoomAt(gesture.initialZoom * pinchDistance() / gesture.distance);
+    } else {
+      translate(point[0] - previous[0], point[1] - previous[1]);
+    }
   });
 
   function endPointer(event) {
@@ -152,30 +277,52 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect) {
     const click = !gesture.moved && event.type === 'pointerup';
     pointers.delete(event.pointerId);
     if (!pointers.size) canvas.classList.remove('grabbing');
-    if (click) pick(event);
+    if (click) pick(hit(canvasPoint(event)));
   }
 
   listen(canvas, 'pointerup', endPointer);
   listen(canvas, 'pointercancel', endPointer);
+  listen(canvas, 'lostpointercapture', endPointer);
+  listen(canvas, 'pointerleave', () => {
+    if (hover) { hover = undefined; draw(); }
+    canvas.classList.remove('over-marker');
+  });
+  listen(canvas, 'dblclick', event => zoomAt(zoom * 1.85, canvasPoint(event)));
+  listen(canvas, 'wheel', event => {
+    if (document.activeElement !== canvas) return;
+    event.preventDefault();
+    stopAnimation();
+    zoomAt(zoom * (event.deltaY < 0 ? 1.16 : 1 / 1.16));
+  }, { passive: false });
   listen(canvas, 'keydown', event => {
     const pan = { ArrowLeft: [28, 0], ArrowRight: [-28, 0], ArrowUp: [0, 28], ArrowDown: [0, -28] };
-    if (Object.hasOwn(pan, event.key)) translate(...pan[event.key]);
-    else if (event.key === '+' || event.key === '=') setZoom(zoom * 1.38);
-    else if (event.key === '-') setZoom(zoom / 1.38);
+    if (Object.hasOwn(pan, event.key)) { stopAnimation(); translate(...pan[event.key]); }
+    else if (event.key === '+' || event.key === '=') { stopAnimation(); zoomAt(zoom * 1.38); }
+    else if (event.key === '-') { stopAnimation(); zoomAt(zoom / 1.38); }
     else return;
     event.preventDefault();
   });
-  for (const control of frame.querySelectorAll('[data-map-control]')) listen(control, 'click', () => {
-    if (control.dataset.mapControl === 'reset') {
-      center = [14, 28];
-      setZoom(1);
-    } else {
-      setZoom(zoom * Number(control.dataset.mapControl));
-    }
+
+  for (const button of zoomButtons) listen(button, 'click', () => {
+    stopAnimation();
+    zoomAt(zoom * Number(button.dataset.mapZoom));
   });
+  for (const button of presetButtons) listen(button, 'click', () => {
+    const preset = ATLAS_VIEWS[button.dataset.mapView];
+    fly(preset.center, preset.zoom, preset.label, button.dataset.mapView);
+  });
+  listen(frame, 'atlas-filter', event => {
+    filter = new Set(event.detail);
+    const match = filter.size === 1 && places.find(place => filter.has(place.id));
+    if (match) fly(match.coordinates, 9, match.name);
+    else draw();
+  });
+  const visibleRows = frame.parentElement.querySelectorAll('[data-place-id]:not([hidden])');
+  filter = new Set([...visibleRows].map(row => row.dataset.placeId));
   const observer = new ResizeObserver(resize);
   observer.observe(canvas);
   resize();
+  updateControls(active ? '' : 'wereld');
   frame.dataset.ready = 'true';
-  return () => { controls.abort(); observer.disconnect(); };
+  return () => { stopAnimation(); controls.abort(); observer.disconnect(); };
 }

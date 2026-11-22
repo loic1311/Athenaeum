@@ -2,17 +2,17 @@ import { EXAM_GOALS, LEVELS, ROUTES, TRACKS, shuffled, makePool, historyOf, isCo
   languageQuestions, lessonQuestions, examQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=13r8';
 import { languageLessons } from './language-lessons.js?v=13r6';
 import { historicalLessons } from './history-curriculum.js?v=13r8';
-import { historyArchive } from './history-archive.js?v=13r9';
+import { historyArchive } from './history-archive.js?v=13r10';
 import { belongsToHistoryTrack, chronologicalLessons, chronologyForLesson, chronologyYear, HISTORICAL_TRACKS,
   historyLessonHref, historyReadId, timelineMode, timelineScope } from './history-chronology.js?v=13r9';
-import { ATLAS_PLACES, explorationJourney, explorationLessons, explorerHref } from './history-explorer.js?v=13r9';
-import { academicPlanPage, atlasPage, eraPage, primaryPage } from './history-explorer-view.js?v=13r9';
+import { ATLAS_PLACES, explorationJourney, explorationLessons, explorerHref } from './history-explorer.js?v=13r10';
+import { academicPlanPage, atlasPage, eraPage, primaryPage } from './history-explorer-view.js?v=13r10';
 import { weeklyExamQuestions, weeklyStudy } from './weekly-exam.js?v=13r9';
 import { isLanguageTopic, LANGUAGE_SKILLS } from './language-topics.js?v=13r1';
 import { record, readRecords, storeRecords, forgetRecords, backups, syncLearning, clearCloudLearning } from './storage.js';
 import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=13r8';
 import { authenticate, authMessage, makeGuest } from './cloud.js?v=13r2';
-import * as view from './views.js?v=13r9';
+import * as view from './views.js?v=13r10';
 import { PACE, DAY_FOCI, STAGES, dayKey, archivedPlans, planDay, advanceDay, drillQuestions, tipsFor } from './daily.js?v=13r9';
 import { checkSelection, completeSelection, practiceOptions, sequencePractice } from './practice.js?v=13r8';
 import { dailyPage } from './daily-view.js?v=13r9';
@@ -63,6 +63,7 @@ let lastResearchId = '';
 let pendingScriptoriumWork;
 let notifications;
 let unmountAtlas;
+let atlasPinDestination;
 
 const languageSupport = () => 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
 const connection = () => navigator.onLine;
@@ -93,7 +94,6 @@ function reviews() {
 const cloudUser = () => !!profile?.cloud_user_id && sync.cfg(profile.id).user?.id === profile.cloud_user_id;
 const onlineLabel = () => !connection() ? 'Offline · op dit toestel' : cloudUser() ? syncState || 'Cloud verbonden' : 'Online · op dit toestel';
 const route = () => location.hash.slice(1).split('/').map(v => { try { return decodeURIComponent(v); } catch { return ''; } });
-const localDate = at => new Date(at).toLocaleDateString('nl-BE');
 
 function now() {
   lastRecordTime = Math.max(Date.now(), lastRecordTime + 1);
@@ -152,24 +152,37 @@ function displayMain(markup, { focus = true } = {}) {
 
 function overview(lessons = lessonList()) {
   const { states, lessons: studied } = reviews();
-  const byTrack = Object.fromEntries(contentKeys.map(key => [key, { goals: 0, due: 0 }]));
+  const byTrack = Object.fromEntries(contentKeys.map(key => [key, { total: 0, goals: 0, due: 0 }]));
+  const now = new Date();
   for (const lesson of lessons) {
+    const track = byTrack[lesson.track];
+    track.total += lesson.items.length;
     for (const item of lesson.items) {
       const itemState = states.get(lesson.id + '/' + item.id);
       if (!itemState) continue;
-      byTrack[lesson.track].goals++;
-      if (itemState.due <= Date.now()) byTrack[lesson.track].due++;
+      track.goals++;
+      if (itemState.due <= +now) track.due++;
     }
   }
+  const days = Array.from({ length: 7 }, (_, i) => {
+    const date = dayKey(new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6 + i));
+    return { date, count: 0 };
+  });
+  const byDate = new Map(days.map(day => [day.date, day]));
+  for (const row of records) {
+    if (row.kind !== 'review') continue;
+    const day = byDate.get(dayKey(new Date(row.at)));
+    if (day) day.count++;
+  }
   const savedPrefs = prefs();
-  const today = records.filter(x => x.kind === 'review' && localDate(x.at) === localDate(Date.now())).length;
   const progress = Object.values(byTrack);
   const active = activeSession();
   const daily = records.find(x => x.id === 'daily-' + dayKey())?.data?.daily;
   return {
     daily, streak: streakStatus(records), days: records.filter(x => x.kind === 'draft' && x.data?.daily?.completed).length,
-    profile, lessons, studied, byTrack, prefs: savedPrefs, today, resume: !!active,
+    profile, lessons, studied, byTrack, prefs: savedPrefs, today: days.at(-1).count, activity: days, resume: !!active,
     goals: progress.reduce((count, x) => count + x.goals, 0),
+    totalGoals: progress.reduce((count, x) => count + x.total, 0),
     due: progress.reduce((count, x) => count + x.due, 0),
     next: contentKeys.map(key => lessons.find(l => l.track === key && !studied.has(l.id) && levelFor(l, savedPrefs))).filter(Boolean).slice(0, 3),
     results: records.filter(x => x.kind === 'result').sort((a, b) => b.at - a.at).slice(0, 50),
@@ -296,16 +309,23 @@ function attachAtlas(lessons, scope, chosen) {
   const frame = document.querySelector('#atlas-globe');
   if (!frame) return;
   const places = ATLAS_PLACES.filter(place => explorationLessons(lessons, 'atlas', scope, place.id).length);
-  import('./atlas-globe.js?v=13r9')
-    .then(({ mountAtlasGlobe }) => mountAtlasGlobe(frame, places, chosen, id => jump(explorerHref('atlas', scope, id))))
+  import('./atlas-globe.js?v=13r10')
+    .then(({ mountAtlasGlobe }) => mountAtlasGlobe(frame, places, chosen, id => {
+      const destination = explorerHref('atlas', scope, id);
+      if (location.hash === '#' + destination) return;
+      atlasPinDestination = destination;
+      jump(destination);
+    }))
     .then(cleanup => {
       if (frame.isConnected) unmountAtlas = cleanup;
       else cleanup?.();
     }).catch(() => {
+      if (!frame.isConnected) return;
       frame.dataset.failed = 'true';
       frame.querySelector('.atlas-error').hidden = false;
       frame.querySelector('canvas').hidden = true;
       frame.querySelector('.atlas-controls').hidden = true;
+      frame.querySelector('.atlas-presets').hidden = true;
     });
 }
 
@@ -1257,11 +1277,10 @@ const actions = {
     if (!questions.length) throw new Error('Er zijn momenteel geen geschiedenisvragen beschikbaar.');
     await startQuiz('lesson', 'Geschiedenis door elkaar', questions, { back: route().join('/') });
   },
-  'era-jump': id => {
-    const era = document.getElementById('era-' + id);
-    if (!era) return;
-    era.focus({ preventScroll: true });
-    era.scrollIntoView({ block: 'start' });
+  'scroll-to': id => {
+    const target = document.getElementById(id);
+    target?.focus({ preventScroll: true });
+    target?.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
   },
   'lesson-more': async id => {
     const lesson = lessonList().find(row => row.id === id);
@@ -1684,12 +1703,14 @@ document.addEventListener('input', event => {
   }
   if (input.id === 'atlas-search') {
     const terms = normalizeSearch(input.value).split(' ').filter(Boolean);
-    let matches = 0;
+    const matches = [];
     for (const place of document.querySelectorAll('[data-place-name]')) {
       place.hidden = !terms.every(term => normalizeSearch(place.dataset.placeName).includes(term));
-      matches += Number(!place.hidden);
+      if (!place.hidden) matches.push(place.dataset.placeId);
     }
-    document.querySelector('#atlas-empty').hidden = matches > 0 || !terms.length;
+    document.querySelector('#atlas-results').textContent = matches.length + (matches.length === 1 ? ' plaats' : ' plaatsen');
+    document.querySelector('#atlas-empty').hidden = matches.length > 0;
+    document.querySelector('#atlas-globe').dispatchEvent(new CustomEvent('atlas-filter', { detail: matches }));
   }
   if (input.id === 'course-search') {
     courseFind = input.value;
@@ -1788,7 +1809,10 @@ window.addEventListener('online', () => {
 window.addEventListener('offline', updateConnection);
 window.addEventListener('hashchange', () => {
   if (route()[0] !== 'sessie') session = null;
-  render();
+  const selectedPin = atlasPinDestination && location.hash === '#' + atlasPinDestination;
+  atlasPinDestination = undefined;
+  render(!selectedPin);
+  if (selectedPin) document.querySelector('.atlas-map-open')?.focus({ preventScroll: true });
 });
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') scheduleSync(100);

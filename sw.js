@@ -1,8 +1,8 @@
-const VERSION = 'athenaeum-learning-v1.3.8';
+const VERSION = 'athenaeum-learning-v1.3.9';
 const BASE = new URL(self.registration.scope);
 const CORE = [
   './', './index.html', './leer/', './manifest.webmanifest', './classic.html', './shared/style.css',
-  './academy/style.css?v=13r9', './academy/app.js?v=13r9', './academy/views.js?v=13r9', './academy/daily.js?v=13r9', './academy/daily-view.js?v=13r9', './academy/research.js?v=13r9',
+  './academy/style.css?v=13r10', './academy/app.js?v=13r10', './academy/views.js?v=13r10', './academy/daily.js?v=13r9', './academy/daily-view.js?v=13r9', './academy/research.js?v=13r9',
   './academy/research-data.js?v=13r1', './academy/research-import.js?v=13r8', './academy/scriptorium.js?v=13r9',
   './academy/study-notes.js?v=13r6', './academy/practice.js?v=13r8', './academy/practice-content.js?v=13r1',
   './academy/language-topics.js?v=13r1', './academy/language-lessons.js?v=13r6',
@@ -11,13 +11,13 @@ const CORE = [
   './academy/content/history-source.js?v=13r8', './academy/content/history-antiquity.js?v=13r8',
   './academy/content/history-medieval.js?v=13r8', './academy/content/history-earlymodern.js?v=13r8',
   './academy/content/history-world.js?v=13r8',
-  './academy/history-archive.js?v=13r9', './academy/history-explorer.js?v=13r9',
-  './academy/history-explorer-view.js?v=13r9', './academy/history-reading.js?v=13r9',
-  './academy/weekly-exam.js?v=13r9', './academy/atlas-globe.js?v=13r9',
+  './academy/history-archive.js?v=13r10', './academy/history-explorer.js?v=13r10',
+  './academy/history-explorer-view.js?v=13r10', './academy/history-reading.js?v=13r9',
+  './academy/weekly-exam.js?v=13r9', './academy/atlas-globe.js?v=13r10',
   './academy/vendor/d3-array.min.mjs', './academy/vendor/d3-geo.min.mjs',
   './academy/content/atlas-land.json?v=13r9', './assets/sources/magna-carta-1215.jpg',
   './academy/content/history-extension.js?v=13r9', './academy/content/history-marseille.js?v=13r9',
-  './academy/content/history-cities.js?v=13r9', './academy/content/history-primary.js?v=13r9',
+  './academy/content/history-cities.js?v=13r9', './academy/content/history-western-cities.js?v=13r10', './academy/content/history-primary.js?v=13r9',
   './academy/content/history-depth.js?v=13r9', './academy/content/history-depth-early.js?v=13r9',
   './academy/content/history-depth-modern.js?v=13r9', './academy/content/history-depth-late.js?v=13r9', './academy/content/history-depth-regions.js?v=13r9',
   './academy/lesson-search.js?v=13r9', './academy/streak.js?v=13r9', './academy/notifications.js?v=13r6',
