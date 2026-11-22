@@ -2,6 +2,8 @@ import { EXAM_GOALS, formatSource, KINDS, LEVELS, ROUTES, TRACKS, tally } from '
 import { tipsFor } from './daily.js?v=13r1';
 import { instructionFor, PRACTICE_KINDS, practiceOptions, workedExample } from './practice.js?v=13r1';
 import { LANGUAGE_TOPICS, isLanguageTopic } from './language-topics.js?v=13r1';
+import { EXAM_ICE, EXAM_PASS, MAX_ICE, STARTING_ICE } from './streak.js?v=13r4';
+import { NOTIFICATION_TIMES } from './notifications.js?v=13r4';
 
 const SECTION_NAMES = {
   vandaag: ['Hodie', 'home', 'Vandaag'],
@@ -14,6 +16,7 @@ const SECTION_NAMES = {
   onderzoek: ['Investigatio', 'knowledge', 'Dossiers'],
   voortgang: ['Progressus', 'graph', 'Voortgang'],
   importeren: ['Materia mea', 'import', 'Eigen leerstof'],
+  meldingen: ['Nuntii', 'bell', 'Appmeldingen'],
 };
 
 const navigation = keys => keys.map(key => [key, ...SECTION_NAMES[key]]);
@@ -45,6 +48,7 @@ const icons = {
   grid: '<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/>',
   import: '<path d="M12 16V3m-5 6 5-5 5 5M4 15v5h16v-5"/>',
   search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 4.5 4.5"/>',
+  bell: '<path d="M9 19a3 3 0 0 0 6 0m-10-2h14c-2-2-2-4-2-6a5 5 0 1 0-10 0c0 2 0 4-2 6Z"/>',
   volume: '<path d="M3 9h4l5-4v14l-5-4H3zm13-1a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/>',
   close: '<path d="m6 6 12 12M6 18 18 6"/>',
   play: '<path d="M7 4l13 8-13 8z"/>',
@@ -180,6 +184,34 @@ export function lessonSearchResults({ hasQuery, results }) {
   }).join('') + '</ul>';
 }
 
+function streakPanel(streak, full = false) {
+  if (!streak) return '';
+  const { length, ice, studiedToday, days, best } = streak;
+  const label = studiedToday ? 'Mooi zo! Vandaag telt mee.' : length ? 'Rond vandaag één oefening, dagles of toets af om je reeks voort te zetten.' :
+    'Rond je eerste oefening, dagles of toets af om een reeks te starten.';
+  const states = { done: ['✓', 'Gestudeerd'], ice: ['🧊', 'Beschermd'], open: ['·', 'Open'] };
+  const shortDay = new Intl.DateTimeFormat('nl-BE', { weekday: 'short' });
+  const longDay = new Intl.DateTimeFormat('nl-BE', { weekday: 'long', day: 'numeric', month: 'long' });
+  return `<section class="block panel stack streak-panel" aria-labelledby="streak-title">
+    <div class="topline"><h2 id="streak-title"><span lang="la">Series</span> · Streak</h2>
+      <a class="button quiet small" href="#meer/meldingen">${icon('bell')} Appmeldingen</a></div>
+    <div class="streak-stats">
+      <div><span aria-hidden="true">🔥</span><strong>${length}</strong> ${length === 1 ? 'dag' : 'dagen'} op rij</div>
+      <div><span aria-hidden="true">🧊</span><strong>${ice}</strong> ${ice === 1 ? 'ijsklontje' : 'ijsklontjes'}</div>
+    </div>
+    <ul class="streak-days" aria-label="Afgelopen zeven dagen">${days.map(({ date, state }) => {
+      const time = new Date(date + 'T12:00:00');
+      const [symbol, meaning] = states[state];
+      return `<li class="streak-day ${state}"><span class="sr-only">${esc(longDay.format(time))} · ${meaning}</span>
+        <span aria-hidden="true">${esc(shortDay.format(time))}</span><span aria-hidden="true">${symbol}</span></li>`;
+    }).join('')}</ul>
+    <p>${label}${days.at(-2)?.state === 'ice' ? ' Een ijsklontje heeft gisteren je reeks beschermd.' : ''}</p>
+    ${full ? `<p class="small-text muted">Beste reeks: ${best} ${best === 1 ? 'dag' : 'dagen'}.</p>
+      <p class="small-text muted">Je begint met ${STARTING_ICE} ijsklontjes. Op een gemiste dag gebruikt Athenaeum er automatisch één zolang je een reeks hebt. Je verdient er meer via <a class="text-link" href="#toetsen">Examina · Toetsen</a> en bewaart er maximaal ${MAX_ICE}.</p>` :
+      '<a class="text-link" href="#voortgang">Hoe werken ijsklontjes?</a>'}
+  </section>`;
+}
+
 export function home(info) {
   const date = new Date().toLocaleDateString('nl-BE', { weekday: 'long', day: 'numeric', month: 'long' });
   const welcome = info.profile && info.profile.name !== 'Leerling' ? 'Welkom, ' + info.profile.name.split(' ')[0] : '';
@@ -195,6 +227,7 @@ export function home(info) {
       </div>
       <div class="hero-mark" aria-hidden="true"><img src="./assets/logos/athenaeum-192.png" alt="" width="146" height="146"></div>
     </section>
+    ${streakPanel(info.streak)}
     <section class="block" aria-label="Voortgang vandaag">${metrics(info)}</section>
     <section class="block">
       <div class="topline"><h2>Jouw leerpaden</h2><div class="row">
@@ -370,8 +403,10 @@ export function exams(info) {
     </section>
     <div class="columns block">
       <section class="panel stack"><h2>Weekexamen</h2><p class="muted">Tot 10 vragen · 45 minuten. Beschikbaar na ${EXAM_GOALS.week} geoefende leerdoelen uit Paideia.</p>
+        <p class="exam-ice">🧊 +${EXAM_ICE.week} ijsklontje bij ${EXAM_PASS}% of meer, eenmaal per week.</p>
         ${button('exam', 'Bekijk weekexamen', '', 'week')}</section>
       <section class="panel stack"><h2>Maandtoets</h2><p class="muted">Tot 18 vragen · 75 minuten. Beschikbaar na ${EXAM_GOALS.month} geoefende leerdoelen uit Paideia.</p>
+        <p class="exam-ice">🧊 +${EXAM_ICE.month} ijsklontjes bij ${EXAM_PASS}% of meer, eenmaal per maand.</p>
         ${button('exam', 'Bekijk maandtoets', '', 'month')}</section>
     </div>
     <section class="block"><div class="topline"><h2>Vorige toetsen</h2></div>${outcomes(info.results.filter(row => row.data.mode === 'exam'), 'Je hebt nog geen toets afgerond.')}</section>`;
@@ -379,7 +414,8 @@ export function exams(info) {
 
 export function progressPage(info) {
   return sectionHeading('voortgang', 'Bekijk wat je al hebt geoefend en welk leerpad klaarstaat voor herhaling.') +
-    `<div class="panel">${metrics(info)}<p class="small-text muted">${info.days} ${info.days === 1 ? 'dagles' : 'daglessen'} afgerond · <a class="text-link" href="#dagles">Daglessen openen</a></p></div><section class="block">
+    `<div class="panel">${metrics(info)}<p class="small-text muted">${info.days} ${info.days === 1 ? 'dagles' : 'daglessen'} afgerond · <a class="text-link" href="#dagles">Daglessen openen</a></p></div>
+    ${streakPanel(info.streak, true)}<section class="block">
       <div class="topline"><h2>Per leerpad</h2></div>
       <div class="columns">${Object.keys(TRACKS).map(track => `<div class="panel stack">
         <div class="path-head">${trackIcon(track)}<div><h3>${TRACKS[track].name}</h3><p class="muted small-text">${info.byTrack[track].goals} geoefend · ${info.byTrack[track].due} klaar</p></div></div>
@@ -528,7 +564,7 @@ function answerFeedback(q, answer, result = '') {
   </div>`;
 }
 
-export function resultPage(id, data) {
+export function resultPage(id, data, reward = 0) {
   const placement = data.mode === 'placement';
   const practice = !placement && data.mode !== 'exam';
   const assisted = data.answers.filter(answer => answer?.rating === 'help').length;
@@ -539,6 +575,7 @@ export function resultPage(id, data) {
         '<h2>' + esc(data.correct - (practice ? assisted : 0)) + ' van ' + esc(data.total) + (practice ? ' op eigen kracht' : ' goed') + '</h2>' +
         (practice && assisted ? '<p>' + assisted + (assisted === 1 ? ' vraag goed' : ' vragen goed') + ' met hulp.</p>' : '') +
         (data.reviewed < data.total ? '<p class="muted">Beoordeel hieronder de open antwoorden om je resultaat af te werken.</p>' : '')}
+      ${reward ? `<p class="exam-ice">🧊 Je hebt ${reward} ${reward === 1 ? 'ijsklontje' : 'ijsklontjes'} verdiend!</p>` : ''}
       <div class="row">
         ${placement ? button('use-level', 'Kies ' + data.estimate.recommended, 'primary', data.track + '/' + data.estimate.recommended) :
           (revisit ? button('practice-again', 'Oefen lastige vragen opnieuw', 'primary', id) : '') +
@@ -634,8 +671,8 @@ export function settings(info) {
         <p class="muted small-text" id="offline-state">${info.offlineReady ? 'Lessen op dit toestel beschikbaar' : 'Online openen om te downloaden'}</p>
       </section>
       <section class="panel stack">
-        <h2>Telegram</h2><p class="muted">Beheer je Paideia-meldingen in de klassieke instellingen.</p>
-        <div><a class="button quiet" href="${classic + (p ? '&amp;page=settings' : '')}">Telegram-instellingen</a></div>
+        <h2><span lang="la">Nuntii</span> · Appmeldingen</h2><p class="muted">Stel herinneringen in voor je volgende studiemoment.</p>
+        <div><a class="button quiet" href="#meer/meldingen">Beheer appmeldingen</a></div>
       </section>
       <section class="panel stack">
         <h2>Je gegevens</h2><p class="muted">Maak een back-up van lessen en voortgang of laad een eerdere back-up in.</p>
@@ -655,6 +692,45 @@ export function settings(info) {
       </form>
     </section>
     <section class="block"><a class="text-link" href="${classic}">Athenaeum Classicum · Klassieke omgeving</a></section>`;
+}
+
+export function notificationsPage(info) {
+  const active = info.setup?.subscription && info.preference;
+  let controls;
+  if (info.support === 'install') {
+    controls = '<p>Voeg Athenaeum via het deelmenu toe aan je beginscherm. Open daarna de webapp en zet hier meldingen aan.</p>';
+  } else if (!info.cloud) {
+    controls = `<p>Meld je aan om appmeldingen op dit toestel in te stellen.</p><div>${button('account', 'Aanmelden', 'primary')}</div>`;
+  } else if (info.support === 'blocked') {
+    controls = '<p>Je browser of toestel blokkeert meldingen. Geef Athenaeum toestemming in de meldingsinstellingen en open deze pagina opnieuw.</p>';
+  } else if (info.support === 'unsupported') {
+    controls = '<p>Deze browser ondersteunt appmeldingen niet. Open Athenaeum in een recente browser.</p>';
+  } else if (!info.online) {
+    controls = '<p>Verbind met internet om je appmeldingen te beheren.</p>';
+  } else if (info.error) {
+    controls = `<p>De meldingsinstellingen konden niet worden geladen.</p><div>${button('push-retry', 'Opnieuw proberen', 'primary')}</div>`;
+  } else if (!info.setup) {
+    controls = '<p role="status">Meldingen voorbereiden…</p>';
+  } else {
+    controls = `<form id="push-form" class="stack">
+      <div class="field"><label for="push-frequency">Hoe vaak per dag?</label>
+        <select id="push-frequency" name="frequency">${[1, 2, 3].map(count => {
+          const times = NOTIFICATION_TIMES.slice(-count).join(' · ');
+          return `<option value="${count}" ${count === (info.preference?.count ?? 3) ? 'selected' : ''}>${count}× · ${times} uur</option>`;
+        }).join('')}</select>
+      </div>
+      <div class="row"><button type="submit" class="button primary">${active ? 'Bewaar voorkeur' : 'Zet appmeldingen aan'}</button></div>
+    </form>${active ? `<p class="small-text muted">Appmeldingen staan aan op dit toestel.</p><div class="row">
+      ${button('push-test', 'Stuur een testmelding', 'quiet')}${button('push-off', 'Zet uit op dit toestel', 'quiet')}
+    </div>` : ''}`;
+  }
+  return '<p class="back-link"><a class="text-link" href="#meer">Terug naar Optiones</a></p>' +
+    sectionHeading('meldingen', 'Kies hoeveel appmeldingen je op dit toestel wilt krijgen.') + `
+    <section class="panel stack notifications-panel">
+      <h2>Studieherinneringen</h2>
+      <p class="muted">Op dagen zonder afgeronde oefening krijg je speelse herinneringen op de lokale tijd van dit toestel.</p>
+      ${controls}<p id="push-message" class="notice" role="status" hidden></p>
+    </section>`;
 }
 
 export function accountDialog(mode, email = '') {

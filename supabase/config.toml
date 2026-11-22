@@ -1,2 +1,5 @@
 [functions.telegram-bot]
 verify_jwt = false
+
+[functions.athenaeum-webpush]
+verify_jwt = false

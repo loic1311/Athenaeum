@@ -5,16 +5,18 @@ import { LANGUAGE_SKILLS } from './language-topics.js?v=13r1';
 import { record, readRecords, storeRecords, forgetRecords, backups, syncLearning, clearCloudLearning } from './storage.js';
 import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js';
 import { authenticate, authMessage, makeGuest } from './cloud.js?v=13r2';
-import * as view from './views.js?v=13r3';
+import * as view from './views.js?v=13r4';
 import { PACE, DAY_FOCI, STAGES, dayKey, archivedPlans, planDay, advanceDay, drillQuestions, tipsFor } from './daily.js?v=13r1';
 import { checkSelection, completeSelection, practiceOptions, workedExample } from './practice.js?v=13r1';
-import { dailyPage } from './daily-view.js?v=13r3';
+import { dailyPage } from './daily-view.js?v=13r4';
 import { findCases, findStudies, lessonSourceIndex, passageMatches, caseWitness, researchPage, researchMarkdown, RESEARCH_TABS,
-  evidencePreview } from './research.js?v=13r3';
+  evidencePreview } from './research.js?v=13r4';
 import { addResearchMaterial, comparisonFromForm, evidenceList, validComparison, MAX_COMPARISON_ROWS } from './research-data.js?v=13r1';
 import { readResearchFile } from './research-import.js?v=13r1';
-import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=13r3';
+import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=13r4';
 import { searchLessons } from './lesson-search.js?v=13r3';
+import { countsAsPractice, isStudyDay, streakStatus, studyRecordId } from './streak.js?v=13r4';
+import { preparePush, pushPreference, pushSupport, savePush, stopPush, testPush } from './notifications.js?v=13r4';
 
 const main = document.querySelector('#main');
 const pageContent = document.querySelector('#page-content');
@@ -50,6 +52,7 @@ let expandedCases = [];
 const researchPanels = new Map();
 let lastResearchId = '';
 let pendingScriptoriumWork;
+let notifications;
 
 const languageSupport = () => 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
 const connection = () => navigator.onLine;
@@ -147,7 +150,7 @@ function overview(lessons = lessonList()) {
   const active = activeSession();
   const daily = records.find(x => x.id === 'daily-' + dayKey())?.data?.daily;
   return {
-    daily, days: records.filter(x => x.kind === 'draft' && x.data?.daily?.completed).length,
+    daily, streak: streakStatus(records), days: records.filter(x => x.kind === 'draft' && x.data?.daily?.completed).length,
     profile, lessons, studied, byTrack, prefs: savedPrefs, today, resume: !!active,
     goals: progress.reduce((count, x) => count + x.goals, 0),
     due: progress.reduce((count, x) => count + x.due, 0),
@@ -226,14 +229,17 @@ function render(focus = true) {
       const outcome = records.find(x => x.kind === 'result' && x.id === key);
       top = outcome?.data.back === 'scriptorium/oefenen' ? 'scriptorium' :
         outcome?.data.mode === 'exam' ? 'toetsen' : outcome?.data.mode === 'placement' ? 'talen' : 'voortgang';
-      markup = outcome ? view.resultPage(key, outcome.data) : view.heading('Resultaat') + '<p class="empty">Dit resultaat is nog niet op dit toestel beschikbaar.</p>';
+      markup = outcome ? view.resultPage(key, outcome.data, info.streak.earned.get(key)) : view.heading('Resultaat') + '<p class="empty">Dit resultaat is nog niet op dit toestel beschikbaar.</p>';
       break;
     }
     case 'importeren':
       markup = view.importPage(importDraft, importPreview, contentKeys.includes(key) ? key : undefined);
       break;
     case 'meer':
-      markup = view.settings({
+      markup = key === 'meldingen' ? view.notificationsPage({
+        cloud: cloudUser(), online: connection(), support: pushSupport(),
+        ...notifications, preference: pushPreference(profile?.id),
+      }) : view.settings({
         profile, cloud: cloudUser(), syncLabel: onlineLabel(), offlineReady,
         profileCount: store.loadProfiles().length, prefs: info.prefs,
       });
@@ -247,6 +253,7 @@ function render(focus = true) {
     markup = '<p class="notice error">Een deel van de lessen kon niet laden. Open Athenaeum online om de lessen bij te werken.</p><br>' + markup;
   }
   displayMain(markup, { focus });
+  if (section === 'meer' && key === 'meldingen') prepareNotifications();
   if (section === 'zoeken') showLessonMatches(lessons);
   if (section === 'onderzoek' && tab === 'debat' && tabKey && focus) {
     const study = [...main.querySelectorAll('.research-literature')].find(form => form.dataset.id === tabKey);
@@ -256,7 +263,11 @@ function render(focus = true) {
 }
 
 async function setProfile(next) {
-  if (profile?.id !== next?.id) lessonQuery = '';
+  if (profile?.id !== next?.id) {
+    if (profile && pushPreference(profile.id)) await stopPush(profile.id).catch(() => {});
+    lessonQuery = '';
+    notifications = undefined;
+  }
   profile = next;
   store.setCurrentProfile(next?.id ?? '');
   records = next ? await readRecords(next.id) : [];
@@ -298,6 +309,21 @@ function scheduleSync(delay = 1200) {
   syncTimer = setTimeout(() => synchronize(), delay);
 }
 
+function marksStudy(day) {
+  const id = studyRecordId(day);
+  return records.some(row => row.id === id) ? [] : [record('prefs', id, { name: 'streak-day', date: day }, now())];
+}
+
+function prepareNotifications() {
+  const pid = profile?.id;
+  if (!cloudUser() || !connection() || pushSupport() !== 'available' || notifications?.pid === pid) return;
+  const state = { pid };
+  notifications = state;
+  preparePush(pid).then(setup => { state.setup = setup; }).catch(() => { state.error = true; }).finally(() => {
+    if (notifications === state && route().join('/') === 'meer/meldingen') render(false);
+  });
+}
+
 async function synchronize(manual = false) {
   const pid = profile?.id;
   if (!pid || !cloudUser() || !connection()) {
@@ -323,7 +349,7 @@ async function synchronize(manual = false) {
     if (manual) message('Je voortgang is bijgewerkt.');
     const activeView = route()[0];
     if (activeView === 'zoeken') showLessonMatches();
-    else if (!session && !dialog.open && !['importeren', 'sessie'].includes(activeView)) render(false);
+    else if (!session && !dialog.open && !['importeren', 'sessie'].includes(activeView) && route().join('/') !== 'meer/meldingen') render(false);
   } catch (error) {
     if (profile?.id === pid) {
       syncState = 'Op dit toestel bewaard · cloud wacht';
@@ -634,8 +660,18 @@ async function dailyNext(date) {
     await startQuiz('daily', STAGES[stage.id].title, stage.questions, { daily: {date,step:stage.id,label:STAGES[stage.id].desc}, back:'dagles/' + date });
     return;
   }
-  await saveRows([record('draft','daily-' + date,{daily:advanceDay(plan,stage.id)},now())]);
+  await saveDailyStep(plan, stage.id);
   render();
+}
+
+async function saveDailyStep(plan, step, stats, extra = []) {
+  const daily = advanceDay(plan, step, stats);
+  const studyDay = daily.completed && dayKey();
+  if (studyDay) daily.studyDay = studyDay;
+  await saveRows([
+    ...extra, record('draft', 'daily-' + plan.date, { daily }, now()),
+    ...(studyDay ? marksStudy(studyDay) : []),
+  ]);
 }
 
 function filterCourses() {
@@ -860,7 +896,7 @@ async function finishQuiz() {
   const current = session;
   // Blank timed-out responses count as missed; submitted open answers can still be reviewed.
   current.questions.forEach((question, index) => {
-    if (!current.answers[index]) current.answers[index] = { response: '', rating: 'again' };
+    if (!current.answers[index]) current.answers[index] = { response: '', rating: 'again', skipped: true };
   });
   const data = view.summarizeSession(current);
   if (current.mode === 'placement') data.estimate = estimateLevel(current.questions, current.answers);
@@ -872,10 +908,9 @@ async function finishQuiz() {
       hinted:current.answers.filter(answer => answer.hinted).length,
       assisted:current.answers.filter(answer => answer.rating === 'help').length,
       revisit:current.questions.flatMap((q,i) => reviewTargets(q, current.answers[i])) };
-    await saveRows([
-      ...(plan ? [record('draft','daily-' + date,{daily:advanceDay(plan,step,stats)},now())] : []),
-      record('draft','draft-' + current.id,{finished:true},now()),
-    ]);
+    const finished = record('draft', 'draft-' + current.id, { finished: true }, now());
+    if (plan) await saveDailyStep(plan, step, stats, [finished]);
+    else await saveRows([finished]);
     session = null;
     jump('dagles/' + date);
     message('Stap afgerond.');
@@ -885,10 +920,16 @@ async function finishQuiz() {
     const rating = current.answers[index].rating;
     return rating ? [record('review', 'review-' + id + '-' + index, { key: q.key, question: q.id, lesson: q.lesson, rating }, now())] : [];
   }) : [];
+  data.studyDay = dayKey();
+  if (current.mode === 'exam') {
+    data.examType = current.examType;
+    if (data.reviewed === data.total) data.gradedDay = data.studyDay;
+  }
   await saveRows([
     ...examReviews,
     record('result', id, data, now()),
     record('draft', 'draft-' + current.id, { finished: true }, now()),
+    ...(countsAsPractice(data) ? marksStudy(data.studyDay) : []),
   ]);
   session = null;
   jump('resultaat/' + id);
@@ -903,6 +944,8 @@ async function rateExam(value) {
   data.answers[index].rating = rating;
   const q = data.questions[index];
   const counts = tally(data.questions, data.answers);
+  data.studyDay ??= dayKey(new Date(result.at));
+  if (counts.reviewed === counts.total) data.gradedDay = dayKey();
   await saveRows([record('result', id, { ...data, ...counts }, now()),
     record('review', 'review-' + id + '-' + index, { key: q.key, question: q.id, lesson: q.lesson, rating }, now())]);
   render(false);
@@ -1005,6 +1048,7 @@ async function restoreBackup(file) {
     && ((row.kind === 'deck' && validDeck(row.data))
       || (row.kind === 'review' && typeof row.data.key === 'string' && ['good', 'again', 'easy', 'help'].includes(row.data.rating))
       || (row.kind === 'prefs' && ((['it','fr'].includes(row.data.name) && LEVELS.includes(row.data.value))
+        || (row.data.name === 'streak-day' && isStudyDay(row.data.date) && row.id === studyRecordId(row.data.date))
         || (typeof row.data.name === 'string' && row.data.name.startsWith('quick-')
           && contentKeys.includes(row.data.name.slice(6)) && typeof row.data.value === 'boolean')))
       || (row.kind === 'result' && Array.isArray(row.data.questions) && Array.isArray(row.data.answers)
@@ -1224,7 +1268,7 @@ const actions = {
         '<button type="button" class="button quiet" data-action="close-dialog">Sluiten</button></div>'));
       return;
     }
-    await startQuiz('exam', monthly ? 'Maandtoets' : 'Weekexamen', questions, { duration: monthly ? 75 : 45, back: 'toetsen' });
+    await startQuiz('exam', monthly ? 'Maandtoets' : 'Weekexamen', questions, { duration: monthly ? 75 : 45, examType: monthly ? 'month' : 'week', back: 'toetsen' });
   },
   'quiz-start': async () => {
     if (session?.started !== false) return;
@@ -1317,11 +1361,22 @@ const actions = {
   'logout': signOutPrompt,
   'confirm-logout': async () => {
     const leaving = profile;
+    await setProfile(null);
     await sync.signOut(leaving.id);
     sessionStorage.removeItem('athenaeum_unlocked_' + leaving.id);
-    await setProfile(null);
     dialog.close();
     jump('vandaag');
+  },
+  'push-retry': () => { notifications = undefined; render(false); },
+  'push-test': async () => {
+    await testPush(profile.id, notifications.setup);
+    message('Testmelding verstuurd. Kijk bij meldingen op dit toestel.');
+  },
+  'push-off': async () => {
+    await stopPush(profile.id);
+    if (notifications?.setup) notifications.setup.subscription = null;
+    render(false);
+    message('Appmeldingen staan uit op dit toestel.');
   },
   'install': async () => {
     if (matchMedia('(display-mode: standalone)').matches || navigator.standalone) {
@@ -1482,6 +1537,30 @@ document.addEventListener('submit', event => {
       message('Je leerpaden zijn bewaard.');
     });
   }
+  if (form.id === 'push-form') {
+    event.preventDefault();
+    const count = Number(new FormData(form).get('frequency'));
+    const { setup, pid } = notifications;
+    const submit = event.submitter;
+    run(async () => {
+      if (submit) submit.disabled = true;
+      try {
+        await savePush(pid, setup, count);
+        if (streakStatus(records).studiedToday) {
+          const marker = marksStudy(dayKey());
+          if (marker.length) await saveRows(marker);
+        }
+        render(false);
+        message('Appmeldingen staan aan op dit toestel.');
+      } catch (error) {
+        render(false);
+        inlineMessage(document.querySelector('#push-message'), error.name === 'NotAllowedError'
+          ? 'Geef Athenaeum toestemming in de meldingsinstellingen van je browser of toestel.' : error.message, true);
+      } finally {
+        if (submit) submit.disabled = false;
+      }
+    });
+  }
 });
 
 let inputTimer;
@@ -1582,6 +1661,7 @@ window.addEventListener('appinstalled', () => { installPrompt = null; message('A
 window.addEventListener('online', () => {
   updateConnection();
   scheduleSync(100);
+  if (route().join('/') === 'meer/meldingen') render(false);
   if (contentErrors.length) loadContent().then(() => {
     expandedCases = [...cases,...lessonSourceIndex(seed,cases)];
     if (!session) render(false);
