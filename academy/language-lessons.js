@@ -1,4 +1,5 @@
 import { frenchTopics } from './content/fr-pharmacie.js?v=13r3';
+import { frenchLevelTopics } from './content/fr-niveaux.js?v=13r5';
 import { italianTopics } from './content/it-spreken.js?v=13r1';
 
 function wordItem(entry, index, words, track) {
@@ -24,7 +25,7 @@ function wordItem(entry, index, words, track) {
 }
 
 function languageLesson(definition, track) {
-  const { words, grammar, scene, source, topic, ...identity } = definition;
+  const { words, grammar, scene, reading, source, topic, ...identity } = definition;
   const terms = words.map((entry, index) => wordItem(entry, index, words, track));
   const forms = grammar.items.map(([prompt, answer, accepted], index) => ({
     id: 'vorm-' + (index + 1),
@@ -42,6 +43,14 @@ function languageLesson(definition, track) {
       feedback: scene.translation, tip: scene.criteria[0],
     }],
   };
+  const inContext = reading ? [{
+    id: 'context', label: 'Woordenschat in context', explanation: reading.feedback,
+    questions: [{
+      kind: 'choice', skill: 'vocabulary', difficulty: 1, promptLanguage: track, text: reading.question,
+      context: reading.context, answer: reading.answer, options: [reading.answer, ...reading.alternatives],
+      tip: 'Lees de hele tekst. Kijk welke formulering precies past bij wat er staat.', feedback: reading.feedback,
+    }],
+  }] : [];
   return {
     ...identity, track, languageTopic: topic, route: topic, vocabulary: words, grammar, scene,
     sources: [source].flat().filter(Boolean),
@@ -49,11 +58,12 @@ function languageLesson(definition, track) {
       { speaker: 'Vraag', text: scene.line, translation: scene.meaning },
       { speaker: 'Antwoord', text: scene.answer, translation: scene.translation },
     ],
-    items: [...terms, ...forms, conversation],
+    items: [...terms, ...forms, ...inContext, conversation],
   };
 }
 
 export const languageLessons = [
   ...frenchTopics.map(definition => languageLesson(definition, 'fr')),
+  ...frenchLevelTopics.map(definition => languageLesson(definition, 'fr')),
   ...italianTopics.map(definition => languageLesson(definition, 'it')),
 ];

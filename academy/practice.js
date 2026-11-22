@@ -4,12 +4,15 @@ export const PRACTICE_KINDS = { match: 'Koppelen', order: 'Ordenen' };
 const difficulty = { choice: 0, match: 0, fill: 1, order: 1, card: 1, listen: 2, open: 3 };
 
 export function practiceDifficulty(question) {
-  return difficulty[question.kind] ?? 1;
+  const value = question.difficulty;
+  return Number.isInteger(value) && value >= 0 && value <= 3 ? value : difficulty[question.kind] ?? 1;
 }
+
+export const startingDifficulty = item => Number(item.track === 'fr' && ['B2', 'C1'].includes(item.level));
 
 export function preferredDifficulty(item, history) {
   const stage = history.states.get(item.key)?.stage ?? 0;
-  return stage < 1 ? 0 : stage < 3 ? 1 : 2;
+  return Math.max(startingDifficulty(item), stage < 1 ? 0 : stage < 3 ? 1 : 2);
 }
 
 export function instructionFor(q) {

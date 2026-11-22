@@ -1,21 +1,21 @@
 import { EXAM_GOALS, LEVELS, ROUTES, TRACKS, shuffled, makePool, historyOf, isCorrect, hasAccentError, quickQuestions,
-  languageQuestions, lessonQuestions, examQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=13r1';
-import { languageLessons } from './language-lessons.js?v=13r3';
-import { LANGUAGE_SKILLS } from './language-topics.js?v=13r1';
+  languageQuestions, lessonQuestions, examQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=13r5';
+import { languageLessons } from './language-lessons.js?v=13r5';
+import { isLanguageTopic, LANGUAGE_SKILLS } from './language-topics.js?v=13r1';
 import { record, readRecords, storeRecords, forgetRecords, backups, syncLearning, clearCloudLearning } from './storage.js';
-import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js';
+import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=13r5';
 import { authenticate, authMessage, makeGuest } from './cloud.js?v=13r2';
-import * as view from './views.js?v=13r4';
-import { PACE, DAY_FOCI, STAGES, dayKey, archivedPlans, planDay, advanceDay, drillQuestions, tipsFor } from './daily.js?v=13r1';
-import { checkSelection, completeSelection, practiceOptions, workedExample } from './practice.js?v=13r1';
-import { dailyPage } from './daily-view.js?v=13r4';
+import * as view from './views.js?v=13r5';
+import { PACE, DAY_FOCI, STAGES, dayKey, archivedPlans, planDay, advanceDay, drillQuestions, tipsFor } from './daily.js?v=13r5';
+import { checkSelection, completeSelection, practiceOptions, workedExample } from './practice.js?v=13r5';
+import { dailyPage } from './daily-view.js?v=13r5';
 import { findCases, findStudies, lessonSourceIndex, passageMatches, caseWitness, researchPage, researchMarkdown, RESEARCH_TABS,
-  evidencePreview } from './research.js?v=13r4';
+  evidencePreview } from './research.js?v=13r5';
 import { addResearchMaterial, comparisonFromForm, evidenceList, validComparison, MAX_COMPARISON_ROWS } from './research-data.js?v=13r1';
-import { readResearchFile } from './research-import.js?v=13r1';
-import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=13r4';
-import { searchLessons } from './lesson-search.js?v=13r3';
-import { countsAsPractice, isStudyDay, streakStatus, studyRecordId } from './streak.js?v=13r4';
+import { readResearchFile } from './research-import.js?v=13r5';
+import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=13r5';
+import { searchLessons } from './lesson-search.js?v=13r5';
+import { countsAsPractice, isStudyDay, streakStatus, studyRecordId } from './streak.js?v=13r5';
 import { preparePush, pushPreference, pushSupport, savePush, stopPush, testPush } from './notifications.js?v=13r4';
 
 const main = document.querySelector('#main');
@@ -429,12 +429,15 @@ function setLessonQuery(value) {
   showLessonMatches();
 }
 
-function relevantPool(track, extraRoute = '') {
+function relevantPool(track) {
   const saved = prefs();
-  const general = track && route()[0] === 'talen' && route()[1] === track && !route()[2];
+  const [section, course, tab] = route();
+  const onCourse = track === course && ['paideia', 'talen'].includes(section);
+  const topic = onCourse && isLanguageTopic(track, tab) ? tab : '';
+  const situation = onCourse && !topic ? routeFilter : '';
   return makePool(lessonList().filter(lesson => (!track || lesson.track === track) &&
-    (!general || !lesson.languageTopic) &&
-    (!extraRoute || lesson.route === extraRoute) && (track || saved['quick-' + lesson.track] !== false) && levelFor(lesson, saved)));
+    (!topic || lesson.languageTopic === topic) && (!situation || lesson.route === situation) &&
+    (track || saved['quick-' + lesson.track] !== false) && levelFor(lesson, saved)));
 }
 
 function researchDossiers() {
@@ -727,8 +730,7 @@ async function quick(track = '', extra = false) {
     jump('sessie');
     return;
   }
-  const filter = track === filteredTrack ? routeFilter : '';
-  const pool = relevantPool(track, filter);
+  const pool = relevantPool(track);
   const questions = quickQuestions(pool, reviews(), { limit: 3, extra, noAudio: !languageSupport() });
   if (!questions.length) {
     showDialog(dialogText('Bij met je herhalingen', 'Kies een ander leerpad of oefen alvast een paar extra vragen.',
@@ -956,8 +958,11 @@ async function setLevel(value) {
   if (!LEVELS.includes(level) || TRACKS[track]?.section !== 'language') return;
   await requireProfile();
   await saveRows([record('prefs', 'pref-level-' + track, { name: track, value: level }, now())]);
-  if (route().join('/') === 'talen/' + track) render(false);
-  else jump('talen/' + track);
+  const [section, activeTrack] = route();
+  if (section === 'talen' && activeTrack === track) {
+    routeFilter = '';
+    render(false);
+  } else jump('talen/' + track);
 }
 
 function speak(text, lang) {
@@ -1171,16 +1176,13 @@ const actions = {
   'drill': async value => {
     const [track,length] = value.split('/');
     if (!contentKeys.includes(track) || !['5','15','30'].includes(length)) return;
-    const history = reviews();
-    const available = relevantPool(track, routeFilter);
-    const next = available.find(item => !history.lessons.has(item.lesson)) ?? available[0];
-    const familiar = available.filter(item => history.lessons.has(item.lesson));
-    const compact = length === '5';
-    const pool = compact ? available.filter(item => item.lesson === next?.lesson) :
-      familiar.length >= Number(length) ? familiar : available;
-    const questions = drillQuestions(pool, history, {limit:Number(length),noAudio:!languageSupport(),compact});
+    const questions = drillQuestions(relevantPool(track), reviews(), {
+      limit: Number(length), noAudio: !languageSupport(), compact: length === '5',
+    });
     if (!questions.length) throw new Error('Er zijn hier nog geen passende vragen.');
-    await startQuiz('lesson', 'Oefenreeks · ' + TRACKS[track].name, questions, {track, back:route().join('/')});
+    const name = TRACKS[track].name + (TRACKS[track].section === 'language' ? ' ' + (prefs()[track] ?? 'A1') : '');
+    const title = isLanguageTopic(track, route()[2]) ? 'Oefenreeks' : 'Gemengde oefenreeks';
+    await startQuiz('lesson', title + ' · ' + name, questions, { track, back: route().join('/') });
   },
   'lesson-more': async id => {
     const lesson = lessonList().find(row => row.id === id);
@@ -1245,16 +1247,17 @@ const actions = {
     await startQuiz('lesson', LANGUAGE_SKILLS[skill] + ' · ' + lesson.title, questions, { track: lesson.track, back: 'les/' + id });
   },
   'placement': async track => {
-    const questions = placementQuestions(makePool(seed.filter(lesson => lesson.track === track && !lesson.languageTopic)));
+    const questions = placementQuestions(makePool(seed.filter(lesson => lesson.track === track && (track === 'fr' || !lesson.languageTopic))));
     if (questions.length < 15) throw new Error('De instaptest kon nog niet worden geladen. Open de app online.');
     await startQuiz('placement', 'Instaptest ' + TRACKS[track].name, questions, { track, back: 'talen/' + track });
   },
   'exam-practice': async () => {
     const lessons = lessonList().filter(l => TRACKS[l.track].section === 'history');
     const history = reviews();
-    const practiced = makePool(lessons).filter(item => history.states.has(item.key));
-    const starter = makePool(lessons.slice(0, 1));
-    const questions = drillQuestions(practiced.length >= 3 ? practiced : starter, history, { limit: 5, noAudio: true, compact: true });
+    const pool = makePool(lessons);
+    const studied = pool.filter(item => history.states.has(item.key));
+    const varied = new Set(studied.map(item => item.topic)).size >= 3;
+    const questions = drillQuestions(varied ? studied : pool, history, { limit: 5, noAudio: true, compact: true });
     if (!questions.length) throw new Error('Open Athenaeum online om de voorbeeldvragen te laden.');
     if (dialog.open) dialog.close();
     await startQuiz('lesson', 'Oefentoets Paideia', questions, { back: 'toetsen' });

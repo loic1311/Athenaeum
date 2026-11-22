@@ -1,9 +1,9 @@
-import { TRACKS, makePool, practiceQuestions } from './learning.js?v=13r1';
-import { practiceDifficulty, preferredDifficulty } from './practice.js?v=13r1';
+import { TRACKS, makePool, practiceBalance, practiceQuestions, practiceTopic, recentPractice } from './learning.js?v=13r5';
+import { practiceDifficulty, preferredDifficulty, startingDifficulty } from './practice.js?v=13r5';
 
 export const PACE = {
   8: { units: 1, recall: 1, guided: 1, practice: 2, transfer: 1, exit: 1, reading: 3 },
-  15: { units: 1, recall: 2, guided: 2, practice: 3, transfer: 1, exit: 1, reading: 5 },
+  15: { units: 2, recall: 2, guided: 2, practice: 3, transfer: 1, exit: 1, reading: 5 },
   25: { units: 2, recall: 3, guided: 3, practice: 6, transfer: 2, exit: 2, reading: 8 },
   40: { units: 4, recall: 6, guided: 5, practice: 13, transfer: 3, exit: 4, reading: 12 },
 };
@@ -42,15 +42,18 @@ function hash(text) {
 
 const SHORT = ['choice', 'fill', 'listen', 'card', 'match', 'order'];
 
-function picker(history, seed, noAudio, exclude = []) {
+function picker(history, seed, noAudio, exclude = [], recent = () => 0) {
   const usedIds = new Set(exclude);
   const usedText = new Set();
   const counts = new Map();
   const diversity = new Map();
-  return (items, count, kinds, { priority = 0, preferKind = false, difficulty, adaptive = false } = {}) => {
+  const balance = practiceBalance();
+  return (items, count, kinds, { priority = 0, preferKind = false, difficulty, adaptive = false, eligible = () => true } = {}) => {
+    if (count <= 0) return [];
     const rows = items.map((item, i) => ({
-      i, key: item.key, target: adaptive ? preferredDifficulty(item, history) : difficulty,
-      variants: practiceQuestions(item).filter(q => kinds.includes(q.kind) && (!noAudio || q.kind !== 'listen')),
+      i, key: item.key, target: adaptive ? preferredDifficulty(item, history) :
+        difficulty === undefined ? undefined : Math.max(difficulty, startingDifficulty(item)),
+      variants: practiceQuestions(item).filter(q => kinds.includes(q.kind) && (!noAudio || q.kind !== 'listen') && eligible(q)),
     }));
     const questions = [];
     const touched = new Set();
@@ -61,7 +64,8 @@ function picker(history, seed, noAudio, exclude = []) {
         for (const q of row.variants) {
           const text = q.text + '\0' + q.answer;
           if (usedIds.has(q.id) || usedText.has(text)) continue;
-          const value = (counts.get(row.key) || 0) * 29 + row.i * priority
+          const repeatedGoal = q.kind === 'match' ? Math.max(...q.pairs.map(pair => counts.get(pair.key) || 0)) : counts.get(row.key) || 0;
+          const value = repeatedGoal * 30 + Math.min(row.i * priority, 16) + balance.score(q) + recent(q)
             + (history.states.get(row.key)?.lastQuestion === q.id ? 27 : 0)
             + (history.seen.has(q.id) ? 7 : 0)
             + (diversity.get(q.kind) || 0) * 5
@@ -73,10 +77,13 @@ function picker(history, seed, noAudio, exclude = []) {
       }
       if (!best) break;
       const {q, text} = best;
-      touched.add(q.key);
+      for (const key of q.kind === 'match' ? q.pairs.map(pair => pair.key) : [q.key]) {
+        touched.add(key);
+        counts.set(key, (counts.get(key) || 0) + 1);
+      }
       usedIds.add(q.id);
       usedText.add(text);
-      counts.set(q.key, (counts.get(q.key) || 0) + 1);
+      balance.add(q);
       diversity.set(q.kind, (diversity.get(q.kind) || 0) + 1);
       questions.push(q);
     }
@@ -85,9 +92,16 @@ function picker(history, seed, noAudio, exclude = []) {
 }
 
 export function drillQuestions(pool, history, { limit = 15, noAudio = false, seed = String(Date.now()), compact = false, exclude } = {}) {
-  const pick = picker(history, seed, noAudio, exclude);
-  const result = pick(pool, Math.min(2, limit), ['choice', 'match', 'fill', 'card', 'order', 'listen'], { difficulty: 0 });
-  if (result.length < limit) result.push(...pick(pool, 1, ['match', 'order']));
+  const pick = picker(history, seed, noAudio, exclude, recentPractice(pool, history));
+  const result = [];
+  if (limit >= 2 && pool.every(item => item.track === 'fr') && pool.some(startingDifficulty)) {
+    result.push(...pick(pool, 1, ['choice'], { eligible: q => q.promptLanguage === 'fr' }));
+    result.push(...pick(pool, 1, ['fill'], { eligible: q => q.skill === 'grammar' }));
+  }
+  result.push(...pick(pool, Math.min(2, limit) - result.length, ['choice', 'fill', 'card', 'match', 'order', 'listen'], { difficulty: 0 }));
+  if (result.length < limit && !result.some(q => ['match','order'].includes(q.kind))) {
+    result.push(...pick(pool, 1, ['match', 'order']));
+  }
   const applied = compact ? [] : pick(pool, Math.min(3, Math.floor(limit / 5)), ['open']);
   while (result.length + applied.length < limit) {
     const next = pick(pool, limit - result.length - applied.length, compact ? SHORT : [...SHORT, 'open'], { difficulty: 1 });
@@ -100,10 +114,15 @@ export function drillQuestions(pool, history, { limit = 15, noAudio = false, see
 function lessonIndex(lessons, history, archive) {
   const times = new Map();
   const recentTracks = new Map();
+  const recentTopics = new Map();
+  const topics = new Map(lessons.map(lesson => [lesson.id, practiceTopic(lesson)]));
   for (const [i, plan] of archive.entries()) {
     for (const lesson of plan.units) {
       times.set(lesson.id, (times.get(lesson.id) || 0) + 1);
-      if (i < 6) recentTracks.set(lesson.track, (recentTracks.get(lesson.track) || 0) + 1);
+      if (i >= 6) continue;
+      recentTracks.set(lesson.track, (recentTracks.get(lesson.track) || 0) + 1);
+      const topic = topics.get(lesson.id);
+      if (topic) recentTopics.set(topic, (recentTopics.get(topic) || 0) + 1);
     }
   }
   const groups = new Map();
@@ -111,7 +130,8 @@ function lessonIndex(lessons, history, archive) {
     const timesRead = times.get(lesson.id) || 0;
     const fresh = !timesRead && !history.lessons.has(lesson.id);
     if (!groups.has(lesson.track)) groups.set(lesson.track, []);
-    groups.get(lesson.track).push({ lesson, fresh, timesRead });
+    const topic = topics.get(lesson.id);
+    groups.get(lesson.track).push({ lesson, topic, fresh, timesRead, recent: recentTopics.get(topic) ?? 0 });
   }
   return [...groups].map(([key, units]) => ({
     key, units, fresh: units.some(u => u.fresh), recent: recentTracks.get(key) || 0,
@@ -122,18 +142,18 @@ function chooseLessons(groups, count, salt) {
   const sorted = [...groups].sort((a,b) => Number(b.fresh) - Number(a.fresh) || a.recent - b.recent || hash(salt+a.key) - hash(salt+b.key));
   const results = [];
   const used = new Set();
+  const topics = new Set();
   while (results.length < count) {
     let added = 0;
-    for (const { key, units } of sorted) {
+    for (const { units } of sorted) {
       const remaining = units.filter(u => !used.has(u.lesson.id));
       if (!remaining.length) continue;
-      const fresh = remaining.filter(u => u.fresh);
-      const sortedRemaining = [...remaining].sort((a,b) => a.timesRead - b.timesRead);
-      const lowest = sortedRemaining[0].timesRead;
-      const candidates = fresh.length ? fresh.slice(0, 9) : sortedRemaining.filter(u => u.timesRead <= lowest + 1);
-      const chosen = candidates[hash(salt + key + results.length) % candidates.length];
+      const [chosen] = remaining.sort((a,b) => Number(topics.has(a.topic)) - Number(topics.has(b.topic)) ||
+        a.recent - b.recent || Number(b.fresh) - Number(a.fresh) || a.timesRead - b.timesRead ||
+        hash(salt + a.lesson.id) - hash(salt + b.lesson.id));
       results.push(chosen);
       used.add(chosen.lesson.id);
+      topics.add(chosen.topic);
       added++;
       if (results.length === count) break;
     }
@@ -177,7 +197,6 @@ export function planDay(lessons, history, archive, {
   const learned = pool.filter(item => history.states.has(item.key)).sort((a,b) =>
     history.states.get(a.key).due - history.states.get(b.key).due);
   const due = learned.filter(item => history.states.get(item.key).due <= now);
-  const review = learned.slice(0, 45);
   const groups = lessonIndex(lessons, history, archive);
   const signatures = new Set(archive.map(p => p.signature));
   let plan;
@@ -186,8 +205,8 @@ export function planDay(lessons, history, archive, {
     const chosen = chooseLessons(groups, config.units, salt);
     const units = chosen.map(({lesson,fresh}) => ({id:lesson.id,title:lesson.title,track:lesson.track,fresh}));
     const goals = makePool(chosen.map(row => row.lesson));
-    const pick = picker(history, salt, noAudio);
-    const recall = pick(review, config.recall, SHORT, {priority:1,adaptive:true});
+    const pick = picker(history, salt, noAudio, [], recentPractice(pool, history, now));
+    const recall = pick(learned, config.recall, SHORT, {priority:1,adaptive:true});
     const guided = pick(goals, config.guided, ['choice','match','fill','card','order'], {difficulty:0});
     const compare = config.units >= 3 ? comparison(chosen,goals,salt) : null;
     const transferKinds = minutes <= 8 ? ['order','fill','card','choice'] : ['open','order','fill','listen','card','choice'];
@@ -196,7 +215,7 @@ export function planDay(lessons, history, archive, {
     const exit = pick(goals, config.exit, ['card','fill','choice','listen','order','match'], {difficulty:1});
     const practice = pick(goals, Math.min(1,config.practice), ['match','order']);
     practice.push(...pick(goals, config.practice - practice.length, SHORT, {difficulty:1}));
-    const support = [...new Map([...goals, ...review].map(item => [item.key, item])).values()];
+    const support = [...new Map([...goals, ...learned].map(item => [item.key, item])).values()];
     while (practice.length < config.practice) {
       const next = pick(support, config.practice - practice.length, SHORT, {difficulty:1});
       if (!next.length) break;

@@ -1,8 +1,8 @@
-import { EXAM_GOALS, formatSource, KINDS, LEVELS, ROUTES, TRACKS, tally } from './learning.js?v=13r1';
-import { tipsFor } from './daily.js?v=13r1';
-import { instructionFor, PRACTICE_KINDS, practiceOptions, workedExample } from './practice.js?v=13r1';
+import { EXAM_GOALS, formatSource, KINDS, LEVELS, ROUTES, TRACKS, tally } from './learning.js?v=13r5';
+import { tipsFor } from './daily.js?v=13r5';
+import { instructionFor, PRACTICE_KINDS, practiceOptions, workedExample } from './practice.js?v=13r5';
 import { LANGUAGE_TOPICS, isLanguageTopic } from './language-topics.js?v=13r1';
-import { EXAM_ICE, EXAM_PASS, MAX_ICE, STARTING_ICE } from './streak.js?v=13r4';
+import { EXAM_ICE, EXAM_PASS, MAX_ICE, STARTING_ICE } from './streak.js?v=13r5';
 import { NOTIFICATION_TIMES } from './notifications.js?v=13r4';
 
 const SECTION_NAMES = {
@@ -31,6 +31,14 @@ const TRACK_NAMES = {
   knowledge: 'Scientia generalis',
   it: 'Lingua Italiana',
   fr: 'Lingua Francogallica',
+};
+
+const FRENCH_LEVEL_FOCUS = {
+  A1: 'Herken basiswoorden en stel korte vragen.',
+  A2: 'Oefen met hoeveelheden, materiaal en alledaagse instructies.',
+  B1: 'Leg uit wat er gebeurd is en breng een praktische oplossing onder woorden.',
+  B2: 'Lees de voorwaarden, gebruik complexere grammatica en onderbouw je formulering.',
+  C1: 'Lees tussen de regels en formuleer precies wat vaststaat, wat onzeker is en welke voorwaarden gelden.',
 };
 
 const icons = {
@@ -253,40 +261,46 @@ export function course(track, lessons, studied, prefs, route, search = '', topic
   const model = TRACKS[track];
   const language = model.section === 'language';
   const level = prefs[track] ?? 'A1';
-  if (language && isLanguageTopic(track, topic)) return topicPage(track, topic, lessons, studied);
-  const all = lessons.filter(lesson => lesson.track === track && (!language || !lesson.languageTopic));
+  if (language && isLanguageTopic(track, topic)) return topicPage(track, topic, lessons, studied, level);
+  const all = lessons.filter(lesson => lesson.track === track);
   const shown = language ? all.filter(lesson => lesson.level === level && (!route || route === lesson.route)) : all;
   const routes = [...new Set(all.filter(lesson => lesson.level === level).map(lesson => lesson.route))].filter(r => ROUTES[r]);
   const next = shown.find(lesson => !studied.has(lesson.id)) ?? shown[0];
-  return heading(TRACK_NAMES[track], model.desc, model.name, 'la') +
-    (language ? topicCards(track, lessons) + '<section class="block"><div class="topline"><h2>Algemene lessen per niveau</h2></div></section>' : '') + `
-    <section class="panel stack course-start">
+  return heading(TRACK_NAMES[track], model.desc, model.name, 'la') + (language ? languageLevel(track, level) : '') + `
+    <section class="panel stack course-start ${language ? 'block' : ''}">
       <div><h2>${next ? esc(next.title) : 'Aan de slag'}</h2>
         <p class="muted">${next ? 'Lees de uitleg, bekijk een uitgewerkt voorbeeld en oefen de kern in maximaal zes vragen.' :
           'Kies hieronder een ander niveau of een andere leersituatie.'}</p></div>
       <div class="row">
         ${next ? '<a class="button primary" href="#les/' + esc(next.id) + '">Open les</a>' +
-          button('drill', 'Oefen 5 vragen', '', track + '/5') : ''}
+          button('drill', 'Oefen 5 gemengde vragen', '', track + '/5') : ''}
         ${language ? button('placement', 'Bepaal je niveau', 'quiet', track) : ''}
       </div>
       <details><summary>Meer oefenopties</summary><div class="row">
         ${next ? button('quick-track', 'Sneloefening · 2 min', 'quiet', track) +
-          button('drill', 'Oefen 15 vragen', 'quiet', track + '/15') +
-          button('drill', 'Oefen 30 vragen', 'quiet', track + '/30') : ''}
+          button('drill', 'Oefen 15 gemengde vragen', 'quiet', track + '/15') +
+          button('drill', 'Oefen 30 gemengde vragen', 'quiet', track + '/30') : ''}
         <a class="button quiet" href="#importeren/${track}">Eigen leerstof toevoegen</a>
       </div></details>
     </section>
-    ${language ? `<section class="block stack">
-      <div class="row" aria-label="Taalniveau">${LEVELS.map(l => `<button type="button" class="chip" data-action="level" data-value="${track}/${l}" aria-pressed="${level === l}">${l}</button>`).join('')}</div>
-      <div class="row" aria-label="Leersituatie">${['', ...routes].map(r => `<button type="button" class="chip outline" data-action="route-filter" data-value="${r}" aria-pressed="${route === r}">${r ? ROUTES[r] : 'Alle situaties'}</button>`).join('')}</div>
-    </section>` : ''}
+    ${language ? `<section class="block stack"><h2>Thema’s</h2>${topicCards(track, lessons)}</section>` : ''}
     <section class="block">
       <div class="topline"><h2>${language ? 'Lessen op ' + level : 'Lessen'}</h2><p class="muted small-text" id="lesson-count" aria-live="polite">${shown.length} lessen</p></div>
+      ${language ? `<div class="row" role="group" aria-label="Leersituatie">${['', ...routes].map(r => `<button type="button" class="chip outline" data-action="route-filter" data-value="${r}" aria-pressed="${route === r}">${r ? ROUTES[r] : 'Alle situaties'}</button>`).join('')}</div>` : ''}
       <div class="field course-search"><label for="course-search">Zoek in dit leerpad</label>
         <input type="search" id="course-search" value="${esc(search)}" placeholder="Titel, datering of begrip"></div>
       <p class="empty" id="lesson-no-match" ${shown.length ? 'hidden' : ''}>Geen lessen met deze keuze. Pas je zoekterm of filter aan.</p>
       <div class="unit-list">${shown.map(lesson => unit(lesson, studied)).join('')}</div>
     </section>`;
+}
+
+function languageLevel(track, level) {
+  const focus = track === 'fr' ? FRENCH_LEVEL_FOCUS[level] : '';
+  return `<section class="panel stack">
+    <h2>${TRACKS[track].name} op ${esc(level)}</h2>
+    <div class="row" role="group" aria-label="Taalniveau">${LEVELS.map(l => `<button type="button" class="chip" data-action="level" data-value="${track}/${l}" aria-pressed="${level === l}">${l}</button>`).join('')}</div>
+    ${focus ? '<p class="muted">' + esc(focus) + '</p>' : ''}
+  </section>`;
 }
 
 export function lessonPage(lesson) {
@@ -326,12 +340,17 @@ function topicCards(track, lessons) {
   }).join('')}</div>`;
 }
 
-function topicPage(track, topic, lessons, studied) {
+function topicPage(track, topic, lessons, studied, level) {
   const theme = LANGUAGE_TOPICS[track][topic];
-  const shown = lessons.filter(lesson => lesson.track === track && lesson.languageTopic === topic);
+  const french = track === 'fr';
+  const shown = lessons.filter(lesson => lesson.track === track && lesson.languageTopic === topic && (!french || lesson.level === level));
   return `<p class="back-link"><a class="text-link" href="#talen/${track}">Terug naar ${TRACKS[track].name}</a></p>` +
-    heading(theme.title, theme.text, TRACKS[track].name) + `
-    <section class="unit-list topic-units" aria-label="Lessen over ${esc(theme.title)}">${shown.map(lesson => unit(lesson, studied)).join('')}</section>`;
+    heading(theme.title, theme.text, TRACKS[track].name) + (french ? languageLevel(track, level) : '') + `
+    <section class="block stack" aria-label="Lessen over ${esc(theme.title)}">
+      ${french ? `<div class="topline"><h2>Lessen op ${esc(level)}</h2>${shown.length ? button('drill', 'Oefen dit thema', '', track + '/5') : ''}</div>` : ''}
+      <div class="unit-list topic-units">${shown.map(lesson => unit(lesson, studied)).join('')}</div>
+      ${shown.length ? '' : '<p class="empty">Voor dit niveau is er nog geen les geladen.</p>'}
+    </section>`;
 }
 
 export function languageGrammar(lesson) {
@@ -501,8 +520,8 @@ export function quizPage(session) {
       <div style="width:${(index + Number(!!answered)) / count * 100}%"></div></div>
     <div class="panel question stack">
       <div>${!formal && q.title && q.title !== session.title ? '<p class="muted small-text quiz-topic">' + esc(q.title) + '</p>' : ''}
-        <span class="chip">${format}</span><h1>${esc(q.text)}</h1></div>
-      ${q.context ? '<p class="question-context">' + esc(q.context) + '</p>' : ''}
+        <span class="chip">${format}</span><h1${q.promptLanguage ? ' lang="' + esc(q.promptLanguage) + '"' : ''}>${esc(q.text)}</h1></div>
+      ${q.context ? '<p class="question-context"' + (q.promptLanguage ? ' lang="' + esc(q.promptLanguage) + '"' : '') + '>' + esc(q.context) + '</p>' : ''}
       ${!answered && !formal ? '<p class="question-instruction">' + esc(typeOrder ? 'Typ de volledige zin.' : instructionFor(q)) + '</p>' : ''}
       ${!answered && q.audioPrompt ? `<div class="spoken-prompt stack">
         <div>${button('listen-prompt', 'Luister naar de vraag', '', '')}</div>
@@ -513,7 +532,7 @@ export function quizPage(session) {
       ${choice ? `<div class="choices" role="group" aria-label="Antwoordopties">${q.options.map((option, i) =>
         `<button type="button" class="choice" data-action="choose" data-value="${i}" data-selected="${selected === option}"
             aria-pressed="${selected === option}" ${answered && !formal ? 'disabled data-correct="' + (option === q.answer) + '"' : ''}>
-          <b aria-hidden="true">${'ABCD'.charAt(i) || i + 1}</b><span>${esc(option)}</span></button>`).join('')}</div>` : ''}
+          <b aria-hidden="true">${'ABCD'.charAt(i) || i + 1}</b><span${q.promptLanguage ? ' lang="' + esc(q.promptLanguage) + '"' : ''}>${esc(option)}</span></button>`).join('')}</div>` : ''}
       ${interactive ? '<div class="practice-controls stack">' + practiceControls(q, session) + '</div>' : ''}
       ${!choice && !interactive ? `<div class="field answer-field"><label for="answer">Jouw antwoord</label>
         ${multiline ? `<textarea class="answer-input" id="answer" rows="${q.kind === 'open' ? 3 : 2}" maxlength="3000"${fieldAttributes}>${esc(selected)}</textarea>` :

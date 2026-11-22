@@ -1,4 +1,4 @@
-import { practiceVariants, practiceDifficulty, preferredDifficulty } from './practice.js?v=13r1';
+import { practiceVariants, practiceDifficulty, preferredDifficulty, startingDifficulty } from './practice.js?v=13r5';
 
 export const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1'];
 export const ROUTES = {
@@ -45,6 +45,11 @@ export function hasAccentError(question, response) {
   return Boolean(question.strict && !isCorrect(question, response) && isCorrect({ ...question, strict:false }, response));
 }
 
+export function practiceTopic(lesson) {
+  const theme = lesson.route || (lesson.track === 'knowledge' && lesson.period);
+  return theme ? lesson.track + '/' + theme : lesson.id;
+}
+
 export function makePool(lessons) {
   return lessons.flatMap(lesson => {
     if (lessonPools.has(lesson)) return lessonPools.get(lesson);
@@ -53,14 +58,15 @@ export function makePool(lessons) {
     const pool = lesson.items.map((item, index) => {
       const key = lesson.id + '/' + item.id;
       const source = lesson.sources?.[item.source ?? (language && !lesson.languageTopic ? -1 : 0)];
+      const scope = { track: lesson.track, level: lesson.level, topic: practiceTopic(lesson), lesson: lesson.id };
       const questionData = (question, id) => ({
-        ...question, id: key + '/' + id, key, lesson: lesson.id, title: lesson.title,
-        track: lesson.track, label: item.label, explanation: item.explanation,
+        ...question, id: key + '/' + id, key, title: lesson.title,
+        ...scope, label: item.label, explanation: item.explanation,
         source: question.source ?? source, language,
       });
       const questions = item.questions.map(questionData);
       const practice = variants[index].map(question => questionData(question, question.variant));
-      return { key, track: lesson.track, level: lesson.level, route: lesson.route, lesson: lesson.id, questions, practice };
+      return { key, ...scope, route: lesson.route, questions, practice };
     });
     lessonPools.set(lesson, pool);
     return pool;
@@ -68,6 +74,61 @@ export function makePool(lessons) {
 }
 
 export const practiceQuestions = item => [...item.questions, ...(item.practice ?? [])];
+
+export function practiceBalance() {
+  const tracks = new Map();
+  const topics = new Map();
+  const lessons = new Map();
+  const skills = new Map();
+  let previousTopic;
+  const count = (map, key) => map.get(key) ?? 0;
+  const add = (map, key) => { if (key) map.set(key, count(map, key) + 1); };
+  return {
+    score: row => 5 * count(tracks, row.track) + 12 * count(topics, row.topic) +
+      24 * count(lessons, row.lesson) + 7 * count(skills, row.skill) + 15 * Number(!!row.topic && row.topic === previousTopic),
+    add(row) {
+      add(tracks, row.track);
+      add(topics, row.topic);
+      add(lessons, row.lesson);
+      add(skills, row.skill);
+      previousTopic = row.topic;
+    },
+  };
+}
+
+export function recentPractice(pool, history, now = Date.now()) {
+  const lessons = new Map();
+  const topics = new Map();
+  for (const item of pool) {
+    const last = history.states.get(item.key)?.last;
+    if (!Number.isFinite(last)) continue;
+    lessons.set(item.lesson, Math.max(lessons.get(item.lesson) ?? -Infinity, last));
+    topics.set(item.topic, Math.max(topics.get(item.topic) ?? -Infinity, last));
+  }
+  const recency = at => at === undefined ? 0 : Math.max(0, 1 - Math.max(0, now - at) / DAY);
+  return row => 9 * recency(lessons.get(row.lesson)) + 5 * recency(topics.get(row.topic));
+}
+
+function variedSelection(candidates, limit, priority = () => 0) {
+  const remaining = [...candidates];
+  const selected = [];
+  const balance = practiceBalance();
+  while (remaining.length && selected.length < limit) {
+    let best = 0;
+    let lowest = Infinity;
+    for (const [index, row] of remaining.entries()) {
+      const score = priority(row) + balance.score(row);
+      if (score < lowest) {
+        best = index;
+        lowest = score;
+      }
+    }
+    const [row] = remaining.splice(best, 1);
+    balance.add(row);
+    selected.push(row);
+  }
+  return selected;
+}
 
 export function historyOf(records) {
   const states = new Map();
@@ -106,39 +167,29 @@ function questionFor(item, history, options = {}) {
 }
 
 export function quickQuestions(pool, history, { limit = 3, now = Date.now(), extra = false, noAudio = false } = {}) {
-  const due = pool.filter(item => (history.states.get(item.key)?.due ?? Infinity) <= now)
-    .sort((a, b) => history.states.get(a.key).due - history.states.get(b.key).due);
-  // Interleave the first unseen goals across courses instead of exhausting one course.
-  const unseen = pool.filter(item => !history.states.has(item.key));
-  const byTrack = new Map();
-  for (const item of unseen) {
-    if (!byTrack.has(item.track)) byTrack.set(item.track, []);
-    byTrack.get(item.track).push(item);
-  }
-  const orderedTracks = shuffled([...byTrack.values()]);
-  const newItems = [];
-  for (let depth = 0; orderedTracks.some(items => items[depth]); depth++) {
-    for (const items of orderedTracks) if (items[depth]) newItems.push(items[depth]);
-    if (newItems.length >= limit * 3) break;
-  }
-  const candidates = [...due, ...newItems];
-  if (extra) {
-    const used = new Set(candidates.map(item => item.key));
-    candidates.push(...pool.filter(item => !used.has(item.key)).sort((a, b) =>
-      (history.states.get(a.key)?.last ?? 0) - (history.states.get(b.key)?.last ?? 0)));
-  }
-  return candidates.map(item => questionFor(item, history, {
+  const recent = recentPractice(pool, history, now);
+  const candidates = shuffled(pool).filter(item => {
+    const state = history.states.get(item.key);
+    return extra || !state || state.due <= now;
+  }).sort((a, b) => (history.states.get(a.key)?.due ?? now) - (history.states.get(b.key)?.due ?? now));
+  const questions = candidates.map(item => questionFor(item, history, {
     learning: true, short: true, noAudio, difficulty: preferredDifficulty(item, history),
     preferOriginal: !history.states.has(item.key),
-  })).filter(Boolean).slice(0, limit);
+  })).filter(Boolean);
+  return variedSelection(questions, limit, question => {
+    const state = history.states.get(question.key);
+    return (state ? state.due <= now ? 0 : 20 : 8) + recent(question);
+  });
 }
 
 export function lessonQuestions(pool, history, { noAudio = false } = {}) {
-  const warmup = pool.slice(0, 3).map(item => questionFor(item, history, {
-    learning: true, short: true, noAudio, difficulty: 0, preferOriginal: true,
+  const ordered = [...pool].sort((a, b) =>
+    (history.states.get(a.key)?.last ?? 0) - (history.states.get(b.key)?.last ?? 0));
+  const warmup = ordered.slice(0, 3).map(item => questionFor(item, history, {
+    learning: true, short: true, noAudio, difficulty: startingDifficulty(item), preferOriginal: true,
   })).filter(Boolean);
   const exclude = new Set(warmup.map(q => q.id));
-  const apply = [...pool.slice(3), ...pool.slice(0, 3)].map(item => questionFor(item, history, {
+  const apply = [...ordered.slice(3), ...ordered.slice(0, 3)].map(item => questionFor(item, history, {
     learning: true, noAudio, exclude, difficulty: 1,
   })).filter(Boolean);
   return [...warmup, ...apply].slice(0, 6);
@@ -158,48 +209,31 @@ export function languageQuestions(pool, skill, history, now = Date.now()) {
     return due === undefined ? 1 : due <= now ? 0 : 2;
   };
   const rows = shuffled(bySkill).sort((a, b) => priority(a) - priority(b));
-  const [first, ...rest] = rows;
-  if (!first) return [];
-  const recognize = first.questions.find(q => q.kind === 'choice');
-  const matching = rest.flatMap(item => item.questions).find(q => q.kind === 'match' && q.pairs.every(pair => pair.key !== first.key));
-  const seen = new Set([first.key, ...(matching?.pairs.map(pair => pair.key) ?? [])]);
-  const recall = [...rest.filter(item => !seen.has(item.key)), ...rows.filter(item => seen.has(item.key))]
+  const options = rows.flatMap(item => item.questions);
+  const recognize = options.find(q => q.kind === 'choice' && q.context) ?? options.find(q => q.kind === 'choice');
+  const matching = options.find(q => q.kind === 'match' && q.pairs.every(pair => pair.key !== recognize?.key));
+  const seen = new Set([recognize?.key, ...(matching?.pairs.map(pair => pair.key) ?? [])]);
+  const recall = [...rows.filter(item => !seen.has(item.key)), ...rows.filter(item => seen.has(item.key))]
     .flatMap(item => item.questions.filter(q => q.kind === 'fill')).slice(0, matching ? 3 : 4);
   return [recognize, matching, ...recall].filter(Boolean);
 }
 
 export function examQuestions(pool, history, monthly = false) {
-  const handled = pool.filter(item => history.states.has(item.key));
-  const grouped = new Map();
-  for (const item of shuffled(handled)) {
-    if (!grouped.has(item.lesson)) grouped.set(item.lesson, []);
-    grouped.get(item.lesson).push(item);
-  }
-  const ordered = [];
-  const groups = [...grouped.values()];
-  for (let depth = 0; groups.some(group => group[depth]); depth++) {
-    for (const group of groups) if (group[depth]) ordered.push(group[depth]);
-  }
+  const handled = pool.filter(item => history.states.has(item.key) && item.questions.some(q => q.kind !== 'listen'));
   const limit = monthly ? 18 : 10;
   const required = EXAM_GOALS[monthly ? 'month' : 'week'];
-  if (ordered.length < required) return [];
+  if (handled.length < required) return [];
+  const ordered = variedSelection(shuffled(handled), limit);
   return ordered.map((item, index) =>
-    questionFor(item, history, { preferOpen: monthly ? index % 3 !== 0 : index % 3 === 2, noAudio: true }))
-    .filter(Boolean).slice(0, limit);
+    questionFor(item, history, { preferOpen: monthly ? index % 3 !== 0 : index % 3 === 2, noAudio: true }));
 }
 
 export function placementQuestions(pool) {
+  const empty = { states: new Map(), seen: new Map() };
   return LEVELS.flatMap(level => {
     const items = shuffled(pool.filter(item => item.level === level));
-    const routes = new Set();
-    const prioritized = items.filter(item => {
-      if (routes.has(item.route)) return false;
-      routes.add(item.route);
-      return true;
-    });
-    const others = items.filter(item => !prioritized.includes(item));
-    return [...prioritized, ...others].map(item => questionFor(item, { states: new Map(), seen: new Map() }, { objective: true }))
-      .filter(Boolean).slice(0, 4).map(q => ({ ...q, level }));
+    const questions = items.map(item => questionFor(item, empty, { objective: true })).filter(Boolean);
+    return variedSelection(questions, 4, q => q.promptLanguage ? 0 : q.skill === 'grammar' ? 4 : 9).map(q => ({ ...q, level }));
   });
 }
 
