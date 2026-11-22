@@ -72,7 +72,7 @@ export function chronologyYear(lesson) {
 }
 
 export function chronologicalLessons(lessons, scope = 'alles', mode = 'kern') {
-  return lessons.filter(lesson => HISTORICAL_TRACKS.includes(lesson.track) &&
+  return lessons.filter(lesson => !lesson.extension && HISTORICAL_TRACKS.includes(lesson.track) &&
     (scope === 'alles' || belongsToHistoryTrack(lesson, scope)) && (mode === 'alle' || lesson.structure) &&
     Number.isInteger(chronologyYear(lesson)))
     .sort((a, b) => chronologyYear(a) - chronologyYear(b) ||
@@ -95,7 +95,7 @@ export function chronologyGroups(lessons) {
 }
 
 export function chronologyForLesson(lessons, lesson, path) {
-  if (!HISTORICAL_TRACKS.includes(lesson.track) || !Number.isInteger(chronologyYear(lesson))) return null;
+  if (lesson.extension || !HISTORICAL_TRACKS.includes(lesson.track) || !Number.isInteger(chronologyYear(lesson))) return null;
   const inRoute = path[2] === 'chronologie';
   const scope = inRoute ? timelineScope(path[3]) : lesson.track;
   const mode = inRoute ? timelineMode(path[4]) : lesson.structure ? 'kern' : 'alle';

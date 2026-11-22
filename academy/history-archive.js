@@ -1,0 +1,6 @@
+import { marseilleHistory } from './content/history-marseille.js?v=13r9';
+import { cityHistory } from './content/history-cities.js?v=13r9';
+import { primaryHistory } from './content/history-primary.js?v=13r9';
+import { expandedHistory } from './content/history-depth.js?v=13r9';
+
+export const historyArchive = [...marseilleHistory, ...cityHistory, ...primaryHistory, ...expandedHistory];

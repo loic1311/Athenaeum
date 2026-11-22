@@ -1,4 +1,4 @@
-import { dayKey } from './daily.js?v=13r8';
+import { dayKey } from './daily.js?v=13r9';
 
 const DAY = 86_400_000;
 export const STARTING_ICE = 2;
@@ -36,7 +36,8 @@ function rewardFor(row, completed, today) {
       data.reviewed !== data.total || data.correct * 100 < data.total * EXAM_PASS) return null;
   const graded = dayNumber(data.gradedDay ?? dayKey(new Date(row.at)));
   if (!Number.isFinite(graded) || graded < completed || graded > today) return null;
-  return { id: row.id, at: row.at, day: graded, period: examPeriod(type, completed), ice: EXAM_ICE[type] };
+  const examined = type === 'week' && isStudyDay(data.examWeek) ? dayNumber(data.examWeek) : completed;
+  return { id: row.id, at: row.at, day: graded, period: examPeriod(type, examined), ice: EXAM_ICE[type] };
 }
 
 export function streakStatus(records, today = dayKey()) {

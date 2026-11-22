@@ -49,6 +49,8 @@ function indexLesson(lesson) {
   add(lesson.title, 24, false);
   add(TOPICS[lesson.id], 15);
   add(lesson.summary, 12);
+  add(lesson.primary?.original, 9);
+  add(lesson.primary?.english, 7);
   for (const { heading, lead, text } of lesson.structure ?? []) {
     add([heading, lead].join(' · '), 6);
     add(text, 5);
