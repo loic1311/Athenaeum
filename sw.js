@@ -1,8 +1,8 @@
-const VERSION = 'athenaeum-learning-v1.3.5';
+const VERSION = 'athenaeum-learning-v1.3.6';
 const BASE = new URL(self.registration.scope);
 const CORE = [
   './', './index.html', './leer/', './manifest.webmanifest', './classic.html', './app.js?v=13r4', './shared/style.css',
-  './academy/style.css?v=13r6', './academy/app.js?v=13r6', './academy/views.js?v=13r6', './academy/daily.js?v=13r6', './academy/daily-view.js?v=13r6', './academy/research.js?v=13r6',
+  './academy/style.css?v=13r7', './academy/app.js?v=13r6', './academy/views.js?v=13r6', './academy/daily.js?v=13r6', './academy/daily-view.js?v=13r6', './academy/research.js?v=13r6',
   './academy/research-data.js?v=13r1', './academy/research-import.js?v=13r6', './academy/scriptorium.js?v=13r6',
   './academy/study-notes.js?v=13r6', './academy/practice.js?v=13r6', './academy/practice-content.js?v=13r1',
   './academy/language-topics.js?v=13r1', './academy/language-lessons.js?v=13r6',
