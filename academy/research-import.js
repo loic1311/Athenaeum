@@ -1,4 +1,4 @@
-import { readStudyFile } from './importer.js?v=13r5';
+import { readStudyFile } from './importer.js?v=13r6';
 
 const DOCX_LIMIT = 3 * 1024 * 1024;
 

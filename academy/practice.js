@@ -15,12 +15,24 @@ export function preferredDifficulty(item, history) {
   return Math.max(startingDifficulty(item), stage < 1 ? 0 : stage < 3 ? 1 : 2);
 }
 
+export const PRACTICE_PHASES = ['Herkennen', 'Ophalen', 'Toepassen', 'Zelf formuleren'];
+
+export function practicePhase(question) {
+  if (question.kind === 'match' || question.kind === 'choice' && !question.promptLanguage) return 0;
+  if (['fill', 'card', 'listen'].includes(question.kind)) return 1;
+  return question.kind === 'open' ? 3 : 2;
+}
+
+export function sequencePractice(questions) {
+  return [...questions].sort((a, b) => practicePhase(a) - practicePhase(b));
+}
+
 export function instructionFor(q) {
   if (q.instruction) return q.instruction;
   return {
     choice: 'Kies één antwoord en controleer je keuze.',
     fill: 'Typ je antwoord in het veld.',
-    card: 'Typ je antwoord of bedenk het hardop. Vergelijk het daarna met de uitwerking.',
+    card: 'Denk hardop na en noteer je kernzin. Vergelijk die daarna met de uitwerking.',
     open: q.audioPrompt ? 'Antwoord eerst hardop. Schrijf daarna je eigen zin en vergelijk met het voorbeeld.' :
       'Schrijf je antwoord en vergelijk het daarna met de uitwerking.',
     listen: 'Speel de audio af en typ wat je hoort. Je kunt opnieuw luisteren.',
@@ -89,16 +101,13 @@ export function practiceVariants(lesson, language) {
         });
       }
     }
-    const grammarExample = lesson.grammar?.example.split(' · ')[0];
-    const canOrderExample = item.id === 'zin' && grammarExample && orderedSentence(grammarExample).length;
-    const model = item.vocabulary ? null : example || (lesson.scene && item.id === 'zin' ?
-      canOrderExample ? { phrase: grammarExample, meaning: lesson.grammar.translation.split(' · ')[0], rule: lesson.grammar.rule } :
-        { phrase: lesson.scene.answer, meaning: lesson.scene.translation } : null);
+    const scene = item.id === 'zin' ? lesson.scene : null;
+    const model = item.vocabulary ? null : example || (scene ? { phrase: scene.line, meaning: scene.meaning } : null);
     if (model) {
       const parts = orderedSentence(model.phrase);
       if (parts.length) variants[index].push({
-        variant: 'sentence', kind: 'order', skill: language ? 'sentence' : undefined, text: 'Bouw de voorbeeldzin uit de les.',
-        context: model.meaning, parts, answer: model.phrase, audio: model.phrase, feedback: model.rule,
+        variant: 'sentence', kind: 'order', skill: language ? 'sentence' : undefined, text: 'Zet de woordblokken in een natuurlijke volgorde.',
+        context: model.meaning, parts, answer: model.phrase, audio: model.phrase,
         tip: 'Lees de Nederlandse zin en bepaal eerst hoe de voorbeeldzin begint.',
       });
     }
@@ -139,40 +148,11 @@ export function practiceVariants(lesson, language) {
   return variants;
 }
 
-export function workedExample(lesson, q) {
-  if (lesson.grammar && q?.skill !== 'vocabulary') return {
-    prompt: lesson.grammar.example, answer: lesson.grammar.translation,
-    explanation: lesson.grammar.rule, language: lesson.track, source: lesson.sources?.[0],
-  };
+export function workedExample(lesson) {
   const curated = workedExamples[lesson.id];
-  if (curated && curated.prompt !== q?.text) {
-    const item = lesson.items.find(row => row.id === curated.item);
-    return { ...curated, source: lesson.sources?.[item?.source ?? 0] };
-  }
-  const target = lesson.items.find(item => lesson.id + '/' + item.id === q?.key);
-  const items = target ? [target, ...lesson.items.filter(item => item !== target)] : lesson.items;
-  const dialogue = lesson.dialogue?.find(line => line.text && line.translation && line.text !== q?.audio);
-  if (dialogue) {
-    // Prefer a translation from the same objective so the explanation fits the example.
-    for (const item of items) {
-      const example = translation(item);
-      if (example && !q?.text.includes(example.phrase) && example.phrase !== q?.answer && example.meaning !== q?.answer) {
-        return { prompt: example.phrase, answer: example.meaning, explanation: item.explanation, language: lesson.track };
-      }
-    }
-    return { prompt: dialogue.text, answer: dialogue.translation, language: lesson.track };
-  }
-  for (const kind of ['choice','fill','card','open']) {
-    for (const item of items) {
-      const model = item.questions.find(question => question.kind === kind && question.text !== q?.text &&
-        question.answer !== q?.answer && question.answer.length <= 420);
-      if (model) return {
-        prompt: model.text, answer: model.answer, explanation: model.feedback ?? item.explanation,
-        source: model.source ?? lesson.sources?.[item.source ?? (lesson.level ? -1 : 0)],
-      };
-    }
-  }
-  return null;
+  if (!curated) return null;
+  const item = lesson.items.find(row => row.id === curated.item);
+  return { ...curated, source: lesson.sources?.[item?.source ?? 0] };
 }
 
 export function practiceOptions(q) {

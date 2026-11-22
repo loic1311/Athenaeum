@@ -1,4 +1,4 @@
-import { practiceVariants, practiceDifficulty, preferredDifficulty, startingDifficulty } from './practice.js?v=13r5';
+import { practiceVariants, practiceDifficulty, preferredDifficulty, startingDifficulty } from './practice.js?v=13r6';
 
 export const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1'];
 export const ROUTES = {

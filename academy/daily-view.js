@@ -1,7 +1,7 @@
-import { TRACKS, ROUTES } from './learning.js?v=13r5';
-import { DAY_FOCI, PACE, STAGES, dayKey } from './daily.js?v=13r5';
-import { esc, exampleView, heading, languageGrammar, languageVocabulary, sourceView } from './views.js?v=13r5';
-import { workedExample } from './practice.js?v=13r5';
+import { TRACKS, ROUTES } from './learning.js?v=13r6';
+import { DAY_FOCI, PACE, STAGES, dayKey } from './daily.js?v=13r6';
+import { esc, exampleView, heading, languageGrammar, languageVocabulary, lessonExplanation, sourceView } from './views.js?v=13r6';
+import { workedExample } from './practice.js?v=13r6';
 
 function dateName(date) {
   const value = new Date(date + 'T12:00:00');
@@ -28,17 +28,9 @@ function theory(lesson) {
   const topic = [TRACKS[lesson.track]?.name, lesson.period, lesson.level, ROUTES[lesson.route]].filter(Boolean).join(' · ');
   return `<article class="panel daily-theory stack">
     <div><p class="eyebrow">${esc(topic)}</p><h3>${esc(lesson.title)}</h3></div>
-    <div class="lesson-copy">${String(lesson.summary || '').split(/\n\s*\n/).map(paragraph => '<p>' + esc(paragraph) + '</p>').join('')}</div>
-    ${lesson.languageTopic ? '<h3>Woorden om mee te beginnen</h3>' + languageVocabulary(lesson, 4) + languageGrammar(lesson) : exampleView(workedExample(lesson))}
-    ${lesson.dialogue?.length ? `<details open><summary>Dialoog en uitspraak</summary><div class="dialogue">
-      ${lesson.dialogue.map((line, i) => `<div class="dialogue-line"><div class="row">
-        <p lang="${esc(lesson.track)}"><strong>${esc(line.speaker)}</strong> · ${esc(line.text)}</p>
-        <button type="button" class="button small quiet" data-action="speak-line" data-value="${esc(lesson.id)}/${i}">Luister</button>
-      </div><p class="muted small-text">${esc(line.translation)}</p></div>`).join('')}
-    </div></details>` : ''}
-    ${lesson.languageTopic ? '<details><summary>Volledige woordenlijst</summary>' + languageVocabulary(lesson) + '</details>' : `<details><summary>Begrippen en extra uitleg</summary><dl class="daily-glossary">
-      ${lesson.items.map(item => `<dt>${esc(item.label)}</dt><dd>${esc(item.explanation)}${sourceView(lesson.sources?.[item.source ?? (lesson.level ? -1 : 0)])}</dd>`).join('')}
-    </dl></details>`}
+    ${lessonExplanation(lesson)}
+    ${lesson.languageTopic ? '<h3>Woordenschat</h3>' + languageVocabulary(lesson, 4) + languageGrammar(lesson) +
+      '<details><summary>Volledige woordenlijst</summary>' + languageVocabulary(lesson) + '</details>' : exampleView(workedExample(lesson))}
     ${lesson.sources?.length ? `<details><summary>Bronnen</summary><div class="stack">${lesson.sources.map(sourceView).join('')}</div></details>` : ''}
     <a class="text-link" href="#les/${esc(lesson.id)}">Open de volledige les</a>
   </article>`;

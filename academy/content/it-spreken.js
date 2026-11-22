@@ -88,7 +88,7 @@ export const italianTopics = [
       items: [['Vorrei … conto, per favore. (de)', 'il'], ['… ingredienti sono indicati sul menù. (de)', 'Gli'], ['… bevande sono qui. (de)', 'Le']],
     },
     scene: {
-      prompt: 'Vraag het menu en vraag of je met de kaart kunt betalen.', line: 'Desidera altro?', meaning: 'Wenst u nog iets?',
+      prompt: 'Vraag het menu en vraag of je met de kaart kunt betalen.', line: 'Desidera anche qualcos’altro?', meaning: 'Wenst u nog iets?',
       answer: 'Posso vedere il menù? E posso pagare con la carta?', translation: 'Mag ik het menu zien? En kan ik met de kaart betalen?',
       criteria: ['Gebruik il menù.', 'Vraag naar betaling met kaart.'],
     },

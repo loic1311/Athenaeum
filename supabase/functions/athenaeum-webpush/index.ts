@@ -11,7 +11,7 @@ const pushHosts = new Set(['fcm.googleapis.com', 'updates.push.services.mozilla.
 type Subscription = { endpoint: string; keys: { p256dh: string; auth: string } };
 type Vapid = { public_key: string; private_key: string };
 type Config = { vapid: Vapid | null; dispatcher: string };
-type Due = { subscription: Subscription; slot: number; day: string; studied_yesterday: boolean };
+type Due = { subscription: Subscription; minute: number; day: string; studied_yesterday: boolean };
 let storedConfig: Config | undefined;
 
 const messages: readonly (readonly string[])[] = [
@@ -109,6 +109,14 @@ function subscriptionOf(value: unknown): Subscription | null {
   return { endpoint, keys: { p256dh: keys.p256dh, auth: keys.auth } };
 }
 
+const legacyTimes = [570, 930, 1230];
+const everyDay = [1, 2, 3, 4, 5, 6, 7];
+
+function validSchedule(values: unknown, maxLength: number, min: number, max: number): values is number[] {
+  return Array.isArray(values) && values.length > 0 && values.length <= maxLength &&
+    new Set(values).size === values.length && values.every(value => Number.isInteger(value) && value >= min && value <= max);
+}
+
 const byEndpoint = (endpoint: string) => devices + '?endpoint=eq.' + encodeURIComponent(endpoint);
 
 async function deliver(subscription: Subscription, vapid: Vapid, body: string, slot: string) {
@@ -128,9 +136,10 @@ async function deliver(subscription: Subscription, vapid: Vapid, body: string, s
 }
 
 function reminder(device: Due) {
-  const choices = device.slot === 3 && device.studied_yesterday ? eveningStreak : messages[device.slot - 1];
+  const evening = device.minute >= 1080;
+  const choices = evening && device.studied_yesterday ? eveningStreak : messages[evening ? 2 : device.minute < 720 ? 0 : 1];
   const day = Math.floor(Date.parse(device.day) / 86400000);
-  return choices[(day + device.slot) % choices.length];
+  return choices[(day + device.minute) % choices.length];
 }
 
 async function dispatch(req: Request) {
@@ -140,11 +149,11 @@ async function dispatch(req: Request) {
   const differs = [...token].reduce((diff, c, i) => diff | (c.charCodeAt(0) ^ config.dispatcher.charCodeAt(i)), 0);
   if (differs) return reply({ error: 'Toegang geweigerd.' }, 403);
   const vapid = (await getConfig(true)).vapid!;
-  const due = await rpc('athenaeum_webpush_due') as Due[];
+  const due = await rpc('athenaeum_webpush_due_times') as Due[];
   let sent = 0;
   for (let offset = 0; offset < due.length; offset += 8) {
     const results = await Promise.allSettled(due.slice(offset, offset + 8).map(device =>
-      deliver(device.subscription, vapid, reminder(device), device.day + '-' + device.slot)));
+      deliver(device.subscription, vapid, reminder(device), device.day + '-m' + device.minute)));
     sent += results.filter(result => result.status === 'fulfilled' && result.value).length;
   }
   if (sent < due.length) console.warn('Web Push delivery incomplete', { sent, due: due.length });
@@ -164,13 +173,18 @@ Deno.serve(async (req: Request) => {
 
     const user = await account(req);
     if (!user) return reply({ error: 'Meld je eerst aan.' }, 401);
-    if (body.action === 'config') return reply({ publicKey: (await getConfig(true)).vapid!.public_key });
+    if (body.action === 'config') return reply({ publicKey: (await getConfig(true)).vapid!.public_key, customSchedule: true });
     if (body.action === 'save') {
       const subscription = subscriptionOf(body.subscription);
+      const legacy = body.minutes === undefined && [1, 2, 3].includes(body.count);
+      const minutes = legacy ? legacyTimes.slice(-body.count) : body.minutes;
+      const days = legacy ? everyDay : body.days;
       if (!subscription || typeof body.timezone !== 'string' || body.timezone.length > 80 ||
-          ![1, 2, 3].includes(body.count)) return reply({ error: 'Ongeldige meldingsinstellingen.' }, 400);
-      const saved = await rpc('athenaeum_webpush_register', {
-        p_user: user, p_subscription: subscription, p_zone: body.timezone, p_limit: body.count,
+          !validSchedule(minutes, 24, 0, 1439) || !validSchedule(days, 7, 1, 7)) {
+        return reply({ error: 'Kies geldige, verschillende tijdstippen en minstens één dag.' }, 400);
+      }
+      const saved = await rpc('athenaeum_webpush_set_schedule', {
+        p_user: user, p_subscription: subscription, p_zone: body.timezone, p_minutes: minutes, p_days: days,
       });
       return saved ? reply({ ok: true }) : reply({ error: 'Dit toestel kon niet aan je meldingen worden gekoppeld.' }, 409);
     }

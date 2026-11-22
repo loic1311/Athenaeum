@@ -4,20 +4,24 @@
   --muted: #52635b;
   --evergreen: #154638;
   --pine: #18382f;
-  --paper: #f3f6f4;
+  --paper: #ecf2ee;
   --panel: #ffffff;
   --border: #dae4de;
   --green: #e6f1eb;
   --error: #9a3529;
   --radius: 22px;
-  --shadow: 0 2px 5px #18382f06, 0 12px 32px #18382f08;
+  --shadow: 0 1px 1px #fff9 inset, 0 2px 7px #18382f07, 0 16px 42px #18382f0d;
   --ui-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   font: 16px/1.55 var(--ui-font);
   background: var(--paper);
   color: var(--ink);
 }
 *, *::before, *::after { box-sizing: border-box; }
-body { margin: 0; min-width: 280px; min-height: 100dvh; background: radial-gradient(ellipse at 92% 0%, #e9f2ee, transparent 680px), var(--paper); }
+body {
+  margin: 0; min-width: 280px; min-height: 100dvh;
+  background: radial-gradient(ellipse at 96% 0%, #cfe4d9 0%, transparent 650px),
+    radial-gradient(ellipse at 40% 475px, #f8faf1 0%, transparent 680px), var(--paper);
+}
 body:has(dialog[open]) { overflow: hidden; }
 a { color: inherit; }
 button, input, select, textarea { font: inherit; }
@@ -68,7 +72,7 @@ p, li { overflow-wrap: anywhere; }
 .workspace { margin-left: 232px; }
 .topbar {
   min-height: 68px; position: sticky; z-index: 7; top: 0; display: flex; justify-content: space-between; align-items: center; gap: 12px;
-  padding: 10px clamp(20px, 4.7vw, 68px); background: #fcfdfcee; border-bottom: 1px solid var(--border); backdrop-filter: blur(20px) saturate(1.35);
+  padding: 10px clamp(20px, 4.7vw, 68px); background: #f8faf8; border-bottom: 1px solid var(--border);
 }
 .location { color: var(--muted); font-size: .92rem; font-weight: 640; }
 .top-actions { display: flex; align-items: center; justify-content: flex-end; gap: 13px; min-width: 0; }
@@ -96,8 +100,9 @@ section.block > .topline { margin-bottom: 14px; }
 .hero {
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(160px, .42fr); align-items: center;
   border-radius: 28px; min-height: 270px; padding: clamp(23px, 4.4vw, 51px);
-  background: radial-gradient(ellipse at 85% 20%, #39715b, transparent 55%), linear-gradient(122deg, #102c24, #1d513f); color: #f7fbf8;
-  border: 1px solid #1e4b3b; box-shadow: 0 18px 42px #193d3123; position: relative; overflow: hidden;
+  background: radial-gradient(ellipse at 88% 12%, #73ab8b78, transparent 60%),
+    linear-gradient(128deg, #122e26 11%, #265b48 88%); color: #f7fbf8;
+  border: 1px solid #1e4b3b; box-shadow: 0 1px 1px #ddfae54d inset, 0 20px 54px #193d312e; position: relative; overflow: hidden;
 }
 .hero h2 { font-size: clamp(2.35rem, 4.25vw, 4.05rem); max-width: 17ch; }
 .hero .eyebrow { color: #e2c797; }
@@ -202,8 +207,10 @@ textarea { resize: vertical; }
 .notice.error { background: #f8e8e4; color: #7c2521; }
 .notice.success { background: #e4efe3; color: #25523d; }
 .notice + .notice { margin-top: 7px; }
-.lesson-copy { max-width: 78ch; line-height: 1.65; }
-.lesson-copy p + p { margin-top: 12px; }
+.lesson-copy { max-width: 72ch; line-height: 1.72; }
+.lesson-copy p + p { margin-top: 1em; }
+.lesson-copy strong { color: #214537; font-weight: 730; }
+.lesson-copy h3 + p { margin-top: .45em; }
 .course-start { border-color: #c7ded1; background: linear-gradient(135deg, #eef6f1, #fff 75%); }
 .course-start h2 + p { margin-top: 6px; }
 .worked-example {
@@ -324,7 +331,7 @@ dialog::backdrop { background: #12271f7d; backdrop-filter: blur(5px); }
   .hero .subtitle { max-width: 29ch; }
   .mobile-nav {
     display: grid; position: fixed; z-index: 6; inset: auto 6px max(8px, env(safe-area-inset-bottom)) 6px; grid-template-columns: repeat(6,minmax(0,1fr));
-    background: #fcfdfcf2; backdrop-filter: blur(16px); border: 1px solid var(--border);
+    background: #f8faf8; border: 1px solid var(--border);
     border-radius: 19px; padding: 4px; box-shadow: 0 7px 25px #18382f1f;
   }
   .mobile-nav a {
@@ -464,6 +471,32 @@ button.track-card { text-align: left; color: inherit; cursor: pointer; }
 @media (prefers-reduced-motion: no-preference) {
   .button, .track-card, .nav a, .unit { transition: background-color .17s ease, border-color .17s ease, box-shadow .17s ease; }
 }
-@media (prefers-reduced-transparency: reduce) {
-  .topbar, .mobile-nav { background: var(--panel); backdrop-filter: none; }
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .panel {
+    background: linear-gradient(151deg, #fffffff2, #f8fcf8bf);
+    border-color: #eff7f1;
+  }
+  .course-start { background: linear-gradient(135deg, #e8f3e9ee, #ffffffd9 75%); }
+  :is(.topbar, .rail, .mobile-nav, .app-menu nav, dialog) {
+    background: #f9fcf8b8;
+    -webkit-backdrop-filter: blur(22px) saturate(1.4);
+    backdrop-filter: blur(22px) saturate(1.4);
+  }
+  .topbar { box-shadow: 0 1px 0 #fff8 inset, 0 6px 18px #18382f07; }
+  .rail { box-shadow: 1px 0 0 #fff8 inset; }
+  .mobile-nav { border-color: #ffffffdf; box-shadow: 0 1px 1px #fff inset, 0 12px 35px #18382f28; }
 }
+@media (prefers-reduced-transparency: reduce), (forced-colors: active) {
+  :is(.panel, .topbar, .rail, .mobile-nav, .app-menu nav, dialog) {
+    background: var(--panel); border-color: var(--border);
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+  }
+  dialog::backdrop { backdrop-filter: none; }
+}
+.reminder-days { margin: 0; padding: 0; border: 0; }
+.reminder-days legend { font-weight: 690; margin-bottom: .55rem; }
+.reminder-day { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; min-height: 44px; border: 1px solid var(--border); border-radius: 12px; cursor: pointer; }
+.reminder-day:has(:checked) { background: var(--green); border-color: #90b2a0; }
+.reminder-day input { accent-color: var(--evergreen); width: 16px; height: 16px; }
+.reminder-time-controls { display: flex; gap: 9px; align-items: center; flex-wrap: wrap; }
+.reminder-time-controls input { width: min(100%, 11rem); }

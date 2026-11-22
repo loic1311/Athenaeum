@@ -1,5 +1,5 @@
-import { TRACKS, makePool, practiceBalance, practiceQuestions, practiceTopic, recentPractice } from './learning.js?v=13r5';
-import { practiceDifficulty, preferredDifficulty, startingDifficulty } from './practice.js?v=13r5';
+import { TRACKS, makePool, practiceBalance, practiceQuestions, practiceTopic, recentPractice } from './learning.js?v=13r6';
+import { practiceDifficulty, preferredDifficulty, startingDifficulty } from './practice.js?v=13r6';
 
 export const PACE = {
   8: { units: 1, recall: 1, guided: 1, practice: 2, transfer: 1, exit: 1, reading: 3 },
@@ -243,28 +243,45 @@ export function advanceDay(plan, stepId, result) {
   return { ...plan, cursor, results, completed, stages };
 }
 
-function omitAnswer(text, answer) {
-  if (!text || !answer || answer.length < 2) return String(text ?? '').slice(0, 300);
-  const clean = answer.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return String(text).replace(new RegExp(clean,'giu'), '…').slice(0, 300);
-}
+const approaches = {
+  choice: [
+    'Formuleer eerst in je eigen woorden wat de vraag van je vraagt. Lees dan alle opties en streep voor jezelf de opties weg die een ander probleem beantwoorden.',
+    'Vergelijk de opties die overblijven op hun onderwerp, reikwijdte of voorwaarden. Kies de formulering die volledig wordt gesteund door de opgave.',
+  ],
+  fill: [
+    'Lees eerst de hele zin. Bepaal of je een begrip, een getal of een grammaticale vorm nodig hebt.',
+    'Lees de zin opnieuw met je eigen voorstel. Controleer of het voorstel klopt met wat vóór en na de lege plaats staat.',
+  ],
+  card: [
+    'Bedenk eerst een kernzin waarin je het begrip of de uitdrukking in je eigen woorden beschrijft.',
+    'Als je vastloopt, denk dan aan een situatie waarin je het begrip zou gebruiken. Benoem welk kenmerk daar belangrijk is.',
+  ],
+  open: [
+    'Splits de opdracht op in deelvragen. Begin met een korte kernzin en maak daarna duidelijk hoe je tot je antwoord komt.',
+    'Controleer of elke zin iets toevoegt. Gebruik een concreet gegeven uit de opgave wanneer je een oordeel of voorstel moet motiveren.',
+  ],
+  listen: [
+    'Luister eerst naar de zin als geheel en bepaal waar hij over gaat.',
+    'Speel de zin opnieuw af en luister naar de woordgrenzen. Controleer bij het typen ook kleine woorden en uitgangen.',
+  ],
+  match: [
+    'Begin bij een combinatie waarover je vrij zeker bent. Vergelijk daarna de betekenissen die nog overblijven.',
+    'Let op het verschil tussen gelijkaardige opties. Geef elke combinatie een plaats voordat je alles controleert.',
+  ],
+  order: [
+    'Lees alle bouwstenen. Bepaal welk verband ertussen moet staan voordat je iets verplaatst.',
+    'Lees de voorlopige volgorde als één geheel. Controleer of elke overgang klopt met de zin of de gedachtegang.',
+  ],
+};
 
-export function tipsFor(q) {
-  const approach = {
-    choice: 'Zoek het belangrijkste woord in de vraag. Kijk welke optie daar het best bij past.',
-    fill: 'Bepaal welk soort woord, begrip of getal ontbreekt. Lees daarna de volledige zin opnieuw.',
-    card: 'Bedenk één kernzin. Voeg een voorbeeld toe als de vraag daarom vraagt.',
-    open: 'Splits de opdracht op. Formuleer een korte stelling en voeg een reden, voorbeeld of bron toe.',
-    listen: 'Luister eerst naar de betekenis. Speel de zin opnieuw af en let op de grenzen tussen de woorden.',
-    match: 'Begin bij de regel die je het makkelijkst vindt. Zoek een woord dat je keuze ondersteunt.',
-    order: 'Bepaal eerst welke stap of welk taalblok aan het begin hoort.',
-  }[q.kind];
-  const clue = q.kind === 'choice' ? 'Je kunt deze optie schrappen: ' + (q.options?.find(v => v !== q.answer) ?? 'kijk opnieuw naar de context.') :
-    q.kind === 'match' ? 'Vergelijk ‘' + q.pairs[0].prompt + '’ met de mogelijke betekenissen of omschrijvingen.' :
-    q.kind === 'order' ? 'Begin met ‘' + q.parts[0] + '’.' :
-    q.criteria?.length ? omitAnswer(q.criteria[0],q.answer) :
-      q.kind === 'fill' || q.kind === 'listen' ? 'Het antwoord begint met ‘' + String(q.answer).trim().charAt(0) + '’. Denk verder aan de context.' :
-        'Denk aan de les ‘' + q.title + '’ en hoe dit begrip daar wordt uitgelegd.';
-  const context = q.explanation || q.feedback || q.criteria?.at(-1) || q.title;
-  return [...new Set([q.tip ? omitAnswer(q.tip,q.answer) : approach, clue, context].filter(Boolean))];
+export function tipsFor(question) {
+  if (question.skill === 'grammar') return [
+    'Zoek het onderwerp en het woord of zinsdeel dat de gevraagde vorm mee bepaalt. Kijk ook naar de tijd en de functie van de bijzin.',
+    'Lees daarna de hele zin met je voorstel. Controleer de vervoeging of overeenkomst en kijk of de zin de bedoelde relatie uitdrukt.',
+  ];
+  if (question.skill === 'vocabulary' && question.kind === 'fill') return [
+    'Bedenk eerst in welke situatie je het gevraagde woord zou gebruiken. Haal dan de uitdrukking op in de doeltaal.',
+    'Controleer de betekenis, het lidwoord als dat erbij hoort en de spelling. Lees je voorstel als één uitdrukking.',
+  ];
+  return approaches[question.kind] ?? [];
 }

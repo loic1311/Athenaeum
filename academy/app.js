@@ -1,22 +1,22 @@
 import { EXAM_GOALS, LEVELS, ROUTES, TRACKS, shuffled, makePool, historyOf, isCorrect, hasAccentError, quickQuestions,
-  languageQuestions, lessonQuestions, examQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=13r5';
-import { languageLessons } from './language-lessons.js?v=13r5';
+  languageQuestions, lessonQuestions, examQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=13r6';
+import { languageLessons } from './language-lessons.js?v=13r6';
 import { isLanguageTopic, LANGUAGE_SKILLS } from './language-topics.js?v=13r1';
 import { record, readRecords, storeRecords, forgetRecords, backups, syncLearning, clearCloudLearning } from './storage.js';
-import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=13r5';
+import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=13r6';
 import { authenticate, authMessage, makeGuest } from './cloud.js?v=13r2';
-import * as view from './views.js?v=13r5';
-import { PACE, DAY_FOCI, STAGES, dayKey, archivedPlans, planDay, advanceDay, drillQuestions, tipsFor } from './daily.js?v=13r5';
-import { checkSelection, completeSelection, practiceOptions, workedExample } from './practice.js?v=13r5';
-import { dailyPage } from './daily-view.js?v=13r5';
+import * as view from './views.js?v=13r6';
+import { PACE, DAY_FOCI, STAGES, dayKey, archivedPlans, planDay, advanceDay, drillQuestions, tipsFor } from './daily.js?v=13r6';
+import { checkSelection, completeSelection, practiceOptions, sequencePractice } from './practice.js?v=13r6';
+import { dailyPage } from './daily-view.js?v=13r6';
 import { findCases, findStudies, lessonSourceIndex, passageMatches, caseWitness, researchPage, researchMarkdown, RESEARCH_TABS,
-  evidencePreview } from './research.js?v=13r5';
+  evidencePreview } from './research.js?v=13r6';
 import { addResearchMaterial, comparisonFromForm, evidenceList, validComparison, MAX_COMPARISON_ROWS } from './research-data.js?v=13r1';
-import { readResearchFile } from './research-import.js?v=13r5';
-import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=13r5';
-import { searchLessons } from './lesson-search.js?v=13r5';
-import { countsAsPractice, isStudyDay, streakStatus, studyRecordId } from './streak.js?v=13r5';
-import { preparePush, pushPreference, pushSupport, savePush, stopPush, testPush } from './notifications.js?v=13r4';
+import { readResearchFile } from './research-import.js?v=13r6';
+import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=13r6';
+import { searchLessons } from './lesson-search.js?v=13r6';
+import { countsAsPractice, isStudyDay, streakStatus, studyRecordId } from './streak.js?v=13r6';
+import { MAX_REMINDERS, readSchedule, preparePush, pushPreference, pushSupport, savePush, stopPush, testPush } from './notifications.js?v=13r6';
 
 const main = document.querySelector('#main');
 const pageContent = document.querySelector('#page-content');
@@ -700,18 +700,11 @@ async function storeSession(extra = []) {
 async function startQuiz(mode, title, questions, extra = {}) {
   if (!questions.length) return;
   await requireProfile();
-  const [first] = questions;
   const formal = mode === 'exam' || mode === 'placement';
-  const lesson = formal ? null : lessonList().find(row => row.id === first.lesson);
   const started = mode === 'daily' && extra.daily.step !== 'guided';
-  const guide = !started && lesson ? {
-    topic: lesson.title === title ? '' : lesson.title,
-    explanation: String(lesson.summary ?? '').split(/\n\s*\n/)[0],
-    example: workedExample(lesson, first),
-  } : undefined;
   session = {
-    id: crypto.randomUUID(), mode, title, index: 0, response: '', answers: [], started, guide,
-    questions: questions.map(q => {
+    id: crypto.randomUUID(), mode, title, index: 0, response: '', answers: [], started,
+    questions: (formal ? questions : sequencePractice(questions)).map(q => {
       const options = practiceOptions(q);
       if (!options.length) return q.options ? { ...q, options: shuffled(q.options) } : q;
       const order = shuffled(options.map((_, index) => index));
@@ -848,13 +841,6 @@ async function answerQuestion(skip = false) {
     return;
   }
   await storeSession(rating ? studyEvents(question, answer) : []);
-  showQuiz(false);
-  main.querySelector('.feedback')?.focus();
-}
-
-async function revealCard() {
-  session.answers[session.index] = { response: (session.response ?? '').trim(), rating: null, hinted: Boolean(session.hints?.[session.index]) };
-  await storeSession();
   showQuiz(false);
   main.querySelector('.feedback')?.focus();
 }
@@ -1336,7 +1322,6 @@ const actions = {
   'submit-answer': () => answerQuestion(),
   'skip-question': () => answerQuestion(true),
   'next-question': nextQuestion,
-  'reveal': revealCard,
   'rate': rateQuestion,
   'exam-rate': rateExam,
   'remove-file': async () => {
@@ -1369,6 +1354,23 @@ const actions = {
     sessionStorage.removeItem('athenaeum_unlocked_' + leaving.id);
     dialog.close();
     jump('vandaag');
+  },
+  'push-add-time': () => {
+    const list = document.querySelector('#push-times');
+    if (!list || list.children.length >= MAX_REMINDERS) return;
+    list.insertAdjacentHTML('beforeend', view.notificationTimeRow(Number(list.dataset.next)));
+    list.dataset.next = Number(list.dataset.next) + 1;
+    list.lastElementChild.querySelector('input').focus();
+    list.closest('form').querySelector('[data-action="push-add-time"]').disabled = list.children.length >= MAX_REMINDERS;
+  },
+  'push-remove-time': id => {
+    const row = document.getElementById('reminder-time-' + id)?.closest('.reminder-time');
+    if (!row) return;
+    const list = row.parentElement;
+    const add = list.closest('form').querySelector('[data-action="push-add-time"]');
+    row.remove();
+    add.disabled = false;
+    add.focus();
   },
   'push-retry': () => { notifications = undefined; render(false); },
   'push-test': async () => {
@@ -1542,13 +1544,13 @@ document.addEventListener('submit', event => {
   }
   if (form.id === 'push-form') {
     event.preventDefault();
-    const count = Number(new FormData(form).get('frequency'));
+    const fields = new FormData(form);
     const { setup, pid } = notifications;
     const submit = event.submitter;
     run(async () => {
       if (submit) submit.disabled = true;
       try {
-        await savePush(pid, setup, count);
+        await savePush(pid, setup, readSchedule(fields));
         if (streakStatus(records).studiedToday) {
           const marker = marksStudy(dayKey());
           if (marker.length) await saveRows(marker);
@@ -1556,7 +1558,6 @@ document.addEventListener('submit', event => {
         render(false);
         message('Appmeldingen staan aan op dit toestel.');
       } catch (error) {
-        render(false);
         inlineMessage(document.querySelector('#push-message'), error.name === 'NotAllowedError'
           ? 'Geef Athenaeum toestemming in de meldingsinstellingen van je browser of toestel.' : error.message, true);
       } finally {

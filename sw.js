@@ -1,14 +1,14 @@
-const VERSION = 'athenaeum-learning-v1.3.4';
+const VERSION = 'athenaeum-learning-v1.3.5';
 const BASE = new URL(self.registration.scope);
 const CORE = [
   './', './index.html', './leer/', './manifest.webmanifest', './classic.html', './app.js?v=13r4', './shared/style.css',
-  './academy/style.css?v=13r4', './academy/app.js?v=13r5', './academy/views.js?v=13r5', './academy/daily.js?v=13r5', './academy/daily-view.js?v=13r5', './academy/research.js?v=13r5',
-  './academy/research-data.js?v=13r1', './academy/research-import.js?v=13r5', './academy/scriptorium.js?v=13r5',
-  './academy/practice.js?v=13r5', './academy/practice-content.js?v=13r1',
-  './academy/language-topics.js?v=13r1', './academy/language-lessons.js?v=13r5',
-  './academy/content/fr-pharmacie.js?v=13r3', './academy/content/fr-niveaux.js?v=13r5', './academy/content/it-spreken.js?v=13r1',
-  './academy/lesson-search.js?v=13r5', './academy/streak.js?v=13r5', './academy/notifications.js?v=13r4',
-  './academy/storage.js', './academy/learning.js?v=13r5', './academy/cloud.js?v=13r2', './academy/importer.js?v=13r5',
+  './academy/style.css?v=13r6', './academy/app.js?v=13r6', './academy/views.js?v=13r6', './academy/daily.js?v=13r6', './academy/daily-view.js?v=13r6', './academy/research.js?v=13r6',
+  './academy/research-data.js?v=13r1', './academy/research-import.js?v=13r6', './academy/scriptorium.js?v=13r6',
+  './academy/study-notes.js?v=13r6', './academy/practice.js?v=13r6', './academy/practice-content.js?v=13r1',
+  './academy/language-topics.js?v=13r1', './academy/language-lessons.js?v=13r6',
+  './academy/content/fr-pharmacie.js?v=13r3', './academy/content/fr-niveaux.js?v=13r5', './academy/content/it-spreken.js?v=13r6',
+  './academy/lesson-search.js?v=13r6', './academy/streak.js?v=13r6', './academy/notifications.js?v=13r6',
+  './academy/storage.js', './academy/learning.js?v=13r6', './academy/cloud.js?v=13r2', './academy/importer.js?v=13r6',
   './shared/store.js', './shared/sync.js', './assets/icons/icon-192.png', './assets/icons/icon-512.png',
   './assets/logos/athenaeum.svg', './assets/logos/athenaeum-192.png',
 ];
@@ -77,7 +77,7 @@ self.addEventListener('push', event => {
   try { payload = event.data?.json() ?? {}; } catch { /* Use the standard study reminder. */ }
   const body = typeof payload.body === 'string' ? payload.body.slice(0, 180) : 'Zin in een korte oefening? 📚';
   const kind = payload.slot === 'test' ? 'test' : 'study';
-  const slot = /^\d{4}-\d{2}-\d{2}-[123]$/.test(payload.slot) ? payload.slot : kind;
+  const slot = /^\d{4}-\d{2}-\d{2}-(?:[123]|m\d{1,4})$/.test(payload.slot) ? payload.slot : kind;
   event.waitUntil(self.registration.showNotification('Athenaeum', {
     body, tag: 'athenaeum-' + slot, icon: new URL('./assets/icons/icon-192.png', BASE).href, data: { kind },
   }));

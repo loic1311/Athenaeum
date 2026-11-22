@@ -1,9 +1,10 @@
-import { EXAM_GOALS, formatSource, KINDS, LEVELS, ROUTES, TRACKS, tally } from './learning.js?v=13r5';
-import { tipsFor } from './daily.js?v=13r5';
-import { instructionFor, PRACTICE_KINDS, practiceOptions, workedExample } from './practice.js?v=13r5';
+import { EXAM_GOALS, formatSource, KINDS, LEVELS, ROUTES, TRACKS, tally } from './learning.js?v=13r6';
+import { tipsFor } from './daily.js?v=13r6';
+import { instructionFor, PRACTICE_KINDS, PRACTICE_PHASES, practiceOptions, practicePhase, workedExample } from './practice.js?v=13r6';
 import { LANGUAGE_TOPICS, isLanguageTopic } from './language-topics.js?v=13r1';
-import { EXAM_ICE, EXAM_PASS, MAX_ICE, STARTING_ICE } from './streak.js?v=13r5';
-import { NOTIFICATION_TIMES } from './notifications.js?v=13r4';
+import { EXAM_ICE, EXAM_PASS, MAX_ICE, STARTING_ICE } from './streak.js?v=13r6';
+import { studyNotes } from './study-notes.js?v=13r6';
+import { LEGACY_TIMES, MAX_REMINDERS, REMINDER_DAYS } from './notifications.js?v=13r6';
 
 const SECTION_NAMES = {
   vandaag: ['Hodie', 'home', 'Vandaag'],
@@ -269,7 +270,7 @@ export function course(track, lessons, studied, prefs, route, search = '', topic
   return heading(TRACK_NAMES[track], model.desc, model.name, 'la') + (language ? languageLevel(track, level) : '') + `
     <section class="panel stack course-start ${language ? 'block' : ''}">
       <div><h2>${next ? esc(next.title) : 'Aan de slag'}</h2>
-        <p class="muted">${next ? 'Lees de uitleg, bekijk een uitgewerkt voorbeeld en oefen de kern in maximaal zes vragen.' :
+        <p class="muted">${next ? 'Lees de uitleg of begin met een gemengde reeks.' :
           'Kies hieronder een ander niveau of een andere leersituatie.'}</p></div>
       <div class="row">
         ${next ? '<a class="button primary" href="#les/' + esc(next.id) + '">Open les</a>' +
@@ -303,6 +304,26 @@ function languageLevel(track, level) {
   </section>`;
 }
 
+const paragraphs = text => String(text ?? '').split(/\n\s*\n/u).map(p => p.trim()).filter(Boolean);
+const sentenceBoundaries = typeof Intl.Segmenter === 'function' ? new Intl.Segmenter('nl', { granularity: 'sentence' }) : null;
+
+function emphasizedParagraph(text) {
+  const first = sentenceBoundaries?.segment(text)[Symbol.iterator]().next().value?.segment ?? text.split(/(?<=\.)\s+/u)[0];
+  return '<p><strong>' + esc(first.trimEnd()) + '</strong>' + esc(text.slice(first.trimEnd().length)) + '</p>';
+}
+
+function studyParagraph(lead, text, source) {
+  return '<p><strong>' + esc(lead) + '</strong> ' + esc(text) +
+    (source ? ' ' + sourceView(source) : '') + '</p>';
+}
+
+export function lessonExplanation(lesson) {
+  const core = lesson.languageTopic ? [] : lesson.items.filter(item => typeof item.explanation === 'string').map(item =>
+    studyParagraph(item.label + '.', item.explanation, lesson.sources?.[item.source ?? (lesson.level ? -1 : 0)]));
+  return '<div class="lesson-copy">' + paragraphs(lesson.summary).map(emphasizedParagraph).join('') + core.join('') +
+    studyNotes(lesson).map(([lead, text]) => studyParagraph(lead + '.', text)).join('') + '</div>';
+}
+
 export function lessonPage(lesson) {
   if (lesson.languageTopic) return languageLessonPage(lesson);
   const courseHref = TRACKS[lesson.track].section === 'history' ? 'paideia' : 'talen';
@@ -310,7 +331,7 @@ export function lessonPage(lesson) {
     <div class="block"><br>${heading(lesson.title, '', [lesson.period, lesson.level, ROUTES[lesson.route]].filter(Boolean).join(' · '))}</div>
     <article class="panel stack">
       <h2>Uitleg</h2>
-      <div class="lesson-copy">${String(lesson.summary ?? '').split(/\n\s*\n/).filter(Boolean).map(p => '<p>' + esc(p) + '</p>').join('')}</div>
+      ${lessonExplanation(lesson)}
       ${exampleView(workedExample(lesson))}
       ${lesson.dialogue?.length ? `<div class="dialogue"><h3>Dialoog</h3>${lesson.dialogue.map((line, i) => `<div class="dialogue-line">
         <div class="row"><p lang="${esc(lesson.track)}"><strong>${esc(line.speaker)}</strong> · ${esc(line.text)}</p>
@@ -318,9 +339,6 @@ export function lessonPage(lesson) {
       </div>`).join('')}</div>` : ''}
       ${lesson.sources?.length ? `<details><summary>Bronnen</summary><div class="stack">${lesson.sources.map(sourceView).join('')}</div></details>` : ''}
     </article>
-    <section class="block"><div class="topline"><h2>Kernbegrippen</h2></div><div class="unit-list">
-      ${lesson.items.map((item, index) => `<details ${index === 0 ? 'open' : ''}><summary>${esc(item.label)}</summary><p>${esc(item.explanation)}</p>${sourceView(lesson.sources?.[item.source ?? (TRACKS[lesson.track].section !== 'language' ? 0 : -1)])}</details>`).join('')}
-    </div></section>
     <section class="panel block stack lesson-practice">
       <h2>Oefenen</h2>
       <p class="muted">Begin met korte vragen. Gebruik een tip wanneer je vastloopt en bekijk de uitleg bij elk antwoord.</p>
@@ -357,7 +375,7 @@ export function languageGrammar(lesson) {
   const { grammar } = lesson;
   if (!grammar) return '';
   return `<div class="grammar-example stack">
-    <h3>${esc(grammar.title)}</h3><p>${esc(grammar.rule)}</p>
+    <h3>${esc(grammar.title)}</h3><div class="lesson-copy">${paragraphs(grammar.rule).map(emphasizedParagraph).join('')}</div>
     <p lang="${esc(lesson.track)}"><strong>${esc(grammar.example)}</strong></p><p class="muted">${esc(grammar.translation)}</p>
     ${button('speak-grammar', 'Luister naar het voorbeeld', 'small quiet', lesson.id)}</div>`;
 }
@@ -370,27 +388,25 @@ export function languageVocabulary(lesson, limit) {
 }
 
 function languageLessonPage(lesson) {
-  const { track, id, languageTopic, dialogue } = lesson;
+  const { track, id, languageTopic } = lesson;
   return `<p class="back-link"><a class="text-link" href="#talen/${track}/${esc(languageTopic)}">
     ${esc(LANGUAGE_TOPICS[track][languageTopic].title)}</a></p>` +
-    heading(lesson.title, lesson.summary, TRACKS[track].name + ' · ' + lesson.level) + `
-    <section class="panel course-start row language-actions" aria-label="Oefenen">
-      ${button('language-practice', 'Woordenschat oefenen', 'primary', id + '/vocabulary')}
-      ${button('language-practice', 'Grammatica oefenen', '', id + '/grammar')}
-      ${button('language-practice', track === 'it' ? 'Spreken en zinnen maken' : 'Zinnen maken', '', id + '/sentence')}
-    </section>
+    heading(lesson.title, '', TRACKS[track].name + ' · ' + lesson.level) + `
+    <article class="panel stack"><h2>Uitleg</h2>${lessonExplanation(lesson)}</article>
     <div class="language-lesson-grid block">
       <section class="panel stack"><h2>Woordenschat</h2>${languageVocabulary(lesson)}</section>
       <div class="stack language-lesson-aside">
         <section class="panel stack"><h2>Grammatica</h2>${languageGrammar(lesson)}</section>
-        <section class="panel stack"><h2>In gesprek</h2>
-          ${dialogue.map((line, i) => `<div class="dialogue-line stack"><p lang="${esc(track)}"><strong>${esc(line.text)}</strong></p>
-            <p class="muted">${esc(line.translation)}</p>
-            <div>${button('speak-line', 'Luister', 'small quiet', id + '/' + i)}</div></div>`).join('')}
-        </section>
-        ${lesson.sources.length ? `<section class="panel stack"><h2>Bron</h2>${lesson.sources.map(sourceView).join('')}</section>` : ''}
+        ${lesson.sources.length ? `<section class="panel stack"><h2>Bronnen</h2>${lesson.sources.map(sourceView).join('')}</section>` : ''}
       </div>
-    </div>`;
+    </div>
+    <section class="panel block stack" aria-label="Oefenen"><h2>Oefenen</h2>
+      <div class="row language-actions">
+        ${button('language-practice', 'Woordenschat oefenen', 'primary', id + '/vocabulary')}
+        ${button('language-practice', 'Grammatica oefenen', '', id + '/grammar')}
+        ${button('language-practice', track === 'it' ? 'Spreken en zinnen maken' : 'Zinnen maken', '', id + '/sentence')}
+      </div>
+    </section>`;
 }
 
 export function exampleView(example) {
@@ -443,25 +459,37 @@ export function progressPage(info) {
     </section><section class="block"><div class="topline"><h2>Recente sessies</h2></div>${outcomes(info.results, 'Je eerste afgeronde sessie verschijnt hier.')}</section>`;
 }
 
+const SET_APPROACH = [
+  'Lees de vraag en bepaal wat je moet herkennen. Vergelijk daarna de opties aan de hand van de opgave.',
+  'Probeer het begrip of de vorm eerst zelf op te halen. Controleer of je voorstel past in de volledige zin of situatie.',
+  'Verbind het begrip met de informatie in de opgave. Let op wat verandert wanneer de situatie of de volgorde verandert.',
+  'Begin met je belangrijkste gedachte. Voeg een concreet gegeven, een reden of een passende vervolgzin toe.',
+];
+
+function practiceTitle(session) {
+  if (session.mode === 'daily' || session.mode === 'exam' || session.mode === 'placement') return session.title;
+  if (session.mode === 'quick') return 'Sneloefening';
+  return session.track ? 'Oefenreeks · ' + TRACKS[session.track].name : 'Oefenreeks';
+}
+
 export function quizIntro(session) {
   const placement = session.mode === 'placement';
   const exam = session.mode === 'exam';
   const count = session.questions.length;
-  const { topic, explanation, example } = session.guide ?? {};
+  const phases = [...new Set(session.questions.map(practicePhase))].sort((a, b) => a - b);
   const description = placement
     ? 'Je begint op A1. De vragen gaan omhoog tot je een niveau nog moeilijk vindt. Je krijgt een startadvies en kiest zelf je niveau.'
     : exam ? 'Lees elke vraag rustig. Een open antwoord kun je na afloop beoordelen met de uitwerking en de criteria.'
-      : 'Bekijk het voorbeeld. Daarna ga je zelf aan de slag met tips en uitleg bij je antwoorden.';
+      : 'Werk de vragen op je eigen tempo af. Je kunt tijdens het oefenen een tip over de aanpak openen.';
   return `<div class="quiz"><section class="panel stack quiz-intro" aria-labelledby="quiz-title">
     <p class="eyebrow">Voor je begint</p>
-    <div><h1 id="quiz-title">${esc(session.title)}</h1><p class="muted">${description}</p></div>
+    <div><h1 id="quiz-title">${esc(practiceTitle(session))}</h1><p class="muted">${description}</p></div>
     <div class="row"><span class="chip">${placement ? 'Maximaal ' : ''}${count} ${count === 1 ? 'vraag' : 'vragen'}</span>
       ${exam ? '<span class="chip">' + esc(session.duration) + ' minuten</span>' :
         placement ? '<span class="chip">Lezen en invullen</span>' : '<span class="chip">Op eigen tempo</span>'}</div>
     ${exam ? '<p>De tijd begint wanneer je op Start toets drukt. Na afloop kun je alle antwoorden bekijken.</p>' : ''}
-    ${(topic || explanation) && !exam && !placement ? '<div class="stack">' + (topic ? '<h2>' + esc(topic) + '</h2>' : '') +
-      (explanation ? '<p>' + esc(explanation) + '</p>' : '') + '</div>' : ''}
-    ${exampleView(example)}
+    ${!exam && !placement ? '<div class="lesson-copy">' +
+      phases.map(phase => studyParagraph(PRACTICE_PHASES[phase] + '.', SET_APPROACH[phase])).join('') + '</div>' : ''}
     <div class="row intro-actions">${button('quiz-start', exam ? 'Start toets' : placement ? 'Start instaptest' : 'Start oefenen', 'primary')}
       ${button('pause', 'Later verder', 'quiet')}</div>
   </section></div>`;
@@ -514,13 +542,12 @@ export function quizPage(session) {
   const hints = formal ? [] : tipsFor(q);
   const visibleHints = session.hints?.[index] || 0;
   return `<div class="quiz">
-    <div class="quiz-top"><div><p class="eyebrow">${esc(session.title)}</p><span class="quiz-count">Vraag ${index + 1} van ${count}</span></div>
+    <div class="quiz-top"><div><p class="eyebrow">${esc(practiceTitle(session))}</p><span class="quiz-count">Vraag ${index + 1} van ${count}</span></div>
       <div class="row">${session.deadline ? '<span class="chip quiz-timer" id="timer"></span>' : ''}${button('pause', 'Pauzeren', 'small quiet')}</div></div>
     <div class="progress" role="progressbar" aria-label="Sessievoortgang" aria-valuenow="${index + 1}" aria-valuemin="0" aria-valuemax="${count}">
       <div style="width:${(index + Number(!!answered)) / count * 100}%"></div></div>
     <div class="panel question stack">
-      <div>${!formal && q.title && q.title !== session.title ? '<p class="muted small-text quiz-topic">' + esc(q.title) + '</p>' : ''}
-        <span class="chip">${format}</span><h1${q.promptLanguage ? ' lang="' + esc(q.promptLanguage) + '"' : ''}>${esc(q.text)}</h1></div>
+      <div><span class="chip">${formal ? format : PRACTICE_PHASES[practicePhase(q)] + ' · ' + format}</span><h1${q.promptLanguage ? ' lang="' + esc(q.promptLanguage) + '"' : ''}>${esc(q.text)}</h1></div>
       ${q.context ? '<p class="question-context"' + (q.promptLanguage ? ' lang="' + esc(q.promptLanguage) + '"' : '') + '>' + esc(q.context) + '</p>' : ''}
       ${!answered && !formal ? '<p class="question-instruction">' + esc(typeOrder ? 'Typ de volledige zin.' : instructionFor(q)) + '</p>' : ''}
       ${!answered && q.audioPrompt ? `<div class="spoken-prompt stack">
@@ -546,13 +573,12 @@ export function quizPage(session) {
         ${visibleHints ? '<ol class="hint-list" tabindex="-1" aria-label="Tips bij deze vraag">' + hints.slice(0, visibleHints).map(h => '<li>' + esc(h) + '</li>').join('') + '</ol>' : ''}
         ${visibleHints < hints.length ? '<div class="row">' +
           (visibleHints < hints.length - 1 ? button('hint', visibleHints ? 'Een tweede tip' : 'Geef een tip', 'small quiet') : '') +
-          button('hint', 'Bekijk uitleg', 'small quiet', 'full') + '</div>' : ''}
+          button('hint', 'Bekijk de aanpak', 'small quiet', 'full') + '</div>' : ''}
       </div>` : ''}
       ${answered && !formal ? answerFeedback(q, answered) : ''}
       <div class="quiz-actions">
         ${formal ? button('skip-question', 'Overslaan', 'quiet') + button('submit-answer', index + 1 === count ? 'Indienen' : 'Volgende vraag', 'primary') : ''}
-        ${!formal && !answered ? (isCard ? button('reveal', 'Bekijk de uitwerking', 'quiet') :
-          button('skip-question', 'Bekijk de uitwerking', 'quiet')) +
+        ${!formal && !answered ? button('skip-question', 'Sla over en bekijk uitwerking', 'quiet') +
           button('submit-answer', q.kind === 'open' || isCard ? 'Vergelijk mijn antwoord' : 'Controleer', 'primary') : ''}
         ${!formal && answered && !answered.rating ? (q.kind === 'open' || isCard ?
           button('rate', 'Nog oefenen', '', 'again') +
@@ -564,7 +590,7 @@ export function quizPage(session) {
 }
 
 function answerFeedback(q, answer, result = '') {
-  const feedback = q.feedback || q.explanation;
+  const feedback = [...new Set([q.feedback, q.explanation].filter(text => text && text !== q.answer))];
   const matches = q.kind === 'match';
   return `<div class="feedback stack ${answer.rating === 'again' ? 'again' : ''}" tabindex="-1" role="status">
     <h3>${answer.rating === 'again' ? 'Bekijk de uitwerking' : answer.rating === 'help' ? 'Goed met hulp' : answer.rating ? 'Goed' : 'Modelantwoord'}</h3>
@@ -576,7 +602,8 @@ function answerFeedback(q, answer, result = '') {
         ${sourceView(pair.source)}</li>`;
     }).join('')}</ul>` : '<p class="model-answer">' + esc(q.answer) + '</p>'}
     ${!matches && answer.rating === 'again' && answer.response ? '<p class="small-text">Jouw antwoord · ' + esc(answer.response) + '</p>' : ''}
-    ${!matches && feedback && feedback !== q.answer ? '<div><h3>Uitleg</h3><p>' + esc(feedback) + '</p></div>' : ''}
+    ${!matches && feedback.length ? '<div class="lesson-copy"><h3>Uitleg</h3>' +
+      feedback.flatMap(paragraphs).map(emphasizedParagraph).join('') + '</div>' : ''}
     ${q.criteria?.length ? '<div><h3>Waarop let je?</h3><ul>' + q.criteria.map(text => '<li>' + esc(text) + '</li>').join('') + '</ul></div>' : ''}
     ${matches ? '' : sourceView(q.source)}${q.audio ?
       button(result ? 'result-listen' : 'listen', 'Luister naar het antwoord', 'small quiet', result) : ''}
@@ -713,6 +740,13 @@ export function settings(info) {
     <section class="block"><a class="text-link" href="${classic}">Athenaeum Classicum · Klassieke omgeving</a></section>`;
 }
 
+export function notificationTimeRow(id, time = '') {
+  return '<div class="reminder-time field">' +
+    '<label for="reminder-time-' + id + '">Tijdstip</label>' +
+    '<div class="reminder-time-controls"><input id="reminder-time-' + id + '" type="time" name="reminder-time" value="' +
+      esc(time) + '" required>' + button('push-remove-time', 'Verwijder', 'quiet', id) + '</div></div>';
+}
+
 export function notificationsPage(info) {
   const active = info.setup?.subscription && info.preference;
   let controls;
@@ -730,24 +764,41 @@ export function notificationsPage(info) {
     controls = `<p>De meldingsinstellingen konden niet worden geladen.</p><div>${button('push-retry', 'Opnieuw proberen', 'primary')}</div>`;
   } else if (!info.setup) {
     controls = '<p role="status">Meldingen voorbereiden…</p>';
-  } else {
+  } else if (!info.setup.customSchedule) {
     controls = `<form id="push-form" class="stack">
       <div class="field"><label for="push-frequency">Hoe vaak per dag?</label>
-        <select id="push-frequency" name="frequency">${[1, 2, 3].map(count => {
-          const times = NOTIFICATION_TIMES.slice(-count).join(' · ');
-          return `<option value="${count}" ${count === (info.preference?.count ?? 3) ? 'selected' : ''}>${count}× · ${times} uur</option>`;
-        }).join('')}</select>
+        <select id="push-frequency" name="frequency">${[1, 2, 3].map(count =>
+          '<option value="' + count + '"' + (count === (info.preference?.times.length ?? 3) ? ' selected' : '') +
+          '>' + count + '× · ' + LEGACY_TIMES.slice(-count).join(' · ') + '</option>').join('')}</select>
       </div>
-      <div class="row"><button type="submit" class="button primary">${active ? 'Bewaar voorkeur' : 'Zet appmeldingen aan'}</button></div>
-    </form>${active ? `<p class="small-text muted">Appmeldingen staan aan op dit toestel.</p><div class="row">
-      ${button('push-test', 'Stuur een testmelding', 'quiet')}${button('push-off', 'Zet uit op dit toestel', 'quiet')}
-    </div>` : ''}`;
+      <div><button type="submit" class="button primary">${active ? 'Bewaar voorkeur' : 'Zet appmeldingen aan'}</button></div>
+    </form>`;
+  } else {
+    const times = info.preference?.times ?? [''];
+    const days = info.preference?.days;
+    controls = `<form id="push-form" class="stack">
+      <fieldset class="reminder-days"><legend>Dagen</legend>
+        <div class="row">${REMINDER_DAYS.map((label, index) => `<label class="reminder-day">
+          <input type="checkbox" name="reminder-day" value="${index + 1}" ${!days || days.includes(index + 1) ? 'checked' : ''}>
+          <span>${label}</span></label>`).join('')}</div>
+      </fieldset>
+      <div class="stack">
+        <div><h3>Tijdstippen</h3><p class="muted small-text">Voeg een tijdstip toe voor elke melding die je op deze dagen wilt krijgen.</p></div>
+        <div id="push-times" class="stack" data-next="${times.length}">${times.map((time, index) => notificationTimeRow(index, time)).join('')}</div>
+        <div><button class="button quiet" type="button" data-action="push-add-time" ${times.length >= MAX_REMINDERS ? 'disabled' : ''}>Tijdstip toevoegen</button></div>
+      </div>
+      <div class="row"><button type="submit" class="button primary">${active ? 'Bewaar planning' : 'Zet appmeldingen aan'}</button></div>
+    </form>`;
   }
+  if (info.setup && active && info.online && info.support === 'available') controls += `<p class="small-text muted">Appmeldingen staan aan op dit toestel.</p>
+    <div class="row">${button('push-test', 'Stuur een testmelding', 'quiet')}${button('push-off', 'Zet uit op dit toestel', 'quiet')}</div>`;
+  const description = info.setup?.customSchedule === false ? 'Kies hoeveel appmeldingen je op dit toestel wilt krijgen.' :
+    'Kies de dagen, tijden en het aantal appmeldingen op dit toestel.';
   return '<p class="back-link"><a class="text-link" href="#meer">Terug naar Optiones</a></p>' +
-    sectionHeading('meldingen', 'Kies hoeveel appmeldingen je op dit toestel wilt krijgen.') + `
+    sectionHeading('meldingen', description) + `
     <section class="panel stack notifications-panel">
       <h2>Studieherinneringen</h2>
-      <p class="muted">Op dagen zonder afgeronde oefening krijg je speelse herinneringen op de lokale tijd van dit toestel.</p>
+      <p class="muted">Athenaeum gebruikt de lokale tijd van dit toestel. Na je eerste afgeronde oefening stopt de planning voor die dag.</p>
       ${controls}<p id="push-message" class="notice" role="status" hidden></p>
     </section>`;
 }

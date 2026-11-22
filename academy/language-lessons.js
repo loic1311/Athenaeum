@@ -1,6 +1,6 @@
 import { frenchTopics } from './content/fr-pharmacie.js?v=13r3';
 import { frenchLevelTopics } from './content/fr-niveaux.js?v=13r5';
-import { italianTopics } from './content/it-spreken.js?v=13r1';
+import { italianTopics } from './content/it-spreken.js?v=13r6';
 
 function wordItem(entry, index, words, track) {
   const [word, meaning, accepted] = entry;
