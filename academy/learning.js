@@ -1,4 +1,4 @@
-import { practiceVariants, practiceDifficulty, preferredDifficulty, startingDifficulty } from './practice.js?v=13r6';
+import { practiceVariants, practiceDifficulty, preferredDifficulty, startingDifficulty } from './practice.js?v=13r8';
 
 export const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1'];
 export const ROUTES = {
@@ -6,9 +6,11 @@ export const ROUTES = {
   winkel: 'In de winkel', cafe: 'Op café', gesprek: 'Gesprekken', onderweg: 'Onderweg', afspraak: 'Afspraken',
 };
 export const TRACKS = {
-  greek: { name: 'Griekse oudheid', icon: 'greek', section: 'history', desc: 'Van de archaïsche polis tot Griekse steden onder Romeins gezag.' },
-  roman: { name: 'Romeinse oudheid', icon: 'roman', section: 'history', desc: 'Republiek, Rijk, samenleving en de manier waarop we die kennen.' },
-  history: { name: 'Algemene geschiedenis', icon: 'globe', section: 'history', desc: 'Grote veranderingen en verbanden door de eeuwen heen.' },
+  greek: { name: 'Griekse oudheid', icon: 'greek', section: 'history', desc: 'Van de Egeïsche paleizen via de polis tot de hellenistische koninkrijken.' },
+  roman: { name: 'Romeinse oudheid', icon: 'roman', section: 'history', desc: 'Van stad en republiek tot keizerrijk, provincies en late oudheid.' },
+  medieval: { name: 'Middeleeuwen', icon: 'castle', section: 'history', desc: 'Van de erfgenamen van Rome en de kalifaten tot stedelijke groei, handel en de pest.' },
+  earlymodern: { name: 'Vroegmoderne tijd', icon: 'compass', section: 'history', desc: 'Oceaanhandel, reformaties, de Lage Landen, wereldrijken en revoluties.' },
+  history: { name: 'Algemene geschiedenis', icon: 'globe', section: 'history', desc: 'Van de eerste steden via industrialisering en wereldrijken tot dekolonisatie.' },
   knowledge: { name: 'Algemene kennis', icon: 'knowledge', section: 'history', desc: 'Begrippen om cijfers, nieuws en de wereld beter te begrijpen.' },
   it: { name: 'Italiaans', icon: 'italian', section: 'language', lang: 'it-IT', desc: 'Leer woorden en grammatica waarmee je zelf kunt spreken en zinnen maken.' },
   fr: { name: 'Frans', icon: 'french', section: 'language', lang: 'fr-FR', desc: 'Frans voor het labo, de apotheek, de campus en het dagelijks leven.' },

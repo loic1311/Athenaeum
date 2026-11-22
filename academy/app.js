@@ -1,21 +1,24 @@
 import { EXAM_GOALS, LEVELS, ROUTES, TRACKS, shuffled, makePool, historyOf, isCorrect, hasAccentError, quickQuestions,
-  languageQuestions, lessonQuestions, examQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=13r6';
+  languageQuestions, lessonQuestions, examQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=13r8';
 import { languageLessons } from './language-lessons.js?v=13r6';
+import { historicalLessons } from './history-curriculum.js?v=13r8';
+import { belongsToHistoryTrack, chronologicalLessons, chronologyForLesson, chronologyYear, HISTORICAL_TRACKS,
+  historyLessonHref, historyReadId, timelineMode, timelineScope } from './history-chronology.js?v=13r8';
 import { isLanguageTopic, LANGUAGE_SKILLS } from './language-topics.js?v=13r1';
 import { record, readRecords, storeRecords, forgetRecords, backups, syncLearning, clearCloudLearning } from './storage.js';
-import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=13r6';
+import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=13r8';
 import { authenticate, authMessage, makeGuest } from './cloud.js?v=13r2';
-import * as view from './views.js?v=13r6';
-import { PACE, DAY_FOCI, STAGES, dayKey, archivedPlans, planDay, advanceDay, drillQuestions, tipsFor } from './daily.js?v=13r6';
-import { checkSelection, completeSelection, practiceOptions, sequencePractice } from './practice.js?v=13r6';
-import { dailyPage } from './daily-view.js?v=13r6';
+import * as view from './views.js?v=13r8';
+import { PACE, DAY_FOCI, STAGES, dayKey, archivedPlans, planDay, advanceDay, drillQuestions, tipsFor } from './daily.js?v=13r8';
+import { checkSelection, completeSelection, practiceOptions, sequencePractice } from './practice.js?v=13r8';
+import { dailyPage } from './daily-view.js?v=13r8';
 import { findCases, findStudies, lessonSourceIndex, passageMatches, caseWitness, researchPage, researchMarkdown, RESEARCH_TABS,
-  evidencePreview } from './research.js?v=13r6';
+  evidencePreview } from './research.js?v=13r8';
 import { addResearchMaterial, comparisonFromForm, evidenceList, validComparison, MAX_COMPARISON_ROWS } from './research-data.js?v=13r1';
-import { readResearchFile } from './research-import.js?v=13r6';
-import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=13r6';
-import { searchLessons } from './lesson-search.js?v=13r6';
-import { countsAsPractice, isStudyDay, streakStatus, studyRecordId } from './streak.js?v=13r6';
+import { readResearchFile } from './research-import.js?v=13r8';
+import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=13r8';
+import { searchLessons } from './lesson-search.js?v=13r8';
+import { countsAsPractice, isStudyDay, streakStatus, studyRecordId } from './streak.js?v=13r8';
 import { MAX_REMINDERS, readSchedule, preparePush, pushPreference, pushSupport, savePush, stopPush, testPush } from './notifications.js?v=13r6';
 
 const main = document.querySelector('#main');
@@ -25,6 +28,7 @@ const status = document.querySelector('#status');
 const store = window.AthStore;
 const sync = window.AthSync;
 const contentKeys = Object.keys(TRACKS);
+const jsonTracks = ['greek', 'roman', 'history', 'knowledge', 'it', 'fr'];
 let profile = null;
 let seed = [];
 let contentErrors = [];
@@ -59,6 +63,11 @@ const connection = () => navigator.onLine;
 const activeSession = () => records.filter(row => row.kind === 'draft' && row.data?.session && !row.data.finished)
   .sort((a, b) => b.at - a.at)[0]?.data.session;
 const lessonList = () => [...seed, ...records.filter(x => x.kind === 'deck' && !x.data.deleted && validDeck(x.data)).map(x => x.data)];
+const isHistoryRead = row => row.kind === 'prefs' && row.data?.name === 'history-read' &&
+  typeof row.data.lesson === 'string' && /^[a-z0-9-]{1,100}$/i.test(row.data.lesson) &&
+  row.id === historyReadId(row.data.lesson) && typeof row.data.value === 'boolean';
+const readLessons = () => new Set(records.filter(row => isHistoryRead(row) && row.data.value).map(row => row.data.lesson));
+
 function prefs() {
   return Object.fromEntries(records.filter(row => row.kind === 'prefs' && row.data
     && ((['it', 'fr'].includes(row.data.name) && LEVELS.includes(row.data.value))
@@ -160,7 +169,8 @@ function overview(lessons = lessonList()) {
 }
 
 function render(focus = true) {
-  const [page = 'vandaag', key = '', tab = '', tabKey = ''] = route();
+  const path = route();
+  const [page = 'vandaag', key = '', tab = '', tabKey = ''] = path;
   const section = page || 'vandaag';
   const lessons = lessonList();
   const info = overview(lessons);
@@ -194,12 +204,21 @@ function render(focus = true) {
       break;
     case 'paideia':
     case 'talen':
-      markup = contentKeys.includes(key) ? view.course(key, lessons, info.studied, info.prefs, routeFilter, courseFind, tab) : view.catalogue(section, lessons);
+      if (section === 'paideia' && key === 'chronologie') {
+        markup = view.timelinePage(lessons, info.studied, readLessons(), timelineScope(tab), timelineMode(tabKey));
+      } else {
+        markup = contentKeys.includes(key)
+          ? view.course(key, lessons, info.studied, info.prefs, routeFilter, courseFind, tab, readLessons())
+          : view.catalogue(section, lessons);
+      }
       break;
     case 'les': {
       const lesson = lessons.find(row => row.id === key);
       top = TRACKS[lesson?.track]?.section === 'language' ? 'talen' : 'paideia';
-      markup = lesson ? view.lessonPage(lesson) : view.heading('Les openen') + '<p class="empty">Deze les is op dit moment niet beschikbaar.</p>';
+      markup = lesson ? view.lessonPage(lesson, {
+        journey: chronologyForLesson(lessons, lesson, path),
+        read: readLessons().has(lesson.id), lessons,
+      }) : view.heading('Les openen') + '<p class="empty">Deze les is op dit moment niet beschikbaar.</p>';
       break;
     }
     case 'scriptorium':
@@ -408,6 +427,13 @@ function jump(page) {
   else location.hash = page;
 }
 
+function lessonBack(id) {
+  const [section, key, view, scope, mode] = route();
+  return section === 'les' && key === id && view === 'chronologie'
+    ? historyLessonHref(id, scope, mode)
+    : 'les/' + encodeURIComponent(id);
+}
+
 function showLessonMatches(lessons = lessonList()) {
   clearTimeout(lessonSearchTimer);
   const field = document.querySelector('#lesson-query');
@@ -435,7 +461,7 @@ function relevantPool(track) {
   const onCourse = track === course && ['paideia', 'talen'].includes(section);
   const topic = onCourse && isLanguageTopic(track, tab) ? tab : '';
   const situation = onCourse && !topic ? routeFilter : '';
-  return makePool(lessonList().filter(lesson => (!track || lesson.track === track) &&
+  return makePool(lessonList().filter(lesson => (!track || belongsToHistoryTrack(lesson, track)) &&
     (!topic || lesson.languageTopic === topic) && (!situation || lesson.route === situation) &&
     (track || saved['quick-' + lesson.track] !== false) && levelFor(lesson, saved)));
 }
@@ -641,7 +667,7 @@ async function createDay(form) {
     const chosen = prefs();
     const eligible = lessonList().filter(lesson => levelFor(lesson,chosen) &&
       (focus === 'mix' ? chosen['quick-' + lesson.track] !== false :
-        focus === 'ancient' ? ['greek','roman'].includes(lesson.track) : lesson.track === focus));
+        focus === 'ancient' ? ['greek','roman'].includes(lesson.track) : belongsToHistoryTrack(lesson, focus)));
     const plan = planDay(eligible, reviews(), archivedPlans(records), { date, minutes, focus, noAudio: !languageSupport(), learner: p.id });
     if (!plan) throw new Error('Voor deze keuze zijn geen lessen geladen. Probeer een ander leerpad.');
     await saveRows([record('draft','daily-' + date,{daily:plan},now())]);
@@ -684,6 +710,9 @@ function filterCourses() {
     const visible = search.every(word => unit.dataset.unitSearch.includes(word));
     unit.hidden = !visible;
     if (visible) matches++;
+  }
+  for (const group of main.querySelectorAll('[data-lesson-group]')) {
+    group.hidden = !group.querySelector('[data-unit-search]:not([hidden])');
   }
   const label = main.querySelector('#lesson-count');
   if (label) label.textContent = matches + (matches === 1 ? ' les' : ' lessen');
@@ -1040,6 +1069,7 @@ async function restoreBackup(file) {
       || (row.kind === 'review' && typeof row.data.key === 'string' && ['good', 'again', 'easy', 'help'].includes(row.data.rating))
       || (row.kind === 'prefs' && ((['it','fr'].includes(row.data.name) && LEVELS.includes(row.data.value))
         || (row.data.name === 'streak-day' && isStudyDay(row.data.date) && row.id === studyRecordId(row.data.date))
+        || isHistoryRead(row)
         || (typeof row.data.name === 'string' && row.data.name.startsWith('quick-')
           && contentKeys.includes(row.data.name.slice(6)) && typeof row.data.value === 'boolean')))
       || (row.kind === 'result' && Array.isArray(row.data.questions) && Array.isArray(row.data.answers)
@@ -1163,18 +1193,38 @@ const actions = {
     const [track,length] = value.split('/');
     if (!contentKeys.includes(track) || !['5','15','30'].includes(length)) return;
     const questions = drillQuestions(relevantPool(track), reviews(), {
-      limit: Number(length), noAudio: !languageSupport(), compact: length === '5',
+      limit: Number(length), noAudio: !languageSupport(), compact: length === '5' && !HISTORICAL_TRACKS.includes(track),
     });
     if (!questions.length) throw new Error('Er zijn hier nog geen passende vragen.');
     const name = TRACKS[track].name + (TRACKS[track].section === 'language' ? ' ' + (prefs()[track] ?? 'A1') : '');
     const title = isLanguageTopic(track, route()[2]) ? 'Oefenreeks' : 'Gemengde oefenreeks';
     await startQuiz('lesson', title + ' · ' + name, questions, { track, back: route().join('/') });
   },
+  'history-read': async id => {
+    const lesson = lessonList().find(row => row.id === id);
+    if (!lesson || !HISTORICAL_TRACKS.includes(lesson.track) || !Number.isInteger(chronologyYear(lesson))) return;
+    await requireProfile();
+    const value = !readLessons().has(id);
+    await saveRows([record('prefs', historyReadId(id), { name: 'history-read', lesson: id, value }, now())]);
+    render(false);
+    main.querySelector('[data-action="history-read"]')?.focus({ preventScroll: true });
+    message(value ? 'Les gemarkeerd als gelezen.' : 'Markering verwijderd.');
+  },
+  'history-mix': async () => {
+    const core = chronologicalLessons(lessonList());
+    const { lessons: studied } = reviews();
+    const read = readLessons();
+    const familiar = core.filter(lesson => read.has(lesson.id) || studied.has(lesson.id));
+    const options = familiar.length >= 6 && new Set(familiar.map(lesson => lesson.track)).size >= 3 ? familiar : core;
+    const questions = drillQuestions(makePool(options), reviews(), { limit: 8, noAudio: true });
+    if (!questions.length) throw new Error('Er zijn momenteel geen geschiedenisvragen beschikbaar.');
+    await startQuiz('lesson', 'Geschiedenis door elkaar', questions, { back: route().join('/') });
+  },
   'lesson-more': async id => {
     const lesson = lessonList().find(row => row.id === id);
     if (!lesson) return;
     const questions = drillQuestions(makePool([lesson]), reviews(), {limit:20,noAudio:!languageSupport()});
-    await startQuiz('lesson','Uitgebreid oefenen · ' + lesson.title,questions,{track:lesson.track,back:'les/' + id});
+    await startQuiz('lesson','Uitgebreid oefenen · ' + lesson.title,questions,{track:lesson.track,back:lessonBack(id)});
   },
   'practice-again': id => {
     const result = records.find(row => row.kind === 'result' && row.id === id)?.data;
@@ -1221,9 +1271,11 @@ const actions = {
   'lesson-quiz': async id => {
     const unit = lessonList().find(x => x.id === id);
     if (!unit) return;
-    const questions = lessonQuestions(makePool([unit]), reviews(), { noAudio: !languageSupport() });
+    const pool = makePool([unit]);
+    const questions = unit.structure ? pool.flatMap(item => item.questions) :
+      lessonQuestions(pool, reviews(), { noAudio: !languageSupport() });
     if (!questions.length) throw new Error('Deze les heeft op dit toestel geen geschikte vragen.');
-    await startQuiz('lesson', unit.title, questions, { track: unit.track, back: 'les/' + id });
+    await startQuiz('lesson', unit.title, questions, { track: unit.track, back: lessonBack(id) });
   },
   'language-practice': async value => {
     const [id, skill] = value.split('/');
@@ -1683,13 +1735,13 @@ document.addEventListener('visibilitychange', () => {
 setInterval(() => { if (document.visibilityState === 'visible') scheduleSync(100); }, 55_000);
 
 async function loadContent() {
-  const results = await Promise.allSettled(contentKeys.map(async key => {
+  const results = await Promise.allSettled(jsonTracks.map(async key => {
     const url = new URL('./content/' + key + '.json?v=13r1', import.meta.url);
     const reply = await fetch(url, { signal: AbortSignal.timeout(12_000) });
     if (!reply.ok) throw new Error('Lesinhoud ontbreekt: ' + key);
     return reply.json();
   }));
-  seed = [...languageLessons, ...results.flatMap(result => result.status === 'fulfilled' ? result.value : [])];
+  seed = [...languageLessons, ...historicalLessons, ...results.flatMap(result => result.status === 'fulfilled' ? result.value : [])];
   contentErrors = results.filter(result => result.status === 'rejected');
 }
 

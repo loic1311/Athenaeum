@@ -1,7 +1,7 @@
-import { TRACKS, ROUTES } from './learning.js?v=13r6';
-import { DAY_FOCI, PACE, STAGES, dayKey } from './daily.js?v=13r6';
-import { esc, exampleView, heading, languageGrammar, languageVocabulary, lessonExplanation, sourceView } from './views.js?v=13r6';
-import { workedExample } from './practice.js?v=13r6';
+import { TRACKS, ROUTES } from './learning.js?v=13r8';
+import { DAY_FOCI, PACE, STAGES, dayKey } from './daily.js?v=13r8';
+import { esc, exampleView, heading, languageGrammar, languageVocabulary, lessonExplanation, sourceView } from './views.js?v=13r8';
+import { workedExample } from './practice.js?v=13r8';
 
 function dateName(date) {
   const value = new Date(date + 'T12:00:00');

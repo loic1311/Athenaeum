@@ -1,4 +1,4 @@
-import { dayKey } from './daily.js?v=13r6';
+import { dayKey } from './daily.js?v=13r8';
 
 const DAY = 86_400_000;
 export const STARTING_ICE = 2;

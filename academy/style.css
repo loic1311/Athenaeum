@@ -148,6 +148,8 @@ a.source:hover { color: var(--evergreen); }
 .track-icon { width: 46px; height: 46px; display: grid; place-items: center; background: #e7f2eb; color: #245644; border-radius: 13px; flex: none; font-weight: 750; }
 .track-icon.greek, .track-icon.fr { background: #e6edf5; color: #2b4b6e; }
 .track-icon.roman { background: #f4ebe3; color: #754c33; }
+.track-icon.medieval { background: #f0eddc; color: #6b542f; }
+.track-icon.earlymodern { background: #ddeff0; color: #285c61; }
 .track-icon.it { background: #e5f2e9; color: #245b45; }
 .track-icon.history { background: #eee8f0; color: #674c70; }
 .path-head { display: flex; align-items: flex-start; gap: 13px; }
@@ -222,6 +224,32 @@ textarea { resize: vertical; }
 .lesson-copy h3 + p { margin-top: .45em; }
 .course-start { border-color: #c7ded1; background: linear-gradient(135deg, #eef6f1, #fff 75%); }
 .course-start h2 + p { margin-top: 6px; }
+.history-start { margin-block-end: 1.4rem; }
+.history-dimensions { display: grid; gap: 1.05rem; }
+.history-dimension { padding-block: 1rem .1rem; border-block-start: 1px solid var(--border); }
+.history-dimension h3 { color: var(--evergreen); }
+.history-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 10px; }
+.button.history-step { min-height: 60px; display: grid; justify-content: start; justify-items: start; text-align: start; }
+.history-step span { font-size: .8rem; font-weight: 540; color: var(--muted); }
+.history-related { display: grid; gap: 6px; margin: 0; padding-inline-start: 1.25rem; }
+.timeline-options .chip { min-height: 40px; text-decoration: none; }
+.timeline-options .chip:hover { border-color: #84ab99; }
+.timeline-options .chip[aria-current="page"],
+.button[data-action="history-read"][aria-pressed="true"] { background: var(--evergreen); border-color: var(--evergreen); color: white; }
+.timeline { display: grid; gap: 1.7rem; }
+.timeline-group { border-inline-start: 2px solid #7ba7928c; padding-inline-start: clamp(12px, 2.8vw, 26px); }
+.timeline-group h2 { margin-block-end: .65rem; position: relative; font-size: 1.25rem; color: var(--evergreen); }
+.timeline-group h2::before {
+  content: ''; position: absolute; inset-inline-start: calc(-1 * clamp(12px, 2.8vw, 26px) - 6px); top: .48em;
+  width: 10px; height: 10px; border-radius: 50%; background: var(--evergreen); box-shadow: 0 0 0 3px #def0e6;
+}
+.timeline-group ol { list-style: none; margin: 0; padding: 0; }
+.timeline .unit .track-icon { width: 36px; height: 36px; border-radius: 9px; }
+@media (max-width: 530px) {
+  .timeline .unit { gap: 7px 9px; padding: 10px; }
+  .timeline .unit .track-icon { align-self: start; }
+  .timeline-options .chip { min-height: 44px; }
+}
 .worked-example {
   gap: 7px; max-width: 78ch; padding: 14px 17px; border-radius: 10px;
   border: 1px solid #d6e0d2; border-left: 4px solid #789a80; background: #edf3e9;
@@ -516,6 +544,8 @@ button.track-card { text-align: left; color: inherit; cursor: pointer; }
   }
   .track-icon.greek, .track-icon.fr { --icon-wash: #aac9df97; }
   .track-icon.roman { --icon-wash: #ddc4a58c; }
+  .track-icon.medieval { --icon-wash: #dac69591; }
+  .track-icon.earlymodern { --icon-wash: #9acfd48c; }
   .track-icon.history { --icon-wash: #ccb9d48c; }
   .mobile-nav a .icon { width: 26px; height: 26px; padding: 3px; border-radius: 8px; }
   :is(.nav a, .mobile-nav a, .app-menu nav a)[aria-current="page"] {

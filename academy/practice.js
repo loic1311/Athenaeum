@@ -74,6 +74,7 @@ function removeLabel(text, label) {
 }
 
 export function practiceVariants(lesson, language) {
+  if (lesson.structure) return lesson.items.map(() => []);
   const concepts = lesson.items.map((item, index) => {
     const example = language && translation(item);
     return {

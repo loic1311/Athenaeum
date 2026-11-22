@@ -1,14 +1,18 @@
-const VERSION = 'athenaeum-learning-v1.3.6';
+const VERSION = 'athenaeum-learning-v1.3.7';
 const BASE = new URL(self.registration.scope);
 const CORE = [
   './', './index.html', './leer/', './manifest.webmanifest', './classic.html', './app.js?v=13r4', './shared/style.css',
-  './academy/style.css?v=13r7', './academy/app.js?v=13r6', './academy/views.js?v=13r6', './academy/daily.js?v=13r6', './academy/daily-view.js?v=13r6', './academy/research.js?v=13r6',
-  './academy/research-data.js?v=13r1', './academy/research-import.js?v=13r6', './academy/scriptorium.js?v=13r6',
-  './academy/study-notes.js?v=13r6', './academy/practice.js?v=13r6', './academy/practice-content.js?v=13r1',
+  './academy/style.css?v=13r8', './academy/app.js?v=13r8', './academy/views.js?v=13r8', './academy/daily.js?v=13r8', './academy/daily-view.js?v=13r8', './academy/research.js?v=13r8',
+  './academy/research-data.js?v=13r1', './academy/research-import.js?v=13r8', './academy/scriptorium.js?v=13r8',
+  './academy/study-notes.js?v=13r6', './academy/practice.js?v=13r8', './academy/practice-content.js?v=13r1',
   './academy/language-topics.js?v=13r1', './academy/language-lessons.js?v=13r6',
   './academy/content/fr-pharmacie.js?v=13r3', './academy/content/fr-niveaux.js?v=13r5', './academy/content/it-spreken.js?v=13r6',
-  './academy/lesson-search.js?v=13r6', './academy/streak.js?v=13r6', './academy/notifications.js?v=13r6',
-  './academy/storage.js', './academy/learning.js?v=13r6', './academy/cloud.js?v=13r2', './academy/importer.js?v=13r6',
+  './academy/history-curriculum.js?v=13r8', './academy/history-chronology.js?v=13r8',
+  './academy/content/history-source.js?v=13r8', './academy/content/history-antiquity.js?v=13r8',
+  './academy/content/history-medieval.js?v=13r8', './academy/content/history-earlymodern.js?v=13r8',
+  './academy/content/history-world.js?v=13r8',
+  './academy/lesson-search.js?v=13r8', './academy/streak.js?v=13r8', './academy/notifications.js?v=13r6',
+  './academy/storage.js', './academy/learning.js?v=13r8', './academy/cloud.js?v=13r2', './academy/importer.js?v=13r8',
   './shared/store.js', './shared/sync.js', './assets/icons/icon-192.png', './assets/icons/icon-512.png',
   './assets/logos/athenaeum.svg', './assets/logos/athenaeum-192.png',
 ];

@@ -1,0 +1,148 @@
+import { choose, historyCourse, reason, worldHistory } from './history-source.js?v=13r8';
+
+const earlyCities = worldHistory(1, 'Hfst. 3, § 3.2 en 3.4, sectiesamenvatting', '3-section-summary');
+const industry = worldHistory(2, 'Hfst. 10, sectiesamenvatting', '10-section-summary');
+const imperialism = worldHistory(2, 'Hfst. 9, sectiesamenvatting', '9-section-summary');
+const war = worldHistory(2, 'Hfst. 11, sectiesamenvatting', '11-section-summary');
+const depression = worldHistory(2, 'Hfst. 12, sectiesamenvatting', '12-section-summary');
+const secondWar = worldHistory(2, 'Hfst. 13, sectiesamenvatting', '13-section-summary');
+const coldWar = worldHistory(2, 'Hfst. 14, sectiesamenvatting', '14-section-summary');
+const globalOrder = worldHistory(2, 'Hfst. 15, sectiesamenvatting', '15-section-summary');
+
+export const worldStructure = historyCourse('history', [
+  {
+    id: 'struct-wo-steden', year: -3500, period: 'Ca. 3500–1750 v.Chr.', title: 'De eerste steden, arbeidsverdeling en bestuur',
+    summary: 'In delen van Zuid-Mesopotamië en later in de Indusvallei groeiden grote vroege steden. Vergelijk opslag, ambachten, waterbeheer en organisatie. Twee samenlevingen kunnen vergelijkbare voorzieningen bouwen terwijl hun bestuursvormen verschillen en de bewaarde bronnen heel andere conclusies toelaten.',
+    sources: [earlyCities],
+    caseIds: ['mesopotamie-stad-en-schrift', 'h2-indus-steden'],
+    dimensions: [
+      ['Voedselstromen verbonden stad en ommeland', 'Een stedelijke bevolking kreeg voedsel van landbouwers en andere producenten. Opslag, distributie, uitwisseling en beheer van water ondersteunden in Zuid-Mesopotamië ruimere arbeidsverdeling. Ambachtsproducten en ingevoerde materialen tonen verbindingen over grotere afstand. Om de economische organisatie te reconstrueren, kijk je wie voedsel beheerde en hoe inwoners toegang kregen tot voorraden.'],
+      ['De stad concentreerde arbeid en verschillen in bezit', 'Ambachtslieden, bestuurders, handelaars en landbouwers hadden vaste plaatsen of rollen in wisselende netwerken. Woningen, graven en gereedschap maken verschillen in toegang tot ruimte en goederen zichtbaar. Een groot huishouden kan welstand aanduiden, maar ook een andere gezinsvorm. Vergelijk meerdere sporen voordat je een specifieke sociale rang toekent.'],
+      ['Gemeenschappelijke voorzieningen vragen coördinatie', 'Opslag en waterbeheer vragen onderhoud, besluiten en mensen die dat werk uitvoeren. In Mesopotamië geven geschreven sporen zicht op bepaalde instellingen en administratieve praktijken. In steden als Mohenjo-Daro en Harappa duiden regelmaat in bakstenen en afwatering op samenwerking of gedeelde normen. Voor een precieze bestuursvorm is aanvullend bewijs nodig.'],
+      ['Schrift, tekens en materiële standaarden hadden verschillende functies', 'Kleitabletten in Mesopotamië bewaren onder meer administratieve registraties. De tekens op Induszegels zijn nog niet overtuigend ontcijferd. Vorm, materiaal en vindplaats geven wel informatie over hun mogelijke gebruik. De onderzoeksvraag moet dus mee afhangen van welk materiaal beschikbaar is en welke functies daardoor zichtbaar worden.'],
+    ],
+    connection: ['Van landbouwproductie naar sterkere coördinatie', 'Een betrouwbaar overschot kan meer mensen vrijmaken voor ambacht of organisatie. Opslag en distributie scheppen vervolgens keuzes over wie goederen aanlevert en wie ze krijgt. Dat kan macht verschuiven naar instellingen die zulke stromen beheren. Kijk of de volgorde klopt en zoek sporen van beheer, taakverdeling en toegang tot voorraden.'],
+    tasks: [
+      choose('Materiële sporen interpreteren', 'In meerdere Indussteden worden vergelijkbare baksteenmaten gevonden. Welke gevolgtrekking is het stevigst onderbouwd?',
+        'De vondsten wijzen op gedeelde technische normen of coördinatie. Wie ze vastlegde vraagt aanvullend bewijs.',
+        ['De maat toont dat één koning alle steden bestuurde.', 'De bakstenen bevatten een leesbare wet over stadsbestuur.', 'De stenen bewijzen dat huishoudens gelijke rechten hadden.'],
+        'De vondst ondersteunt een technische observatie. Voor politieke instellingen zijn bijkomende sporen nodig.'),
+      reason('Stedelijke afhankelijkheid verklaren', 'Leg uit hoe een betere opslagmogelijkheid tegelijk specialisatie en machtsverschillen kon versterken. Geef aan hoe je dat zou onderzoeken.',
+        'Betere opslag maakt regelmatige voorziening mogelijk, waardoor meer mensen voltijds andere taken kunnen opnemen. Wie opslag of distributie beheert, kan voorwaarden stellen aan toegang. Werkplaatsen, administratieve registraties en concentratie van voorraden kunnen helpen beide stappen te toetsen.',
+        ['Verbind opslag aan bevoorrading.', 'Benoem een mechanisme dat macht verdeelt.', 'Gebruik passend bewijs voor beide ontwikkelingen.'],
+        'De invloed van opslag hangt af van wie toegang controleert en welke alternatieven inwoners hebben.'),
+      reason('Steden vergelijkbaar maken', 'Ontwerp met één gemeenschappelijk soort bewijs en één aanvullend soort bewijs een vergelijking tussen een Mesopotamische en een Indusstad.',
+        'Ik vergelijk ligging en toegang van opslagplaatsen of werkplaatsen in beide steden. In Mesopotamië toets ik de mogelijke gebruikers ook aan registraties. In de Indusstad onderzoek ik verspreiding van zegels of materiaalsporen en hou ik meerdere scenario’s open voor de betrokken instellingen.',
+        ['Kies een waarneming die in beide steden mogelijk is.', 'Benoem wat aanvullend bewijs oplevert.', 'Leg uit hoe ongelijke informatie je conclusie begrenst.'],
+        'Vergelijk eerst op dezelfde maat. Benoem daarna waar een reconstructie meer op indirecte aanwijzingen steunt.'),
+    ],
+  },
+  {
+    id: 'struct-wo-industrie', year: 1760, period: 'Ca. 1760–1914', title: 'Industrialisering, arbeid en de groei van steden',
+    summary: 'Industrialisering veranderde waar en hoe goederen werden gemaakt, waar mensen leefden en wie regels over werk vastlegde. De veranderingen kwamen ongelijk op gang. Volg grondstoffen, energie, ondernemers, huishoudens en instellingen om de overgang naar grotere productie te verklaren.',
+    sources: [industry],
+    caseIds: ['industrie-en-kinderarbeid', 'negentiende-eeuws-imperialisme'],
+    dimensions: [
+      ['Machines groeiden mee met markten en investeringen', 'In de Britse textielproductie konden machines meer materiaal verwerken. Fabrikanten bleven afhankelijk van grondstoffen, energie, kapitaal, arbeid en kopers. Voor grondstoffen en afzet waren ook koloniale netwerken belangrijk. Andere streken industrialiseerden later of langs een andere weg. De uitvinding van een machine verklaart dus slechts één stap in de schaalvergroting.'],
+      ['De verandering in werk raakte hele huishoudens', 'Fabriekswerk kon taken dichter bij machines concentreren en werkuren strakker organiseren. Vrouwen en kinderen bleven in verschillende omstandigheden bijdragen aan het gezinsinkomen, in én buiten fabrieken. Onderzoek loon, uren, voedselkosten, huisvesting en zorgtaken samen om te beoordelen hoe levensomstandigheden veranderden. Gemiddelde lonen verbergen verschillen naar leeftijd, geslacht, beroep en plaats.'],
+      ['Organisatie en wetgeving stuurden de arbeidsmarkt mee', 'Staten en steden stelden in wisselend tempo regels over werktijden en veiligheid. Werkgevers, vakbonden en hervormers streden om de inhoud en toepassing. Inspectie bepaalde mee wat van een wet terechtkwam. Ook woningen, waterleiding en riolering werden belangrijke bestuurlijke kwesties. Verstedelijking maakte sommige problemen dringender en vergrootte de capaciteit om andere op te lossen.'],
+      ['Nieuwe ritmes en plaatsen veranderden het dagelijks leven', 'Werk volgens de fabrieksklok maakte tijd een scherper twistpunt. Kranten, verenigingen en samenkomsten boden ruimte om ervaringen en ideeën te delen. Cultuur kreeg in nieuwe arbeiderswijken en burgerlijke buurten een eigen vorm. Machines, tijdroosters en foto’s tonen een deel van die wereld. Vergelijk ze met getuigenissen van verschillende bewoners.'],
+    ],
+    connection: ['Van hogere productie naar een nieuwe arbeidsverhouding', 'Wie investeert in machines heeft belang bij regelmatige inzet. Werk kan daardoor naar een centrale plaats verschuiven en volgens strengere uren verlopen. Migratie, beschikbare huisvesting en gezinsinkomen bepalen wie dat werk kan opnemen. Regels en georganiseerde arbeid beïnvloeden vervolgens hoe baten en risico’s verdeeld raken.'],
+    tasks: [
+      choose('De sociale uitkomst meten', 'Een fabrieksstad produceert twee keer zoveel textiel. Welke extra gegevens zijn het meest geschikt om te meten of arbeidershuishoudens beter konden rondkomen?',
+        'Inkomen van meerdere gezinsleden, uren, prijzen en huur, uitgesplitst per periode en huishouden.',
+        ['Een overzicht van de nieuwste machines en het aantal schoorstenen.', 'Het gemiddelde fabrieksloon zonder prijsinformatie.', 'Een affiche die gekleurde stoffen voor de export toont.'],
+        'Om koopkracht en de bijdrage van het hele huishouden te beoordelen heb je verschillende metingen nodig.'),
+      reason('Ongelijke industrialisering', 'Twee regio’s krijgen dezelfde machine. Werk concentreert zich alleen in regio A in fabrieken. Verklaar een aantal voorwaarden met minstens twee invalshoeken uit de les.',
+        'Regio A kan goedkoper aan kapitaal, arbeid of energie raken, zodat grote werkplaatsen meer opleveren. Gezinnen kunnen er gemakkelijker naar een fabrieksstad verhuizen, of werkgevers kunnen langs bestaande netwerken arbeiders rekruteren. Het verband is te toetsen met investeringsgegevens, energiekosten en patronen van verhuizing of tewerkstelling.',
+        ['Noem voorwaarden uit twee invalshoeken.', 'Verbind ze aan de concentratie van werk.', 'Noem bruikbare aanwijzingen voor de vergelijking.'],
+        'Volg de voorwaarden voor grootschalige invoering en waarom ze per regio verschillen.'),
+      reason('Wetgeving evalueren', 'Een land beperkt kinderarbeid in textielfabrieken. Hoe controleer je of kinderen minder werkten of in andere sectoren terechtkwamen?',
+        'Ik vergelijk fabrieks- en inspectiegegevens vóór en na de wet en gebruik ook school-, huishoud- of andere arbeidsgegevens. Als geregistreerde fabrieksarbeid daalt terwijl thuisarbeid of werk elders toeneemt, verschoof mogelijk een deel van het werk.',
+        ['Onderzoek feitelijke uitvoering in fabrieken.', 'Volg mogelijke verplaatsing naar ander werk.', 'Gebruik een vergelijking in de tijd en bespreek blinde vlekken.'],
+        'Dezelfde wet kan een sector veranderen en via het gezinsinkomen elders nieuwe effecten hebben.'),
+    ],
+  },
+  {
+    id: 'struct-wo-imperialisme', year: 1850, period: 'Ca. 1850–1914', title: 'Industrieel imperialisme, grond en bestuur',
+    summary: 'In de negentiende eeuw verwierven geïndustrialiseerde machten meer overzeese controle. Verklaringen betrekken toegang tot grondstoffen en markten, rivaliteit tussen staten, lokale bondgenoten en bestaande handelsnetwerken. Volg een plaatselijke verandering, zoals de aanleg van een spoorlijn, om die factoren aan concrete gevolgen te koppelen.',
+    sources: [imperialism],
+    caseIds: ['negentiende-eeuws-imperialisme', 'h2-tanzimat-burgerschap', 'h2-samoa-mau'],
+    dimensions: [
+      ['Infrastructuur bepaalde welke producten waar terechtkwamen', 'Koloniale bestuurders en ondernemingen investeerden onder meer in havens en spoorwegen. Een aansluiting kan transport goedkoper maken en toegang tot markten verbeteren. Tracés die binnenland met exporthavens verbinden, laten ook zien welke stromen prioriteit kregen. Grondverwerving, prijzen en eigenaarschap bepalen lokaal wie bij de verandering baat heeft.'],
+      ['Grondbezit en arbeid veranderden per plaats en groep', 'Koloniale aanspraken konden bestaande gebruiksrechten beperken. Belastingen in geld konden huishoudens aansporen loonwerk te zoeken of producten te verkopen. Plaatselijke leiders, producenten en arbeiders onderhandelden, weken uit of boden verzet. Onderzoek welke groepen grond, werk of veiligheid verloren en wie nieuwe commerciële of bestuurlijke kansen kreeg.'],
+      ['Gezag berustte deels op bestaande plaatselijke verschillen', 'Europese regeringen en bedrijven hadden uiteenlopende middelen om macht uit te oefenen. In sommige gebieden werkten zij met lokale gezagsdragers en selecteerden ze welke bevoegdheden die mochten houden. Macht op papier liep uiteen met de capaciteit om belastingen te innen of controles uit te voeren. Conflicten tonen de grenzen van lokale medewerking en bestuurlijke kennis.'],
+      ['Raciale hiërarchieën en beschavingsclaims ondersteunden bestuur', 'Kaarten, tentoonstellingen en schoolboeken konden koloniale aanspraken voorstellen als vanzelfsprekend of nuttig. Dergelijke bronnen verduidelijken wie de boodschap vormgaf. Plaatselijke petities, kranten of getuigenissen kunnen laten zien hoe anderen de opgelegde categorieën betwistten. Onderwijs, recht en toegang tot functies tonen welke classificaties institutionele gevolgen kregen.'],
+    ],
+    connection: ['Van een investering naar een verschuiving in machtsverhoudingen', 'Een spoorlijn maakt sommige routes en productiegebieden voordeliger. Als die verschuiving samengaat met onteigening of belastingplicht, verandert ook wie zelfstandig kan produceren en wie loonwerk nodig heeft. Een kaart meet bereik. Voor de verdeling van kosten en baten vergelijk je grond, arbeid, prijzen en alternatieve routes vóór en na de aanleg.'],
+    tasks: [
+      choose('Infrastructuur beoordelen', 'Een haven krijgt een spoorverbinding en voert meer ertsen uit. Welke waarneming helpt het sterkst om te onderzoeken wie van de investering profiteerde?',
+        'Vergelijk bedrijfswinsten, grondverlies, lonen en marktprijzen langs het tracé.',
+        ['Tel alleen het aantal kilometers rails.', 'Vergelijk de naam van de haven met die op oude kaarten.', 'Neem de stijging van export als maat voor het inkomen van elke bewoner.'],
+        'De verdeling van baten hangt af van meer dan het totale volume.'),
+      reason('Plaatselijke macht en belasting', 'Leg uit hoe een belasting in geld een verandering in arbeid kan veroorzaken. Waarom kon het effect naast een handelsroute anders zijn dan er ver vandaan?',
+        'Een huishouden moet aan geld komen. Langs een handelsroute kan het makkelijker producten verkopen, terwijl elders loonwerk of tijdelijke migratie een groter aandeel kan krijgen. Prijzen, lokale arbeidsgegevens en belastingregisters helpen de twee uitkomsten te vergelijken.',
+        ['Verbind de betaalvorm aan keuzes van huishoudens.', 'Benoem de rol van markttoegang.', 'Noem een bron voor de feitelijke reactie.'],
+        'Gelijke formele regels kunnen via uiteenlopende mogelijkheden tot verschillend gedrag leiden.'),
+      reason('Bestuursclaims toetsen', 'Een koloniaal verslag beweert dat plaatselijke grond ongebruikt was vóór onteigening. Hoe toets je die claim, en wat kan een afwijkende bevinding betekenen?',
+        'Ik zoek gebruiksrechten en seizoensgebonden activiteiten via lokale getuigenissen, kaarten en sporen van gebruik. Voorbeelden van teelt, beweiding of toegang tot water tonen dat gebruik in het verslag anders kon zijn gedefinieerd. Dan valt ook te onderzoeken wie baat had bij die definitie.',
+        ['Omschrijf waarvoor het verslag wel bewijs biedt.', 'Benoem twee sporen van feitelijk gebruik.', 'Verbind een afwijking aan mogelijke bestuurlijke belangen.'],
+        'De termen van een verslag kunnen de rechten van mensen zichtbaar maken of buiten de registratie houden.'),
+    ],
+  },
+  {
+    id: 'struct-wo-massapolitiek', year: 1914, period: '1914–1945', title: 'Wereldoorlogen, economische crisis en massapolitiek',
+    summary: 'Oorlog en crisis brachten overheden, ondernemingen en bevolkingen op nieuwe manieren samen. Onderzoek hoe mobilisatie en ontwrichting na 1914 sociale en politieke instellingen veranderden. De reacties varieerden per land, ook onder invloed van eerdere instituties, partijorganisatie en de ruimte voor coalities.',
+    sources: [war, depression, secondWar],
+    caseIds: ['eerste-wereldoorlog', 'depressie-en-tweede-wereldoorlog'],
+    dimensions: [
+      ['Oorlog verbond productie en krediet met staatsbesluiten', 'Overheden stuurden productie, bestellingen, importen en toegang tot voedsel. Oorlogsschuld en ontregeling begrensden nadien de beschikbare middelen. De economische inzinking na 1929 oefende via werkloosheid, kredietschaarste en dalende handel extra druk uit. Herstelbeleid verschilde per land, onder meer naar het muntstelsel, de beschikbare middelen en politieke steun voor ingrepen.'],
+      ['Mobilisatie en crisis werden ongelijk ervaren', 'Militaire dienst, oorlogsarbeid, voedseltekorten, verlies en vlucht veranderden levenspatronen. Groepen konden eisen stellen op grond van hun bijdrage of geleden schade. Vrouwen en mensen uit koloniale gebieden kregen in verschillende contexten nieuwe taken, met uiteenlopende gevolgen voor latere rechten. Nieuwe toegang tot werk of rechten kon voor de ene groep samengaan met al langer bestaande uitsluiting van een andere groep.'],
+      ['Economische druk kreeg een politieke uitkomst via instituties en keuzes', 'Werkloosheid kan vertrouwen in besturen verminderen. Partijen en bewegingen organiseren grieven, geven aan wie verantwoordelijk is en zoeken steun. In sommige staten bleef samenwerking tussen democratische krachten mogelijk, terwijl elders antidemocratische bewegingen staatsmacht verwierven. In nazi-Duitsland kwamen uitsluiting, vervolging en massamoord voort uit specifieke ideologische, bestuurlijke en militaire processen.'],
+      ['Massamedia en herinnering bepaalden wat betekenis kreeg', 'Affiches, radio, film en pers bereikten een breed publiek. Overheden en bewegingen gebruikten die kanalen om mensen tot handelen te bewegen of tegenstanders te ontmenselijken. Gedenktekens en herdenkingen legden later accenten in het publieke verhaal. Voor werkelijke ontvangst vergelijk je officiële boodschappen met gedrag, brieven of uiteenlopende getuigenissen.'],
+    ],
+    connection: ['Van een economische schok naar politieke verandering', 'Verbind druk op huishoudens aan de manier waarop bewegingen steun organiseren. Kijk daarna wie toegang tot instellingen krijgt en hoe die toegang wordt benut. Twee vergelijkbare schokken kunnen anders uitpakken bij verschillen in kiesstelsels, bestuurstradities, tegenmacht of bereidheid van elites om met antidemocratische leiders samen te werken.'],
+    tasks: [
+      choose('Oorzaken van politieke ontwikkeling', 'In twee landen groeit de werkloosheid sterk. Alleen land A verliest zijn parlementaire democratie. Welke vervolgstap helpt het best om het verschil te verklaren?',
+        'Vergelijk de organisatie van partijen, hun coalities en de keuzes van bestuurders in beide landen vóór de omslag.',
+        ['Gebruik werkloosheid als volledige verklaring en laat de afwijking buiten de vergelijking.', 'Vergelijk alleen het aantal inwoners.', 'Zoek één affiche uit land A die de afloop achteraf voorspelt.'],
+        'Een gedeelde schok verklaart het verschil onvoldoende. Onderzoek de schakels tussen die schok en de politieke uitkomst.'),
+      reason('Oorlogsarbeid en rechten', 'Hoe onderzoek je of nieuwe taken voor vrouwen in oorlogstijd ook blijvende invloed hadden op hun werk of politieke rechten?',
+        'Vergelijk tewerkstelling, lonen en formele rechten voor, tijdens en na de oorlog. Leg vast voor welke beroepen en groepen veranderingen standhielden. Onderzoek via bijvoorbeeld vakbonden, werkgevers of debatten welke verbanden actoren legden tussen oorlogsarbeid en nieuwe eisen.',
+        ['Maak duidelijk wat een blijvende verandering zou zijn.', 'Vergelijk tijdvakken en groepen.', 'Noem bewijs voor een tussenschakel tussen oorlog en uitkomst.'],
+        'Tijdelijke inzet en duurzame hervorming moeten elk zichtbaar worden in de gegevens.'),
+      reason('Propaganda en gedrag', 'Een overheid verspreidt affiches die oproepen minder voedsel te gebruiken. Hoe onderzoek je of de campagne effect had, naast de invloed van rantsoenering?',
+        'Ik vergelijk periodes of plaatsen met overeenkomstige rantsoenen en verschillende verspreiding van de campagne. Aankopen, klachten en getuigenissen helpen gedrag en ontvangst meten. Prijzen of bevoorrading kunnen ook verschillen en moeten in de vergelijking worden meegenomen.',
+        ['Onderscheid boodschap, maatregel en gedrag.', 'Vergelijk gevallen waarin de campagne verschilt.', 'Benoem minstens één bijkomende mogelijke invloed.'],
+        'Een affiche toont een beoogde reactie. De onderzoeksvraag vraagt bewijs over wat mensen deden en waarom.'),
+    ],
+  },
+  {
+    id: 'struct-wo-na-1945', year: 1945, period: 'Ca. 1945–1991', title: 'Dekolonisatie, Koude Oorlog en internationale economie',
+    summary: 'Nieuwe staten, supermachten en internationale instellingen stuurden na 1945 de verdeling van middelen en gezag. Vergelijk onafhankelijkheid, handel, ontwikkelingsbeleid en culturele mobilisatie. Onderzoek per geval wat veranderde aan formele zeggenschap en welke economische afhankelijkheden bleven doorwerken.',
+    sources: [coldWar, globalOrder],
+    caseIds: ['koude-oorlog-en-dekolonisatie', 'van-bretton-woods-tot-waardeketens', 'h2-nieo-1974', 'h2-apartheid-registratie-ruimte'],
+    dimensions: [
+      ['Onafhankelijkheid gaf meer beleidsruimte met ongelijke middelen', 'Nieuwe regeringen konden handel, belasting, onderwijs en investeringen zelf sturen, binnen uiteenlopende beperkingen. Sterke afhankelijkheid van enkele uitvoerproducten hield inkomsten gevoelig voor buitenlandse prijsontwikkelingen. Internationale leningen en hulp boden mogelijkheden en stelden soms voorwaarden. Kijk welke inkomsten regeringen zelf controleerden en welke alternatieven ze bij tegenvallers hadden.'],
+      ['Migratie en ongelijkheid liepen door staatsgrenzen heen', 'Dekolonisatie, oorlog, werk en onderwijs brachten uiteenlopende groepen in beweging. Nieuwe burgers konden erkenning en toegang tot instellingen afdwingen, terwijl anderen onder uitsluitende wetten of praktijken vielen. Onderzoek rechten zoals verblijf, onderwijs en politieke deelname voor verschillende groepen afzonderlijk en volg hoe inwoners en organisaties een beroep op die rechten deden.'],
+      ['De Koude Oorlog beïnvloedde conflicten met lokale oorzaken', 'De Verenigde Staten en de Sovjet-Unie zochten bondgenoten, onder meer met krediet, wapens en diplomatieke steun. Onafhankelijkheidsbewegingen en regeringen hadden eigen agenda’s. Niet-gebonden samenwerking bood ruimte voor alternatieven. De invloed van buitenlandse hulp blijkt pas wanneer je die koppelt aan concrete besluiten, verschuivingen in macht en het handelen van plaatselijke groepen.'],
+      ['Onderwijs en taal waren inzet van politiek en dagelijks leven', 'Regeringen en bewegingen debatteerden over onderwijstaal, curricula en symbolen van een nationale gemeenschap. Taalbeleid kon toegang tot hogere studies en administratie beïnvloeden. Leraren, gezinnen en organisaties gaven in de praktijk op verschillende manieren vorm aan zulke keuzes. Onderscheid het doel van een maatregel van de effecten per regio en sociale groep.'],
+    ],
+    connection: ['Formele macht en economische speelruimte samen onderzoeken', 'Onafhankelijkheid kan besluitvorming verplaatsen naar een nieuwe regering. Als haar begroting afhankelijk blijft van één uitvoerproduct of buitenlandse leningen, blijven sommige keuzes kwetsbaar. Onderzoek of belasting, partners en productie diversifiëren en wie daarover beslist. Beoordeel ook of een verandering voortkwam uit lokaal beleid, veranderende wereldmarkten of buitenlandse macht.'],
+    tasks: [
+      choose('Onafhankelijkheid in de praktijk', 'Een staat wordt onafhankelijk. Tien jaar later levert hetzelfde gewas nog steeds het grootste deel van zijn exportopbrengst. Welke conclusie is passend?',
+        'Het gezag over beleid is veranderd. Een sterke concentratie in de uitvoer kan de economische speelruimte blijven beperken.',
+        ['Onafhankelijkheid heeft alleen invloed als de grootste uitvoer meteen verandert.', 'De buitenlandse vraag bepaalt voortaan alle binnenlandse beslissingen.', 'Dezelfde exportstructuur bewijst dat alle inkomsten gelijk zijn gebleven.'],
+        'Bestuurlijke zeggenschap en economische kwetsbaarheid kunnen anders evolueren.'),
+      reason('Lokale en internationale oorzaken', 'Ontwerp een verklaring voor de machtsgroei van een beweging die buitenlandse hulp krijgt. Hoe toets je haar lokale draagvlak en de bijdrage van steun afzonderlijk?',
+        'Ik breng eerst de organisatie, leden, doelen en inkomsten vóór de hulp in kaart. Daarna koppel ik concrete hulp aan veranderingen in middelen, allianties of besluiten. Een vergelijking met groepen zonder vergelijkbare steun toont welke veranderingen ook via lokaal draagvlak konden gebeuren.',
+        ['Leg de interne uitgangssituatie vast.', 'Benoem welk effect buitenlandse hulp mogelijk heeft.', 'Bouw een tijds- of gevallenvergelijking in.'],
+        'Maak duidelijk welke uitkomst je aan lokale organisatie en welke je aan extra middelen verbindt.'),
+      reason('Onderwijstaal en kansen', 'Na onafhankelijkheid wijzigt een staat de onderwijstaal. Hoe meet je of de wijziging de toegang tot onderwijs verbreedde?',
+        'Ik vergelijk inschrijvingen, doorstroom en uitval per streek en taalgroep vóór en na invoering. Ik kijk ook naar beschikbaarheid van leerkrachten, schoolkosten en andere hervormingen. Zo kan ik een mechanisme, zoals beter begrip of juist tekort aan onderwijsmateriaal, aan de uitkomsten koppelen.',
+        ['Kies een maat voor toegang en doorstroom.', 'Vergelijk groepen en uitvoeringscontext.', 'Verbind een mogelijke uitkomst aan een concreet mechanisme.'],
+        'Dezelfde regel kan verschillende gevolgen hebben waar leermateriaal, thuistaal en personeel uiteenlopen.'),
+    ],
+  },
+]);

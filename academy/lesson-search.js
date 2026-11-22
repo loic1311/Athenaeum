@@ -1,4 +1,4 @@
-import { ROUTES, TRACKS } from './learning.js?v=13r6';
+import { ROUTES, TRACKS } from './learning.js?v=13r8';
 import { LANGUAGE_TOPICS } from './language-topics.js?v=13r1';
 
 const STOP_WORDS = new Set([
@@ -49,6 +49,10 @@ function indexLesson(lesson) {
   add(lesson.title, 24, false);
   add(TOPICS[lesson.id], 15);
   add(lesson.summary, 12);
+  for (const { heading, lead, text } of lesson.structure ?? []) {
+    add([heading, lead].join(' · '), 6);
+    add(text, 5);
+  }
   add([TRACKS[lesson.track]?.name, lesson.period, lesson.level, ROUTES[lesson.route],
     LANGUAGE_TOPICS[lesson.track]?.[lesson.languageTopic]?.title].filter(Boolean).join(' '), 5, false);
   if (Array.isArray(lesson.vocabulary)) {

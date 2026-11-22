@@ -1,5 +1,6 @@
-import { TRACKS, makePool, practiceBalance, practiceQuestions, practiceTopic, recentPractice } from './learning.js?v=13r6';
-import { practiceDifficulty, preferredDifficulty, startingDifficulty } from './practice.js?v=13r6';
+import { TRACKS, makePool, practiceBalance, practiceQuestions, practiceTopic, recentPractice } from './learning.js?v=13r8';
+import { practiceDifficulty, preferredDifficulty, startingDifficulty } from './practice.js?v=13r8';
+import { HISTORICAL_TRACKS } from './history-chronology.js?v=13r8';
 
 export const PACE = {
   8: { units: 1, recall: 1, guided: 1, practice: 2, transfer: 1, exit: 1, reading: 3 },
@@ -163,7 +164,7 @@ function chooseLessons(groups, count, salt) {
 }
 
 function comparison(chosen, goals, salt) {
-  const historical = chosen.map(row => row.lesson).filter(l => ['greek','roman','history'].includes(l.track) && l.sources?.length);
+  const historical = chosen.map(row => row.lesson).filter(l => HISTORICAL_TRACKS.includes(l.track) && l.sources?.length);
   if (historical.length < 2) return null;
   const [first,second] = historical;
   const anchor = goals.find(goal => goal.lesson === first.id);
