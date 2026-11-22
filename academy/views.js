@@ -7,7 +7,7 @@ import { studyNotes } from './study-notes.js?v=13r6';
 import { LEGACY_TIMES, MAX_REMINDERS, REMINDER_DAYS } from './notifications.js?v=13r6';
 import { belongsToHistoryTrack, chronologicalLessons, chronologyGroups, chronologyYear, HISTORICAL_TRACKS, historyLessonHref,
   PAIDEIA_TRACKS, timelineHref } from './history-chronology.js?v=13r9';
-import { HISTORY_SECTIONS, explorerHref } from './history-explorer.js?v=13r10';
+import { HISTORY_SECTIONS, explorerHref } from './history-explorer.js?v=13r11';
 
 const SECTION_NAMES = {
   vandaag: ['Hodie', 'home', 'Vandaag'],
@@ -38,6 +38,9 @@ const TRACK_NAMES = {
   it: 'Lingua Italiana',
   fr: 'Lingua Francogallica',
 };
+
+const SUBJECTS = ['history', ...PAIDEIA_TRACKS.filter(track => track !== 'history')];
+const LANGUAGE_SUBJECTS = ['it', 'fr'];
 
 const FRENCH_LEVEL_FOCUS = {
   A1: 'Herken basiswoorden en stel korte vragen.',
@@ -131,15 +134,17 @@ function trackIcon(track) {
   return `<span class="track-icon ${esc(track)}">${icon(TRACKS[track]?.icon)}</span>`;
 }
 
-function card(track, lessons, info) {
-  const model = TRACKS[track];
-  const count = lessons.filter(lesson => !lesson.extension && belongsToHistoryTrack(lesson, track)).length;
-  return `<a class="panel track-card" href="#${model.section === 'history' ? 'paideia' : 'talen'}/${track}">
-    ${trackIcon(track)}
-    <div><h3 lang="la">${TRACK_NAMES[track]}</h3><p class="track-meaning">${model.name}</p></div>
-    <p class="muted small-text">${model.desc}</p>
-    <span class="caption">${count} lessen${info ? ' · ' + esc(info) : ''}</span>
-  </a>`;
+function subjectList(tracks, lessons, prefs = {}) {
+  const totals = Object.fromEntries(tracks.map(track => [track,
+    lessons.filter(lesson => !lesson.extension && belongsToHistoryTrack(lesson, track)).length]));
+  return `<ul class="subject-list">${tracks.map(track => {
+    const { name, section } = TRACKS[track];
+    const language = section === 'language';
+    return `<li><a class="subject-link" href="#${language ? 'talen' : 'paideia'}/${track}">
+      ${trackIcon(track)}<span class="subject-name"><strong>${name}</strong><span lang="la">${TRACK_NAMES[track]}</span></span>
+      <span class="subject-meta">${language ? esc(prefs[track] ?? 'A1') : totals[track] ? totals[track] + (totals[track] === 1 ? ' les' : ' lessen') : ''}</span>
+    </a></li>`;
+  }).join('')}</ul>`;
 }
 
 function metrics(info) {
@@ -280,29 +285,30 @@ export function home(info) {
       </div>
       <div class="hero-mark" aria-hidden="true"><img src="./assets/logos/athenaeum-192.png" alt="" width="146" height="146"></div>
     </section>
-    <div class="block stack">${progressSummary(info)}${metrics(info)}</div>
-    ${streakPanel(info.streak)}
-    <section class="block">
-      <div class="topline"><h2>Jouw leerpaden</h2><div class="row">
-        <a class="button small quiet" href="#onderzoek">Onderzoek openen</a>
-      </div></div>
-      <div class="columns three">${[...PAIDEIA_TRACKS, 'it', 'fr'].map(key =>
-        card(key, info.lessons, TRACKS[key].section === 'language' ? info.prefs[key] ?? 'A1' : '')).join('')}</div>
+    <div class="block stack home-progress">${progressSummary(info)}${metrics(info)}</div>
+    <section class="block stack">
+      <div class="topline"><h2>Vakken</h2><a class="text-link" href="#paideia">Paideia</a></div>
+      ${subjectList(SUBJECTS, info.lessons)}
+      <div class="topline"><h2>Talen</h2><a class="text-link" href="#talen">Linguae</a></div>
+      ${subjectList(LANGUAGE_SUBJECTS, info.lessons, info.prefs)}
     </section>
+    ${streakPanel(info.streak)}
     ${info.next.length ? '<section class="block"><div class="topline"><h2>Een volgende les</h2></div><div class="unit-list">' +
       info.next.map(lesson => unit(lesson, info.studied)).join('') + '</div></section>' : ''}`;
 }
 
-export function catalogue(section, lessons) {
-  const language = section === 'talen';
-  const desc = language ? 'Kies een taal en oefen woorden, grammatica en zinnen die je meteen kunt gebruiken.' :
-    'Verbind economie, samenleving, politiek en cultuur. Leg daarna met historische gegevens uit hoe een samenleving verandert.';
-  return sectionHeading(section, desc) + (language ? '' : `
-    <section class="block paideia-explore" aria-label="Geschiedenis verkennen">
+export function catalogue(section, lessons, prefs) {
+  if (section === 'talen') return sectionHeading(section, 'Kies Italiaans of Frans en oefen op je eigen niveau.') +
+    subjectList(LANGUAGE_SUBJECTS, lessons, prefs);
+  return heading('Paideia', 'Kies een vak of verken de geschiedenis per plaats, tijdvak of bron.', '', 'grc-Latn') +
+    `<section class="stack" aria-labelledby="subjects-heading">
+      <h2 id="subjects-heading">Vakken</h2>
+      ${subjectList(SUBJECTS, lessons)}
+    </section>
+    <section class="block stack paideia-explore" aria-labelledby="explore-heading">
+      <div class="topline"><h2 id="explore-heading">Verkennen</h2>${button('history-mix', 'Oefen geschiedenis door elkaar', 'small quiet')}</div>
       ${historyExplorerNav('alles', '', true)}
-      <div class="row">${button('history-mix', 'Oefen geschiedenis door elkaar', 'quiet')}</div>
-    </section>`) +
-    `<div class="columns ${language ? 'language-catalogue' : 'block'}">${(language ? ['it','fr'] : PAIDEIA_TRACKS).map(track => card(track, lessons)).join('')}</div>`;
+    </section>`;
 }
 
 export function course(track, lessons, studied, prefs, route, search = '', topic = '', read = new Set()) {
@@ -311,11 +317,12 @@ export function course(track, lessons, studied, prefs, route, search = '', topic
   const language = model.section === 'language';
   const level = prefs[track] ?? 'A1';
   if (language && isLanguageTopic(track, topic)) return topicPage(track, topic, lessons, studied, level);
-  const all = lessons.filter(lesson => lesson.track === track);
+  const all = lessons.filter(lesson => lesson.track === track && !lesson.languageTopic);
   const shown = language ? all.filter(lesson => lesson.level === level && (!route || route === lesson.route)) : all;
   const routes = [...new Set(all.filter(lesson => lesson.level === level).map(lesson => lesson.route))].filter(r => ROUTES[r]);
   const next = shown.find(lesson => !studied.has(lesson.id)) ?? shown[0];
-  return heading(TRACK_NAMES[track], model.desc, model.name, 'la') + (language ? languageLevel(track, level) : '') + `
+  return `<p class="back-link"><a class="text-link" href="#${language ? 'talen' : 'paideia'}">${language ? 'Linguae' : 'Paideia'}</a></p>` +
+    heading(model.name, model.desc, TRACK_NAMES[track]) + (language ? languageLevel(track, level) : '') + `
     <section class="panel stack course-start ${language ? 'block' : ''}">
       <div><h2>${next ? esc(next.title) : 'Aan de slag'}</h2>
         <p class="muted">${next ? 'Lees de uitleg of begin met een gemengde reeks.' :
@@ -347,11 +354,11 @@ const historyScopeName = scope => TRACKS[scope]?.name ?? 'Alle segmenten';
 
 export function historyExplorerNav(scope, active, cards = false) {
   return `<nav class="explorer-nav ${cards ? 'explorer-destinations' : 'explorer-tabs'}" aria-label="Geschiedenis verkennen">
-    ${Object.entries(HISTORY_SECTIONS).map(([page, [title, subtitle, symbol, description]]) => {
+    ${Object.entries(HISTORY_SECTIONS).map(([page, [title, subtitle, symbol]]) => {
       const href = page === 'chronologie' ? timelineHref(scope) : explorerHref(page, scope);
       return `<a class="explorer-link" data-explorer="${page}" href="#${href}" ${active === page ? 'aria-current="page"' : ''}>
         <span class="explorer-icon">${icon(symbol)}</span><span class="explorer-label">
-          <strong lang="la">${title}</strong><span>${subtitle}</span>${cards ? '<small>' + description + '</small>' : ''}</span></a>`;
+          <strong lang="la">${title}</strong><span>${subtitle}</span></span></a>`;
     }).join('')}
   </nav>`;
 }
@@ -361,27 +368,26 @@ function historyCoursePage(track, lessons, studied, read, search) {
   const core = chronologicalLessons(lessons, track);
   const cases = lessons.filter(lesson => belongsToHistoryTrack(lesson, track) && !lesson.extension && !lesson.structure);
   const next = core.find(lesson => !read.has(lesson.id) && !studied.has(lesson.id));
-  return heading(TRACK_NAMES[track], model.desc, model.name, 'la') + `
-    <section class="panel stack course-start history-start">
-      <div><h2 lang="la">Chronologia</h2>
-        <p class="muted">${next ? 'Volgende kernles · ' + esc(next.title) : 'Herlees een kernles of kies een casus op de tijdlijn.'}</p></div>
-      <div class="row"><a class="button primary" href="#${next ? historyLessonHref(next.id, track, 'kern') : timelineHref(track)}">${next ? 'Open volgende kernles' : 'Bekijk kernlessen'}</a>
-        </div>
-      ${historyExplorerNav(track)}
+  return '<p class="back-link"><a class="text-link" href="#paideia">Paideia · Vakken</a></p>' +
+    heading(model.name, model.desc, TRACK_NAMES[track]) + `
+    ${next ? `<section class="panel study-resume" aria-label="Volgende kernles">
+      <div><p class="small-text muted">Volgende kernles</p><h2>${esc(next.title)}</h2></div>
+      <a class="button primary" href="#${historyLessonHref(next.id, track, 'kern')}">Open les</a>
+    </section>` : ''}
+    ${historyExplorerNav(track)}
+    <section class="block stack">
+      <div class="topline"><h2>Lessen</h2><p class="muted small-text" id="lesson-count" aria-live="polite">${core.length + cases.length} lessen</p></div>
+      <div class="field course-search"><label for="course-search">Zoek in dit vak</label>
+        <input type="search" id="course-search" value="${esc(search)}" placeholder="Titel, datering of begrip"></div>
       <details><summary>Oefenen en eigen leerstof</summary><div class="row">
         ${[5, 15, 30].map(length => button('drill', 'Oefen ' + length + ' gemengde vragen', 'quiet', track + '/' + length)).join('')}
         <a class="button quiet" href="#importeren/${track}">Eigen leerstof toevoegen</a>
       </div></details>
-    </section>
-    <section class="block stack">
-      <div class="topline"><h2>Lessen</h2><p class="muted small-text" id="lesson-count" aria-live="polite">${core.length + cases.length} lessen</p></div>
-      <div class="field course-search"><label for="course-search">Zoek in dit leerpad</label>
-        <input type="search" id="course-search" value="${esc(search)}" placeholder="Titel, datering of begrip"></div>
       <p class="empty" id="lesson-no-match" hidden>Geen lessen met deze zoekterm.</p>
       ${core.length ? `<section class="stack" data-lesson-group><h3>Kernlessen</h3><div class="unit-list">${core.map(lesson =>
         unit(lesson, studied, { href: historyLessonHref(lesson.id, track, 'kern'), read })).join('')}</div></section>` : ''}
       ${cases.length ? `<section class="stack" data-lesson-group><h3>Casussen en bronnen</h3><div class="unit-list">${cases.map(lesson =>
-        unit(lesson, studied, { read })).join('')}</div></section>` : ''}
+        unit(lesson, studied, { read, href: 'les/' + encodeURIComponent(lesson.id) + '/vak/' + track })).join('')}</div></section>` : ''}
     </section>`;
 }
 
@@ -501,10 +507,10 @@ function primaryPassage(passage, showImage = false) {
     ${reproduction}</div>`;
 }
 
-export function lessonPage(lesson, { journey = null, read = false, lessons = [] } = {}) {
+export function lessonPage(lesson, { journey = null, read = false, lessons = [], courseTrack = lesson.track } = {}) {
   if (lesson.languageTopic) return languageLessonPage(lesson);
   const courseHref = TRACKS[lesson.track].section === 'history' ? 'paideia' : 'talen';
-  return `<div class="row"><a class="text-link" href="#${courseHref}/${lesson.track}">${TRACKS[lesson.track].name}</a>
+  return `<div class="row"><a class="text-link" href="#${courseHref}/${courseTrack}">${TRACKS[courseTrack].name}</a>
     ${journey?.inRoute ? `<a class="text-link" href="#${journey.back ?? timelineHref(journey.scope, journey.mode)}">${esc(journey.label ?? 'Tijdlijn · ' + historyScopeName(journey.scope))}</a>` : ''}</div>
     <div class="block"><br>${heading(lesson.title, '', [lesson.period, lesson.level, ROUTES[lesson.route]].filter(Boolean).join(' · '))}</div>
     <article class="panel stack">
@@ -520,7 +526,7 @@ export function lessonPage(lesson, { journey = null, read = false, lessons = [] 
     </article>
     <section class="panel block stack lesson-practice">
       <h2>Oefenen</h2>
-      <p class="muted">${lesson.structure ? 'Pas de uitleg toe op drie nieuwe situaties. Vergelijk je open antwoorden met een modelantwoord en beoordelingscriteria.' :
+      <p class="muted">${lesson.structure ? 'Pas de uitleg toe in de analysevragen. Vergelijk je open antwoorden met een modelantwoord en beoordelingscriteria.' :
         'Begin met korte vragen. Gebruik een tip wanneer je vastloopt en bekijk de uitleg bij elk antwoord.'}</p>
       <div class="row">${button('lesson-quiz', lesson.structure ? 'Start de analysevragen' : 'Start korte oefenreeks', 'primary', lesson.id)}
         ${lesson.structure ? '' : button('lesson-more', 'Meer oefeningen', '', lesson.id)}</div>

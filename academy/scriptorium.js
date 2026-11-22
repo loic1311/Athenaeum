@@ -1,4 +1,4 @@
-import { esc, heading, icon, sectionHeading } from './views.js?v=13r10';
+import { esc, heading, icon, sectionHeading } from './views.js?v=13r11';
 
 export const SCRIPTORIUM_CHANNEL = 'athenaeum-scriptorium-v1';
 const SCRIPTORIUM_VIEWS = {

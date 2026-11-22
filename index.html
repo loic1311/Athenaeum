@@ -13,10 +13,10 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./assets/icons/icon-192.png">
   <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png">
-  <link rel="stylesheet" href="./academy/style.css?v=13r10">
+  <link rel="stylesheet" href="./academy/style.css?v=13r11">
   <script defer src="./shared/store.js"></script>
   <script defer src="./shared/sync.js"></script>
-  <script type="module" src="./academy/app.js?v=13r10"></script>
+  <script id="academy-entry" type="module" src="./academy/app.js?v=13r11"></script>
 </head>
 <body>
   <a class="skip" href="#main">Naar de inhoud</a>
@@ -50,12 +50,25 @@
       </div>
     </header>
     <main id="main" class="main" tabindex="-1">
-      <div id="page-content"><div class="loading" role="status">Athenaeum opent…</div></div>
+      <div id="page-content">
+        <div class="loading" role="status">Athenaeum opent…</div>
+        <div class="panel startup-recovery" id="startup-recovery" hidden>
+          <p>Het openen duurt langer dan verwacht.</p>
+          <button type="button" class="button" onclick="location.reload()">Opnieuw proberen</button>
+        </div>
+      </div>
     </main>
   </div>
   <nav id="mobile-nav" class="mobile-nav" aria-label="Hoofdnavigatie mobiel"></nav>
   <dialog id="dialog" aria-labelledby="dialog-title"></dialog>
   <div class="status" id="status" role="status" aria-live="polite"></div>
+  <script>
+    (() => {
+      const showRetry = () => { const retry = document.getElementById('startup-recovery'); if (retry) retry.hidden = false; };
+      document.getElementById('academy-entry').addEventListener('error', showRetry);
+      setTimeout(showRetry, 9000);
+    })();
+  </script>
   <noscript><p class="notice">Zet JavaScript aan om met Athenaeum te leren.</p></noscript>
 </body>
 </html>

@@ -1,6 +1,8 @@
 import './vendor/d3-array.min.mjs';
 import './vendor/d3-geo.min.mjs';
-import { ATLAS_VIEWS } from './history-explorer.js?v=13r10';
+import { ATLAS_VIEWS } from './history-explorer.js?v=13r11';
+
+import { fetchJson } from './fetch-json.js?v=13r11';
 
 const { geoCentroid, geoDistance, geoGraticule10, geoOrthographic, geoPath } = globalThis.d3;
 const sphere = { type: 'Sphere' };
@@ -12,11 +14,8 @@ const distance = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 let geography;
 
 function loadGeography() {
-  geography ??= fetch(new URL('./content/atlas-land.json?v=13r9', import.meta.url))
-    .then(response => {
-      if (!response.ok) throw new Error('Kaartgegevens konden niet laden.');
-      return response.json();
-    }).catch(error => {
+  geography ??= fetchJson(new URL('./content/atlas-land.json?v=13r9', import.meta.url))
+    .catch(error => {
       geography = undefined;
       throw error;
     });

@@ -1,8 +1,8 @@
 import { ATLAS_PLACES, ATLAS_VIEWS, HISTORY_SECTIONS, HISTORICAL_ERAS, STUDY_THEMES, explorerHref, explorationLessonHref,
-  explorationLessons, historyInScope, inEra } from './history-explorer.js?v=13r10';
+  explorationLessons, historyInScope, inEra } from './history-explorer.js?v=13r11';
 import { HISTORICAL_TRACKS, timelineHref } from './history-chronology.js?v=13r9';
 import { TRACKS } from './learning.js?v=13r8';
-import { esc, heading, historyExplorerNav, icon, sourceView, studyMeter } from './views.js?v=13r10';
+import { esc, heading, historyExplorerNav, icon, sourceView, studyMeter } from './views.js?v=13r11';
 import { curricula, reading } from './history-reading.js?v=13r9';
 
 const count = number => number + (number === 1 ? ' les' : ' lessen');
@@ -64,7 +64,8 @@ export function atlasPage(lessons, scope, key, studied, read) {
             <button class="button icon-only" type="button" data-map-zoom="1.45" aria-label="Inzoomen">+</button>
             <button class="button icon-only" type="button" data-map-zoom=".69" aria-label="Uitzoomen">−</button>
           </div>
-          <p class="atlas-error notice" hidden>De wereldbol kon niet laden. Kies een plaats in de lijst.</p>
+          <div class="atlas-error notice" hidden><p>De kaart kon niet laden. Je kunt alle leerpaden in de stedenlijst openen.</p>
+            <button type="button" class="button small" data-action="reload-page">Kaart opnieuw laden</button></div>
         </div>
         <div class="atlas-map-footer">
           <div class="row atlas-presets" aria-label="Ga naar een regio">${Object.entries(ATLAS_VIEWS).map(([id, view]) =>

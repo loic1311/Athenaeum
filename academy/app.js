@@ -5,22 +5,23 @@ import { historicalLessons } from './history-curriculum.js?v=13r8';
 import { historyArchive } from './history-archive.js?v=13r10';
 import { belongsToHistoryTrack, chronologicalLessons, chronologyForLesson, chronologyYear, HISTORICAL_TRACKS,
   historyLessonHref, historyReadId, timelineMode, timelineScope } from './history-chronology.js?v=13r9';
-import { ATLAS_PLACES, explorationJourney, explorationLessons, explorerHref } from './history-explorer.js?v=13r10';
-import { academicPlanPage, atlasPage, eraPage, primaryPage } from './history-explorer-view.js?v=13r10';
+import { ATLAS_PLACES, explorationJourney, explorationLessons, explorerHref } from './history-explorer.js?v=13r11';
+import { academicPlanPage, atlasPage, eraPage, primaryPage } from './history-explorer-view.js?v=13r11';
 import { weeklyExamQuestions, weeklyStudy } from './weekly-exam.js?v=13r9';
 import { isLanguageTopic, LANGUAGE_SKILLS } from './language-topics.js?v=13r1';
 import { record, readRecords, storeRecords, forgetRecords, backups, syncLearning, clearCloudLearning } from './storage.js';
 import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=13r8';
 import { authenticate, authMessage, makeGuest } from './cloud.js?v=13r2';
-import * as view from './views.js?v=13r10';
+import * as view from './views.js?v=13r11';
 import { PACE, DAY_FOCI, STAGES, dayKey, archivedPlans, planDay, advanceDay, drillQuestions, tipsFor } from './daily.js?v=13r9';
 import { checkSelection, completeSelection, practiceOptions, sequencePractice } from './practice.js?v=13r8';
-import { dailyPage } from './daily-view.js?v=13r9';
+import { dailyPage } from './daily-view.js?v=13r11';
 import { findCases, findStudies, lessonSourceIndex, passageMatches, caseWitness, researchPage, researchMarkdown, RESEARCH_TABS,
-  evidencePreview } from './research.js?v=13r9';
+  evidencePreview } from './research.js?v=13r11';
 import { addResearchMaterial, comparisonFromForm, evidenceList, validComparison, MAX_COMPARISON_ROWS } from './research-data.js?v=13r1';
 import { readResearchFile } from './research-import.js?v=13r8';
-import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=13r9';
+import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=13r11';
+import { fetchJson } from './fetch-json.js?v=13r11';
 import { searchLessons } from './lesson-search.js?v=13r9';
 import { countsAsPractice, isStudyDay, streakStatus, studyRecordId } from './streak.js?v=13r9';
 import { MAX_REMINDERS, readSchedule, preparePush, pushPreference, pushSupport, savePush, stopPush, testPush } from './notifications.js?v=13r6';
@@ -33,10 +34,17 @@ const store = window.AthStore;
 const sync = window.AthSync;
 const contentKeys = Object.keys(TRACKS);
 const jsonTracks = ['greek', 'roman', 'history', 'knowledge', 'it', 'fr'];
+const lessonFiles = new Map(jsonTracks.map(track => [track, { status: 'loading' }]));
+const historyFiles = ['greek', 'roman', 'history'];
+const languageFiles = ['it', 'fr'];
 const explorerPages = { atlas: atlasPage, tijdvakken: eraPage, bronnen: primaryPage, leerplan: academicPlanPage };
 let profile = null;
-let seed = [];
-let contentErrors = [];
+let seed = [...languageLessons, ...historicalLessons, ...historyArchive];
+let contentLoad;
+let contentRender;
+let started = false;
+let casesLoaded = false;
+let caseLoad;
 let records = [];
 let session = null;
 let clock;
@@ -57,7 +65,9 @@ let archiveMonth = '';
 let importDraft = {};
 let importPreview = [];
 let cases = [];
-let expandedCases = [];
+let indexedSeed;
+let indexedCases;
+let expandedCases;
 const researchPanels = new Map();
 let lastResearchId = '';
 let pendingScriptoriumWork;
@@ -123,10 +133,11 @@ function applyNavigation(section, label = view.sectionLabel(section)) {
     apps + '</div>' + tools.map(n => view.nav(n, section)).join('');
   const activeMobile = ['onderzoek','voortgang','importeren'].includes(section) ? 'meer' : section;
   document.querySelector('#mobile-nav').innerHTML = view.NAV.map(n => view.nav(n, activeMobile, true)).join('');
-  document.querySelector('#mobile-apps').innerHTML = '<p class="rail-heading" lang="la">Instrumenta</p>' + apps;
+  const mobileApps = [...view.APP_NAV.filter(([id]) => id === 'scriptorium'), ...view.SECONDARY_NAV];
+  document.querySelector('#mobile-apps').innerHTML = mobileApps.map(link => view.nav(link, section)).join('');
   const menu = document.querySelector('.app-menu');
   menu.open = false;
-  menu.classList.toggle('is-active', section === 'scriptorium');
+  menu.classList.toggle('is-active', mobileApps.some(([id]) => id === section));
   document.querySelector('#desktop-secondary').innerHTML = view.SECONDARY_NAV.map(n => view.nav(n, section)).join('');
   const name = document.querySelector('#account');
   name.textContent = cloudUser() ? profile.name : 'Account';
@@ -156,6 +167,7 @@ function overview(lessons = lessonList()) {
   const now = new Date();
   for (const lesson of lessons) {
     const track = byTrack[lesson.track];
+    if (!track) continue;
     track.total += lesson.items.length;
     for (const item of lesson.items) {
       const itemState = states.get(lesson.id + '/' + item.id);
@@ -189,10 +201,48 @@ function overview(lessons = lessonList()) {
   };
 }
 
+function visibleContentFiles(section, key, tab) {
+  if (section === 'talen') return languageFiles.includes(key) ? [key] : languageFiles;
+  if (section === 'paideia') {
+    if (!key) return [...historyFiles, 'knowledge'];
+    const track = key === 'chronologie' || Object.hasOwn(explorerPages, key) ? timelineScope(tab) : key;
+    if (track === 'alles') return historyFiles;
+    return [track === 'medieval' || track === 'earlymodern' ? 'history' : track];
+  }
+  return ['vandaag', 'zoeken', 'voortgang', 'toetsen', 'les'].includes(section) ? jsonTracks : [];
+}
+
+function lessonLoadingNotice(section, key, tab) {
+  const tracks = visibleContentFiles(section, key, tab);
+  const failed = tracks.filter(track => lessonFiles.get(track)?.status === 'failed');
+  if (failed.length) return `<div class="notice content-notice" role="status">
+    <p><strong>Laden onderbroken</strong> · ${failed.map(track => TRACKS[track].name).join(', ')}.</p>
+    <button type="button" class="button small" data-action="retry-content">Opnieuw laden</button>
+  </div>`;
+  if (tracks.some(track => lessonFiles.get(track)?.status === 'loading')) return '<p class="content-loading muted" role="status">Lessen laden…</p>';
+  return '';
+}
+
+function researchCaseIndex() {
+  if (indexedSeed !== seed || indexedCases !== cases) {
+    expandedCases = [...cases, ...lessonSourceIndex(seed, cases)];
+    indexedSeed = seed;
+    indexedCases = cases;
+  }
+  return expandedCases;
+}
+
 function render(focus = true) {
   const path = route();
   const [page = 'vandaag', key = '', tab = '', tabKey = ''] = path;
-  const section = page || 'vandaag';
+  let section = page || 'vandaag';
+  if (['paideia', 'talen'].includes(section) && Object.hasOwn(TRACKS, key)) {
+    const subject = TRACKS[key].section === 'language' ? 'talen' : 'paideia';
+    if (section !== subject) {
+      section = subject;
+      history.replaceState(null, '', '#' + [section, ...path.slice(1)].map(encodeURIComponent).join('/'));
+    }
+  }
   const lessons = lessonList();
   const info = overview(lessons);
   if (key !== filteredTrack) {
@@ -232,7 +282,7 @@ function render(focus = true) {
       } else {
         markup = contentKeys.includes(key)
           ? view.course(key, lessons, info.studied, info.prefs, routeFilter, courseFind, tab, readLessons())
-          : view.catalogue(section, lessons);
+          : view.catalogue(section, lessons, info.prefs);
       }
       break;
     case 'les': {
@@ -241,7 +291,11 @@ function render(focus = true) {
       markup = lesson ? view.lessonPage(lesson, {
         journey: explorationJourney(lessons, lesson, path) ?? chronologyForLesson(lessons, lesson, path),
         read: readLessons().has(lesson.id), lessons,
-      }) : view.heading('Les openen') + '<p class="empty">Deze les is op dit moment niet beschikbaar.</p>';
+        courseTrack: tab === 'vak' && belongsToHistoryTrack(lesson, tabKey) ? tabKey : undefined,
+      }) : view.heading('Les openen') + '<p class="empty" data-missing-lesson>' +
+        ([...lessonFiles.values()].some(file => file.status === 'loading') ? 'Deze les wordt opgezocht.' :
+          'Deze les is op dit moment niet beschikbaar.') +
+        '</p><p class="back-link"><a class="text-link" href="#paideia">Naar de vakken</a> · <a class="text-link" href="#zoeken">Zoek een les</a></p>';
       break;
     }
     case 'scriptorium':
@@ -255,7 +309,7 @@ function render(focus = true) {
       const panel = doc ? researchPanel(doc) : {};
       if (doc) lastResearchId = doc.id;
       markup = researchPage(doc, list, Object.hasOwn(RESEARCH_TABS,tab) ? tab : 'vraag', doc ? {
-        cases: findCases(expandedCases, doc.terms || doc.question), studies: panel.studies ?? [],
+        cases: findCases(researchCaseIndex(), doc.terms || doc.question), studies: panel.studies ?? [],
         error: panel.error, matches: panel.matches, tabKey, insertDraft: panel.insertDraft,
         comparison: panel.comparisonDrafts?.get(tabKey),
       } : {}, panel.witness);
@@ -291,10 +345,8 @@ function render(focus = true) {
       markup = view.home(info);
   }
   applyNavigation(top);
-  if (contentErrors.length && ['vandaag', 'talen', 'paideia', 'zoeken'].includes(top)) {
-    markup = '<p class="notice error">Een deel van de lessen kon niet laden. Open Athenaeum online om de lessen bij te werken.</p><br>' + markup;
-  }
-  displayMain(markup, { focus });
+  const notice = section !== 'les' || markup.includes('data-missing-lesson') ? lessonLoadingNotice(section, key, tab) : '';
+  displayMain(notice + markup, { focus });
   if (section === 'paideia' && key === 'atlas') attachAtlas(lessons, timelineScope(tab), tabKey);
   if (section === 'meer' && key === 'meldingen') prepareNotifications();
   if (section === 'zoeken') showLessonMatches(lessons);
@@ -309,7 +361,7 @@ function attachAtlas(lessons, scope, chosen) {
   const frame = document.querySelector('#atlas-globe');
   if (!frame) return;
   const places = ATLAS_PLACES.filter(place => explorationLessons(lessons, 'atlas', scope, place.id).length);
-  import('./atlas-globe.js?v=13r10')
+  import('./atlas-globe.js?v=13r11')
     .then(({ mountAtlasGlobe }) => mountAtlasGlobe(frame, places, chosen, id => {
       const destination = explorerHref('atlas', scope, id);
       if (location.hash === '#' + destination) return;
@@ -330,6 +382,7 @@ function attachAtlas(lessons, scope, chosen) {
 }
 
 async function setProfile(next) {
+  const nextRecords = next ? await readRecords(next.id) : [];
   if (profile?.id !== next?.id) {
     if (profile && pushPreference(profile.id)) await stopPush(profile.id).catch(() => {});
     lessonQuery = '';
@@ -337,7 +390,7 @@ async function setProfile(next) {
   }
   profile = next;
   store.setCurrentProfile(next?.id ?? '');
-  records = next ? await readRecords(next.id) : [];
+  records = nextRecords;
   const resetAt = Math.max(0, ...records.filter(x => x.kind === 'reset').map(x => x.at));
   records = records.filter(x => x.at > resetAt || x.kind === 'reset');
   session = null;
@@ -478,7 +531,7 @@ function jump(page) {
 function lessonBack(id) {
   const path = route();
   const [section, key, view, scope, mode] = path;
-  if (section === 'les' && key === id && view === 'verkenning') return path.map(encodeURIComponent).join('/');
+  if (section === 'les' && key === id && ['verkenning', 'vak'].includes(view)) return path.map(encodeURIComponent).join('/');
   return section === 'les' && key === id && view === 'chronologie'
     ? historyLessonHref(id, scope, mode)
     : 'les/' + encodeURIComponent(id);
@@ -706,6 +759,7 @@ function dailyDraft(plan) {
 }
 
 async function createDay(form) {
+  await contentLoad;
   const p = await requireProfile();
   const fields = new FormData(form);
   const minutes = Number(fields.get('minutes'));
@@ -806,6 +860,7 @@ async function quick(track = '', extra = false) {
     jump('sessie');
     return;
   }
+  await contentLoad;
   const pool = relevantPool(track);
   const questions = quickQuestions(pool, reviews(), { limit: 3, extra, noAudio: !languageSupport() });
   if (!questions.length) {
@@ -1190,7 +1245,7 @@ const actions = {
     await requireProfile();
     await saveResearch(emptyResearch(),'vraag');
   },
-  'research-case': id => attachWitness(expandedCases.find(c => c.id === id)),
+  'research-case': id => attachWitness(researchCaseIndex().find(c => c.id === id)),
   'research-own': () => attachWitness(),
   'research-view-witness': id => {
     const doc = ongoingResearch();
@@ -1247,6 +1302,7 @@ const actions = {
     main.querySelector('.hint-list')?.focus();
   },
   'drill': async value => {
+    await contentLoad;
     const [track,length] = value.split('/');
     if (!contentKeys.includes(track) || !['5','15','30'].includes(length)) return;
     const questions = drillQuestions(relevantPool(track), reviews(), {
@@ -1347,6 +1403,7 @@ const actions = {
     await startQuiz('lesson', LANGUAGE_SKILLS[skill] + ' · ' + lesson.title, questions, { track: lesson.track, back: 'les/' + id });
   },
   'placement': async track => {
+    await contentLoad;
     const questions = placementQuestions(makePool(seed.filter(lesson => lesson.track === track && (track === 'fr' || !lesson.languageTopic))));
     if (questions.length < 15) throw new Error('De instaptest kon nog niet worden geladen. Open de app online.');
     await startQuiz('placement', 'Instaptest ' + TRACKS[track].name, questions, { track, back: 'talen/' + track });
@@ -1364,6 +1421,7 @@ const actions = {
     await startQuiz('lesson', 'Oefentoets Paideia', questions, { back: 'toetsen' });
   },
   'exam': async type => {
+    await contentLoad;
     const monthly = type === 'month';
     const lessons = lessonList();
     const week = monthly ? null : weeklyStudy(lessons, records);
@@ -1519,6 +1577,8 @@ const actions = {
     }
     showDialog(dialogText('Athenaeum installeren', 'Open deze link in je browser. Kies in het menu App installeren of Toevoegen aan beginscherm. Op iPhone en iPad staat die optie in het deelmenu.'));
   },
+  'retry-content': () => loadContent(true),
+  'reload-page': () => location.reload(),
   'offline': async () => {
     message('Lessen downloaden…');
     await cacheLessons();
@@ -1801,10 +1861,8 @@ window.addEventListener('online', () => {
   updateConnection();
   scheduleSync(100);
   if (route().join('/') === 'meer/meldingen') render(false);
-  if (contentErrors.length) loadContent().then(() => {
-    expandedCases = [...cases,...lessonSourceIndex(seed,cases)];
-    if (!session) render(false);
-  });
+  if ([...lessonFiles.values()].some(file => file.status === 'failed')) loadContent(true);
+  if (!casesLoaded) loadCases();
 });
 window.addEventListener('offline', updateConnection);
 window.addEventListener('hashchange', () => {
@@ -1820,42 +1878,112 @@ document.addEventListener('visibilitychange', () => {
 });
 setInterval(() => { if (document.visibilityState === 'visible') scheduleSync(100); }, 55_000);
 
-async function loadContent() {
-  const results = await Promise.allSettled(jsonTracks.map(async key => {
-    const url = new URL('./content/' + key + '.json?v=13r1', import.meta.url);
-    const reply = await fetch(url, { signal: AbortSignal.timeout(12_000) });
-    if (!reply.ok) throw new Error('Lesinhoud ontbreekt: ' + key);
-    return reply.json();
-  }));
-  seed = [...languageLessons, ...historicalLessons, ...results.flatMap(result => result.status === 'fulfilled' ? result.value : []), ...historyArchive];
-  contentErrors = results.filter(result => result.status === 'rejected');
+function refreshContentViews() {
+  clearTimeout(contentRender);
+  contentRender = setTimeout(() => {
+    if (!started || session) return;
+    const [section = 'vandaag'] = route();
+    if (section === 'les' && !main.querySelector('[data-missing-lesson]')) return;
+    if (!['vandaag', '', 'paideia', 'talen', 'zoeken', 'voortgang', 'toetsen', 'les'].includes(section)) return;
+
+    const field = document.activeElement;
+    const text = field?.id === 'atlas-search' ? field.value : '';
+    render(false);
+    const replacement = field?.id && main.querySelector('#' + CSS.escape(field.id));
+    if (replacement && ['atlas-search', 'course-search', 'lesson-query'].includes(field.id)) {
+      if (field.id === 'atlas-search') {
+        replacement.value = text;
+        replacement.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      replacement.focus({ preventScroll: true });
+    }
+  }, 70);
+}
+
+function loadContent(retry = false) {
+  if (contentLoad) return contentLoad;
+  const pending = [...lessonFiles].filter(([, file]) => !file.lessons);
+  if (!pending.length) return;
+  for (const [, file] of pending) file.status = 'loading';
+  if (retry) refreshContentViews();
+
+  contentLoad = Promise.all(pending.map(async ([track, file]) => {
+    const url = new URL('./content/' + track + '.json?v=13r1', import.meta.url);
+    try {
+      const data = await fetchJson(url, { cache: retry ? 'reload' : 'default' });
+      if (!Array.isArray(data) || !data.length || data.some(lesson =>
+        lesson?.track !== track || !lesson.id || !lesson.title || !Array.isArray(lesson.items) || !lesson.items.length)) {
+        throw new Error('Lesinhoud is onvolledig.');
+      }
+      file.lessons = data;
+      file.status = 'ready';
+      seed = [...languageLessons, ...historicalLessons, ...jsonTracks.flatMap(key => lessonFiles.get(key).lessons ?? []), ...historyArchive];
+    } catch {
+      file.status = 'failed';
+    }
+    refreshContentViews();
+  })).finally(() => { contentLoad = undefined; });
+  return contentLoad;
+}
+
+function loadCases() {
+  if (casesLoaded || caseLoad) return;
+  const url = new URL('./content/primary-cases.json?v=13r1', import.meta.url);
+  caseLoad = fetchJson(url).then(data => {
+    if (Array.isArray(data) && data.every(entry => Array.isArray(entry?.tags))) {
+      cases = data;
+      casesLoaded = true;
+      if (started && route()[0] === 'onderzoek' && route()[2] === 'vinden' && !dialog.open &&
+          !document.activeElement?.matches('input, textarea, select, button')) render(false);
+    }
+  }).catch(() => {}).finally(() => { caseLoad = undefined; });
+}
+
+function refreshOfflineStatus() {
+  const worker = navigator.serviceWorker.controller;
+  if (!worker) return;
+  const channel = new MessageChannel();
+  const timer = setTimeout(() => channel.port1.close(), 4000);
+  channel.port1.onmessage = event => {
+    clearTimeout(timer);
+    channel.port1.close();
+    if (navigator.serviceWorker.controller !== worker) return;
+    offlineReady = event.data?.ok === true;
+    const label = document.getElementById('offline-state');
+    if (label) label.textContent = offlineReady ? 'Lessen op dit toestel beschikbaar' : 'Online openen om te downloaden';
+  };
+  worker.postMessage({ type: 'LEARNING_STATUS' }, [channel.port2]);
 }
 
 async function boot() {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js').catch(() => {});
-    if (navigator.serviceWorker.controller && 'caches' in window) {
-      caches.match(new URL('./academy/content/greek.json?v=13r1', location.href)).then(hit => { offlineReady = !!hit; }).catch(() => {});
-    }
+    navigator.serviceWorker.addEventListener('controllerchange', refreshOfflineStatus);
+    navigator.serviceWorker.ready.then(refreshOfflineStatus).catch(() => {});
+    navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).catch(() => {});
   }
-  const initialCases = fetch(new URL('./content/primary-cases.json?v=13r1',import.meta.url), {signal:AbortSignal.timeout(9000)})
-    .then(reply => reply.ok ? reply.json() : []).then(items => { cases = Array.isArray(items) ? items : []; }).catch(() => {});
-  await Promise.all([loadContent(),initialCases]);
-  expandedCases = [...cases,...lessonSourceIndex(seed,cases)];
+  const initialContent = loadContent();
+  loadCases();
   const query = new URLSearchParams(location.search);
   const returningProfile = query.get('resume') === '1' || query.get('locked') === '1'
     ? store.loadProfiles().find(p => p.id === query.get('profile')) : null;
   const p = returningProfile || store.currentProfile();
+  let profileLoadFailed = false;
   if (p && (!p.pin_hash || sessionStorage.getItem('athenaeum_unlocked_' + p.id)) && (!p.cloud_user_id || sync.status(p.id).signed_in)) {
-    await setProfile(p);
+    try { await setProfile(p); }
+    catch (error) {
+      profileLoadFailed = true;
+      message(error.message || 'Je profiel kon niet worden geopend.');
+    }
   }
+  started = true;
   render();
   const intent = query.get('open');
   if (query.get('learn') === '1') {
     const next = new URL(location.href);
     next.searchParams.delete('learn');
     history.replaceState(null, '', next.href);
-    await quick();
+    await initialContent;
+    if (location.href === next.href) await quick();
   }
   else if (intent === 'paideia') jump('paideia');
   else if (intent === 'scriptorium' && !location.hash) jump('scriptorium');
@@ -1867,10 +1995,10 @@ async function boot() {
     history.replaceState(null, '', next.href);
     if (cloudUser()) jump('meer');
     else showAccount('signup');
-  } else if (p && !profile) showProfiles();
+  } else if (p && !profile && !profileLoadFailed) showProfiles();
 }
 
 boot().catch(error => {
   displayMain(view.heading('Athenaeum openen') + '<p class="notice error">' + view.esc(error.message) +
-    '</p><br><a class="button" href="./">Opnieuw openen</a>');
+    '</p><br><button class="button" type="button" data-action="reload-page">Opnieuw openen</button>');
 });

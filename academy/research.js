@@ -1,5 +1,7 @@
-import { esc, sectionHeading, sourceView } from './views.js?v=13r10';
+import { esc, sectionHeading, sourceView } from './views.js?v=13r11';
 import { MATERIAL_TYPES, COMPARISON_RELATIONS, evidenceList, MAX_EXCERPT, MAX_COMPARISON_ROWS } from './research-data.js?v=13r1';
+
+import { fetchJson } from './fetch-json.js?v=13r11';
 
 export const RESEARCH_TABS = {
   vraag:'Probleemstelling', invoegen:'Invoegen', vinden:'Bronnen zoeken', bron:'Bronanalyse',
@@ -93,9 +95,9 @@ export async function findStudies(query) {
     rows:'12',
     select:'title,author,issued,container-title,DOI,URL,type,page',
   });
-  const result = await fetch(api, { signal:AbortSignal.timeout(10_000), headers:{Accept:'application/json'} });
-  if (!result.ok) throw new Error('Crossref is tijdelijk onbereikbaar. Je dossier blijft bewaard.');
-  const data = await result.json();
+  const data = await fetchJson(api, { headers: { Accept: 'application/json' } }).catch(() => {
+    throw new Error('Crossref is tijdelijk onbereikbaar. Je dossier blijft bewaard.');
+  });
   return (data.message?.items ?? []).filter(item => item.title?.[0] && item.DOI).map(item => ({
     id:item.DOI,
     author:(item.author ?? []).slice(0,6).map(a => a.family ? [a.given,a.family].filter(Boolean).join(' ') : a.name).filter(Boolean).join(', '),

@@ -1,11 +1,11 @@
 import { belongsToHistoryTrack, chronologyYear, HISTORICAL_TRACKS, timelineScope } from './history-chronology.js?v=13r9';
 
 export const HISTORY_SECTIONS = {
-  chronologie: ['Chronologia', 'Chronologisch leren', 'clock', 'Volg kernlessen en casussen op volgorde.'],
-  atlas: ['Atlas historicus', 'Historische wereldbol', 'globe', 'Verken steden en open een plaatsgebonden leerpad.'],
-  bronnen: ['Officina fontium', 'Bronnenatelier', 'scriptorium', 'Lees en analyseer historische bronnen.'],
-  tijdvakken: ['Aetates', 'Tijdvakken', 'castle', 'Kies een tijdvak en verdiep je in de lessen.'],
-  leerplan: ['Curriculum', 'Thematisch leerplan', 'knowledge', 'Volg historische thema’s door de tijd.'],
+  chronologie: ['Chronologia', 'Tijdlijn', 'clock'],
+  atlas: ['Atlas historicus', 'Wereldbol', 'globe'],
+  bronnen: ['Officina fontium', 'Bronnenatelier', 'scriptorium'],
+  tijdvakken: ['Aetates', 'Tijdvakken', 'castle'],
+  leerplan: ['Curriculum', 'Thematisch leerplan', 'knowledge'],
 };
 export const EXPLORER_PAGES = Object.fromEntries(Object.entries(HISTORY_SECTIONS)
   .filter(([page]) => page !== 'chronologie').map(([page, [title]]) => [page, title]));
