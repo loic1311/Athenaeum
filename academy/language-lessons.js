@@ -1,4 +1,4 @@
-import { frenchTopics } from './content/fr-pharmacie.js?v=13r1';
+import { frenchTopics } from './content/fr-pharmacie.js?v=13r3';
 import { italianTopics } from './content/it-spreken.js?v=13r1';
 
 function wordItem(entry, index, words, track) {
@@ -44,7 +44,7 @@ function languageLesson(definition, track) {
   };
   return {
     ...identity, track, languageTopic: topic, route: topic, vocabulary: words, grammar, scene,
-    sources: source ? [source] : [],
+    sources: [source].flat().filter(Boolean),
     dialogue: [
       { speaker: 'Vraag', text: scene.line, translation: scene.meaning },
       { speaker: 'Antwoord', text: scene.answer, translation: scene.translation },

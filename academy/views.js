@@ -3,14 +3,32 @@ import { tipsFor } from './daily.js?v=13r1';
 import { instructionFor, PRACTICE_KINDS, practiceOptions, workedExample } from './practice.js?v=13r1';
 import { LANGUAGE_TOPICS, isLanguageTopic } from './language-topics.js?v=13r1';
 
-export const NAV = [
-  ['vandaag', 'Vandaag', 'home'],
-  ['paideia', 'Paideia', 'roman'],
-  ['talen', 'Talen', 'language'],
-  ['toetsen', 'Toetsen', 'check'],
-  ['meer', 'Meer', 'grid'],
-];
-export const APP_NAV = [NAV[1], NAV[2], ['scriptorium', 'Scriptorium', 'scriptorium']];
+const SECTION_NAMES = {
+  vandaag: ['Hodie', 'home', 'Vandaag'],
+  zoeken: ['Quaere', 'search', 'Zoeken'],
+  paideia: ['Paideia', 'roman', 'Leren'],
+  talen: ['Linguae', 'language', 'Talen'],
+  scriptorium: ['Scriptorium', 'scriptorium', 'Onderzoek'],
+  toetsen: ['Examina', 'check', 'Toetsen'],
+  meer: ['Optiones', 'grid', 'Instellingen'],
+  onderzoek: ['Investigatio', 'knowledge', 'Dossiers'],
+  voortgang: ['Progressus', 'graph', 'Voortgang'],
+  importeren: ['Materia mea', 'import', 'Eigen leerstof'],
+};
+
+const navigation = keys => keys.map(key => [key, ...SECTION_NAMES[key]]);
+export const NAV = navigation(['vandaag', 'zoeken', 'paideia', 'talen', 'toetsen', 'meer']);
+export const APP_NAV = navigation(['paideia', 'talen', 'scriptorium']);
+export const SECONDARY_NAV = navigation(['onderzoek', 'voortgang', 'importeren']);
+
+const TRACK_NAMES = {
+  greek: 'Graecia antiqua',
+  roman: 'Roma antiqua',
+  history: 'Historia generalis',
+  knowledge: 'Scientia generalis',
+  it: 'Lingua Italiana',
+  fr: 'Lingua Francogallica',
+};
 
 const icons = {
   home: '<path d="M3 11 12 3l9 8v9a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',
@@ -26,6 +44,7 @@ const icons = {
   graph: '<path d="M4 3v17h17M8 16v-3m5 3V8m5 8V5"/>',
   grid: '<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/>',
   import: '<path d="M12 16V3m-5 6 5-5 5 5M4 15v5h16v-5"/>',
+  search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 4.5 4.5"/>',
   volume: '<path d="M3 9h4l5-4v14l-5-4H3zm13-1a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/>',
   close: '<path d="m6 6 12 12M6 18 18 6"/>',
   play: '<path d="M7 4l13 8-13 8z"/>',
@@ -61,17 +80,30 @@ export function sourceView(source) {
     `<span class="source">${esc(label)}</span>`;
 }
 
-export function heading(title, description = '', kicker = '') {
-  return `<div class="headline">${kicker ? '<p class="eyebrow">' + esc(kicker) + '</p>' : ''}<h1>${esc(title)}</h1>${description ? '<p>' + esc(description) + '</p>' : ''}</div>`;
+export function heading(title, description = '', kicker = '', language = '') {
+  return `<div class="headline">${kicker ? '<p class="eyebrow">' + esc(kicker) + '</p>' : ''}<h1${language ? ' lang="' + esc(language) + '"' : ''}>${esc(title)}</h1>${description ? '<p>' + esc(description) + '</p>' : ''}</div>`;
+}
+
+export function sectionLabel(id) {
+  const [name, , meaning] = SECTION_NAMES[id] ?? ['Athenaeum'];
+  return meaning ? name + ' · ' + meaning : name;
+}
+
+export function sectionHeading(id, description) {
+  const [name, , meaning] = SECTION_NAMES[id];
+  return heading(name, description, meaning, id === 'paideia' ? 'grc-Latn' : 'la');
 }
 
 function button(action, label, css = '', value = '') {
   return `<button type="button" class="button ${css}" data-action="${action}" data-value="${esc(value)}">${esc(label)}</button>`;
 }
 
-export function nav(link, active) {
-  const [url, name, symbol] = link;
-  return `<a href="#${url}" ${active === url ? 'aria-current="page"' : ''}>${icon(symbol)}<span>${name}</span></a>`;
+export function nav(link, active, compact = false) {
+  const [url, name, symbol, meaning] = link;
+  const label = compact && url === 'meer' ? 'Opties' : meaning;
+  return `<a href="#${url}" ${active === url ? 'aria-current="page"' : ''}>${icon(symbol)}
+    <span class="nav-label"><span lang="${url === 'paideia' ? 'grc-Latn' : 'la'}">${name}</span>
+    <span class="nav-meaning">${label}</span></span></a>`;
 }
 
 function trackIcon(track) {
@@ -83,7 +115,7 @@ function card(track, lessons, info) {
   const count = lessons.filter(lesson => lesson.track === track).length;
   return `<a class="panel track-card" href="#${model.section === 'history' ? 'paideia' : 'talen'}/${track}">
     ${trackIcon(track)}
-    <h3>${model.name}</h3>
+    <div><h3 lang="la">${TRACK_NAMES[track]}</h3><p class="track-meaning">${model.name}</p></div>
     <p class="muted small-text">${model.desc}</p>
     <span class="caption">${count} lessen${info ? ' · ' + esc(info) : ''}</span>
   </a>`;
@@ -107,10 +139,51 @@ function unit(lesson, studied) {
   </a>`;
 }
 
+export function lessonSearchPage(query) {
+  return sectionHeading('zoeken', 'Vind lessen op titel, onderwerp of woordenschat.') + `
+    <div class="lesson-search">
+      <form id="lesson-search-form" class="panel lesson-search-form" role="search" aria-label="Lessen zoeken">
+        <div class="field">
+          <label for="lesson-query">Wat wil je leren?</label>
+          <div class="lesson-search-input">
+            ${icon('search')}
+            <input id="lesson-query" name="query" type="search" value="${esc(query)}" placeholder="Bijv. maatbeker Frans"
+              autocomplete="off" spellcheck="false" enterkeyhint="search" maxlength="140">
+            <button type="button" class="button icon-only" id="lesson-search-clear" data-action="lesson-search-clear"
+              aria-label="Wis zoekterm" hidden>${icon('close')}</button>
+          </div>
+        </div>
+        <button type="submit" class="button primary">Zoeken</button>
+      </form>
+      <section class="block stack" aria-label="Zoekresultaten">
+        <h2 id="lesson-search-status" class="search-status" tabindex="-1" aria-live="polite" aria-atomic="true"></h2>
+        <div id="lesson-search-results"></div>
+      </section>
+    </div>`;
+}
+
+export function lessonSearchResults({ hasQuery, results }) {
+  if (!hasQuery) {
+    return `<div class="stack"><p class="muted">Probeer bijvoorbeeld</p><div class="row">
+      ${button('lesson-search-example', 'maatbeker Frans', 'quiet', 'maatbeker Frans')}
+      ${button('lesson-search-example', 'economie in de poleis', 'quiet', 'economie in de poleis')}
+    </div></div>`;
+  }
+  if (!results.length) {
+    return '<p class="notice">Probeer een kortere zoekterm of zoek op een verwant woord.</p>';
+  }
+  return '<ul class="unit-list search-results">' + results.map(({ lesson, snippet }) => {
+    const details = [TRACKS[lesson.track].name, lesson.level, ROUTES[lesson.route]].filter(Boolean).join(' · ');
+    return `<li><a class="unit search-result" href="#les/${esc(encodeURIComponent(lesson.id))}">
+      ${trackIcon(lesson.track)}<div><small>${esc(details)}</small><h3>${esc(lesson.title)}</h3>
+      ${snippet ? '<p class="search-excerpt">' + esc(snippet) + '</p>' : ''}</div></a></li>`;
+  }).join('') + '</ul>';
+}
+
 export function home(info) {
   const date = new Date().toLocaleDateString('nl-BE', { weekday: 'long', day: 'numeric', month: 'long' });
-  const title = info.profile && info.profile.name !== 'Leerling' ? 'Welkom, ' + info.profile.name.split(' ')[0] : 'Vandaag leren';
-  return heading(title, '', date.charAt(0).toUpperCase() + date.slice(1)) + `
+  const welcome = info.profile && info.profile.name !== 'Leerling' ? 'Welkom, ' + info.profile.name.split(' ')[0] : '';
+  return heading('Hodie', welcome, 'Vandaag · ' + date, 'la') + `
     <section class="hero" aria-labelledby="quick-title">
       <div>
         <h2 id="quick-title">Je les van vandaag</h2>
@@ -137,10 +210,9 @@ export function home(info) {
 
 export function catalogue(section, lessons) {
   const language = section === 'talen';
-  const title = language ? 'Talen' : 'Paideia';
-  const desc = language ? 'Oefen voor gesprekken, studie en werk. Kies je niveau zelf of doe een korte instaptest.' :
+  const desc = language ? 'Kies een taal en oefen woorden, grammatica en zinnen die je meteen kunt gebruiken.' :
     'Bouw kennis op met lessen, oefeningen en bronnen. Verdiep je in de oudheid of verbind grotere historische ontwikkelingen.';
-  return heading(title, language ? 'Kies een taal en oefen woorden, grammatica en zinnen die je meteen kunt gebruiken.' : desc) +
+  return sectionHeading(section, desc) +
     `<div class="columns ${language ? 'language-catalogue' : ''}">${(language ? ['it','fr'] : ['greek','roman','history','knowledge']).map(track => card(track, lessons)).join('')}</div>`;
 }
 
@@ -153,7 +225,7 @@ export function course(track, lessons, studied, prefs, route, search = '', topic
   const shown = language ? all.filter(lesson => lesson.level === level && (!route || route === lesson.route)) : all;
   const routes = [...new Set(all.filter(lesson => lesson.level === level).map(lesson => lesson.route))].filter(r => ROUTES[r]);
   const next = shown.find(lesson => !studied.has(lesson.id)) ?? shown[0];
-  return heading(model.name, model.desc, language ? 'Talen' : 'Paideia') +
+  return heading(TRACK_NAMES[track], model.desc, model.name, 'la') +
     (language ? topicCards(track, lessons) + '<section class="block"><div class="topline"><h2>Algemene lessen per niveau</h2></div></section>' : '') + `
     <section class="panel stack course-start">
       <div><h2>${next ? esc(next.title) : 'Aan de slag'}</h2>
@@ -291,7 +363,7 @@ export function outcomes(rows, emptyText) {
 }
 
 export function exams(info) {
-  return heading('Toetsen', 'Bereid je voor met een korte oefentoets of kies een toets over behandelde leerstof uit Paideia.') + `
+  return sectionHeading('toetsen', 'Bereid je voor met een korte oefentoets of kies een toets over behandelde leerstof uit Paideia.') + `
     <section class="panel course-start stack">
       <h2>Oefentoets</h2><p>Probeer maximaal vijf voorbeeldvragen. Je kunt tips gebruiken en krijgt na elke vraag de uitwerking. Je kunt meteen beginnen.</p>
       <div>${button('exam-practice', 'Start oefentoets', 'primary')}</div>
@@ -306,7 +378,7 @@ export function exams(info) {
 }
 
 export function progressPage(info) {
-  return heading('Voortgang', 'Bekijk wat je al hebt geoefend en welk leerpad klaarstaat voor herhaling.') +
+  return sectionHeading('voortgang', 'Bekijk wat je al hebt geoefend en welk leerpad klaarstaat voor herhaling.') +
     `<div class="panel">${metrics(info)}<p class="small-text muted">${info.days} ${info.days === 1 ? 'dagles' : 'daglessen'} afgerond · <a class="text-link" href="#dagles">Daglessen openen</a></p></div><section class="block">
       <div class="topline"><h2>Per leerpad</h2></div>
       <div class="columns">${Object.keys(TRACKS).map(track => `<div class="panel stack">
@@ -490,7 +562,7 @@ export function resultPage(id, data) {
 export function importPage(draft, preview, track) {
   const chosen = draft.track ?? track;
   const selected = Object.hasOwn(TRACKS, chosen) ? chosen : 'greek';
-  const base = heading('Eigen leerstof', 'Plak een tekst of voeg een leesbare PDF of woordenlijst toe. Je krijgt een voorstel dat je kunt aanpassen.');
+  const base = sectionHeading('importeren', 'Plak een tekst of voeg een leesbare PDF of woordenlijst toe. Je krijgt een voorstel dat je kunt aanpassen.');
   if (preview.length) {
     const count = preview.reduce((n, lesson) => n + lesson.items.length, 0);
     return base + `<section class="panel stack"><h2>Controleer je ${count} leerdoelen</h2>
@@ -542,7 +614,7 @@ export function importPage(draft, preview, track) {
 export function settings(info) {
   const p = info.profile;
   const classic = p ? './classic.html?resume=1&amp;profile=' + encodeURIComponent(p.id) : './classic.html';
-  return heading('Meer', 'Beheer je account, meldingen en gegevens.') + `
+  return sectionHeading('meer', 'Beheer je account, meldingen en gegevens.') + `
     <section class="panel stack settings-tools"><h2>Onderzoek en studiegegevens</h2>
       <div class="row"><a class="button quiet" href="#onderzoek">Onderzoek openen</a>
       <a class="button quiet" href="#voortgang">Voortgang</a><a class="button quiet" href="#importeren">Eigen leerstof toevoegen</a></div>
@@ -582,7 +654,7 @@ export function settings(info) {
         <div><button type="submit" class="button primary">Leerpaden bewaren</button></div>
       </form>
     </section>
-    <section class="block"><a class="text-link" href="${classic}">Klassieke omgeving</a></section>`;
+    <section class="block"><a class="text-link" href="${classic}">Athenaeum Classicum · Klassieke omgeving</a></section>`;
 }
 
 export function accountDialog(mode, email = '') {

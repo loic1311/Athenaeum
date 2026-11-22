@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="Scriptorium" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Scriptorium V8.1 — Academische Onderzoekscoach</title>
+<title>Scriptorium</title>
 <meta name="description" content="Lokale, sleutelvrije onderzoekscoach voor masterproeven en doctoraten." />
 <style>
 :root{--bg:#0d1117;--panel:#151b23;--panel2:#1c2430;--line:#2b3544;--text:#e7edf5;--muted:#9aabba;--accent:#9bd6c9;--accent2:#75b8aa;--warn:#f0c36b;--bad:#e88989;--good:#79c99e;--shadow:0 18px 60px rgba(0,0,0,.28);--r:16px}
@@ -280,26 +280,26 @@ body.device-tablet .focus-right{
   <a class="app-back" id="athBackLink" href="../../index.html">← Athenaeum</a>
   <div class="brand">
     <div class="logo"><img src="../../assets/logos/scriptorium.svg" alt="Scriptorium logo"></div>
-    <div class="brand-copy"><div class="brand-row"><h1>Scriptorium</h1><span class="version-pill">V8.1</span></div><small>V8.1 · onderzoek · corpus · H5P · gedeelde bibliotheek · incrementele sync</small></div>
+    <div class="brand-copy"><div class="brand-row"><h1>Scriptorium</h1></div><small>Onderzoeksatelier</small></div>
   </div>
   <div class="nav" id="nav">
-    <button class="active" data-page="dashboard">Home</button>
-    <button data-page="corpus">Corpus</button>
-    <button data-page="exchange">Corpusanalyse</button>
-    <button data-page="discovery">Zoeken</button>
-    <button data-page="sources">Primaire bronnen</button>
-    <button data-page="atelier">Theorie</button>
-    <button data-page="training">Training</button>
-    <button data-page="progress">Voortgang</button>
-    <button data-page="settings">Instellingen</button>
+    <button class="active" data-page="dashboard"><span lang="la">Conspectus</span> · Overzicht</button>
+    <button data-page="corpus"><span lang="la">Corpus</span> · Verzameling</button>
+    <button data-page="exchange"><span lang="la">Analysis</span> · Corpusanalyse</button>
+    <button data-page="discovery"><span lang="la">Inventio</span> · Bronnen zoeken</button>
+    <button data-page="sources"><span lang="la">Fontes</span> · Primaire bronnen</button>
+    <button data-page="atelier"><span lang="la">Theoria</span> · Theorie</button>
+    <button data-page="training"><span lang="la">Exercitatio</span> · Training</button>
+    <button data-page="progress"><span lang="la">Progressus</span> · Voortgang</button>
+    <button data-page="settings"><span lang="la">Optiones</span> · Instellingen</button>
   </div>
   <div class="side-note"><strong>18+-doel:</strong> niet antwoorden memoriseren maar vaardigheden transfereren. Training gebruikt wisselende taken en authentieke primaire bronnen; theorie bouwt voort op het geanalyseerde corpus.</div>
 </aside>
 <main>
-  <div class="topbar"><div class="topbar-left"><div class="topbar-mark"><img src="../../assets/logos/scriptorium.svg" alt="Scriptorium"></div><div><h2 id="pageTitle">Overzicht</h2><div class="topbar-sub">Scriptorium V8.1 · laptop, tablet/iPad en telefoon</div></div></div><div class="top-actions"><span class="install-chip mode-chip" id="installStatusChip">Apparaat detecteren…</span><button class="btn hide-sm" id="quickUpload">PDF's toevoegen</button><button class="btn primary" id="helpBtn">Werkwijze</button></div></div>
+  <div class="topbar"><div class="topbar-left"><div class="topbar-mark"><img src="../../assets/logos/scriptorium.svg" alt="Scriptorium"></div><div><h2 id="pageTitle">Conspectus · Overzicht</h2><div class="topbar-sub">Onderzoeksatelier</div></div></div><div class="top-actions"><a class="btn" href="../../#zoeken" aria-label="Quaere · Lessen zoeken">Quaere</a><span class="install-chip mode-chip" id="installStatusChip">Apparaat detecteren…</span><button class="btn hide-sm" id="quickUpload">PDF's toevoegen</button><button class="btn primary" id="helpBtn">Werkwijze</button></div></div>
   <div class="content"><div id="bootNotice" class="boot-notice" hidden></div>
     <section class="page active" id="page-dashboard">
-      <div class="hero"><div><h3>Onderzoek, train en bouw je corpus verder uit</h3><p>Scriptorium V8.1 brengt corpusbeheer, bronnen, theorie, training en gerichte academische zoekfuncties samen in één werkruimte. Je oorspronkelijke corpus blijft de didactische kern; nieuwe werken worden apart gelabeld en pas na beoordeling zwaarder gewogen.</p></div><span class="badge good">Corpus · bronnen · training · zoeken</span></div>
+      <div class="hero"><div><h3>Onderzoek, train en bouw je corpus verder uit</h3><p>Scriptorium brengt corpusbeheer, bronnen, theorie, training en gerichte academische zoekfuncties samen in één werkruimte. Je oorspronkelijke corpus blijft de didactische kern; nieuwe werken worden apart gelabeld en pas na beoordeling zwaarder gewogen.</p></div><span class="badge good">Corpus · bronnen · training · zoeken</span></div>
       <div class="grid stats">
         <div class="stat"><div class="k">Werken</div><div class="v" id="statWorks">0</div></div>
         <div class="stat"><div class="k">Normatief</div><div class="v" id="statNorm">0</div></div>
@@ -563,6 +563,6 @@ body.device-tablet .focus-right{
 
 
 
-<script src="./scriptorium.app.js?v=13r1"></script>
+<script src="./scriptorium.app.js?v=13r3"></script>
 </body>
 </html>

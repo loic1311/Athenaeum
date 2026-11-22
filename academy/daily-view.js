@@ -1,6 +1,6 @@
 import { TRACKS, ROUTES } from './learning.js?v=13r1';
 import { DAY_FOCI, PACE, STAGES, dayKey } from './daily.js?v=13r1';
-import { esc, exampleView, heading, languageGrammar, languageVocabulary, sourceView } from './views.js?v=13r2';
+import { esc, exampleView, heading, languageGrammar, languageVocabulary, sourceView } from './views.js?v=13r3';
 import { workedExample } from './practice.js?v=13r1';
 
 function dateName(date) {
@@ -107,7 +107,7 @@ function planView(plan, lessons, resume) {
 }
 
 export function dailyPage(plan, lessons, archive, resume, month = '') {
-  const header = heading('Dagles', 'Herhaal wat je weet, lees verder en pas de stof toe.', plan ? dateName(plan.date) : dateName(dayKey()));
+  const header = heading('Lectio diei', 'Herhaal wat je weet, lees verder en pas de stof toe.', 'Dagles · ' + dateName(plan?.date ?? dayKey()), 'la');
   if (plan) {
     const today = plan.date === dayKey() ? '' : '<p class="topline"><a class="text-link" href="#dagles">Naar de dagles van vandaag</a></p><br>';
     return header + today + planView(plan, lessons, resume) + archiveView(archive, plan.date, month);

@@ -1,4 +1,4 @@
-import { esc, heading, sourceView } from './views.js?v=13r2';
+import { esc, sectionHeading, sourceView } from './views.js?v=13r3';
 import { MATERIAL_TYPES, COMPARISON_RELATIONS, evidenceList, MAX_EXCERPT, MAX_COMPARISON_ROWS } from './research-data.js?v=13r1';
 
 export const RESEARCH_TABS = {
@@ -367,7 +367,7 @@ function synthesis(dossier) {
 }
 
 export function researchPage(dossier, dossiers, page, results, witnessId) {
-  const header = heading('Onderzoek','Werk vanuit een probleemstelling en bouw je antwoord op met bronnen en historiografie.');
+  const header = sectionHeading('onderzoek','Werk vanuit een probleemstelling en bouw je antwoord op met bronnen en historiografie.');
   if (!dossier) return header + `<div class="columns">
     <section class="panel stack"><h2>Mijn onderzoeksdossiers</h2>
       <p class="muted">Elk dossier bewaart je vraag, ingevoerd materiaal, bronnen, literatuur en vergelijkingen op dit toestel.</p>

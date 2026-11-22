@@ -42,7 +42,12 @@
   ],
   "shortcuts": [
     {
-      "name": "Leer twee minuten",
+      "name": "Quaere · Lessen zoeken",
+      "short_name": "Zoeken",
+      "url": "./#zoeken"
+    },
+    {
+      "name": "Lectio brevis · Sneloefening",
       "short_name": "Snel leren",
       "url": "./?learn=1",
       "icons": [
@@ -78,7 +83,7 @@
       ]
     },
     {
-      "name": "Talen",
+      "name": "Linguae · Talen",
       "short_name": "Talen",
       "url": "./index.html#talen"
     }

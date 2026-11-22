@@ -1,14 +1,14 @@
-import { esc, heading, icon } from './views.js?v=13r2';
+import { esc, heading, icon, sectionHeading } from './views.js?v=13r3';
 
 export const SCRIPTORIUM_CHANNEL = 'athenaeum-scriptorium-v1';
 const SCRIPTORIUM_VIEWS = {
-  overzicht: ['Overzicht', 'home', 'Bekijk je onderzoek en kies een volgende stap.', 'dashboard'],
-  corpus: ['Mijn corpus', 'knowledge', 'Vind je opgeslagen werken, PDF’s en analyses.', 'corpus'],
-  ontdekken: ['Ontdekken', 'globe', 'Zoek aanvullend vergelijkingsmateriaal.', 'discovery'],
-  ontleden: ['Corpusanalyse', 'scriptorium', 'Analyseer werken uit je corpus.', 'exchange'],
-  oefenen: ['Oefenatelier', 'check', 'Oefen onderzoeksvragen, bronnenkritiek en argumentatie.', 'training'],
-  theorie: ['Onderzoeksmethode', 'pen', 'Raadpleeg de uitleg bij historische onderzoeksmethoden.', 'atelier'],
-  voortgang: ['Voortgang', 'graph', 'Bekijk welke onderzoeksvaardigheden aan bod komen.', 'progress'],
+  overzicht: ['Conspectus · Overzicht', 'home', 'Bekijk je onderzoek en kies een volgende stap.', 'dashboard'],
+  corpus: ['Corpus · Mijn verzameling', 'knowledge', 'Vind je opgeslagen werken, PDF’s en analyses.', 'corpus'],
+  ontdekken: ['Inventio · Bronnen zoeken', 'globe', 'Zoek aanvullend vergelijkingsmateriaal.', 'discovery'],
+  ontleden: ['Analysis · Corpusanalyse', 'scriptorium', 'Analyseer werken uit je corpus.', 'exchange'],
+  oefenen: ['Exercitatio · Oefenatelier', 'check', 'Oefen onderzoeksvragen, bronnenkritiek en argumentatie.', 'training'],
+  theorie: ['Theoria · Onderzoeksmethode', 'pen', 'Raadpleeg de uitleg bij historische onderzoeksmethoden.', 'atelier'],
+  voortgang: ['Progressus · Voortgang', 'graph', 'Bekijk welke onderzoeksvaardigheden aan bod komen.', 'progress'],
 };
 
 export function scriptoriumURL(section, profileId) {
@@ -37,7 +37,7 @@ export function scriptoriumShell(key, researchId, profileId) {
   const selected = SCRIPTORIUM_VIEWS[section];
   const research = researchId ? '#onderzoek/' + esc(researchId) + '/invoegen' : '#onderzoek';
   const label = section === 'overzicht' ? 'Open Scriptorium' : 'Open ' + selected[0];
-  return heading('Scriptorium', '', 'Apps') + `
+  return sectionHeading('scriptorium') + `
     <section class="panel course-start stack scriptorium-start">
       <div><h2>${section === 'overzicht' ? 'Je onderzoekswerkruimte' : selected[0]}</h2>
         <p>${section === 'overzicht' ? 'Werk verder in je eigen corpus, analyseer teksten of bereid je onderzoek voor.' : selected[2]}</p></div>

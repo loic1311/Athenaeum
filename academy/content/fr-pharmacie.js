@@ -2,6 +2,10 @@ const verrerie = {
   author: 'Université Claude Bernard Lyon 1', title: 'Analyse · définitions',
   locator: 'Diapositive « Avec quel type de matériel ? »', url: 'https://clarolineconnect.univ-lyon1.fr/clarolinepdfplayerbundle/pdf/2028295',
 };
+const measuringCup = {
+  author: 'Mijnwoordenboek.nl', title: 'Nederlands–Frans woordenboek', locator: 'Weblemma « maatbeker »',
+  url: 'https://www.mijnwoordenboek.nl/vertaal/NL/FR/maatbeker',
+};
 const appareils = {
   author: 'Amelle Mermouri', year: '2023', title: 'La pédagogie par simulation dans le cadre de la formation initiale des pharmaciens industriels',
   locator: 'p. 76, tableau des équipements', url: 'https://bibnum.univ-lyon1.fr/nuxeo/nxfile/default/dd5487b2-78a2-4c56-ba2d-77778da18b39/file%3Acontent/THph_2023LYO1P012.pdf',
@@ -39,13 +43,14 @@ const partitif = {
 
 export const frenchTopics = [
   {
-    id: 'fr-labo-verrerie', topic: 'labo', level: 'A1', title: 'Glaswerk op de labotafel', source: verrerie,
-    summary: 'Leer het glaswerk bij naam kennen. Oefen hoe je aan je practicumbegeleider vraagt waar iets ligt of welk stuk je nodig hebt.',
+    id: 'fr-labo-verrerie', topic: 'labo', level: 'A1', title: 'Glaswerk op de labotafel', source: [verrerie, measuringCup],
+    summary: 'Leer het glaswerk bij naam kennen. Oefen hoe je aan je practicumbegeleider vraagt waar iets ligt of welk stuk je nodig hebt. In het dagelijks leven heet een maatbeker un verre doseur. De maatcilinder uit het labo heet une éprouvette graduée.',
     words: [
       ['un bécher', 'een bekerglas'], ['un erlenmeyer', 'een erlenmeyer (kolf met smalle hals)'], ['une éprouvette graduée', 'een maatcilinder'],
       ['une fiole jaugée', 'een maatkolf'], ['une pipette graduée', 'een gegradueerde pipet'], ['une pipette jaugée', 'een volpipet'],
       ['une burette', 'een buret'], ['un tube à essai', 'een reageerbuis', ['un tube à essais']], ['un entonnoir', 'een trechter'],
       ['un verre de montre', 'een horlogeglas'], ['un bouchon', 'een stop'], ['un porte-tubes', 'een reageerbuisrekje', ['un portoir à tubes']],
+      ['un verre doseur', 'een maatbeker', ['un verre gradué']],
     ],
     grammar: {
       title: 'Un, une en des', rule: 'Gebruik un bij een mannelijk naamwoord en une bij een vrouwelijk naamwoord. In het meervoud gebruik je des, ongeacht het geslacht.',

@@ -3914,10 +3914,9 @@ function updateMode63(){
   document.body.classList.toggle('app-standalone',m.standalone);
 }
 function brand63(){
-  document.title='Scriptorium V6.3.1 - Academische Onderzoekscoach';
-  document.querySelectorAll('.version-pill').forEach(x=>x.textContent='V6.3.1');
+  document.title='Scriptorium';
   const s=document.querySelector('.brand small'); if(s)s.textContent='Onderzoekscoach V6.3.1 · GitHub-ready · authentieke bronnen · training · sync';
-  const sub=document.querySelector('.topbar-sub'); if(sub)sub.textContent='Scriptorium V6.3.1 · web, desktop en mobiel';
+  const sub=document.querySelector('.topbar-sub'); if(sub)sub.textContent='Onderzoeksatelier';
 }
 function notifyBoot(msg,type='warn'){
   const e=document.getElementById('bootNotice'); if(!e)return;
@@ -4226,7 +4225,7 @@ window.openModuleTheory=async function(moduleId){
 };
 
 const oldInit64=window.init;
-window.init=async function(){if(oldInit64)await oldInit64();document.title='Scriptorium V6.5.1 - Academische Onderzoekscoach';document.querySelectorAll('.version-pill').forEach(x=>x.textContent='V6.5.1');const s=document.querySelector('.brand small');if(s)s.textContent='Onderzoekscoach V6.5.1 · duidelijke theorie · complete oefendossiers · uitgebreide authentieke bronnen';const sub=document.querySelector('.topbar-sub');if(sub)sub.textContent='Scriptorium V6.5.1 · theorie → voorbeeld → authentieke oefening';const btn=document.querySelector('#openSelectedTheory');if(btn)btn.onclick=()=>window.openModuleTheory(document.querySelector('#trainingModule').value);};
+window.init=async function(){if(oldInit64)await oldInit64();document.title='Scriptorium';const s=document.querySelector('.brand small');if(s)s.textContent='Onderzoekscoach V6.5.1 · duidelijke theorie · complete oefendossiers · uitgebreide authentieke bronnen';const sub=document.querySelector('.topbar-sub');if(sub)sub.textContent='Onderzoeksatelier';const btn=document.querySelector('#openSelectedTheory');if(btn)btn.onclick=()=>window.openModuleTheory(document.querySelector('#trainingModule').value);};
 })();
 
 /* ===== v6_5.js ===== */
@@ -4278,7 +4277,7 @@ function bindTools65(){
   if(stop) stop.onclick=()=>{ if(pomodoroHandle) clearInterval(pomodoroHandle); pomodoroHandle=null; pomodoroUntil=0; renderTimer(); toast('Focustimer gestopt.'); };
   renderTimer();
 }
-window.init=async function(){ if(PREV_INIT) await PREV_INIT(); document.title='Scriptorium V6.5.1 - Academische Onderzoekscoach'; document.querySelectorAll('.version-pill').forEach(x=>x.textContent='V6.5.1'); const small=document.querySelector('.brand small'); if(small) small.textContent='Onderzoekscoach V6.5.1 · klassieke huisstijl · extra bronnen · training · sync'; const sub=document.querySelector('.topbar-sub'); if(sub) sub.textContent='Scriptorium V6.5.1 · responsieve studie-app voor laptop en telefoon'; updateView65(); bindTools65(); };
+window.init=async function(){ if(PREV_INIT) await PREV_INIT(); document.title='Scriptorium'; const small=document.querySelector('.brand small'); if(small) small.textContent='Onderzoekscoach V6.5.1 · klassieke huisstijl · extra bronnen · training · sync'; const sub=document.querySelector('.topbar-sub'); if(sub) sub.textContent='Onderzoeksatelier'; updateView65(); bindTools65(); };
 window.addEventListener('resize',updateView65);
 window.addEventListener('orientationchange',updateView65);
 })();
@@ -4301,7 +4300,7 @@ function installMobileNav(){
     <button data-mobile-page="dashboard"><span class="mbn-icon">⌂</span><span>Home</span></button>
     <button data-mobile-page="training"><span class="mbn-icon">◎</span><span>Training</span></button>
     <button data-mobile-page="corpus"><span class="mbn-icon">▤</span><span>Corpus</span></button>
-    <button id="mobileMoreBtn"><span class="mbn-icon">☰</span><span>Menu</span></button>`;
+    <button id="mobileMoreBtn"><span class="mbn-icon">☰</span><span>Optiones</span></button>`;
   document.body.appendChild(nav);
   const sheet=document.createElement('div'); sheet.id='mobileMenuSheet'; sheet.className='mobile-menu-sheet';
   sheet.innerHTML=`<div class="mobile-sheet-backdrop" data-mobile-close></div><section class="mobile-sheet-panel" role="dialog" aria-modal="true" aria-label="Scriptorium menu">
@@ -4379,10 +4378,9 @@ window.showPage=function(name){const r=PREV_SHOW?PREV_SHOW(name):undefined;activ
 window.init=async function(){
   ensureServiceWorkerEarly();
   if(PREV_INIT) await PREV_INIT();
-  document.title='Scriptorium V6.5.2 - Academische Onderzoekscoach';
-  document.querySelectorAll('.version-pill').forEach(x=>x.textContent='V6.5.2');
+  document.title='Scriptorium';
   const small=document.querySelector('.brand small');if(small)small.textContent='Onderzoekscoach V6.5.2 · laptop + telefoon · authentieke bronnen · training · sync';
-  const sub=document.querySelector('.topbar-sub');if(sub)sub.textContent='Scriptorium V6.5.2 · geoptimaliseerd voor laptop en telefoon';
+  const sub=document.querySelector('.topbar-sub');if(sub)sub.textContent='Onderzoeksatelier';
   installMobileNav();pwaHealthCard();updatePwaState();updateModeChip652();
   const q=new URL(location.href).searchParams.get('page');if(q&&['dashboard','training','corpus','sources','progress','atelier','discovery','exchange','sync','settings'].includes(q))window.showPage(q);else activeMobile(document.querySelector('.page.active')?.id?.replace('page-','')||'dashboard');
   setTimeout(renderPwaHealth,800);
@@ -4444,19 +4442,19 @@ function installAnimations7(){
 
 function patchMobileNav7(){
   const nav=q('mobileBottomNav'); if(nav){
-    const items=[['dashboard','🏠','Home'],['training','🧠','Training'],['corpus','📚','Corpus']];
+    const items=[['dashboard','🏠','Conspectus'],['training','🧠','Exercitatio'],['corpus','📚','Corpus']];
     for(const [p,icon,label] of items){const b=nav.querySelector(`[data-mobile-page="${p}"]`);if(b)b.innerHTML=`<span class="mbn-icon">${icon}</span><span>${label}</span>`}
-    const more=q('mobileMoreBtn');if(more)more.innerHTML='<span class="mbn-icon">☰</span><span>Menu</span>';
+    const more=q('mobileMoreBtn');if(more)more.innerHTML='<span class="mbn-icon">☰</span><span>Optiones</span>';
   }
   const grid=document.querySelector('#mobileMenuSheet .mobile-sheet-grid');if(grid){
-    const labels={sources:['🏺','Primaire bronnen'],progress:['📈','Voortgang'],atelier:['📖','Theorie'],discovery:['🔎','Zoeken'],exchange:['🗂️','Corpusanalyse'],settings:['⚙️','Instellingen']};
-    grid.innerHTML='';for(const [page,[icon,label]] of Object.entries(labels)){const b=document.createElement('button');b.dataset.mobilePage=page;b.innerHTML=`<span class="v7-menu-emoji">${icon}</span><span>${label}</span>`;grid.appendChild(b)}
+    const labels={sources:'🏺',progress:'📈',atelier:'📖',discovery:'🔎',exchange:'🗂️',settings:'⚙️'};
+    grid.innerHTML='';for(const [page,icon] of Object.entries(labels)){const b=document.createElement('button');b.dataset.mobilePage=page;b.innerHTML=`<span class="v7-menu-emoji">${icon}</span><span>${pageName7(page)}</span>`;grid.appendChild(b)}
     const tg=document.createElement('button');tg.id='v7MobileTelegram';tg.innerHTML='<span class="v7-menu-emoji">✈️</span><span>Telegram</span>';grid.appendChild(tg);
     const help=document.createElement('button');help.id='mobileHelpBtn';help.innerHTML='<span class="v7-menu-emoji">❔</span><span>Werkwijze</span>';grid.appendChild(help);
   }
 }
 
-function pageName7(n){return ({dashboard:'Home',corpus:'Corpus',exchange:'Corpusanalyse',discovery:'Zoeken',sources:'Primaire bronnen',atelier:'Theorie',training:'Training',progress:'Voortgang',settings:'Instellingen'})[n]||n}
+function pageName7(n){return ({dashboard:'Conspectus · Overzicht',corpus:'Corpus · Verzameling',exchange:'Analysis · Corpusanalyse',discovery:'Inventio · Bronnen zoeken',sources:'Fontes · Primaire bronnen',atelier:'Theoria · Theorie',training:'Exercitatio · Training',progress:'Progressus · Voortgang',settings:'Optiones · Instellingen'})[n]||n}
 window.showPage=function(name,opts={}){
   if(name==='sync')name='settings';
   const r=V7_PREV_SHOW?V7_PREV_SHOW(name):undefined;
@@ -4581,12 +4579,11 @@ function addSourceExplorer7(){
 function bindGlobal7(){q('corpusProvenance')?.addEventListener('change',()=>{state.corpusPage=1;window.renderCorpus()});bindTelegramButtons7();document.addEventListener('click',e=>{const tg=e.target.closest('#v7MobileTelegram');if(tg){e.preventDefault();window.open(telegramShareUrl7(location.href,'Scriptorium V7'),'_blank')}});}
 
 function brandV7(){
-  document.title='Scriptorium V7 — Academische Onderzoekscoach';
-  document.querySelectorAll('.version-pill').forEach(x=>x.textContent='V7');
+  document.title='Scriptorium';
   const sm=document.querySelector('.brand small');
   if(sm)sm.textContent='Academische onderzoekscoach · corpus · bronnen · theorie · training';
   const sub=document.querySelector('.topbar-sub');
-  if(sub)sub.textContent='Scriptorium V7 · onderzoek, bronnen en vaardigheden in één werkruimte';
+  if(sub)sub.textContent='Onderzoeksatelier';
 }
 async function modernizeV7(){
   brandV7();
@@ -4647,12 +4644,11 @@ function athCfg(){try{return window.AthSync?.cfg?.(PID)||null}catch{return null}
 async function athToken(){return window.AthSync?.access?.(PID)}
 
 function brand71(){
-  document.title='Scriptorium V7.1 — Academische Onderzoekscoach';
-  document.querySelectorAll('.version-pill').forEach(x=>x.textContent='V7.1');
+  document.title='Scriptorium';
   const sm=document.querySelector('.brand small');
-  if(sm)sm.textContent='V7.1 · onderzoek · corpus · H5P · gedeelde bibliotheek · incrementele sync';
+  if(sm)sm.textContent='Onderzoeksatelier';
   const sub=document.querySelector('.topbar-sub');
-  if(sub)sub.textContent='Scriptorium V7.1 · stabiele multi-device onderzoekscoach';
+  if(sub)sub.textContent='Onderzoeksatelier';
 }
 
 /* ---------- pre-init compaction: prevents old duplicated analysis ranges loading into RAM ---------- */
@@ -5052,12 +5048,11 @@ window.init=async function(){
 const PID=window.ATH_PROFILE_ID||localStorage.getItem('athenaeum_current_profile')||'';
 
 function brand72(){
-  document.title='Scriptorium V7.2 — Academische Onderzoekscoach';
-  document.querySelectorAll('.version-pill').forEach(x=>x.textContent='V7.2');
+  document.title='Scriptorium';
   const sm=document.querySelector('.brand small');
-  if(sm)sm.textContent='V7.2 · snelle veilige start · incrementele sync · H5P · gedeelde bibliotheek';
+  if(sm)sm.textContent='Onderzoeksatelier';
   const sub=document.querySelector('.topbar-sub');
-  if(sub)sub.textContent='Scriptorium V7.2 · fast boot zonder volledige legacy-initialisatie';
+  if(sub)sub.textContent='Onderzoeksatelier';
 }
 function bootStatus(text,type='warn'){
   const n=document.getElementById('bootNotice');
@@ -5231,7 +5226,7 @@ window.init=async function(){
 const PID=window.ATH_PROFILE_ID||localStorage.getItem('athenaeum_current_profile')||'';
 const PREV_INIT=window.init;
 const esc3=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-function brand73(){document.title='Scriptorium V8.1 — AI-docent';document.querySelectorAll('.version-pill').forEach(x=>x.textContent='V8.1');const sm=document.querySelector('.brand small');if(sm)sm.textContent='V8.1 · AI-docent · veilige start · incrementele sync · H5P';}
+function brand73(){document.title='Scriptorium';const sm=document.querySelector('.brand small');if(sm)sm.textContent='Onderzoeksatelier';}
 function gradeHtml(g,quota){
   const cls=g.score>=18?'good':g.score>=14?'warn':'bad';
   const dims=Object.entries(g.dimension_scores||{}).map(([k,v])=>`<div class="dimension"><strong>${esc3(k)}</strong><span>${Number(v).toFixed(1)}/20</span></div>`).join('');
@@ -5279,10 +5274,9 @@ window.init=async function(){await PREV_INIT();brand73();bindAi73();document.add
 const PID=window.ATH_PROFILE_ID||localStorage.getItem('athenaeum_current_profile')||'';
 
 function brand74(){
-  document.title='Scriptorium V7.4 — Fast Boot + AI-docent';
-  document.querySelectorAll('.version-pill').forEach(x=>x.textContent='V7.4');
-  const sm=document.querySelector('.brand small');if(sm)sm.textContent='V7.4 · fast boot · AI-docent · incrementele sync · H5P';
-  const sub=document.querySelector('.topbar-sub');if(sub)sub.textContent='Scriptorium V7.4 · zware onderdelen pas laden wanneer je ze gebruikt';
+  document.title='Scriptorium';
+  const sm=document.querySelector('.brand small');if(sm)sm.textContent='Onderzoeksatelier';
+  const sub=document.querySelector('.topbar-sub');if(sub)sub.textContent='Onderzoeksatelier';
 }
 function aiSettingsHtml(s){
   const q=s?.quota||{},used=q.deep_used||0,limit=q.deep_limit||10,rem=q.deep_remaining??Math.max(0,limit-used),pct=limit?Math.round(used/limit*100):0,p=s?.provider;
@@ -5344,10 +5338,9 @@ let lessonCache=null,lessonCachePromise=null;
 const fullCache=new Map();
 
 function brand75(){
-  document.title='Scriptorium V8.1 — Eindversie';
-  document.querySelectorAll('.version-pill').forEach(x=>x.textContent='V8.1');
-  const sm=document.querySelector('.brand small');if(sm)sm.textContent='V8.1 · eindversie · AI-docent · incrementele sync · H5P';
-  const sub=document.querySelector('.topbar-sub');if(sub)sub.textContent='Scriptorium V8.1 · apparaatbewust · metadata-first · AI-docent';
+  document.title='Scriptorium';
+  const sm=document.querySelector('.brand small');if(sm)sm.textContent='Onderzoeksatelier';
+  const sub=document.querySelector('.topbar-sub');if(sub)sub.textContent='Onderzoeksatelier';
 }
 function esc75(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function storeCount(name){return new Promise((res,rej)=>{try{const r=tx(name).count();r.onsuccess=()=>res(r.result||0);r.onerror=()=>rej(r.error)}catch(e){rej(e)}})}

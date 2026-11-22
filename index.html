@@ -9,14 +9,14 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Athenaeum">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>Athenaeum · Leerplatform</title>
+  <title>Athenaeum</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./assets/icons/icon-192.png">
   <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png">
-  <link rel="stylesheet" href="./academy/style.css?v=13r1">
+  <link rel="stylesheet" href="./academy/style.css?v=13r3">
   <script defer src="./shared/store.js"></script>
   <script defer src="./shared/sync.js"></script>
-  <script type="module" src="./academy/app.js?v=13r2"></script>
+  <script type="module" src="./academy/app.js?v=13r3"></script>
 </head>
 <body>
   <a class="skip" href="#main">Naar de inhoud</a>
@@ -35,13 +35,13 @@
         <img src="./assets/logos/athenaeum.svg" width="33" height="33" alt="">
         <span>Athenaeum</span>
       </a>
-      <p class="location" id="location">Vandaag</p>
+      <p class="location" id="location">Hodie · Vandaag</p>
       <div class="top-actions">
         <details class="app-menu">
-          <summary class="button quiet">Apps</summary>
+          <summary class="button quiet" aria-label="Instrumenta · Apps">Apps</summary>
           <nav id="mobile-apps" aria-label="Apps"></nav>
         </details>
-        <form id="command-form" class="command" role="search" aria-label="Sneloefening">
+        <form id="command-form" class="command" aria-label="Sneloefening">
           <label for="command" class="sr-only">Commando</label>
           <input id="command" placeholder="/leer" autocomplete="off" spellcheck="false" maxlength="20">
           <button class="command-submit" type="submit" aria-label="Voer commando uit">↵</button>

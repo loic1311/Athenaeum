@@ -1,13 +1,13 @@
-const VERSION = 'athenaeum-learning-v1.3.1';
+const VERSION = 'athenaeum-learning-v1.3.2';
 const BASE = new URL(self.registration.scope);
 const CORE = [
-  './', './index.html', './leer/', './manifest.webmanifest', './classic.html', './app.js', './shared/style.css', './shared/telegram.js',
-  './academy/style.css?v=13r1', './academy/app.js?v=13r2', './academy/views.js?v=13r2', './academy/daily.js?v=13r1', './academy/daily-view.js?v=13r1', './academy/research.js?v=13r1',
-  './academy/research-data.js?v=13r1', './academy/research-import.js?v=13r1', './academy/scriptorium.js?v=13r1',
+  './', './index.html', './leer/', './manifest.webmanifest', './classic.html', './app.js?v=13r3', './shared/style.css', './shared/telegram.js',
+  './academy/style.css?v=13r3', './academy/app.js?v=13r3', './academy/views.js?v=13r3', './academy/daily.js?v=13r1', './academy/daily-view.js?v=13r3', './academy/research.js?v=13r3',
+  './academy/research-data.js?v=13r1', './academy/research-import.js?v=13r1', './academy/scriptorium.js?v=13r3',
   './academy/practice.js?v=13r1', './academy/practice-content.js?v=13r1',
-  './academy/language-topics.js?v=13r1', './academy/language-lessons.js?v=13r1',
-  './academy/content/fr-pharmacie.js?v=13r1', './academy/content/it-spreken.js?v=13r1',
-  './academy/storage.js', './academy/learning.js', './academy/learning.js?v=13r1', './academy/cloud.js?v=13r2', './academy/importer.js',
+  './academy/language-topics.js?v=13r1', './academy/language-lessons.js?v=13r3',
+  './academy/content/fr-pharmacie.js?v=13r3', './academy/content/it-spreken.js?v=13r1',
+  './academy/lesson-search.js?v=13r3', './academy/storage.js', './academy/learning.js', './academy/learning.js?v=13r1', './academy/cloud.js?v=13r2', './academy/importer.js',
   './shared/store.js', './shared/sync.js', './assets/icons/icon-192.png', './assets/icons/icon-512.png',
   './assets/logos/athenaeum.svg', './assets/logos/athenaeum-192.png',
 ];

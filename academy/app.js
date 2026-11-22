@@ -1,19 +1,20 @@
 import { EXAM_GOALS, LEVELS, ROUTES, TRACKS, shuffled, makePool, historyOf, isCorrect, hasAccentError, quickQuestions,
   languageQuestions, lessonQuestions, examQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=13r1';
-import { languageLessons } from './language-lessons.js?v=13r1';
+import { languageLessons } from './language-lessons.js?v=13r3';
 import { LANGUAGE_SKILLS } from './language-topics.js?v=13r1';
 import { record, readRecords, storeRecords, forgetRecords, backups, syncLearning, clearCloudLearning } from './storage.js';
 import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js';
 import { authenticate, authMessage, makeGuest } from './cloud.js?v=13r2';
-import * as view from './views.js?v=13r2';
+import * as view from './views.js?v=13r3';
 import { PACE, DAY_FOCI, STAGES, dayKey, archivedPlans, planDay, advanceDay, drillQuestions, tipsFor } from './daily.js?v=13r1';
 import { checkSelection, completeSelection, practiceOptions, workedExample } from './practice.js?v=13r1';
-import { dailyPage } from './daily-view.js?v=13r1';
+import { dailyPage } from './daily-view.js?v=13r3';
 import { findCases, findStudies, lessonSourceIndex, passageMatches, caseWitness, researchPage, researchMarkdown, RESEARCH_TABS,
-  evidencePreview } from './research.js?v=13r1';
+  evidencePreview } from './research.js?v=13r3';
 import { addResearchMaterial, comparisonFromForm, evidenceList, validComparison, MAX_COMPARISON_ROWS } from './research-data.js?v=13r1';
 import { readResearchFile } from './research-import.js?v=13r1';
-import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=13r1';
+import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=13r3';
+import { searchLessons } from './lesson-search.js?v=13r3';
 
 const main = document.querySelector('#main');
 const pageContent = document.querySelector('#page-content');
@@ -39,6 +40,8 @@ let lastRecordTime = 0;
 let routeFilter = '';
 let filteredTrack = '';
 let courseFind = '';
+let lessonQuery = '';
+let lessonSearchTimer;
 let archiveMonth = '';
 let importDraft = {};
 let importPreview = [];
@@ -92,23 +95,21 @@ function inlineMessage(container, text, error = false) {
   container.classList.toggle('error', error);
 }
 
-function applyNavigation(section, label) {
+function applyNavigation(section, label = view.sectionLabel(section)) {
   document.querySelector('#location').textContent = label;
-  const [today, , , exams, more] = view.NAV;
   const apps = view.APP_NAV.map(n => view.nav(n, section)).join('');
-  document.querySelector('#desktop-nav').innerHTML = view.nav(today, section) +
-    '<div class="nav apps-group" role="group" aria-labelledby="apps-label"><p id="apps-label" class="rail-heading">Apps</p>' +
-    apps + '</div>' + view.nav(exams, section) + view.nav(more, section);
+  const primary = view.NAV.filter(([id]) => id === 'vandaag' || id === 'zoeken');
+  const tools = view.NAV.filter(([id]) => id === 'toetsen' || id === 'meer');
+  document.querySelector('#desktop-nav').innerHTML = primary.map(n => view.nav(n, section)).join('') +
+    '<div class="nav apps-group" role="group" aria-labelledby="apps-label"><p id="apps-label" class="rail-heading"><span lang="la">Instrumenta</span> · Apps</p>' +
+    apps + '</div>' + tools.map(n => view.nav(n, section)).join('');
   const activeMobile = ['onderzoek','voortgang','importeren'].includes(section) ? 'meer' : section;
-  document.querySelector('#mobile-nav').innerHTML = view.NAV.map(n => view.nav(n, activeMobile)).join('');
-  document.querySelector('#mobile-apps').innerHTML = apps;
+  document.querySelector('#mobile-nav').innerHTML = view.NAV.map(n => view.nav(n, activeMobile, true)).join('');
+  document.querySelector('#mobile-apps').innerHTML = '<p class="rail-heading" lang="la">Instrumenta</p>' + apps;
   const menu = document.querySelector('.app-menu');
   menu.open = false;
   menu.classList.toggle('is-active', section === 'scriptorium');
-  document.querySelector('#desktop-secondary').innerHTML = [
-    ['onderzoek', 'Onderzoek', 'knowledge'],
-    ['voortgang', 'Voortgang', 'graph'], ['importeren', 'Eigen leerstof', 'import'],
-  ].map(n => view.nav(n, section)).join('');
+  document.querySelector('#desktop-secondary').innerHTML = view.SECONDARY_NAV.map(n => view.nav(n, section)).join('');
   const name = document.querySelector('#account');
   name.textContent = cloudUser() ? profile.name : 'Account';
   name.title = cloudUser() ? 'Profiel en account' : 'Account maken of aanmelden';
@@ -185,6 +186,9 @@ function render(focus = true) {
       markup = dailyPage(plan, lessons, archive, resume, archiveMonth);
       break;
     }
+    case 'zoeken':
+      markup = view.lessonSearchPage(lessonQuery);
+      break;
     case 'paideia':
     case 'talen':
       markup = contentKeys.includes(key) ? view.course(key, lessons, info.studied, info.prefs, routeFilter, courseFind, tab) : view.catalogue(section, lessons);
@@ -238,12 +242,12 @@ function render(focus = true) {
       top = 'vandaag';
       markup = view.home(info);
   }
-  applyNavigation(top, ([...view.NAV, ...view.APP_NAV].find(n => n[0] === top)?.[1] ??
-    ({ onderzoek: 'Onderzoek', voortgang: 'Voortgang', importeren: 'Eigen leerstof' })[top] ?? 'Athenaeum'));
-  if (contentErrors.length && ['vandaag', 'talen', 'paideia'].includes(top)) {
+  applyNavigation(top);
+  if (contentErrors.length && ['vandaag', 'talen', 'paideia', 'zoeken'].includes(top)) {
     markup = '<p class="notice error">Een deel van de lessen kon niet laden. Open Athenaeum online om de lessen bij te werken.</p><br>' + markup;
   }
   displayMain(markup, { focus });
+  if (section === 'zoeken') showLessonMatches(lessons);
   if (section === 'onderzoek' && tab === 'debat' && tabKey && focus) {
     const study = [...main.querySelectorAll('.research-literature')].find(form => form.dataset.id === tabKey);
     study?.scrollIntoView({block:'start'});
@@ -252,6 +256,7 @@ function render(focus = true) {
 }
 
 async function setProfile(next) {
+  if (profile?.id !== next?.id) lessonQuery = '';
   profile = next;
   store.setCurrentProfile(next?.id ?? '');
   records = next ? await readRecords(next.id) : [];
@@ -317,7 +322,8 @@ async function synchronize(manual = false) {
     syncState = 'Cloud bijgewerkt';
     if (manual) message('Je voortgang is bijgewerkt.');
     const activeView = route()[0];
-    if (!session && !dialog.open && !['importeren', 'sessie'].includes(activeView)) render(false);
+    if (activeView === 'zoeken') showLessonMatches();
+    else if (!session && !dialog.open && !['importeren', 'sessie'].includes(activeView)) render(false);
   } catch (error) {
     if (profile?.id === pid) {
       syncState = 'Op dit toestel bewaard · cloud wacht';
@@ -374,6 +380,27 @@ async function chooseProfile(id) {
 function jump(page) {
   if (location.hash === '#' + page) render();
   else location.hash = page;
+}
+
+function showLessonMatches(lessons = lessonList()) {
+  clearTimeout(lessonSearchTimer);
+  const field = document.querySelector('#lesson-query');
+  if (!field) return;
+  const found = searchLessons(lessons, lessonQuery);
+  const count = found.results.length;
+  const label = document.querySelector('#lesson-search-status');
+  const description = found.hasQuery ? (count ? count + (count === 1 ? ' les' : ' lessen') : 'Geen lessen gevonden') : '';
+  if (label.textContent !== description) label.textContent = description;
+  label.hidden = !found.hasQuery;
+  document.querySelector('#lesson-search-clear').hidden = !field.value;
+  document.querySelector('#lesson-search-results').innerHTML = view.lessonSearchResults(found);
+}
+
+function setLessonQuery(value) {
+  const field = document.querySelector('#lesson-query');
+  field.value = value;
+  lessonQuery = value;
+  showLessonMatches();
 }
 
 function relevantPool(track, extraRoute = '') {
@@ -1146,6 +1173,14 @@ const actions = {
   'close-dialog': () => dialog.close(),
   'account': () => cloudUser() ? jump('meer') : showAccount(),
   'auth-mode': value => showAccount(value, dialog.querySelector('#email')?.value ?? ''),
+  'lesson-search-clear': () => {
+    setLessonQuery('');
+    document.querySelector('#lesson-query').focus();
+  },
+  'lesson-search-example': value => {
+    setLessonQuery(value);
+    document.querySelector('#lesson-search-status').focus();
+  },
   'profiles': showProfiles,
   'choose-profile': chooseProfile,
   'level': setLevel,
@@ -1335,6 +1370,18 @@ const actions = {
 document.addEventListener('click', event => {
   const menu = document.querySelector('.app-menu[open]');
   if (menu && !event.target.closest('.app-menu')) menu.open = false;
+  if (event.target.closest('a[href="#zoeken"]') && event.button === 0 &&
+      !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+    event.preventDefault();
+    if (route()[0] !== 'zoeken') {
+      if (session) storeSession().catch(error => message(error.message));
+      history.pushState(null, '', '#zoeken');
+      session = null;
+      render();
+    }
+    document.querySelector('#lesson-query')?.focus({ preventScroll: true });
+    return;
+  }
   const button = event.target.closest('[data-action]');
   if (!button || !actions[button.dataset.action]) return;
   event.preventDefault();
@@ -1348,6 +1395,13 @@ document.addEventListener('click', event => {
 
 document.addEventListener('submit', event => {
   const form = event.target;
+  if (form.id === 'lesson-search-form') {
+    event.preventDefault();
+    lessonQuery = form.elements.query.value;
+    showLessonMatches();
+    if (lessonQuery.trim()) document.querySelector('#lesson-search-status:not([hidden])')?.focus();
+    return;
+  }
   if (form.id === 'command-form') {
     event.preventDefault();
     const input = document.querySelector('#command');
@@ -1434,6 +1488,12 @@ let inputTimer;
 let importTimer;
 document.addEventListener('input', event => {
   const input = event.target;
+  if (input.id === 'lesson-query') {
+    lessonQuery = input.value;
+    clearTimeout(lessonSearchTimer);
+    lessonSearchTimer = setTimeout(showLessonMatches, 130);
+    return;
+  }
   if (input.id === 'course-search') {
     courseFind = input.value;
     filterCourses();
