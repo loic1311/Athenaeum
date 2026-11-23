@@ -8,6 +8,7 @@ const STOP_WORDS = new Set([
 ]);
 const LANGUAGES = new Map([
   ['frans', 'fr'], ['francais', 'fr'], ['french', 'fr'], ['francogallica', 'fr'],
+  ['latijn', 'la'], ['latina', 'la'], ['oudgrieks', 'grc'], ['traditio', 'traditio'],
   ['italiaans', 'it'], ['italiano', 'it'], ['italian', 'it'], ['italiana', 'it'],
 ]);
 const VARIANTS = new Map([

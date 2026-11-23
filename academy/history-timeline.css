@@ -1,0 +1,64 @@
+.chrono-controls { display: grid; gap: 1rem; margin-block: 1rem; }
+.chrono-controls .field { display: grid; gap: .35rem; font-weight: 650; min-width: 0; }
+.chrono-controls :is(input,select) { width: 100%; min-width: 0; min-height: 44px; font: inherit; font-weight: 450; }
+.chrono-search-row { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: .55rem; }
+.chrono-filter-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,10.5rem),1fr)); gap: .7rem; }
+.chrono-controls select { background-color: #f6f9f7; color: var(--ink); border: 1px solid #becdc3; border-radius: .7rem; padding: .45rem .65rem; }
+.chrono-results { display: grid; gap: .9rem; }
+.chrono-resume { display: flex; flex-wrap: wrap; align-items: center; gap: .85rem 1.3rem; }
+.chrono-resume > div { flex: 1 1 15rem; display: grid; gap: .3rem; color: var(--muted); font-size: .94rem; }
+.chrono-jumps { row-gap: .4rem; }
+.chrono-rail { list-style: none; margin: 0; padding: 0 0 0 1.3rem; position: relative; display: grid; gap: .85rem; }
+.chrono-rail::before { content: ''; position: absolute; inset: .5rem auto 1rem .29rem; width: 2px; background: linear-gradient(#ad9c71,#8ba29b,#a09aae,#a7b5a0); }
+.chrono-era { --era-ink: #795530; --era-surface: #f8efdf; position: relative; min-width: 0; scroll-margin-top: 6rem; }
+.chrono-era[data-epoch="classical"] { --era-ink: #31615c; --era-surface: #e6f4ef; }
+.chrono-era[data-epoch="medieval"] { --era-ink: #664c78; --era-surface: #f1ebf7; }
+.chrono-era[data-epoch="earlymodern"] { --era-ink: #835637; --era-surface: #f8eddf; }
+.chrono-era[data-epoch="modern"] { --era-ink: #345b70; --era-surface: #e9f2f6; }
+.chrono-era::before { content: ''; position: absolute; top: 1.8rem; left: -1.3rem; width: .7rem; height: .7rem; border: 2px solid var(--era-ink); border-radius: 50%; background: var(--era-surface); box-sizing: border-box; }
+.chrono-era-card { overflow-wrap: anywhere; padding: clamp(1rem,2.6vw,1.6rem); }
+.chrono-era-card header { display: grid; gap: .33rem; }
+.chrono-era-card header h2 { font-family: Georgia,'Times New Roman',serif; font-weight: 600; font-size: clamp(1.26rem,2.1vw,1.7rem); line-height: 1.2; }
+.chrono-era-card header h2 a { color: inherit; text-decoration: none; }
+.chrono-era-card header h2 a:hover { text-decoration: underline; text-underline-offset: .12em; }
+.chrono-era-card :is(p,h2,h3,h4) { margin: 0; }
+.chrono-date { color: var(--era-ink); background: var(--era-surface); font-size: .85rem; font-weight: 720; border-radius: .44rem; padding: .12rem .45rem; width: fit-content; }
+.chrono-counts,.chrono-attribution { color: var(--muted); font-size: .9rem; }
+.chrono-counts span,.chrono-state { color: var(--evergreen); font-weight: 650; }
+.chrono-open { display: inline-block; margin-top: .5rem; }
+.chrono-events,.chrono-lessons,.chrono-themes { margin-top: 1rem; border-top: 1px solid var(--border); padding-top: .65rem; }
+.chrono-events h3,.chrono-connections h3 { margin: 0 0 .25rem; font-size: 1rem; }
+.chrono-event,.chrono-lessons,.chrono-themes,.chronology-theme { color: var(--ink); }
+.chrono-event summary,.chrono-lessons summary,.chrono-themes summary,.chronology-theme summary { cursor: pointer; padding-block: .4rem; }
+.chrono-event summary { line-height: 1.45; }
+.chrono-event + .chrono-event { border-top: 1px solid var(--border); }
+.chrono-event-date { color: var(--era-ink); font-size: .9rem; font-weight: 650; margin-inline-end: .5rem; }
+.chrono-event-body { padding: .05rem 0 .7rem 1.08rem; display: grid; gap: .6rem; }
+.chrono-event-body ul,.chronology-theme ul { margin: 0; padding-inline-start: 1.25rem; }
+.chrono-event-body h4 { font-size: 1rem; }
+.chrono-event-body figure { margin: .1rem 0; max-width: 26rem; }
+.chrono-event-body img { display: block; width: 100%; max-height: 19rem; object-fit: contain; object-position: left; }
+.chrono-event-body figcaption { font-size: .875rem; color: var(--muted); margin-top: .25rem; }
+.chrono-references { font-size: .94rem; overflow-wrap: anywhere; }
+.chrono-lessons ol { padding: 0; margin: 0; list-style: none; }
+.chrono-lesson { display: flex; justify-content: space-between; align-items: baseline; gap: .6rem; padding: .45rem 0; color: inherit; text-decoration: none; border-top: 1px solid var(--border); }
+.chrono-lesson strong { font-size: .99rem; }
+.chrono-lesson:hover strong { text-decoration: underline; }
+.chrono-lesson small { display: block; font-size: .875rem; color: var(--muted); }
+.chrono-state { font-size: .875rem; }
+.chrono-connections,.chronology-theme { overflow-wrap: anywhere; }
+.chrono-themes .row,.chronology-theme ul { margin-block: .45rem; }
+.chronology-theme summary .muted { display: block; margin-inline-start: 1.1rem; }
+.chrono-controls :focus-visible,.chrono-era-card :focus-visible,.chronology-theme :focus-visible { outline: 2px solid var(--evergreen); outline-offset: 3px; }
+@media (max-width: 530px) {
+  .chrono-filter-grid { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+  .chrono-rail { padding-left: .95rem; }
+  .chrono-era::before { left: -.95rem; top: 1.5rem; }
+  .chrono-rail::before { left: .28rem; }
+  .chrono-event-body { padding-left: .3rem; }
+  .chrono-resume > .button { flex: 0 1 auto; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .chrono-era-card { transition: border-color .2s ease; }
+  .chrono-era-card:focus-within { border-color: var(--era-ink); }
+}

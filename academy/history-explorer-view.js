@@ -1,13 +1,13 @@
-import { ATLAS_PLACES, ATLAS_VIEWS, HISTORY_SECTIONS, HISTORICAL_ERAS, STUDY_THEMES, explorerHref, explorationLessonHref,
-  explorationLessons, historyInScope, inEra } from './history-explorer.js?v=13r11';
-import { HISTORICAL_TRACKS, timelineHref } from './history-chronology.js?v=13r9';
+import { HISTORY_SECTIONS, HISTORICAL_ERAS, STUDY_THEMES, explorerHref, explorationLessonHref,
+  explorationLessons, historyInScope, inEra, hasTheme, themeSelection } from './history-explorer.js?v=14r1';
+import { HISTORICAL_TRACKS } from './history-chronology.js?v=14r1';
 import { TRACKS } from './learning.js?v=13r8';
-import { esc, heading, historyExplorerNav, icon, sourceView, studyMeter } from './views.js?v=13r11';
+import { esc, heading, historyExplorerNav, icon, sourceView, studyMeter } from './views.js?v=14r1';
 import { curricula, reading } from './history-reading.js?v=13r9';
 
 const count = number => number + (number === 1 ? ' les' : ' lessen');
 
-function explorerHeader(page, scope, key, description = '') {
+export function explorerHeader(page, scope, key, description = '') {
   const [title, subtitle] = HISTORY_SECTIONS[page];
   return `<p class="back-link"><a class="text-link" href="#paideia">Paideia</a></p>
     ${heading(title, description, subtitle, 'la')}
@@ -27,7 +27,7 @@ function routeUnit(lesson, page, scope, key, studied, read) {
   </a></li>`;
 }
 
-function learningPath(title, description, list, page, scope, key, studied, read, backLabel) {
+export function learningPath(title, description, list, page, scope, key, studied, read, backLabel) {
   const next = list.find(lesson => !read.has(lesson.id) && !studied.has(lesson.id)) ?? list[0];
   const complete = list.filter(lesson => read.has(lesson.id) || studied.has(lesson.id)).length;
   return `<section class="panel stack explorer-path" id="explorer-path" tabindex="-1" aria-labelledby="explorer-path-title">
@@ -42,85 +42,8 @@ function learningPath(title, description, list, page, scope, key, studied, read,
   </section>`;
 }
 
-export function atlasPage(lessons, scope, key, studied, read) {
-  const available = ATLAS_PLACES.map(place => ({ place, lessons: explorationLessons(lessons, 'atlas', scope, place.id) }))
-    .filter(entry => entry.lessons.length).sort((a, b) => a.place.name.localeCompare(b.place.name, 'nl'));
-  const selected = available.find(entry => entry.place.id === key);
-  const chosen = selected?.place;
-  const path = selected?.lessons ?? [];
-  const next = path.find(lesson => !read.has(lesson.id) && !studied.has(lesson.id)) ?? path[0];
-  const prompt = 'Draai de wereldbol en kies een stad. Tik op een groep spelden om verder in te zoomen.';
-  return explorerHeader('atlas', scope, chosen?.id, prompt) + `
-    <div class="atlas-layout">
-      <section id="atlas-globe" class="atlas-frame" aria-label="Interactieve historische wereldbol">
-        <div class="atlas-map">
-          <p class="atlas-loading" role="status">Wereldbol laden…</p>
-          <canvas role="region" tabindex="0" aria-label="Wereldbol. Draai met de pijltjestoetsen, zoom met plus en min, of selecteer een plaats in de lijst.">
-            Kies een plaats in de lijst.
-          </canvas>
-          <div class="atlas-map-label"><span aria-hidden="true"></span><span id="atlas-map-status">${chosen ? esc(chosen.name) : 'Wereld'}</span></div>
-          ${next ? `<a class="button atlas-map-open" href="#${explorationLessonHref(next.id, 'atlas', scope, chosen.id)}">Leerpad ${esc(chosen.name)}</a>` : ''}
-          <div class="atlas-controls" role="group" aria-label="Kaartzoom">
-            <button class="button icon-only" type="button" data-map-zoom="1.45" aria-label="Inzoomen">+</button>
-            <button class="button icon-only" type="button" data-map-zoom=".69" aria-label="Uitzoomen">−</button>
-          </div>
-          <div class="atlas-error notice" hidden><p>De kaart kon niet laden. Je kunt alle leerpaden in de stedenlijst openen.</p>
-            <button type="button" class="button small" data-action="reload-page">Kaart opnieuw laden</button></div>
-        </div>
-        <div class="atlas-map-footer">
-          <div class="row atlas-presets" aria-label="Ga naar een regio">${Object.entries(ATLAS_VIEWS).map(([id, view]) =>
-            `<button type="button" class="chip outline" data-map-view="${id}" aria-pressed="${!chosen && id === 'wereld'}">${view.label}</button>`).join('')}</div>
-          <p class="small-text muted">Sleep om te draaien, knijp of dubbelklik om in te zoomen. <a class="text-link" href="https://www.naturalearthdata.com/downloads/110m-physical-vectors/" target="_blank" rel="noopener noreferrer">Kustlijnen van Natural Earth</a></p>
-        </div>
-      </section>
-      <section class="panel stack atlas-places" aria-label="Plaatsen met een leerpad">
-        ${chosen ? `<div class="atlas-selection">
-          <p class="small-text">${esc(chosen.region)}</p><h2>${esc(chosen.name)}</h2><p>${esc(chosen.text)}</p>
-          <div class="row"><a class="button primary" href="#${explorationLessonHref(next.id, 'atlas', scope, chosen.id)}">Open leerpad</a>
-          <button class="button quiet" type="button" data-action="scroll-to" data-value="explorer-path">Alle lessen</button></div>
-        </div>` : '<h2>Plaatsen</h2>'}
-        <div class="field"><label for="atlas-search">Zoek een stad of regio</label>
-          <input type="search" id="atlas-search" placeholder="Bijvoorbeeld Parijs, Tolosa of Spanje" aria-controls="atlas-city-list"></div>
-        <p id="atlas-results" class="small-text muted" aria-live="polite">${available.length} ${available.length === 1 ? 'plaats' : 'plaatsen'}</p>
-        <p id="atlas-empty" class="empty" ${available.length ? 'hidden' : ''}>Geen plaatsen gevonden. Pas je zoekterm of het segment aan.</p>
-        <ul class="unit-list explorer-list" id="atlas-city-list">${available.map(({ place, lessons: cityLessons }) => `
-          <li data-place-id="${place.id}" data-place-name="${esc([place.name, place.region, place.aliases].filter(Boolean).join(' '))}">
-            <a class="atlas-place" ${place === chosen ? 'aria-current="page"' : ''} href="#${explorerHref('atlas', scope, place.id)}">
-              <span><strong>${esc(place.name)}</strong><span class="small-text muted">${esc(place.region)}</span></span>
-              <span class="small-text">${count(cityLessons.length)}</span></a></li>`).join('')}</ul>
-      </section>
-    </div>
-    ${chosen ? learningPath(chosen.name, chosen.text, path, 'atlas', scope, chosen.id, studied, read, 'Alle plaatsen') : ''}`;
-}
-
-const jumpEras = [
-  ['sporen','Oudste sporen'], ['eerste-steden','Oudheid'], ['vroeg-middeleeuws','Middeleeuwen'],
-  ['reformaties','Vroegmodern'], ['revolutionair','Modern'], ['recente-geschiedenis','Hedendaags'],
-];
-
-export function eraPage(lessons, scope, key, studied, read) {
-  const all = lessons.filter(lesson => historyInScope(lesson, scope));
-  const eras = HISTORICAL_ERAS.map(era => ({...era, count: all.filter(lesson => inEra(lesson, era)).length}));
-  const selected = eras.find(era => era.id === key);
-  const range = eras.filter(era => era.count);
-  return explorerHeader('tijdvakken', scope, selected?.id,
-    'Scroll van de oudste sporen tot de recente geschiedenis. Open een tijdvak om de lessen, casussen en bronnen ervan te volgen.') + `
-    <div class="row era-shortcuts">
-      ${!selected ? jumpEras.filter(([id]) => range.some(era => era.id === id)).map(([id,title]) =>
-        `<button type="button" class="chip outline" data-action="scroll-to" data-value="era-${id}">${title}</button>`).join('') : ''}
-      <a class="text-link" href="#${timelineHref(scope)}">Kernlessen op volgorde</a>
-    </div>
-    ${selected ? learningPath(selected.name, selected.date + ' · ' + selected.text,
-      explorationLessons(lessons,'tijdvakken',scope,selected.id), 'tijdvakken',scope,selected.id,studied,read,'Alle tijdvakken')
-      : `<ol class="era-rail">${range.map(era => `<li id="era-${era.id}" data-epoch="${era.from < -31 ? 'ancient' : era.from < 750 ? 'classical' : era.from < 1492 ? 'medieval' : era.from < 1789 ? 'earlymodern' : 'modern'}" tabindex="-1">
-        <a class="panel era-card" href="#${explorerHref('tijdvakken',scope,era.id)}">
-          <span class="era-date">${esc(era.date)}</span>
-          <div><h2>${esc(era.name)}</h2><p class="muted">${esc(era.text)}</p></div>
-          <span class="small-text">${count(era.count)}</span>
-        </a></li>`).join('')}</ol>
-        <p class="small-text muted">Lessen staan bij hun start- of ijkpunt. Sommige ontwikkelingen lopen door in een volgend tijdvak.</p>`}
-  `;
-}
+export { atlasPage } from './atlas-view.js?v=14r1';
+export { eraPage } from './history-timeline.js?v=14r1';
 
 export function primaryPage(lessons, scope, _key, studied, read) {
   const sources = explorationLessons(lessons,'bronnen',scope);
@@ -132,17 +55,36 @@ export function primaryPage(lessons, scope, _key, studied, read) {
 }
 
 export function academicPlanPage(lessons, scope, key, studied, read) {
-  const chosen = STUDY_THEMES.find(theme => theme.id === key);
-  const themes = STUDY_THEMES.map(theme => ({ ...theme, count: explorationLessons(lessons,'leerplan',scope,theme.id).length }));
-  return explorerHeader('leerplan',scope,chosen?.id,
-    'Volg een thema door de tijd. Begin met overzichtslessen en kies daarna casussen, bronanalyses en verdere lectuur.') +
-    (chosen ? learningPath(chosen.name,chosen.text,explorationLessons(lessons,'leerplan',scope,chosen.id),
-      'leerplan',scope,chosen.id,studied,read,'Alle thema’s') : `
-    <div class="columns three explorer-themes">${themes.filter(theme => theme.count).map(theme => `
-      <a class="panel track-card" href="#${explorerHref('leerplan',scope,theme.id)}">
-        <h2>${esc(theme.name)}</h2><p class="muted">${esc(theme.text)}</p><span class="caption">${count(theme.count)}</span>
-      </a>`).join('')}</div>`) +
-    `<section class="block stack"><h2>Verder lezen</h2><div class="columns">${reading.map(book => `<article class="panel stack">
+  const { theme, era } = themeSelection(key);
+  const scoped = lessons.filter(lesson => historyInScope(lesson, scope));
+  const themes = theme ? [theme] : STUDY_THEMES;
+  const periods = HISTORICAL_ERAS.map(period => {
+    const dated = scoped.filter(lesson => inEra(lesson, period));
+    return { period, entries: themes.map(entry => ({ entry, size: dated.filter(lesson => hasTheme(lesson, entry)).length }))
+      .filter(item => item.size) };
+  }).filter(item => item.entries.length);
+  const visible = (theme && era) ? explorationLessons(lessons, 'leerplan', scope, key) : [];
+  const plan = theme && era
+    ? learningPath(theme.name + ' · ' + era.name, era.date + ' · ' + era.text, visible,
+      'leerplan',scope,key,studied,read,'Alle thema’s')
+    : `<section class="block stack" aria-label="Thema per tijdvak">
+        <div class="topline"><h2>${theme ? esc(theme.name) : 'Kies een tijdvak en een thema'}</h2>
+        ${theme ? `<a class="text-link" href="#${explorerHref('leerplan',scope)}">Alle thema’s</a>` : ''}</div>
+        ${periods.length ? periods.map(({ period, entries }) => `<details class="panel chronology-theme">
+          <summary><strong>${esc(period.name)}</strong><span class="muted small-text">${esc(period.date)}</span></summary>
+          <ul>${entries.map(({ entry, size }) => `<li><a class="text-link" href="#${explorerHref('leerplan',scope,entry.id+'~'+period.id)}">${esc(entry.name)}</a> · ${count(size)}</li>`).join('')}</ul>
+          <a class="text-link" href="#${explorerHref('chronologie',scope,period.id)}">Tijdvak op de tijdlijn</a></details>`).join('')
+          : '<p class="empty">Geen periodegebonden lessen voor dit segment.</p>'}
+      </section>`;
+  const compare = theme && !era
+    ? learningPath('Vergelijkend traject · ' + theme.name,theme.text,explorationLessons(lessons,'leerplan',scope,theme.id),
+        'leerplan',scope,theme.id,studied,read,'Alle thema’s')
+    : '';
+  return explorerHeader('leerplan',scope,key,
+    'Onderzoek een thema binnen één tijdvak of vergelijk het door de tijd.') +
+    plan + (compare || (!theme ? `<details class="panel block chronology-theme"><summary><strong>Vergelijken door de tijd</strong></summary>
+      <ul>${STUDY_THEMES.filter(entry => scoped.some(lesson => hasTheme(lesson,entry))).map(entry => `<li><a class="text-link" href="#${explorerHref('leerplan',scope,entry.id)}">${esc(entry.name)}</a></li>`).join('')}</ul></details>` : '')) +
+    `<section class="block stack"><div class="topline"><h2>Verder lezen</h2><a class="button quiet" href="#studiegids">Universitaire studiegids</a></div><div class="columns">${reading.map(book => `<article class="panel stack">
       <h3>${esc(book.title)}</h3><p>${esc(book.description)}</p><div class="stack">${sourceView(book.reference)}${sourceView(book.more)}</div>
     </article>`).join('')}</div></section>
     <section class="block stack"><h2>Opleidingen achter de selectie</h2><div class="columns">${curricula.map(entry => `<article class="panel stack">

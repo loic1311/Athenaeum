@@ -1,0 +1,14 @@
+.classical-modules {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,21rem),1fr));gap:1rem;align-items:start}
+.classical-units {margin:0;padding-inline-start:1.6rem}
+.classical-units li {padding:.38rem .15rem}
+.classical-units a,.classical-reading,.classical-words {overflow-wrap:anywhere}
+.classical-reading figure {margin:.4rem 0;padding:.9rem 1rem;border-inline-start:.2rem solid var(--accent,#44746b);background:var(--paper,#f5f8f7);color:var(--ink,#1e3940);border-radius:0 .35rem .35rem 0}
+.classical-reading figcaption,.classical-words small {display:block;font-size:.875rem}
+.classical-reading blockquote {margin:.4rem 0;font:1.38rem/1.55 Georgia,serif}
+.classical-words {margin:0}
+.classical-words > div {display:grid;grid-template-columns:minmax(6rem,1fr) minmax(9rem,2fr);gap:.5rem;padding:.6rem 0;border-bottom:1px solid var(--line,#c8d4d0)}
+.classical-words dt {font-weight:650}
+.classical-words dd {margin:0}
+.classical-words small {margin:.2rem 0;font-style:italic}
+.greek-keyboard .row {gap:.3rem;margin:.5rem 0}
+.greek-keyboard [data-greek-key] {min-width:2.6rem;min-height:2.65rem}

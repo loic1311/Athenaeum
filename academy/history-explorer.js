@@ -1,125 +1,17 @@
-import { belongsToHistoryTrack, chronologyYear, HISTORICAL_TRACKS, timelineScope } from './history-chronology.js?v=13r9';
+import { belongsToHistoryTrack, chronologyYear, HISTORICAL_TRACKS, timelineScope } from './history-chronology.js?v=14r1';
+import { ATLAS_PLACES } from './atlas-catalog.js?v=14r1';
+export { ATLAS_PLACES, ATLAS_VIEWS } from './atlas-catalog.js?v=14r1';
 
 export const HISTORY_SECTIONS = {
-  chronologie: ['Chronologia', 'Tijdlijn', 'clock'],
+  chronologie: ['Chronologia', 'Tijdlijn en tijdvakken', 'clock'],
   atlas: ['Atlas historicus', 'Wereldbol', 'globe'],
   bronnen: ['Officina fontium', 'Bronnenatelier', 'scriptorium'],
-  tijdvakken: ['Aetates', 'Tijdvakken', 'castle'],
   leerplan: ['Curriculum', 'Thematisch leerplan', 'knowledge'],
 };
-export const EXPLORER_PAGES = Object.fromEntries(Object.entries(HISTORY_SECTIONS)
-  .filter(([page]) => page !== 'chronologie').map(([page, [title]]) => [page, title]));
-
-export const ATLAS_VIEWS = {
-  wereld: { label: 'Wereld', center: [14, 28], zoom: 1 },
-  europa: { label: 'Europa', center: [12, 48], zoom: 4.6 },
-  frankrijk: { label: 'Frankrijk', center: [2.4, 46.7], zoom: 9 },
-  iberie: { label: 'Iberisch Schiereiland', center: [-3.5, 41], zoom: 8 },
-  middellandsezee: { label: 'Middellandse Zee', center: [16, 38], zoom: 4.8 },
+export const EXPLORER_PAGES = {
+  ...Object.fromEntries(Object.entries(HISTORY_SECTIONS).map(([page, [title]]) => [page, title])),
+  tijdvakken: 'Chronologia',
 };
-
-export const ATLAS_PLACES = [
-  {
-    id: 'marseille', name: 'Marseille', region: 'Zuid-Frankrijk · Middellandse Zee', coordinates: [5.3698, 43.2965],
-    text: 'Van de Griekse haven Massalia tot quarantaine, industriële dokken, wederopbouw en migratie in de twintigste eeuw.',
-    lessons: ['atlas-marseille-massalia', 'atlas-marseille-rome', 'atlas-marseille-provence', 'atlas-marseille-quarantaine', 'atlas-marseille-industrie', 'atlas-marseille-hedendaags'],
-  },
-  {
-    id: 'parijs', name: 'Parijs', region: 'Frankrijk · Seine', coordinates: [2.3522, 48.8566], aliases: 'Paris Lutèce Lutetia Île-de-France',
-    text: 'Bekijk de Romeinse stad aan de Seine en onderzoek hoe de ingrepen van Haussmann Parijs in de negentiende eeuw veranderden.',
-    lessons: ['atlas-parijs-lutece', 'atlas-parijs-haussmann'],
-  },
-  {
-    id: 'toulouse', name: 'Toulouse', region: 'Zuid-Frankrijk · Occitanië', coordinates: [1.4442, 43.6047], aliases: 'Tolosa Garonne Canal du Midi',
-    text: 'Volg het tracé van de Romeinse stadswal en onderzoek hoe het Canal du Midi nieuwe routes voor handel schiep.',
-    lessons: ['atlas-toulouse-tolosa', 'atlas-toulouse-canal'],
-  },
-  {
-    id: 'madrid', name: 'Madrid', region: 'Spanje · Meseta', coordinates: [-3.7038, 40.4168], aliases: 'Mayrit Mairit Manzanares',
-    text: 'Volg Madrid van Mayrit, een versterking aan de grens van al-Andalus, tot de vestiging van het koninklijk hof.',
-    lessons: ['atlas-madrid-mayrit', 'atlas-madrid-hof'],
-  },
-  {
-    id: 'barcelona', name: 'Barcelona', region: 'Spanje · Catalonië', coordinates: [2.1734, 41.3851], aliases: 'Barcino Bàrcino Catalunya Eixample Cerdà',
-    text: 'Lees de archeologische resten van Barcino en vergelijk het negentiende-eeuwse uitbreidingsplan met de gebouwde stad.',
-    lessons: ['atlas-barcelona-barcino', 'atlas-barcelona-cerda'],
-  },
-  {
-    id: 'lyon', name: 'Lyon', region: 'Frankrijk · Rhône en Saône', coordinates: [4.8357, 45.7640], aliases: 'Lugdunum Fourvière',
-    text: 'Onderzoek hoe twee rivieren, een Romeinse stichting en publieke gebouwen de stad vormgaven.',
-    lessons: ['atlas-lyon-lugdunum'],
-  },
-  {
-    id: 'lissabon', name: 'Lissabon', region: 'Portugal · Taag', coordinates: [-9.1393, 38.7223], aliases: 'Lisboa Lisbon Baixa Pombalina',
-    text: 'Bekijk hoe Lissabon na de aardbeving van 1755 het handelscentrum opnieuw inrichtte.',
-    lessons: ['atlas-lissabon-wederopbouw'],
-  },
-  {
-    id: 'athene', name: 'Athene', region: 'Griekenland · Attica', coordinates: [23.7275, 37.9838],
-    text: 'Van land en mijnen in Attica via de haven van Piraeus naar de inkomsten en besluiten van de polis.',
-    lessons: ['struct-gr-klassiek', 'atlas-athene', 'src-thucydides', 'attische-economie', 'g2-bosporus-graan', 'g2-zea-scheepshuizen'],
-  },
-  {
-    id: 'rome', name: 'Rome', region: 'Italië · Latium', coordinates: [12.4964, 41.9028],
-    text: 'Een hoofdstad die grondstoffen, arbeid en mensen aantrok. Volg de politieke omwentelingen en onderzoek de sporen van het dagelijks leven.',
-    lessons: ['rome-ontstaan', 'struct-ro-principaat', 'src-augustus', 'atlas-rome', 'rome-annona', 'r2-frontinus-water', 'rome-testaccio'],
-  },
-  {
-    id: 'gent', name: 'Gent', region: 'België · Vlaanderen', coordinates: [3.7174, 51.0543],
-    text: 'In middeleeuwse ambachten en industriële fabrieken veranderde wie het werk organiseerde, welke goederen de stad verlieten en wie politiek gewicht kreeg.',
-    lessons: ['atlas-gent', 'deep-belgie', 'industrie-en-kinderarbeid'],
-  },
-  {
-    id: 'antwerpen', name: 'Antwerpen', region: 'België · Scheldebekken', coordinates: [4.4025, 51.2194],
-    text: 'Handelsnetwerken, migratie en oorlog veranderden Antwerpen. Volg de haven en de opdrachten aan Vlaamse kunstenaars doorheen die veranderingen.',
-    lessons: ['atlas-antwerpen', 'struct-vm-lage-landen', 'drukpers-en-reformaties', 'deep-belgie'],
-  },
-  {
-    id: 'istanbul', name: 'Istanbul', region: 'Turkije · Bosporus', coordinates: [28.9784, 41.0082],
-    text: 'Byzantion, Constantinopel en Istanbul lagen op dezelfde strategische doorgang. Vergelijk stedelijke instellingen van verschillende regimes.',
-    lessons: ['atlas-istanbul', 'h2-justinianus-recht', 'r2-nika', 'r2-hagia-sophia', 'struct-vm-rijken', 'h2-tanzimat-burgerschap'],
-  },
-  {
-    id: 'alexandrie', name: 'Alexandrië', region: 'Egypte · Nijldelta', coordinates: [29.9187, 31.2001],
-    text: 'Ontdek hoe een Middellandse Zeehaven met een rivierlandschap, een vorstelijk hof en verschillende stedelijke gemeenschappen verbonden was.',
-    lessons: ['atlas-alexandrie', 'ptolemaisch-egypte', 'struct-gr-hellenisme', 'deep-indische-oceaan'],
-  },
-  {
-    id: 'bagdad', name: 'Bagdad', region: 'Irak · Tigris', coordinates: [44.3661, 33.3152],
-    text: 'Van de stichting van een Abbasidische hoofdstad naar vertalingen en kennisnetwerken waarvan de invloed over politieke grenzen heen reikte.',
-    lessons: ['kalifaten-bagdad', 'atlas-bagdad', 'deep-kennis'],
-  },
-  {
-    id: 'kilwa', name: 'Kilwa Kisiwani', region: 'Tanzania · Swahilikust', coordinates: [39.521, -8.957],
-    text: 'Oost-Afrikaanse kuststeden verbonden productie in het binnenland met havens aan de Indische Oceaan.',
-    lessons: ['deep-indische-oceaan', 'indische-oceaan-swahili', 'atlas-kilwa'],
-  },
-  {
-    id: 'timbuktu', name: 'Timboektoe', region: 'Mali · Sahel', coordinates: [-3.0026, 16.7666],
-    text: 'Een stad van handel, leren en handschriftcultuur tussen Niger en Sahara. Onderzoek hoe instellingen de netwerken mee vormgaven.',
-    lessons: ['ghana-mali-sahel', 'deep-afrika', 'atlas-timbuktu'],
-  },
-  {
-    id: 'kyoto', name: 'Kyoto', region: 'Japan · Kansai', coordinates: [135.7681, 35.0116],
-    text: 'Volg het hof, religieuze instellingen en krijgersbestuur vanaf de stichting van Heian-kyō tot de omwentelingen van de negentiende eeuw.',
-    lessons: ['atlas-kyoto', 'h2-heian-kamakura', 'h2-dejima-nagasaki', 'deep-japan', 'src-meiji'],
-  },
-  {
-    id: 'delhi', name: 'Delhi', region: 'India · Yamuna', coordinates: [77.2090, 28.6139],
-    text: 'De stedelijke ruimte bewaarde opeenvolgende hoofdsteden, markten en monumenten van het sultanaat tot de onafhankelijke staat.',
-    lessons: ['atlas-delhi', 'struct-vm-rijken', 'deep-india'],
-  },
-  {
-    id: 'mexico', name: 'Mexico-Stad', region: 'Mexico · Bekken van Mexico', coordinates: [-99.1332, 19.4326],
-    text: 'Aanleg op het meer, tribuut en koloniale herinrichting maken zichtbaar hoe machthebbers dezelfde plek op uiteenlopende manieren gebruikten.',
-    lessons: ['h2-teotihuacan', 'atlas-mexico', 'mexica-inca-rijksbestuur', 'atlantische-ontmoeting'],
-  },
-  {
-    id: 'cuzco', name: 'Cuzco', region: 'Peru · Andes', coordinates: [-71.9689, -13.5320],
-    text: 'Bekijk hoe de Inka arbeid en routes organiseerden en hoe koloniale machthebbers bestaande gebouwen en netwerken hergebruikten.',
-    lessons: ['atlas-cuzco', 'mexica-inca-rijksbestuur', 'struct-vm-oceaan'],
-  },
-];
 
 export const HISTORICAL_ERAS = [
   { id: 'sporen', from: -300000, to: -3501, date: 'Ca. 300.000–3501 v.Chr.', name: 'Menselijke sporen en vroege landbouw', text: 'Materiële bronnen, migraties, voedselproductie en sedentaire gemeenschappen.' },
@@ -164,6 +56,9 @@ export const STUDY_THEMES = [
 ];
 
 export function explorerHref(page, scope = 'alles', key = '') {
+  if (page === 'tijdvakken' || page === 'chronologie') {
+    return 'paideia/chronologie/' + timelineScope(scope) + (key ? '/tijdvak/' + encodeURIComponent(key) : '/alle');
+  }
   return 'paideia/' + page + '/' + timelineScope(scope) + (key ? '/' + encodeURIComponent(key) : '');
 }
 
@@ -176,7 +71,7 @@ export const historyInScope = (lesson, scope) => HISTORICAL_TRACKS.includes(less
 
 export function inEra(lesson, era) {
   const year = chronologyYear(lesson);
-  return year >= era.from && year <= era.to;
+  return Number.isInteger(year) && year !== 0 && year >= era.from && year <= era.to;
 }
 
 function explicitPath(lessons, items, key) {
@@ -188,15 +83,35 @@ function explicitPath(lessons, items, key) {
 export const byDate = (a, b) => (chronologyYear(a) ?? Infinity) - (chronologyYear(b) ?? Infinity) ||
   a.title.localeCompare(b.title, 'nl');
 
+export function themeSelection(key) {
+  const [themeId, eraId] = (key || '').split('~');
+  return {
+    theme: STUDY_THEMES.find(entry => entry.id === themeId),
+    era: HISTORICAL_ERAS.find(entry => entry.id === eraId),
+  };
+}
+
+export function hasTheme(lesson, theme) {
+  return theme.lessons.includes(lesson.id) || lesson.themes?.includes(theme.id);
+}
+
 export function explorationLessons(lessons, page, scope = 'alles', key = '') {
   let list = lessons.filter(lesson => historyInScope(lesson, scope));
-  if (page === 'atlas') list = explicitPath(list, ATLAS_PLACES, key);
+  if (page === 'atlas') {
+    const places = key ? ATLAS_PLACES.filter(place => place.id === key) : ATLAS_PLACES;
+    const ids = new Set(places.map(place => place.id));
+    const mapped = new Set(places.flatMap(place => place.lessons));
+    list = list.filter(lesson => mapped.has(lesson.id) || lesson.places?.some(id => ids.has(id)));
+  }
   if (page === 'bronnen') list = list.filter(lesson => lesson.primary);
-  if (page === 'tijdvakken') {
+  if (page === 'tijdvakken' || page === 'chronologie') {
     const era = HISTORICAL_ERAS.find(period => period.id === key);
     list = list.filter(lesson => era ? inEra(lesson, era) : Number.isInteger(chronologyYear(lesson)));
   }
-  if (page === 'leerplan' && key) list = explicitPath(list, STUDY_THEMES, key);
+  if (page === 'leerplan' && key) {
+    const { theme, era } = themeSelection(key);
+    list = theme ? list.filter(lesson => hasTheme(lesson, theme) && (!era || inEra(lesson, era))) : [];
+  }
   return list.sort(byDate);
 }
 
@@ -212,7 +127,8 @@ export function explorationJourney(lessons, lesson, path) {
   const list = explorationLessons(lessons, page, scope, key);
   const index = list.findIndex(candidate => candidate.id === lesson.id);
   if (index < 0) return null;
-  const target = { atlas: ATLAS_PLACES, tijdvakken: HISTORICAL_ERAS, leerplan: STUDY_THEMES }[page]?.find(entry => entry.id === key);
+  const target = { atlas: ATLAS_PLACES, tijdvakken: HISTORICAL_ERAS, chronologie: HISTORICAL_ERAS }[page]?.find(entry => entry.id === key);
+  const { theme, era: themeEra } = page === 'leerplan' ? themeSelection(key) : {};
   return {
     inRoute: true,
     index,
@@ -220,7 +136,7 @@ export function explorationJourney(lessons, lesson, path) {
     previous: list[index - 1],
     next: list[index + 1],
     back: explorerHref(page, scope, key),
-    label: target?.name || EXPLORER_PAGES[page],
+    label: target?.name || [theme?.name, themeEra?.date].filter(Boolean).join(' · ') || EXPLORER_PAGES[page],
     link: id => explorationLessonHref(id, page, scope, key),
   };
 }

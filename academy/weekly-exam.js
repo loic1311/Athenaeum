@@ -32,7 +32,7 @@ export function weeklyStudy(lessons, records, now = Date.now()) {
     const day = plan.readDay ?? plan.studyDay ?? plan.date;
     if (day >= week.startKey && day <= week.endKey) for (const unit of plan.units ?? []) read.add(unit.id ?? unit);
   }
-  const pool = makePool(lessons.filter(lesson => TRACKS[lesson.track]?.section === 'history'));
+  const pool = makePool(lessons.filter(lesson => ['history', 'traditio'].includes(TRACKS[lesson.track]?.section)));
   const goals = pool.filter(item => (read.has(item.lesson) || practiced.has(item.key)) &&
     item.questions.some(question => question.kind !== 'listen'));
   const ids = new Set(goals.map(item => item.lesson));
@@ -40,7 +40,7 @@ export function weeklyStudy(lessons, records, now = Date.now()) {
   return { ...week, goals, lessons: covered, ready: goals.length >= EXAM_GOALS.week };
 }
 
-export function weeklyExamQuestions(week, history) {
+export function weeklyExamQuestions(week, history, allGoals = false) {
   const states = new Map(week.goals.map(item => [item.key, history.states.get(item.key) ?? {}]));
-  return examQuestions(week.goals, { ...history, states });
+  return examQuestions(week.goals, { ...history, states }, false, allGoals);
 }

@@ -1,6 +1,6 @@
 import './vendor/d3-array.min.mjs';
 import './vendor/d3-geo.min.mjs';
-import { ATLAS_VIEWS } from './history-explorer.js?v=13r11';
+import { ATLAS_VIEWS, historicalName } from './atlas-catalog.js?v=14r1';
 
 import { fetchJson } from './fetch-json.js?v=13r11';
 
@@ -12,6 +12,7 @@ const clamp = (number, min, max) => Math.max(min, Math.min(max, number));
 const longitude = value => (value + 540) % 360 - 180;
 const distance = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 let geography;
+let riversRequest;
 
 function loadGeography() {
   geography ??= fetchJson(new URL('./content/atlas-land.json?v=13r9', import.meta.url))
@@ -20,6 +21,37 @@ function loadGeography() {
       throw error;
     });
   return geography;
+}
+
+// Longitude/latitude buckets are independent of zoom and computed once per mounted map.
+function indexPlaces(places) {
+  const cells = new Map();
+  for (const place of places) {
+    const [lon, lat] = place.coordinates;
+    const key = Math.floor(lat / 10) + ':' + Math.floor(longitude(lon) / 10);
+    if (!cells.has(key)) cells.set(key, []);
+    cells.get(key).push(place);
+  }
+  return (center, projectedRadius, screenRadius) => {
+    if (screenRadius >= projectedRadius) return places;
+    const radians = Math.asin(screenRadius / projectedRadius);
+    const degrees = radians * 180 / Math.PI;
+    const south = Math.floor(Math.max(-90, center[1] - degrees) / 10);
+    const north = Math.floor(Math.min(90, center[1] + degrees) / 10);
+    const lonDelta = Math.abs(center[1]) + degrees >= 90 ? 180 :
+      Math.asin(Math.min(1, Math.sin(radians) / Math.cos(center[1] * Math.PI / 180))) * 180 / Math.PI;
+    const west = Math.floor((center[0] - lonDelta) / 10);
+    const east = Math.floor((center[0] + lonDelta) / 10);
+    const result = [];
+    for (let lat = south; lat <= north; lat++) {
+      for (let lon = west; lon <= Math.min(east, west + 35); lon++) {
+        const column = ((lon + 18) % 36 + 36) % 36 - 18;
+        const cell = cells.get(lat + ':' + column);
+        if (cell) result.push(...cell);
+      }
+    }
+    return result;
+  };
 }
 
 export async function mountAtlasGlobe(frame, places, selected, onSelect) {
@@ -47,8 +79,12 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect) {
   let gesture;
   let animation = 0;
   let hover;
+  let rivers;
+  let loadingRivers = false;
   let filter = new Set(places.map(place => place.id));
-  let mapLabel = active?.name ?? 'Wereld';
+  const visiblePlaces = indexPlaces(places);
+  const name = place => historicalName(place, Number(frame.dataset.atlasYear)) || place.name;
+  let mapLabel = active ? name(active) : 'Wereld';
 
   function shape(geometry, fill, stroke, line = 1) {
     context.beginPath();
@@ -58,7 +94,8 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect) {
   }
 
   function makeMarkers() {
-    const points = places.filter(place => filter.has(place.id) && geoDistance(center, place.coordinates) < Math.PI / 2)
+    const candidates = visiblePlaces(center, projection.scale(), Math.hypot(width / 2, height / 2));
+    const points = candidates.filter(place => filter.has(place.id) && geoDistance(center, place.coordinates) < Math.PI / 2)
       .map(place => ({ place, point: projection(place.coordinates) }))
       .filter(({ point: [x, y] }) => x > 10 && x < width - 10 && y > 10 && y < height - 10);
     const groups = [];
@@ -107,7 +144,7 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect) {
         context.textAlign = 'start';
         continue;
       }
-      const label = list[0].name;
+      const label = name(list[0]);
       context.font = '650 13px system-ui';
       const labelWidth = context.measureText(label).width + 4;
       const options = [[x + 12, y], [x - labelWidth - 12, y], [x + 7, y - 16], [x + 7, y + 16]];
@@ -137,11 +174,21 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect) {
     sea.addColorStop(0, '#3f7480');
     sea.addColorStop(1, '#183c4b');
     shape(sphere, sea, '#a3c4bd', 1.3);
-    shape(graticule, null, '#c4e4db44', .65);
+    if (frame.dataset.atlasGrid !== 'false') shape(graticule, null, '#c4e4db44', .65);
     const land = context.createLinearGradient(width * .2, 0, width * .9, height);
     land.addColorStop(0, '#adbe98');
     land.addColorStop(1, '#779d91');
     shape(world, land, '#d6e4ce', .8);
+    if (rivers && frame.dataset.atlasRivers === 'true') shape(rivers, null, '#326476', zoom >= 3 ? 1.1 : .8);
+    if (zoom < 2.3) {
+      const radius = projection.scale();
+      const light = context.createRadialGradient(width/2-radius*.3, height/2-radius*.32, radius*.12,
+        width/2, height/2, radius);
+      light.addColorStop(0, 'rgba(243,255,244,.11)');
+      light.addColorStop(.72, 'rgba(10,36,56,.015)');
+      light.addColorStop(1, 'rgba(8,32,50,.32)');
+      shape(sphere, light);
+    }
     drawMarkers();
   }
 
@@ -194,7 +241,7 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect) {
     zoom = clamp(value, 1, maxZoom);
     if (point) {
       const location = projection.invert(point);
-      if (location.every(Number.isFinite)) center = [longitude(location[0]), clamp(location[1], -85, 85)];
+      if (location && location.every(Number.isFinite) && distance(point, [width / 2, height / 2]) <= projection.scale()) center = [longitude(location[0]), clamp(location[1], -85, 85)];
       mapLabel = 'Kaart';
     }
     draw();
@@ -310,11 +357,38 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect) {
     const preset = ATLAS_VIEWS[button.dataset.mapView];
     fly(preset.center, preset.zoom, preset.label, button.dataset.mapView);
   });
+  const layerMessage = frame.querySelector('.atlas-layer-status');
+  async function updateRivers() {
+    if (frame.dataset.atlasRivers !== 'true' || rivers || loadingRivers) return;
+    loadingRivers = true;
+    layerMessage.textContent = 'Rivierlaag laden…';
+    riversRequest ??= fetchJson(new URL('./content/atlas-rivers.json?v=14r1', import.meta.url)).catch(error => {
+      riversRequest = undefined;
+      throw error;
+    });
+    try {
+      rivers = await riversRequest;
+      if (!frame.isConnected) return;
+      layerMessage.textContent = '';
+      draw();
+    } catch {
+      if (frame.isConnected) layerMessage.textContent = 'De rivierlaag is niet beschikbaar. Zet de laag uit en aan om opnieuw te laden.';
+    } finally {
+      loadingRivers = false;
+    }
+  }
   listen(frame, 'atlas-filter', event => {
+    updateRivers();
     filter = new Set(event.detail);
     const match = filter.size === 1 && places.find(place => filter.has(place.id));
-    if (match) fly(match.coordinates, 9, match.name);
-    else draw();
+    if (match) fly(match.coordinates, 9, name(match));
+    else {
+      stopAnimation();
+      if (active && filter.has(active.id)) mapLabel = name(active);
+      else if (active) mapLabel = 'Kaart';
+      draw();
+      updateControls();
+    }
   });
   const visibleRows = frame.parentElement.querySelectorAll('[data-place-id]:not([hidden])');
   filter = new Set([...visibleRows].map(row => row.dataset.placeId));
@@ -323,5 +397,6 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect) {
   resize();
   updateControls(active ? '' : 'wereld');
   frame.dataset.ready = 'true';
+  updateRivers();
   return () => { stopAnimation(); controls.abort(); observer.disconnect(); };
 }
