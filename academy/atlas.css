@@ -1,0 +1,14 @@
+.atlas-layout [hidden] {display:none !important}
+.atlas-layout .atlas-overview {padding-block:.45rem}
+.atlas-overview summary {font-weight:650;cursor:pointer;min-height:2.5rem;display:flex;align-items:center}
+.atlas-overview ol {margin:.5rem 0 0;padding-left:1.4rem}
+.atlas-overview li {padding:0 0 .9rem .2rem}
+.atlas-overview h3 {margin:.15rem 0;font-size:1rem}
+.atlas-overview small {color:#36594c}
+.atlas-places .field input {width:100%;min-width:0}
+.atlas-options {align-items:center;justify-content:space-between}
+.atlas-options label {display:flex;align-items:center;gap:.45rem;min-height:44px}
+#atlas-year-message:empty {display:none}
+#atlas-year-message:not(:empty) {color:#8a342c}
+.atlas-places .unit-list {scrollbar-gutter:stable}
+@media(max-width:680px){.atlas-places .unit-list{max-height:22rem;overflow:auto}.atlas-map-open.button{max-width:calc(100% - 80px);white-space:normal}}

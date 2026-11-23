@@ -1,40 +1,13 @@
+importScripts('./sw-assets.js?v=14r5');
 const BASE = new URL(self.registration.scope);
 const CACHE_PREFIX = 'athenaeum-learning:' + BASE.pathname + ':';
-const VERSION = CACHE_PREFIX + '1.3.10';
+const VERSION = CACHE_PREFIX + self.learningAssets.version;
 const APP_SHELL = new URL('./index.html', BASE);
 const PAIDEIA_HOME = new URL('./apps/paideia/', BASE);
 const PAIDEIA_REDIRECT = new URL('index.html', PAIDEIA_HOME);
-const ENTRY = './academy/app.js?v=13r11';
-const CORE = [
-  './', './index.html', './leer/', './manifest.webmanifest', './classic.html', './apps/paideia/index.html', './shared/style.css',
-  './academy/style.css?v=13r11', ENTRY, './academy/views.js?v=13r11', './academy/daily.js?v=13r9', './academy/daily-view.js?v=13r11', './academy/research.js?v=13r11',
-  './academy/research-data.js?v=13r1', './academy/research-import.js?v=13r8', './academy/scriptorium.js?v=13r11',
-  './academy/study-notes.js?v=13r6', './academy/practice.js?v=13r8', './academy/practice-content.js?v=13r1',
-  './academy/language-topics.js?v=13r1', './academy/language-lessons.js?v=13r6',
-  './academy/content/fr-pharmacie.js?v=13r3', './academy/content/fr-niveaux.js?v=13r5', './academy/content/it-spreken.js?v=13r6',
-  './academy/history-curriculum.js?v=13r8', './academy/history-chronology.js?v=13r9',
-  './academy/content/history-source.js?v=13r8', './academy/content/history-antiquity.js?v=13r8',
-  './academy/content/history-medieval.js?v=13r8', './academy/content/history-earlymodern.js?v=13r8',
-  './academy/content/history-world.js?v=13r8',
-  './academy/history-archive.js?v=13r10', './academy/history-explorer.js?v=13r11',
-  './academy/history-explorer-view.js?v=13r11', './academy/history-reading.js?v=13r9',
-  './academy/weekly-exam.js?v=13r9', './academy/atlas-globe.js?v=13r11',
-  './academy/vendor/d3-array.min.mjs', './academy/vendor/d3-geo.min.mjs',
-  './academy/content/atlas-land.json?v=13r9', './assets/sources/magna-carta-1215.jpg',
-  './academy/content/history-extension.js?v=13r9', './academy/content/history-marseille.js?v=13r9',
-  './academy/content/history-cities.js?v=13r9', './academy/content/history-western-cities.js?v=13r10', './academy/content/history-primary.js?v=13r9',
-  './academy/content/history-depth.js?v=13r9', './academy/content/history-depth-early.js?v=13r9',
-  './academy/content/history-depth-modern.js?v=13r9', './academy/content/history-depth-late.js?v=13r9', './academy/content/history-depth-regions.js?v=13r9',
-  './academy/lesson-search.js?v=13r9', './academy/streak.js?v=13r9', './academy/notifications.js?v=13r6',
-  './academy/fetch-json.js?v=13r11', './academy/storage.js', './academy/learning.js?v=13r8', './academy/cloud.js?v=13r2', './academy/importer.js?v=13r8',
-  './shared/store.js', './shared/sync.js', './assets/icons/icon-192.png', './assets/icons/icon-512.png',
-  './assets/logos/athenaeum.svg', './assets/logos/athenaeum-192.png', './assets/icons/apple-touch-icon.png',
-  './assets/logos/paideia-192.png', './assets/logos/scriptorium-192.png',
-];
-const LESSONS = ['greek', 'roman', 'history', 'knowledge', 'it', 'fr'].map(track => './academy/content/' + track + '.json?v=13r1');
-const REQUIRED = [...CORE, ...LESSONS];
-const EXTRAS = ['./academy/content/primary-cases.json?v=13r1', './academy/vendor/pdf.min.mjs',
-  './academy/vendor/pdf.worker.min.mjs', './academy/vendor/jszip.min.js'];
+const ENTRY = './academy/app.js?v=14r5';
+const REQUIRED = self.learningAssets.all;
+const EXTRAS = self.learningAssets.extra;
 const WARM = new Set([...REQUIRED, ...EXTRAS].map(path => new URL(path, BASE).href));
 
 async function preload(paths) {
@@ -43,7 +16,7 @@ async function preload(paths) {
 }
 
 self.addEventListener('install', event => event.waitUntil((async () => {
-  await preload(REQUIRED);
+  await preload(self.learningAssets.initial);
   const cache = await caches.open(VERSION);
   const shell = await cache.match(APP_SHELL);
   if (!(await shell?.text())?.includes(ENTRY)) throw new Error('De appbestanden zijn nog niet samen beschikbaar.');
@@ -82,6 +55,11 @@ self.addEventListener('fetch', event => {
       if (hit) return hit;
     }
 
+    // A tab that still runs an earlier release may request an older versioned module.
+    if (!navigation && academyAsset && !warm && url.searchParams.has('v') && event.request.cache !== 'reload') {
+      const previous = await caches.match(event.request);
+      if (previous) return previous;
+    }
     let response;
     try {
       response = navigation && (rootPage || oldPaideia) ? await fetchPage(event.request) : await fetch(event.request);

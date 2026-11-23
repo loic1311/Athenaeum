@@ -59,7 +59,7 @@ const scopes = {
 
 export const timelineScope = value => HISTORICAL_TRACKS.includes(value) ? value : 'alles';
 export const timelineMode = value => value === 'alle' ? value : 'kern';
-export const timelineHref = (scope, mode = 'kern') => 'paideia/chronologie/' + timelineScope(scope) + '/' + timelineMode(mode);
+export const timelineHref = (scope, mode = 'alle') => 'paideia/chronologie/' + timelineScope(scope) + '/' + timelineMode(mode);
 export const historyLessonHref = (id, scope, mode) => 'les/' + encodeURIComponent(id) + '/chronologie/' + timelineScope(scope) + '/' + timelineMode(mode);
 export const historyReadId = id => 'history-read-' + id;
 

@@ -1,7 +1,7 @@
 {
   "name": "Athenaeum",
   "short_name": "Athenaeum",
-  "description": "Lessen en korte oefeningen geschiedenis, algemene kennis, Italiaans en Frans.",
+  "description": "Geschiedenis, taal, mythologie en religie. Lessen, bronnen en gespreide herhaling.",
   "id": "./",
   "start_url": "./",
   "scope": "./",

@@ -12,6 +12,9 @@ export const TRACKS = {
   earlymodern: { name: 'Vroegmoderne tijd', icon: 'compass', section: 'history', desc: 'Oceaanhandel, reformaties, de Lage Landen, wereldrijken en revoluties.' },
   history: { name: 'Algemene geschiedenis', icon: 'globe', section: 'history', desc: 'Van de eerste steden via industrialisering en wereldrijken tot dekolonisatie.' },
   knowledge: { name: 'Algemene kennis', icon: 'knowledge', section: 'history', desc: 'Begrippen om cijfers, nieuws en de wereld beter te begrijpen.' },
+  la: { name: 'Latijn', icon: 'roman', section: 'language', lang: 'la', desc: 'Leer vormen herkennen en bouw stap voor stap een vertaling op.' },
+  grc: { name: 'Oudgrieks', icon: 'greek', section: 'language', lang: 'grc', desc: 'Van het Griekse alfabet naar het lezen en analyseren van bronnen.' },
+  traditio: { name: 'Traditio', icon: 'traditio', section: 'traditio', desc: 'Mythologie en religieuze overlevering.' },
   it: { name: 'Italiaans', icon: 'italian', section: 'language', lang: 'it-IT', desc: 'Leer woorden en grammatica waarmee je zelf kunt spreken en zinnen maken.' },
   fr: { name: 'Frans', icon: 'french', section: 'language', lang: 'fr-FR', desc: 'Frans voor het labo, de apotheek, de campus en het dagelijks leven.' },
 };
@@ -142,7 +145,11 @@ export function historyOf(records) {
     const current = states.get(key) ?? { stage: 0, count: 0 };
     const stage = rating === 'again' ? 0 : rating === 'help' ? Math.min(1, current.stage) : Math.min(REVIEW_STEPS.length - 1, current.stage + (rating === 'easy' ? 2 : 1));
     const wait = rating === 'help' ? 6 * 60 * 60_000 : stage === 0 ? 45 * 60_000 : REVIEW_STEPS[stage] * DAY;
-    states.set(key, { stage, count: current.count + 1, due: record.at + wait, last: record.at, lastQuestion: question });
+    const correct = !record.data.skipped && ['good', 'easy'].includes(rating);
+    const day = new Date(record.at).toDateString();
+    const recallDays = correct ? (current.recallDays || 0) + Number(current.recallDate !== day) : 0;
+    states.set(key, { stage, count: current.count + 1, due: record.at + wait, last: record.at, lastQuestion: question,
+      recallDays, recallDate: correct ? day : undefined });
     if (question) seen.set(question, record.at);
     if (lesson) lessons.add(lesson);
   }
@@ -220,9 +227,9 @@ export function languageQuestions(pool, skill, history, now = Date.now()) {
   return [recognize, matching, ...recall].filter(Boolean);
 }
 
-export function examQuestions(pool, history, monthly = false) {
+export function examQuestions(pool, history, monthly = false, allGoals = false) {
   const handled = pool.filter(item => history.states.has(item.key) && item.questions.some(q => q.kind !== 'listen'));
-  const limit = monthly ? 18 : 10;
+  const limit = allGoals ? handled.length : monthly ? 18 : 10;
   const required = EXAM_GOALS[monthly ? 'month' : 'week'];
   if (handled.length < required) return [];
   const ordered = variedSelection(shuffled(handled), limit);

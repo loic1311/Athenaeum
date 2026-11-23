@@ -1,5 +1,5 @@
-import { ROUTES, TRACKS } from './learning.js?v=13r8';
-import { LANGUAGE_TOPICS } from './language-topics.js?v=13r1';
+import { ROUTES, TRACKS } from './learning.js?v=14r3';
+import { LANGUAGE_TOPICS } from './language-topics.js?v=14r3';
 
 const STOP_WORDS = new Set([
   'de', 'het', 'een', 'en', 'in', 'op', 'over', 'van', 'voor', 'te', 'bij', 'met', 'naar',
@@ -8,6 +8,7 @@ const STOP_WORDS = new Set([
 ]);
 const LANGUAGES = new Map([
   ['frans', 'fr'], ['francais', 'fr'], ['french', 'fr'], ['francogallica', 'fr'],
+  ['latijn', 'la'], ['latina', 'la'], ['oudgrieks', 'grc'], ['traditio', 'traditio'],
   ['italiaans', 'it'], ['italiano', 'it'], ['italian', 'it'], ['italiana', 'it'],
 ]);
 const VARIANTS = new Map([

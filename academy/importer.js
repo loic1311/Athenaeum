@@ -1,4 +1,4 @@
-import { KINDS, LEVELS, TRACKS } from './learning.js?v=13r8';
+import { KINDS, LEVELS, TRACKS } from './learning.js?v=14r3';
 
 export const MAX_IMPORT_CHARS = 180_000;
 const MAX_FILE_BYTES = 18 * 1024 * 1024;
@@ -123,8 +123,6 @@ export function generateLessons(input, sections) {
     }
   }
   if (!gathered.length) throw new Error('Ik vond geen bruikbare vraag. Gebruik volledige zinnen of één paar per regel, zoals begrip | uitleg.');
-  const cap = 360;
-  if (gathered.length > cap) throw new Error('De tekst levert meer dan 360 leerdoelen op. Splits de tekst op per hoofdstuk. Je invoer blijft bewaard.');
   const lessons = [];
   for (let offset = 0; offset < gathered.length; offset += GROUP_SIZE) {
     const sources = [];
@@ -151,10 +149,10 @@ export function generateLessons(input, sections) {
 
 export function validDeck(lesson) {
   return !!lesson && /^eigen-[a-z0-9-]{1,80}$/.test(lesson.id) && Object.hasOwn(TRACKS, lesson.track) && typeof lesson.title === 'string'
-    && Array.isArray(lesson.items) && lesson.items.length > 0 && lesson.items.length <= 60
+    && Array.isArray(lesson.items) && lesson.items.length > 0
     && (!lesson.level || LEVELS.includes(lesson.level)) && Array.isArray(lesson.sources)
     && lesson.items.every(item => typeof item.id === 'string' && typeof item.label === 'string'
-      && Array.isArray(item.questions) && item.questions.length > 0 && item.questions.length <= 8
+      && Array.isArray(item.questions) && item.questions.length > 0
       && item.questions.every(question => Object.hasOwn(KINDS, question.kind)
         && typeof question.text === 'string' && typeof question.answer === 'string'
         && (!question.options || (Array.isArray(question.options) && question.options.every(option => typeof option === 'string')))

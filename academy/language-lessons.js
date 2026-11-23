@@ -1,11 +1,17 @@
+import { latinUnits } from './content/classical-latin.js?v=14r3';
+import { latinWorkshops } from './content/classical-latin-workshops.js?v=14r3';
+import { greekWorkshops } from './content/classical-greek-workshops.js?v=14r3';
+import { greekUnits } from './content/classical-greek.js?v=14r3';
+import { italianStarters, frenchStarters } from './content/language-starters.js?v=14r3';
 import { frenchTopics } from './content/fr-pharmacie.js?v=13r3';
 import { frenchLevelTopics } from './content/fr-niveaux.js?v=13r5';
 import { italianTopics } from './content/it-spreken.js?v=13r6';
 
 function wordItem(entry, index, words, track) {
   const [word, meaning, accepted] = entry;
-  const alternatives = words.filter(other => other !== entry && other[1] !== meaning)
-    .slice(index % 4, index % 4 + 3).map(other => other[1]);
+  const otherMeanings = [...new Set(words.filter(other => other !== entry && other[1] !== meaning).map(other => other[1]))];
+  const start = index % (otherMeanings.length || 1);
+  const alternatives = [...otherMeanings.slice(start), ...otherMeanings.slice(0, start)].slice(0, 3);
   const frenchArticle = track === 'fr' && /^(?:un|une|des) /u.test(word);
   return {
     id: 'woord-' + (index + 1),
@@ -62,7 +68,17 @@ function languageLesson(definition, track) {
   };
 }
 
+function orderedClassicalCourse(core, supplements) {
+  const expanded = [...core, ...supplements];
+  // Stable sort keeps earlier lessons first in each stage and accepts future topics.
+  const order = [...new Set(expanded.map(lesson => lesson.languageTopic))];
+  return expanded.sort((a,b) => order.indexOf(a.languageTopic) - order.indexOf(b.languageTopic));
+}
+
 export const languageLessons = [
+  ...frenchStarters.map(definition => languageLesson(definition, 'fr')),
+  ...italianStarters.map(definition => languageLesson(definition, 'it')),
+  ...orderedClassicalCourse(latinUnits, latinWorkshops), ...orderedClassicalCourse(greekUnits, greekWorkshops),
   ...frenchTopics.map(definition => languageLesson(definition, 'fr')),
   ...frenchLevelTopics.map(definition => languageLesson(definition, 'fr')),
   ...italianTopics.map(definition => languageLesson(definition, 'it')),
