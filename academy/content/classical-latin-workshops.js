@@ -1,4 +1,4 @@
-import {classicalUnit, latinGrammar as grammar, passage, composition} from './classical-model.js?v=14r2';
+import {classicalUnit, latinGrammar as grammar, passage, composition} from './classical-model.js?v=14r3';
 
 const learn = (...args) => classicalUnit('la', ...args);
 const republic = 'struct-ro-republiek', transition = 'struct-ro-principaat', empire = 'struct-ro-provincies';

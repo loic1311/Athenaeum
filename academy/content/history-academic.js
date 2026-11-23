@@ -1,5 +1,5 @@
-import { lesson, reference } from './history-academic-model.js?v=14';
-import { worldSeminars } from './history-academic-world.js?v=14';
+import { lesson, reference } from './history-academic-model.js?v=14r3';
+import { worldSeminars } from './history-academic-world.js?v=14r3';
 
 const library = 'https://penelope.uchicago.edu/Thayer/E/Roman/Texts/';
 const appian = (book, chapters) => reference('Appianus van Alexandrië', 'Burgeroorlogen', book + '.' + chapters, library + 'Appian/Civil_Wars/' + book + '*.html#' + chapters.split('–')[0], '2e eeuw n.Chr.');

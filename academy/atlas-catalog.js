@@ -1,4 +1,4 @@
-import { atlasAdditions, establishedHistories } from './content/atlas-sites.js?v=14r1';
+import { atlasAdditions, establishedHistories } from './content/atlas-sites.js?v=14r3';
 
 export const ATLAS_VIEWS = {
   wereld: { label: 'Wereld', center: [14, 28], zoom: 1 },

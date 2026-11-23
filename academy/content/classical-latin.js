@@ -1,4 +1,4 @@
-import {classicalUnit, latinGrammar as gram, passage as p} from './classical-model.js?v=14r2';
+import {classicalUnit, latinGrammar as gram, passage as p} from './classical-model.js?v=14r3';
 const unit = (...args) => classicalUnit('la',...args);
 const alphabet = gram('Alfabet en schrijfconventies','alphabet');
 const decl = gram('§§ 36–38 · verbuigingen','rules-noun-declension');

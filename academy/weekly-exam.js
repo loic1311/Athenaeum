@@ -1,4 +1,4 @@
-import { EXAM_GOALS, TRACKS, examQuestions, makePool } from './learning.js?v=13r8';
+import { EXAM_GOALS, TRACKS, examQuestions, makePool } from './learning.js?v=14r3';
 import { dayKey } from './daily.js?v=13r9';
 
 function currentWeek(now) {

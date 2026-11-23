@@ -1,19 +1,19 @@
 import { EXAM_GOALS, LEVELS, ROUTES, TRACKS, shuffled, makePool, historyOf, isCorrect, hasAccentError, quickQuestions,
-  languageQuestions, lessonQuestions, examQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=13r8';
-import { allPackKeys, byLessonId, loadedLessons, loadPacks, packFiles, packsForTracks, summaries } from './catalog.js?v=14r1';
-import { chronologyPage, mountChronology, lessonExplorerLinks } from './history-timeline.js?v=14r1';
-import { bindAtlasFilters } from './atlas-view.js?v=14r1';
-import { progressOverview, validGoal } from './progress-overview.js?v=14r1';
+  languageQuestions, lessonQuestions, examQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=14r3';
+import { allPackKeys, byLessonId, loadedLessons, loadPacks, packFiles, packsForTracks, summaries } from './catalog.js?v=14r3';
+import { chronologyPage, mountChronology, lessonExplorerLinks } from './history-timeline.js?v=14r3';
+import { bindAtlasFilters } from './atlas-view.js?v=14r3';
+import { progressOverview, validGoal } from './progress-overview.js?v=14r3';
 import { belongsToHistoryTrack, chronologicalLessons, chronologyForLesson, chronologyYear, HISTORICAL_TRACKS,
-  historyLessonHref, historyReadId, timelineScope } from './history-chronology.js?v=13r9';
-import { ATLAS_PLACES, explorationJourney, explorationLessons, explorerHref } from './history-explorer.js?v=13r11';
-import { academicPlanPage, atlasPage, eraPage, primaryPage } from './history-explorer-view.js?v=13r11';
-import { weeklyExamQuestions, weeklyStudy } from './weekly-exam.js?v=13r9';
-import { isLanguageTopic, LANGUAGE_SKILLS } from './language-topics.js?v=13r1';
+  historyLessonHref, historyReadId, timelineScope } from './history-chronology.js?v=14r3';
+import { ATLAS_PLACES, explorationJourney, explorationLessons, explorerHref } from './history-explorer.js?v=14r3';
+import { academicPlanPage, atlasPage, eraPage, primaryPage } from './history-explorer-view.js?v=14r3';
+import { weeklyExamQuestions, weeklyStudy } from './weekly-exam.js?v=14r3';
+import { isLanguageTopic, LANGUAGE_SKILLS } from './language-topics.js?v=14r3';
 import { record, readRecords, storeRecords, forgetRecords, backups, syncLearning, clearCloudLearning } from './storage.js';
-import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=13r8';
+import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=14r3';
 import { authenticate, authMessage, makeGuest } from './cloud.js?v=13r2';
-import * as view from './views.js?v=13r11';
+import * as view from './views.js?v=14r3';
 import { PACE, DAY_FOCI, STAGES, dayKey, archivedPlans, planDay, advanceDay, drillQuestions, tipsFor } from './daily.js?v=13r9';
 import { checkSelection, completeSelection, practiceOptions, sequencePractice } from './practice.js?v=13r8';
 import { dailyPage } from './daily-view.js?v=13r11';
@@ -23,7 +23,7 @@ import { addResearchMaterial, comparisonFromForm, evidenceList, validComparison,
 import { readResearchFile } from './research-import.js?v=13r8';
 import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=13r11';
 import { fetchJson } from './fetch-json.js?v=13r11';
-import { searchLessons } from './lesson-search.js?v=13r9';
+import { searchLessons } from './lesson-search.js?v=14r3';
 import { countsAsPractice, isStudyDay, studyRecordId } from './streak.js?v=13r9';
 import { MAX_REMINDERS, readSchedule, preparePush, pushPreference, pushSupport, savePush, stopPush, testPush } from './notifications.js?v=13r6';
 
@@ -79,9 +79,17 @@ let atlasPinDestination;
 
 const languageSupport = () => 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
 const connection = () => navigator.onLine;
-const activeSession = () => records.filter(row => row.kind === 'draft' && row.data?.session && !row.data.finished)
-  .sort((a, b) => b.at - a.at)[0]?.data.session;
-const personalLessons = () => records.filter(x => x.kind === 'deck' && !x.data.deleted && validDeck(x.data)).map(x => x.data);
+const activeSession = () => records.reduce((latest, row) =>
+  row.kind === 'draft' && row.data?.session && !row.data.finished && (!latest || row.at > latest.at) ? row : latest, null)?.data.session;
+let personalSource;
+let personalCatalogue;
+function personalLessons() {
+  if (personalSource !== records) {
+    personalCatalogue = records.filter(row => row.kind === 'deck' && !row.data.deleted && validDeck(row.data)).map(row => row.data);
+    personalSource = records;
+  }
+  return personalCatalogue;
+}
 const lessonList = () => [...loadedLessons(), ...personalLessons()];
 const isHistoryRead = row => row.kind === 'prefs' && row.data?.name === 'history-read' &&
   typeof row.data.lesson === 'string' && /^[a-z0-9-]{1,100}$/i.test(row.data.lesson) &&
@@ -164,9 +172,15 @@ function displayMain(markup, { focus = true } = {}) {
   }
 }
 
+let overviewCache;
 function overview() {
-  const lessons = [...summaries, ...personalLessons()];
-  return progressOverview(lessons, records, reviews(), readLessons(), prefs(), profile, activeSession());
+  const minute = Math.floor(Date.now() / 60_000);
+  if (overviewCache?.records !== records || overviewCache?.profile !== profile || overviewCache?.minute !== minute) {
+    const lessons = [...summaries, ...personalLessons()];
+    overviewCache = { records, profile, minute, info:
+      progressOverview(lessons, records, reviews(), readLessons(), prefs(), profile, activeSession()) };
+  }
+  return overviewCache.info;
 }
 
 function routePacks(section, key, tab) {
@@ -201,7 +215,7 @@ function lessonLoadingNotice(keys) {
 
 function loadTraditionView() {
   if (traditionView || traditionViewLoad || traditionViewError) return;
-  traditionViewLoad = import('./traditio.js?v=14r1').then(module => { traditionView = module; })
+  traditionViewLoad = import('./traditio.js?v=14r3').then(module => { traditionView = module; })
     .catch(() => { traditionViewError = true; }).finally(() => { traditionViewLoad = undefined; refreshContentViews(); });
 }
 
@@ -261,7 +275,7 @@ function render(focus = true) {
     case 'studiegids':
       top = 'paideia';
       if (!readingGuide && !readingRequest && !readingError) {
-        readingRequest = fetchJson(new URL('./content/reading-guide.json?v=14r2',import.meta.url))
+        readingRequest = fetchJson(new URL('./content/reading-guide.json?v=14r3',import.meta.url))
           .then(rows => { readingGuide = rows; }).catch(() => { readingError = true; })
           .finally(() => { readingRequest = undefined; if (route()[0] === 'studiegids') render(false); });
       }
@@ -378,7 +392,7 @@ function attachAtlas(lessons, scope, chosen) {
   bindAtlasFilters(frame);
   const visibleIds = new Set([...main.querySelectorAll('[data-place-id]')].map(node => node.dataset.placeId));
   const places = ATLAS_PLACES.filter(place => visibleIds.has(place.id));
-  import('./atlas-globe.js?v=13r11')
+  import('./atlas-globe.js?v=14r3')
     .then(({ mountAtlasGlobe }) => mountAtlasGlobe(frame, places, chosen, id => {
       const destination = explorerHref('atlas', scope, id);
       if (location.hash === '#' + destination) return;
@@ -1194,7 +1208,6 @@ async function savePreview() {
 
 async function restoreBackup(file) {
   if (!file) return;
-  if (file.size > 30_000_000) throw new Error('Dit back-upbestand is groter dan 30 MB.');
   const data = JSON.parse(await file.text());
   const valid = row => row && /^[a-z0-9/-]{1,160}$/i.test(row.id) && Number.isSafeInteger(row.at) && row.at > 0
     && row.at <= Date.now() + 300_000 && row.data && typeof row.data === 'object'
@@ -1207,20 +1220,30 @@ async function restoreBackup(file) {
         || (typeof row.data.name === 'string' && row.data.name.startsWith('quick-')
           && contentKeys.includes(row.data.name.slice(6)) && typeof row.data.value === 'boolean')))
       || (row.kind === 'result' && Array.isArray(row.data.questions) && Array.isArray(row.data.answers)
-        && row.data.questions.every(q => typeof q.text === 'string' && typeof q.answer === 'string' &&
+        && row.data.questions.every(q => typeof q?.text === 'string' && typeof q.answer === 'string' &&
           (!q.criteria || Array.isArray(q.criteria))) && Number.isInteger(row.data.total)
         && Number.isInteger(row.data.correct) && Number.isInteger(row.data.reviewed)
         && (row.data.mode !== 'placement' || (LEVELS.includes(row.data.estimate?.recommended)
           && Array.isArray(row.data.estimate.rows) && row.data.estimate.rows.every(x =>
             LEVELS.includes(x.level) && Number.isInteger(x.correct) && Number.isInteger(x.total))))));
-  if (data.athenaeum_learning !== 1 || !Array.isArray(data.records) || data.records.length > 60_000) {
+  if (data?.athenaeum_learning !== 1 || !Array.isArray(data.records)) {
     throw new Error('Kies een back-up van het Athenaeum-leerplatform.');
   }
   const safe = data.records.filter(valid);
-  await requireProfile();
-  for (let i = 0; i < safe.length; i += 250) await saveRows(safe.slice(i, i + 250));
-  message(safe.length + ' leerrecords ingeladen.');
-  render(false);
+  const { id } = await requireProfile();
+  const resetAt = records.reduce((latest, row) => row.kind === 'reset' ? Math.max(latest, row.at) : latest, 0);
+  const eligible = safe.filter(row => row.at > resetAt);
+  try {
+    for (let i = 0; i < eligible.length; i += 250) await storeRecords(id, eligible.slice(i, i + 250));
+  } finally {
+    if (profile?.id === id) {
+      records = (await readRecords(id)).filter(row => row.at > resetAt || row.kind === 'reset');
+      scheduleSync();
+      render(false);
+    }
+  }
+  const ignored = data.records.length - eligible.length;
+  message(eligible.length + ' leerrecords verwerkt.' + (ignored ? ' Overgeslagen: ' + ignored + '.' : ''));
 }
 
 function cacheLessons() {
@@ -1906,14 +1929,17 @@ function refreshContentViews() {
     if (!['paideia', 'talen', 'traditio', 'dagles', 'onderzoek', 'zoeken', 'toetsen', 'les'].includes(section)) return;
 
     const field = document.activeElement;
-    const text = field?.id === 'atlas-search' ? field.value : '';
+    const atlasControls = ['atlas-search','atlas-year'].map(id => [id, main.querySelector('#' + id)?.value ?? '']);
     render(false);
-    const replacement = field?.id && main.querySelector('#' + CSS.escape(field.id));
-    if (replacement && ['atlas-search', 'course-search', 'lesson-query'].includes(field.id)) {
-      if (field.id === 'atlas-search') {
-        replacement.value = text;
-        replacement.dispatchEvent(new Event('input', { bubbles: true }));
+    for (const [id,value] of atlasControls) {
+      const control = value && main.querySelector('#' + id);
+      if (control) {
+        control.value = value;
+        control.dispatchEvent(new Event('input', { bubbles: true }));
       }
+    }
+    const replacement = field?.id && main.querySelector('#' + CSS.escape(field.id));
+    if (replacement && ['atlas-search','atlas-year','course-search','lesson-query'].includes(field.id)) {
       replacement.focus({ preventScroll: true });
     }
   }, 70);

@@ -1,8 +1,8 @@
-import { latinUnits } from './content/classical-latin.js?v=14r2';
-import { latinWorkshops } from './content/classical-latin-workshops.js?v=14r2';
-import { greekWorkshops } from './content/classical-greek-workshops.js?v=14r2';
-import { greekUnits } from './content/classical-greek.js?v=14r2';
-import { italianStarters, frenchStarters } from './content/language-starters.js?v=14r1';
+import { latinUnits } from './content/classical-latin.js?v=14r3';
+import { latinWorkshops } from './content/classical-latin-workshops.js?v=14r3';
+import { greekWorkshops } from './content/classical-greek-workshops.js?v=14r3';
+import { greekUnits } from './content/classical-greek.js?v=14r3';
+import { italianStarters, frenchStarters } from './content/language-starters.js?v=14r3';
 import { frenchTopics } from './content/fr-pharmacie.js?v=13r3';
 import { frenchLevelTopics } from './content/fr-niveaux.js?v=13r5';
 import { italianTopics } from './content/it-spreken.js?v=13r6';

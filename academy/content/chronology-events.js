@@ -65,10 +65,10 @@ export const CHRONOLOGY_EVENTS = [
     source: ['Direzione Musei nazionali della città di Roma', 'Pantheon, Historical background, paragraaf over Hadrianus', 'https://direzionemuseiroma.cultura.gov.it/en/pantheon/historical-background/'],
   },
   {
-    id: 'hadrianus', from: 125, date: '125 n.Chr.', region: 'azie', location: 'Aphrodisias · Karië, Klein-Azië',
+    id: 'hadrianus', from: 124, to: 125, precision: 'circa', date: 'Dec. 124–dec. 125 n.Chr.', region: 'azie', location: 'Aphrodisias · Karië, Klein-Azië',
     title: 'Hadrianus antwoordt Aphrodisias over spelen en watervoorziening', search: 'Hadrianus aquaduct gladiatoren hoogpriesterschap Asia Romeinse keizertijd',
-    text: 'Hadrianus bevestigt de inkomsten die de stad voor de waterleiding had bestemd en staat een geldbijdrage van de hogepriesters toe in plaats van gladiatorenspelen. Zijn negende tribunicia potestas dateert deze derde brief in 125. De vier brieven op de gezamenlijke steen bestrijken 119–125. De tekst over de financiering levert geen voltooiingsjaar voor het aquaduct.',
-    topics: ['macht','economie','stad'], tracks: ['greek','roman'], lessons: ['aphrodisias-hadrianus'], places: ['aphrodisias'],
+    text: 'Hadrianus bevestigt de inkomsten die de stad voor de waterleiding had bestemd en staat een geldbijdrage van de hogepriesters toe in plaats van gladiatorenspelen. De negende tribunicia potestas geeft een dateringsvenster van december 124 tot december 125. De editie plaatst brief III conventioneel in 125. De vier brieven op de gezamenlijke steen bestrijken 119–125. De tekst over de financiering levert geen voltooiingsjaar voor het aquaduct.',
+    topics: ['macht','economie','stad'], tracks: ['greek','roman'], lessons: ['acad-aphrodisias-geld','aphrodisias-hadrianus'], places: ['aphrodisias'],
     source: ['Hadrianus, ed. J. Reynolds, C. Roueché en G. Bodard (2007)', 'IAph2007 11.412, brief III, regels 27–41', 'https://insaph.kcl.ac.uk/iaph2007/iAph110412.html'],
     study: ['K. M. Coleman (2008)', 'Exchanging Gladiators for an Aqueduct at Aphrodisias, pp. 31–32 (tekst en datering)', 'https://casa-kvsa.org.za/legacy/2008/AC51-04-Coleman.pdf'],
   },
@@ -150,6 +150,13 @@ export const CHRONOLOGY_EVENTS = [
     text: 'De proclamatie verklaarde tot slaaf gemaakte mensen vrij in de aangewezen gebieden die tegen de Unie in opstand waren. De opsomming van staten en uitzonderingen in de tekst bepaalt de reikwijdte van de maatregel.',
     topics: ['maatschappij','macht'], tracks: ['history'], lessons: ['atlantische-slavernij','deep-amerikas'], places: [],
     source: ['Abraham Lincoln (1863)', 'Emancipation Proclamation, 1 januari, transcriptie National Park Service', 'https://www.nps.gov/common/uploads/teachers/lessonplans/Document5%28Emancipation%29.pdf'],
+  },
+  {
+    id: 'haiti-1804', from: 1804, date: '1 januari 1804', region: 'amerika', location: 'Les Gonaïves · Haïti',
+    title: 'Haïti verklaart zijn onafhankelijkheid', search: 'Haïtiaanse revolutie Saint-Domingue slavernij Dessalines',
+    text: 'Dessalines en andere legerleiders legden de breuk met Frankrijk vast. De tekst laat zien hoe zij de onafhankelijkheid verbonden aan het behoud van de vrijheid die in de revolutionaire oorlog was bevochten.',
+    topics: ['wereld','maatschappij','macht'], tracks: ['history'], lessons: ['acad-haiti-1804'], places: [],
+    source: ['Jean-Jacques Dessalines en de ondertekenaars','Déclaration d’indépendance d’Haïti, Les Gonaïves, 1 januari 1804','https://memoire-esclavage.org/declaration-dindependance-dhaiti'],
   },
   {
     id: 'wereldoorlog', from: 1914, date: '28 juli 1914', region: 'europa', location: 'Wenen · Niš',

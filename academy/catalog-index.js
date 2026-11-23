@@ -475,6 +475,11 @@ export const catalogIndex = {
     ["acad-gaius-graan","roman","Gaius Gracchus en de prijs van graan",3,"",""],
     ["acad-italische-bond","roman","De Bondgenotenoorlog en de betekenis van Italia",3,"",""]
   ],
+  "connections": [
+    ["acad-geniza-aden-india","medieval","Aden en India in de brieven van de Geniza",3,"",""],
+    ["acad-mogol-razmnama","earlymodern","Het Mogolhof vertaalt de Mahabharata",3,"",""],
+    ["acad-haiti-1804","history","Haïti verklaart zijn onafhankelijkheid",3,"",""]
+  ],
   "city-paths": [
     ["atlas-stad-ostia","roman","Ostia · Een versterking aan de monding",2,"","atlas"],
     ["atlas-stad-pompeii","roman","Pompeï · Een stad in Romeins Italië",2,"","atlas"],
@@ -552,6 +557,14 @@ export const catalogIndex = {
     ["trad-inana-poorten","traditio","Waarom Inana haar macht verliest aan zeven poorten",3,"",""],
     ["trad-inana-terugkeer","traditio","Terugkeren uit het dodenrijk heeft een prijs",3,"",""],
     ["trad-gilgamesj-vloed","traditio","Waarom de overlevende van de vloed zijn verhaal vertelt",3,"",""],
+    ["trad-noach","traditio","Noach en het verbond na de vloed",3,"",""],
+    ["trad-pasen-marcus","traditio","De vrouwen en het open graf bij Marcus",3,"",""],
+    ["trad-pasen-lucas","traditio","Herkenning onderweg naar Emmaüs",3,"",""],
+    ["trad-yusuf-put","traditio","Van een droom naar een put en een Egyptisch huishouden",3,"",""],
+    ["trad-yusuf-koning","traditio","Hoe een droom aan het hof een voorstel voor de oogst wordt",3,"",""],
+    ["trad-yusuf-herkenning","traditio","De broers keren terug en de droom krijgt betekenis",3,"",""],
+    ["trad-ragnarok","traditio","De grote winter, de strijd en de ondergang",3,"",""],
+    ["trad-ragnarok-herstel","traditio","Wat na de ondergang terugkeert",3,"",""],
     ["tr-westcar-djedi","traditio","Een geleerde spreekt Cheops tegen",3,"",""],
     ["tr-westcar-geboorte","traditio","Waarom er kronen in een zak gerst liggen",3,"",""],
     ["tr-demeter-verdwijning","traditio","Wie hoorde Persephone verdwijnen?",3,"",""],

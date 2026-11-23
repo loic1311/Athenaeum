@@ -1,10 +1,10 @@
-import { additionalStories } from './traditio-stories.js?v=14r1';
+import { additionalStories } from './traditio-stories.js?v=14r3';
 
 // Each narrative is attached to a particular written or material witness. Story order is local to its cycle.
 const book = (author, title, locator, url, type = 'Primaire tekst', year = '') =>
   ({ author, title, locator, url, type, year });
 const bible = (title, chapter, verses) => book('Bijbelse overlevering', title, chapter + ':' + verses,
-  'https://www.sefaria.org/' + ({ Genesis:'Genesis', Exodus:'Exodus' }[title]) + '.' + chapter + '.' + verses.replace('–','-'),
+  'https://www.sefaria.org/' + encodeURIComponent(title) + '.' + chapter + '.' + verses.replace('–','-'),
   'Hebreeuwse tekst en vertaling');
 const gospel = (author, code, chapter, verses) => book(author, code === 'acts' ? 'Handelingen van de apostelen' : 'Evangelie volgens ' + author,
   chapter + ':' + verses, 'https://bible.usccb.org/bible/' + code + '/' + chapter, 'Moderne vertaling met noten');
@@ -52,6 +52,7 @@ export const TRADITIONS = [
   { id:'christendom', name:'Nieuwe Testament', corpus:'Evangelies en Handelingen', intro:'Vergelijk wie de geboorteboodschap ontvangt, hoe een gewonde reiziger hulp krijgt en waarom een menigte in Jeruzalem verschillende talen hoort.', context:'De evangelies en Handelingen zijn vroegchristelijke Griekse geschriften. Hun woordkeus, compositie en verwijzingen naar de Schriften van Israël geven toegang tot de denkwereld van de vertellers en hun gemeenschappen.', links:[['Paideia · Religie in het Romeinse Rijk','les/rome-religie'],['Paideia · Jeruzalem in 70','les/r2-jeruzalem-70']] },
   { id:'islam', name:'Koran en islamitische traditie', corpus:'Verhalen in de Koran', intro:'Lees wat Musa’s moeder wordt beloofd, hoe Musa zijn broer betrekt bij zijn opdracht en waarom het kind van Maryam in de wieg spreekt.', context:'In de islam geldt de Koran als openbaring. De Arabische tekst spreekt toehoorders rechtstreeks aan en kan een profeet in verschillende soera’s opnieuw opvoeren. Latere uitleg, tafsīr, vormt een afzonderlijke laag in de overlevering.', links:[['Paideia · De kalifaten en Bagdad','les/kalifaten-bagdad']] },
   { id:'mesopotamie', name:'Mesopotamië', corpus:'Sumerische poëzie en Babylonisch epos', intro:'Daal met Inana af langs de poorten van de onderwereld. Lees vervolgens waarom een vloedoverlevende zijn verhaal aan de sterfelijke Gilgamesj vertelt.', context:'Sumerische en Akkadische spijkerschriftteksten bereikten ons via kleitabletten. Een moderne composiettekst kan lezingen uit verschillende exemplaren samenbrengen. Een afzonderlijk museumfragment vertegenwoordigt maar een deel van de compositie.', links:[['Paideia · Steden en schrift','les/mesopotamie-stad-en-schrift']] },
+  { id:'noords', name:'Noordse overlevering', corpus:'De Edda’s', intro:'Volg de strijd en de herverschijning van de aarde in de vertelling over Ragnarök.', context:'De Proza-Edda en de Poëtische Edda bewaren middeleeuwse IJslandse overleveringen. Een prozaschrijver kan verzen aanhalen en tegelijk een eigen ordening aan het verhaal geven.', links:[] },
 ];
 
 export const TRADITIO_READING = [
@@ -345,6 +346,96 @@ story('mesopotamie','gilgamesj-vloed','Gilgamesj en de sterfelijkheid','Waarom d
 [floodText,floodTablet], [['Uta-napishti','Gilgamesj','vertelt het vloedverhaal aan','ondervraagt'],['Ea','Uta-napishti','laat een waarschuwing horen voor','ontvangt een waarschuwing van'],['Enlil','Uta-napishti','verleent uitzonderlijk leven aan','ontvangt uitzonderlijk leven van']],
 ['Welke vogel keert in tablet XI als laatste niet terug?','Een raaf.','Een zwaluw.','Een duif.'],
 ['Welke betekenis krijgt de vloedvertelling door de vraag waarmee Gilgamesj bij Uta-napishti komt?','Gilgamesj wil weten hoe een mens toegang kreeg tot blijvend leven. Zijn gastheer vertelt over een bijzondere goddelijke beslissing na de vloed. De vergeefse poging wakker te blijven onderstreept dat de held die uitzondering niet op eigen kracht kan herhalen.']);
+
+story('tenach','noach','De vroegste mensheid','Noach en het verbond na de vloed',
+'Genesis 6–9 verbindt het verhaal van een vloed met de vraag hoe mensen en dieren na een ramp opnieuw kunnen leven. Binnen de Tora vormt de vloed een schakel tussen de eerste generaties en de latere familieverhalen. De Hebreeuwse tekst is via Sefaria naast vertalingen te lezen.', [
+  ['De ark voorbereiden','De aarde is in de vertelling vol geweld. God geeft Noach aanwijzingen om een ark te bouwen voor zijn gezin en voor dieren. In Genesis 6:19–20 klinkt een algemene opdracht over paren, terwijl 7:2–3 verder onderscheid maakt tussen groepen dieren. Het verloop bevat meerdere aanwijzingen voor het instappen en voor het begin van de vloed.'],
+  ['Zoeken naar droge grond','Als de ark is vastgelopen wacht Noach op nieuwe tekenen. Hij stuurt een raaf uit en laat daarna meermaals een duif vertrekken. Die vindt eerst geen rustplaats. Bij een volgende poging keert zij terug met een olijfblad. De laatste keer blijft ze weg. De reeks maakt zichtbaar hoe het water geleidelijk afneemt.'],
+  ['Een verbond met de levenden','Noach verlaat met zijn gezin en de dieren de ark. Na het offer sluit God een verbond met Noach, zijn nakomelingen en de dieren. God belooft de aarde niet opnieuw met een vloed te verwoesten. De boog in de wolken krijgt in de tekst de functie van een teken van dat verbond.'],
+], 'Vergelijk de tellingen en herhalingen rechtstreeks in Genesis 6:19–20 en 7:2–3. Ze hebben geleid tot verschillende voorstellen over de samenstelling van het verhaal. Genesis en tablet XI van Gilgamesj combineren onder meer een vaartuig, vogels en een offer. De volgorde en functie van de vogels verschillen. Voor de precieze historische overdracht moet je naast de motieven ook de ouderdom, verspreiding en overlevering van de teksten in rekening brengen.',
+[bible('Genesis',6,'9–22'),bible('Genesis',7,'1–24'),bible('Genesis',8,'1–22'),bible('Genesis',9,'1–17'),floodText],
+[['Noach','Sem','is de vader van','is een zoon van',1],['Noach','God','ontvangt een verbond van','sluit een verbond met',3]],
+['Welk teken krijgt het verbond in Genesis 9?','Een boog in de wolken.','Het olijfblad.','Het verlaten nest van de raaf.'],
+['Welk bewijs heb je nodig om de gelijkenis tussen Genesis en Gilgamesj historisch te verklaren?','Wijs een concreet gedeeld motief en een verschil aan. Onderzoek welke tekstgetuigen en overdrachtsroutes wanneer beschikbaar waren. Een overeenkomend motief alleen laat meerdere verklaringen open.']);
+
+story('christendom','pasen-marcus','De paasverhalen','De vrouwen en het open graf bij Marcus',
+'Marcus 16:1–8 vertelt hoe drie vrouwen na de sabbat naar het graf van Jezus gaan. De vertelling volgt hun verwachtingen en reacties. De manuscripten bewaren verschillende slotvormen. Moderne uitgaven geven lezers daarom tekstkritische informatie bij het hoofdstuk.', [
+  ['Voor dag en dauw','Maria Magdalena, Maria van Jakobus en Salome hebben geurige stoffen gekocht. Ze willen het lichaam zalven en verwachten een praktisch probleem bij de ingang. Onderweg vragen zij zich af wie de steen voor hen kan wegrollen. Bij aankomst ligt de steen al opzij.'],
+  ['De opdracht in het graf','In het graf zien de vrouwen een jongeman in het wit. Hij wijst hun de plaats waar Jezus had gelegen. Hij draagt hun op om Petrus en de andere leerlingen te vertellen dat Jezus hun zal voorgaan naar Galilea. Het graf is in het verhaal het vertrekpunt voor een nieuwe verwachting.'],
+  ['Angst aan het slot','De vrouwen verlaten het graf bevend. In vers 8 brengt hun angst hen tot zwijgen. Een lezer die op dat punt stopt, houdt zowel de opdracht om te spreken als het stilzwijgen van de eerste getuigen voor ogen. Bij verder lezen in uitgaven met een langer slot verandert de verteluitkomst.'],
+], 'Een aantal oude Griekse handschriften eindigt bij vers 8. Andere getuigen voegen een korter slot of de verzen 9–20 toe. Beschrijf welke verzen je leest voordat je het einde van Marcus met een ander evangelie vergelijkt. Vers 8 en de handschriftvarianten documenteren de tekstoverlevering. In de christelijke geloofstraditie hebben de verhalen ook een eigen liturgische en theologische betekenis.',
+[gospel('Marcus','mark',16,'1–8 en tekstkritische noten bij 9–20'),gospel('Lucas','luke',24,'1–12')],
+[['Maria Magdalena','Salome','gaat naar het graf met','gaat naar het graf met'],['Jongeman','Maria Magdalena','spreekt in het graf tot','wordt aangesproken door']],
+['Welke bestemming noemt de jongeman in het graf?','Galilea.','Emmaüs.','Nazaret.'],
+['Waarom kun je bij Marcus twee verschillende leeservaringen aan het einde verantwoorden?','Het slot bij vers 8 laat de lezer achter met angst en stilte. Sommige handschriften bevatten extra passages waarin het verhaal verdergaat. Verwijs daarom naar de gelezen verzen én de gevolgde editie.']);
+
+story('christendom','pasen-lucas','De paasverhalen','Herkenning onderweg naar Emmaüs',
+'Lucas 24 verbindt het graf met een tocht van twee leerlingen naar Emmaüs. Het verhaal vertraagt de herkenning onderweg. Zo krijgen hun verwachtingen, de uitleg van de Schriften en hun maaltijd elk een eigen rol.', [
+  ['Een reiziger vraagt uitleg','Twee leerlingen verlaten Jeruzalem en spreken over wat er gebeurd is. Een onbekende reiziger laat hen vertellen waarom zij teleurgesteld zijn. Kleopas en zijn metgezel hadden gehoopt op Israëls bevrijding. Het bericht over het open graf en de woorden van de vrouwen hebben hun onzekerheid nog niet weggenomen.'],
+  ['De reiziger leest de Schriften','De reiziger legt hun uit hoe passages uit Mozes en de profeten betrekking hebben op wat de leerlingen vertelden. Bij Emmaüs nodigen zij hem uit te blijven. De maaltijd krijgt daardoor ruimte in een verhaal dat begon als een gesprek tussen reizigers.'],
+  ['Brood breken en terugkeren','Aan tafel herkennen de leerlingen Jezus wanneer hij brood neemt, zegent en breekt. Hij verdwijnt uit hun gezicht. Ze herinneren zich nu anders hoe het gesprek onderweg verliep. Daarna keren zij naar Jeruzalem terug en vertellen wat er onderweg en aan tafel gebeurd was.'],
+], 'Lees de verwachtingen in vers 21, het beroep op de Schriften in vers 27 en de herkenning in de verzen 30–35 samen. Lucas ordent die scènes rond opnieuw leren begrijpen. Johannes 20:11–18 plaatst een herkenning in de omgeving van het graf en laat de aanspreking bij naam een andere rol spelen. Het verschil is controleerbaar in de vertellingen zelf.',
+[gospel('Lucas','luke',24,'13–35'),gospel('Johannes','john',20,'11–18')],
+[['Kleopas','Jezus','ontmoet onderweg','ontmoet onderweg']],
+['Waar keert de groep na de maaltijd naartoe?','Jeruzalem.','Galilea.','Bethlehem.'],
+['Vergelijk langs welke weg Lucas en Johannes herkenning voorstellen.','Lucas bouwt het gesprek en de uitleg op naar het breken van brood. Johannes laat Maria reageren op de aanspreking bij haar naam. Benoem plaats, volgorde en wie herkenning ervaart.']);
+
+story('islam','yusuf-put','Het verhaal van Yusuf','Van een droom naar een put en een Egyptisch huishouden',
+'Soera 12 verbindt Yusufs lot via dromen, geheimhouding en herkenning. Het eerste deel volgt een familieconflict en de overbrenging van Yusuf naar Egypte. De herinnering aan zijn eerste droom krijgt later in dezelfde soera een nieuwe betekenis.', [
+  ['Een droom binnen het gezin','Yusuf vertelt zijn vader dat hij elf sterren, de zon en de maan zich heeft zien neerbuigen. Zijn vader voorziet dat de broers vijandig op de droom zouden kunnen reageren en raadt hem aan te zwijgen. Zo komt de lezer te weten welke kennis binnen het gezin gevoelig is.'],
+  ['De broers brengen Yusuf weg','De broers vinden dat hun vader Yusuf voortrekt. Een van hen stelt voor Yusuf in een put te laten, zodat voorbijtrekkende reizigers hem meenemen. Na hun terugkeer zeggen de broers dat een wolf Yusuf heeft aangevallen. Zij tonen een hemd met vals bloed. Hun vader aanvaardt de voorstelling van de broers met wantrouwen.'],
+  ['Een nieuw huis','Een karavaan ontdekt Yusuf bij het putten. Hij wordt voor weinig geld verkocht. In Egypte krijgt hij een plaats in het huis van een koper die zijn vrouw vraagt Yusuf goed op te nemen. Het verhaal laat daarna zien hoe Yusuf in dat huishouden terechtkomt in een conflict waar uiteenlopende getuigenissen over ontstaan.'],
+], 'Leg 12:4–22 naast Genesis 37. Beide passages vertellen een droom en een poging van de broers om een verdwijning te verklaren. De vorm van de droom en de rollen van de betrokkenen verschillen per tekst. De gemene motieven maken een tekstuele vergelijking mogelijk. Een vraag over de precieze overdracht vraagt ook kennis van de joodse, christelijke en Arabischtalige overleveringen.',
+[quran('Yusuf',12,'4–22'),bible('Genesis',37,'1–36')],
+[['Yusuf','Ya’qub','vertelt zijn droom aan','hoort de droom van'],['Broers van Yusuf','Yusuf','laten hem achter in de put','wordt achtergelaten door']],
+['Wat moeten de broers met het bebloede hemd aannemelijk maken?','Dat een wolf Yusuf heeft aangevallen.','Dat Yusuf bevorderd is aan het hof.','Dat een karavaan terugkeert.'],
+['Hoe helpt de eerste droom bij het lezen van de episode over de put?','De droom en de raad van de vader maken de onderlinge concurrentie zichtbaar. De put voert weg van de voorgestelde toekomstige erkenning en maakt de latere wending des te belangrijker.']);
+
+story('islam','yusuf-koning','Het verhaal van Yusuf','Hoe een droom aan het hof een voorstel voor de oogst wordt',
+'Yusuf belandt in gevangenschap. Soera 12 laat vervolgens zien hoe iemand van wie het hof niets verwacht nuttige kennis kan leveren. Lees de droom van de koning naast de voorstellen van Yusuf over de oogst en voedselvoorraad.', [
+  ['Het woord van een huishouden','Wanneer de vrouw van zijn meester Yusuf benadert, probeert hij weg te komen. Bij de deur scheurt zijn hemd. De richting van de scheur wordt in de vertelling gebruikt om verschillende verklaringen te toetsen. Na bijeenkomsten en gesprekken in de stad komt Yusuf in gevangenschap terecht. De episode verklaart waarom hij later wil dat de koning de zaak opnieuw onderzoekt.'],
+  ['Van gevangenis naar paleis','In gevangenschap legt Yusuf twee dromen uit. Een van de andere gevangenen komt weer bij de koning terecht. Wanneer de koning wil weten wat zijn eigen droom over koeien en aren betekent, herinnert deze dienaar zich uiteindelijk Yusuf en gaat hij hem spreken.'],
+  ['Een uitleg met een gevolg','Yusuf verbindt de droom met een reeks productieve jaren en daarna jaren van schaarste. Hij raadt aan een groot deel van de oogst te bewaren. De voorspelling krijgt daarmee een concrete uitwerking voor wie over opslag, productie en verdeling kan beslissen.'],
+  ['Erkenning en verantwoordelijkheid','Yusuf vraagt eerst aandacht voor wat hem eerder is aangedaan. De vrouwen worden bevraagd en de vrouw van zijn vroegere meester erkent haar rol. Daarna vertrouwt de koning Yusuf en vraagt Yusuf verantwoordelijkheid over de voorraden van het land. Het verhaal brengt bestuurlijke verantwoordelijkheid in verband met betrouwbaarheid.'],
+], 'Soera 12 geeft de volgorde van droom, uitleg en benoeming. Daarmee kun je de keuzes van de vertelling onderzoeken. Voor een datering binnen de politieke geschiedenis van Egypte zouden onderzoekers andere bronnen nodig hebben. De aanbeveling over de oogst krijgt binnen het verhaal betekenis als voorbereiding op de ontmoeting met zijn broers.',
+[quran('Yusuf',12,'23–42'),quran('Yusuf',12,'43–57')],
+[['Dienaar','Yusuf','zoekt een uitleg bij','wordt geraadpleegd door',1],['Koning','Yusuf','vertrouwt hem verantwoordelijkheid toe','stelt zich beschikbaar voor',1]],
+['Wat stelt Yusuf tijdens de productieve jaren voor?','Het grootste deel van de oogst bewaren.','Alle graan onmiddellijk gebruiken.','Het zaaien uitstellen tot na de schaarste.'],
+['Waarom veranderen de uitleg en de maatregel samen Yusufs positie?','Het hof kan de droom aan toekomstige schaarste koppelen. Yusuf zet de uitleg om in een voorstel waarvoor organisatie nodig is. De beantwoording van de eerdere beschuldigingen draagt bij aan het vertrouwen dat hem toegang tot bestuur geeft.']);
+
+story('islam','yusuf-herkenning','Het verhaal van Yusuf','De broers keren terug en de droom krijgt betekenis',
+'In het slotdeel van soera 12 brengen voedselgebrek en reizen de broers opnieuw bij Yusuf. De toehoorder weet wie er over de uitgifte van voedsel beslist. De broers moeten die identiteit tijdens hun gesprekken en reizen nog ontdekken.', [
+  ['De eerste ontmoeting','De broers komen voedsel halen. Yusuf herkent hen en vraagt hun bij een volgende reis een broer van vaderskant mee te brengen. De broers keren terug naar hun vader en overtuigen hem om die zoon mee te laten gaan. Hun reis heropent zo het oude conflict rond iemand die het gezin kan verliezen.'],
+  ['Een beker en een onthulling','Yusuf neemt de andere broer apart en maakt zich aan hem bekend. Een beker wordt in diens bagage gelegd. Na de ontdekking blijft de broer achter. Later keren de anderen wegens de schaarste terug. Yusuf vraagt dan of zij nog weten wat zij hem en zijn broer hebben aangedaan. Daarop herkennen ze hem en spreekt hij hun vergeving toe.'],
+  ['Het hemd en de eerste droom','Yusuf laat een hemd naar zijn vader brengen. In de vertelling keert vaders zicht terug. Uiteindelijk ontvangt Yusuf zijn ouders en broers. Wanneer zij zich neerbuigen, verklaart Yusuf dat de eerdere droom nu betekenis heeft gekregen. Een episode aan het slot herneemt zo de scène waarmee het verhaal begon.'],
+], 'De droom staat in soera 12:4. Het slot gebruikt haar opnieuw in vers 100. Vergelijk ook de verschillende functies van een hemd in 12:18 en 12:93–96. De voorwerpen en herinneringen helpen om het verhaal als een geheel te lezen. Voor vragen over de receptie van die motieven kunnen latere commentaren afzonderlijk worden geraadpleegd.',
+[quran('Yusuf',12,'58–79'),quran('Yusuf',12,'80–101'),quran('Yusuf',12,'4–6')],
+[['Yusuf','Broers van Yusuf','maakt zich bekend aan','herkennen',1],['Yusuf','Ya’qub','stuurt een hemd naar','ontvangt een hemd van',1]],
+['Welk eerder motief krijgt bij de hereniging een uitdrukkelijke uitleg?','De droom van de sterren, de zon en de maan.','De bouw van een ark.','De vlucht uit Troje.'],
+['Vergelijk de betekenis van het hemd in beide scènes.','In 12:18 gebruiken de broers een hemd om hun versie van Yusufs verdwijning te ondersteunen. In 12:93–96 verbindt Yusuf een ander gebruik van een hemd met herstel en hereniging. De betekenis volgt telkens uit de handelingen en de kennis van de betrokkenen.']);
+
+const edda = part => book('Snorri Sturluson, vert. Arthur G. Brodeur', 'Proza-Edda. Gylfaginning', part,
+  'https://en.wikisource.org/wiki/The_Prose_Edda_(1916_translation_by_Arthur_Gilchrist_Brodeur)/Gylfaginning', 'Engelse vertaling', '1916');
+story('noords','ragnarok','Ragnarök','De grote winter, de strijd en de ondergang',
+'In de Gylfaginning vraagt Gangleri aan Hárr naar het lot van de goden. Het antwoord ordent een winter, de ontsnapping van tegenstanders en een beslissende strijd. De middeleeuwse prozatekst neemt ook oudere poëzie op.', [
+  ['Een winter zonder zomer','Hárr beschrijft een verwoestende winter. De samenleving raakt ontwricht en de krachten die tot dan toe gebonden waren komen los. Fenrir breekt vrij en de wereldslang brengt de zee in beweging. Het landschap en de gemeenschap veranderen tegelijk.'],
+  ['De tocht naar Vígríðr','Heimdall blaast op zijn hoorn. De goden trekken naar het strijdveld. Odin ontmoet Fenrir en Víðar reageert op de dood van zijn vader. Thor overwint de slang, maar bezwijkt door haar gif. Het verhaal geeft de gevechten verschillende uitkomsten.'],
+  ['Het vuur van Surtr','Aan het einde verbrandt Surtr de wereld. De verteller laat de ondergang volgen op een reeks ontmoetingen waarvan de toehoorder de deelnemers al kent. Voor Gangleri blijft daarna de vraag wat er na deze wereld over kan blijven.'],
+], 'Lees Gylfaginning LI naast de verzen die Snorri opvoert. De proza-uitleg geeft verbanden die de geciteerde poëzie niet altijd expliciet maakt. De bewaarde handschriften zijn middeleeuws. Zij ondersteunen onderzoek naar overlevering, compositie en religieuze voorstellingen met die eigen historische grenzen.',
+[edda('LI')],[['Víðar','Odin','is de zoon van','is de vader van'],['Thor','Wereldslang','bestrijdt','wordt bestreden door']],
+['Wie laat volgens deze vertelling het eindvuur los?','Surtr.','Heimdall.','Gangleri.'],
+['Welke bijdrage levert de vertelsituatie aan het verhaal?','Gangleri’s vraag lokt een antwoord uit dat de gebeurtenissen ordent. Hárr gebruikt proza en poëzie. De lezer kan nagaan welk detail in het gesprek staat en welk detail in de aangehaalde verzen voorkomt.']);
+
+story('noords','ragnarok-herstel','Ragnarök','Wat na de ondergang terugkeert',
+'Gangleri wil weten of na vuur en strijd nog leven mogelijk is. Het slot van de Gylfaginning beschrijft een aarde waarop mensen en goden kunnen terugkeren. Het legt daarbij verbanden met de wereld van vóór de strijd.', [
+  ['Een aarde komt weer tevoorschijn','In Hárrs vertelling rijst het land op uit de zee. Gewassen groeien zonder te zijn gezaaid. De achtergrond voor menselijk leven verschijnt zo voordat de verteller aangeeft wie er zal wonen.'],
+  ['Overlevenden en terugkerende goden','Víðar en Váli bevinden zich op de nieuwe aarde. De zonen van Thor nemen zijn hamer mee. Baldr en Höðr keren terug uit het dodenrijk. De teruggekeerde figuren bespreken hun herinneringen en herkennen voorwerpen uit de vroegere wereld.'],
+  ['Een nieuwe generatie','Líf en Lífþrasir hebben zich verborgen en kunnen een mensengeslacht voortbrengen. De dochter van de zon neemt de baan van haar moeder over. Het verhaal verbindt het herstel van kosmische orde en menselijk leven met concrete overlevenden.'],
+], 'Het slot brengt een terugkerend landschap en een nieuw nageslacht samen. Vergelijk de aangehaalde verzen met de uitleg eromheen. Een afzonderlijke editie van de Poëtische Edda kan vervolgens laten zien of een vers op dezelfde plaats staat en hoe andere getuigen de passage weergeven.',
+[edda('LIII'),book('Árni Magnússon Institute','Codex Regius van de Poëtische Edda','Digitale editie en manuscriptcontext','https://arnastofnun.is/en/news/new-electronic-edition-codex-regius-poetic-edda','Editie van een andere tekstgetuige')],
+[['Líf','Lífþrasir','overleeft samen met','overleeft samen met'],['Baldr','Höðr','keert terug uit het dodenrijk met','keert terug uit het dodenrijk met']],
+['Welk voorwerp verbinden de zonen van Thor met de vorige wereld?','Zijn hamer.','Een kopie van de Edda.','De hoorn van Heimdall.'],
+['Hoe maakt de vertelling herkenbaar wat voortbestaat en wat opnieuw begint?','Neem een voorwerp of terugkerende god als aanwijzing voor continuïteit. Bespreek daarna een detail van de nieuwe wereld, bijvoorbeeld de terugkeer van vruchtbaar land of het nieuwe mensengeslacht.']);
 
 const traditionCodes = new Map([
   ['Egyptische religie', 'egypte'], ['Griekse mythologie', 'griekenland'], ['Romeinse overleveringen', 'rome'],

@@ -401,7 +401,7 @@ export const additionalStories = [
   {
     "id": "tr-romulus-huwelijk",
     "tradition": "Romeinse overleveringen",
-    "cycle": "Romulus en de eerste Romeinen",
+    "cycle": "De stichting van Rome",
     "title": "Een feest met gewelddadige gevolgen",
     "source": [
       {
@@ -480,7 +480,7 @@ export const additionalStories = [
   {
     "id": "tr-romulus-bemiddeling",
     "tradition": "Romeinse overleveringen",
-    "cycle": "Romulus en de eerste Romeinen",
+    "cycle": "De stichting van Rome",
     "title": "De Sabijnse vrouwen onderbreken de strijd",
     "source": [
       {
@@ -560,7 +560,7 @@ export const additionalStories = [
   {
     "id": "tr-romulus-verdwijnt",
     "tradition": "Romeinse overleveringen",
-    "cycle": "Romulus en de eerste Romeinen",
+    "cycle": "De stichting van Rome",
     "title": "Wat gebeurde er met Romulus?",
     "source": [
       {

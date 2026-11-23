@@ -1,6 +1,6 @@
-import { belongsToHistoryTrack, chronologyYear, HISTORICAL_TRACKS, timelineScope } from './history-chronology.js?v=14r1';
-import { ATLAS_PLACES } from './atlas-catalog.js?v=14r1';
-export { ATLAS_PLACES, ATLAS_VIEWS } from './atlas-catalog.js?v=14r1';
+import { belongsToHistoryTrack, chronologyYear, HISTORICAL_TRACKS, timelineScope } from './history-chronology.js?v=14r3';
+import { ATLAS_PLACES } from './atlas-catalog.js?v=14r3';
+export { ATLAS_PLACES, ATLAS_VIEWS } from './atlas-catalog.js?v=14r3';
 
 export const HISTORY_SECTIONS = {
   chronologie: ['Chronologia', 'Tijdlijn en tijdvakken', 'clock'],

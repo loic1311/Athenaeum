@@ -1,4 +1,4 @@
-import {classicalUnit, greekGrammar as g, goodell, passage as p} from './classical-model.js?v=14r2';
+import {classicalUnit, greekGrammar as g, goodell, passage as p} from './classical-model.js?v=14r3';
 const unit = (...args) => classicalUnit('grc',...args);
 const polis='struct-gr-polis', athens='struct-gr-klassiek', hel='struct-gr-hellenisme';
 const xenophon = {author:'Xenophon',title:'Anabasis',locator:'1.1.1, red. E. C. Marchant',url:'https://beta.perseus.tufts.edu/urn%3Acts%3AgreekLit%3Atlg0032.tlg006.perseus-grc2/section%3A1.1.1/'};

@@ -1,6 +1,6 @@
 import './vendor/d3-array.min.mjs';
 import './vendor/d3-geo.min.mjs';
-import { ATLAS_VIEWS, historicalName } from './atlas-catalog.js?v=14r1';
+import { ATLAS_VIEWS, historicalName } from './atlas-catalog.js?v=14r3';
 
 import { fetchJson } from './fetch-json.js?v=13r11';
 

@@ -1,6 +1,6 @@
-import { TRACKS, ROUTES } from './learning.js?v=13r8';
+import { TRACKS, ROUTES } from './learning.js?v=14r3';
 import { DAY_FOCI, PACE, STAGES, dayKey } from './daily.js?v=13r9';
-import { esc, exampleView, heading, languageGrammar, languageVocabulary, lessonExplanation, sourceView } from './views.js?v=13r11';
+import { esc, exampleView, heading, languageGrammar, languageVocabulary, lessonExplanation, sourceView } from './views.js?v=14r3';
 import { workedExample } from './practice.js?v=13r8';
 
 function dateName(date) {

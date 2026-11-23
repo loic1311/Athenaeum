@@ -1,4 +1,4 @@
-import {classicalUnit, greekGrammar as grammar, goodell, passage, composition} from './classical-model.js?v=14r2';
+import {classicalUnit, greekGrammar as grammar, goodell, passage, composition} from './classical-model.js?v=14r3';
 
 const learn = (...args) => classicalUnit('grc', ...args);
 const polis = 'struct-gr-polis', athens = 'struct-gr-klassiek', empire = 'struct-ro-provincies';

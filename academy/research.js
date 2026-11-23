@@ -1,4 +1,4 @@
-import { esc, sectionHeading, sourceView } from './views.js?v=13r11';
+import { esc, sectionHeading, sourceView } from './views.js?v=14r3';
 import { MATERIAL_TYPES, COMPARISON_RELATIONS, evidenceList, MAX_EXCERPT, MAX_COMPARISON_ROWS } from './research-data.js?v=13r1';
 
 import { fetchJson } from './fetch-json.js?v=13r11';

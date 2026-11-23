@@ -1,11 +1,11 @@
-import { CHRONOLOGY_EVENTS } from './content/chronology-events.js?v=14r1';
+import { CHRONOLOGY_EVENTS } from './content/chronology-events.js?v=14r3';
 import { byDate, explorerHref, explorationLessonHref, hasTheme, HISTORICAL_ERAS, historyInScope,
-  inEra, STUDY_THEMES } from './history-explorer.js?v=14r1';
-import { chronologyYear, HISTORICAL_TRACKS, timelineScope } from './history-chronology.js?v=14r1';
-import { ATLAS_PLACES } from './atlas-catalog.js?v=14r1';
-import { TRACKS } from './learning.js?v=13r8';
-import { searchLessons } from './lesson-search.js?v=13r9';
-import { esc, heading, historyExplorerNav, icon, studyMeter } from './views.js?v=14r1';
+  inEra, STUDY_THEMES } from './history-explorer.js?v=14r3';
+import { chronologyYear, HISTORICAL_TRACKS, timelineScope } from './history-chronology.js?v=14r3';
+import { ATLAS_PLACES } from './atlas-catalog.js?v=14r3';
+import { TRACKS } from './learning.js?v=14r3';
+import { searchLessons } from './lesson-search.js?v=14r3';
+import { esc, heading, historyExplorerNav, icon, studyMeter } from './views.js?v=14r3';
 
 const REGIONS = { europa: 'Europa', azie: 'Azië', afrika: 'Afrika', amerika: 'Amerika', oceanie: 'Oceanië' };
 const dateExpression = /^(-?\d{1,9})(vchr|nchr|v|n|bce?|ad|ce)?(?:[-–—](-?\d{1,9})(vchr|nchr|v|n|bce?|ad|ce)?)?$/u;

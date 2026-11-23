@@ -36,7 +36,10 @@ while (pending.length) {
 }
 for (const p of catalogPacks) if (p.url) seen.add(local(p.url));
 for (const p of ['./assets/sources/magna-carta-1215.jpg','./assets/logos/paideia-192.png','./assets/logos/scriptorium-192.png','./assets/icons/icon-512.png','./assets/logos/athenaeum-inverse.svg?v=14r1']) seen.add(p);
-const version = JSON.parse(await readFile(new URL('version.json',root),'utf8')).version;
+const release = JSON.parse(await readFile(new URL('version.json',root),'utf8')).version;
+const entry = [...initial].find(path => path.startsWith('./academy/app.js?v='));
+if (!entry) throw new Error('De app-entry mist een cacheversie.');
+const version = release + '-' + new URL(entry,root).searchParams.get('v');
 const pdf = [...seen].filter(p=>/pdf[^/]*\.mjs|jszip/.test(p));
 const all = [...seen].filter(p=>!pdf.includes(p)).sort();
 for (const spec of [...all,...pdf]) {

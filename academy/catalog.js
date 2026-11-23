@@ -1,5 +1,5 @@
-import { catalogIndex } from './catalog-index.js?v=14r1';
-import { catalogPacks } from './catalog-packs.js?v=14r1';
+import { catalogIndex } from './catalog-index.js?v=14r3';
+import { catalogPacks } from './catalog-packs.js?v=14r3';
 import { fetchJson } from './fetch-json.js?v=13r11';
 
 export const summaries = Object.entries(catalogIndex).flatMap(([pack, rows]) =>

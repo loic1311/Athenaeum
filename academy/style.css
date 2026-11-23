@@ -83,7 +83,24 @@ p, li { overflow-wrap: anywhere; }
 }
 .location { color: var(--muted); font-size: .92rem; font-weight: 640; }
 .top-actions { display: flex; align-items: center; justify-content: flex-end; gap: 13px; min-width: 0; }
-.app-menu { display: none; }
+.app-menu { padding: 0; border: 0; position: relative; }
+.app-menu summary { min-height: 40px; padding: 6px 10px; font-size: .88rem; list-style: none; }
+.app-menu summary::-webkit-details-marker { display: none; }
+.app-menu.is-active summary { background: #e5eee2; }
+.topbar .app-menu > nav {
+  display: grid; gap: 3px; position: absolute; z-index: 6; right: 0; top: calc(100% + 8px);
+  min-width: 13rem; padding: 6px; border: 1px solid var(--border);
+  border-radius: 14px; background: #fbfdfb; color: var(--ink);
+  box-shadow: 0 10px 28px #152b262c; backdrop-filter: none; -webkit-backdrop-filter: none;
+}
+.app-menu nav a {
+  display: flex; align-items: center; gap: 9px; min-height: 44px; padding: 7px 10px;
+  text-decoration: none; border-radius: 8px; font-weight: 620;
+}
+.app-menu nav a:hover, .app-menu nav a[aria-current=page] { background: #e5eee2; }
+@media (forced-colors: active) {
+  .topbar .app-menu > nav { background: Canvas; color: CanvasText; border-color: CanvasText; }
+}
 .command { display: flex; align-items: center; width: 139px; background: var(--paper); border: 1px solid var(--border); padding: 0 2px 0 11px; border-radius: 12px; }
 .command input { width: 100%; min-height: 36px; min-width: 0; background: transparent; border: 0; }
 .command input:focus { outline: 0; }
@@ -325,21 +342,6 @@ dialog::backdrop { background: #12271f7d; backdrop-filter: blur(5px); }
   .brand.compact { display: inline-flex; font-size: 1.18rem; gap: 6px; }
   .topbar { min-height: 60px; padding: max(8px, env(safe-area-inset-top)) 13px 8px; }
   .top-actions { gap: 6px; }
-  .app-menu { display: block; padding: 0; border: 0; position: relative; }
-  .app-menu summary { min-height: 40px; padding: 6px 9px; font-size: .88rem; list-style: none; }
-  .app-menu summary::-webkit-details-marker { display: none; }
-  .app-menu[open] summary { margin: 0; }
-  .app-menu.is-active summary { background: #e5eee2; }
-  .app-menu nav {
-    display: grid; gap: 3px; position: absolute; z-index: 6; right: 0; top: calc(100% + 8px);
-    min-width: 166px; padding: 6px; border: 1px solid var(--border);
-    border-radius: 11px; background: var(--panel); box-shadow: 0 10px 28px #152b262c;
-  }
-  .app-menu nav a {
-    display: flex; align-items: center; gap: 9px; min-height: 44px; padding: 7px 10px;
-    text-decoration: none; border-radius: 8px; font-weight: 620;
-  }
-  .app-menu nav a:hover, .app-menu nav a[aria-current=page] { background: #e5eee2; }
   .top-account { max-width: min(32vw, 140px); font-size: .83rem; min-height: 40px; padding: 6px 8px; }
   .command { width: 77px; }
   .command input { padding: 0; }
@@ -511,7 +513,7 @@ button.track-card { text-align: left; color: inherit; cursor: pointer; }
     background: linear-gradient(145deg, #fffdf5d9, #f4fdf19c);
     border-color: var(--glass-light); box-shadow: 0 1px 1px #ffffffb3 inset;
   }
-  :is(.topbar, .rail, .mobile-nav, .app-menu nav, dialog) {
+  :is(.topbar, .rail, .mobile-nav, dialog) {
     background: var(--glass-chrome); border-color: var(--glass-light);
     -webkit-backdrop-filter: blur(24px) saturate(1.45);
     backdrop-filter: blur(24px) saturate(1.45);
@@ -519,7 +521,6 @@ button.track-card { text-align: left; color: inherit; cursor: pointer; }
   .topbar { box-shadow: 0 1px 1px #fff9 inset, 0 5px 16px #204f4810; }
   .rail { box-shadow: -1px 0 0 #47746717 inset; }
   .mobile-nav { border-radius: 23px; box-shadow: var(--glass-lift); }
-  .app-menu nav { border-radius: 16px; }
   :is(.track-icon, .mobile-nav a .icon) {
     background: var(--glass-icon); border: 1px solid #fffc;
     box-shadow: 0 1px 1px #fff inset, 0 -1px 1px #43806b2b inset, 0 3px 9px #244d4324;
@@ -547,7 +548,7 @@ button.track-card { text-align: left; color: inherit; cursor: pointer; }
 }
 @media (prefers-reduced-transparency: reduce), (forced-colors: active) {
   body::before { content: none; }
-  :is(.panel, .metric, .unit, .command, .lesson-search-input, .topbar, .rail, .mobile-nav, .app-menu nav, dialog) {
+  :is(.panel, .metric, .unit, .command, .lesson-search-input, .topbar, .rail, .mobile-nav, dialog) {
     background: var(--panel); border-color: var(--border);
     -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none;
   }

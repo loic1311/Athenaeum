@@ -1,15 +1,15 @@
-import { EXAM_GOALS, formatSource, KINDS, LEVELS, ROUTES, TRACKS, tally } from './learning.js?v=13r8';
+import { EXAM_GOALS, formatSource, KINDS, LEVELS, ROUTES, TRACKS, tally } from './learning.js?v=14r3';
 import { tipsFor } from './daily.js?v=13r9';
 import { instructionFor, PRACTICE_KINDS, PRACTICE_PHASES, practiceOptions, practicePhase, workedExample } from './practice.js?v=13r8';
-import { LANGUAGE_TOPICS, isLanguageTopic } from './language-topics.js?v=13r1';
+import { LANGUAGE_TOPICS, isLanguageTopic } from './language-topics.js?v=14r3';
 import { EXAM_ICE, EXAM_PASS, MAX_ICE, STARTING_ICE } from './streak.js?v=13r9';
 import { studyNotes } from './study-notes.js?v=13r6';
 import { LEGACY_TIMES, MAX_REMINDERS, REMINDER_DAYS } from './notifications.js?v=13r6';
 import { belongsToHistoryTrack, chronologicalLessons, chronologyGroups, chronologyYear, HISTORICAL_TRACKS, historyLessonHref,
-  PAIDEIA_TRACKS, timelineHref } from './history-chronology.js?v=13r9';
-import { HISTORY_SECTIONS, explorerHref } from './history-explorer.js?v=13r11';
+  PAIDEIA_TRACKS, timelineHref } from './history-chronology.js?v=14r3';
+import { HISTORY_SECTIONS, explorerHref } from './history-explorer.js?v=14r3';
 
-import { classicalCourse, classicalLesson, greekKeyboard } from './classical-view.js?v=14r1';
+import { classicalCourse, classicalLesson, greekKeyboard } from './classical-view.js?v=14r3';
 
 const SECTION_NAMES = {
   leer: ['Studium', 'pen', 'Studeren'],
@@ -29,7 +29,7 @@ const SECTION_NAMES = {
 
 const navigation = keys => keys.map(key => [key, ...SECTION_NAMES[key]]);
 export const NAV = navigation(['vandaag', 'zoeken', 'paideia', 'talen', 'toetsen', 'meer']);
-export const APP_NAV = navigation(['paideia', 'talen', 'traditio', 'scriptorium']);
+export const APP_NAV = navigation(['paideia', 'talen', 'scriptorium', 'traditio']);
 export const SECONDARY_NAV = navigation(['onderzoek', 'voortgang', 'importeren']);
 
 const TRACK_NAMES = {

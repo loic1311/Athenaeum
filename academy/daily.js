@@ -1,6 +1,6 @@
-import { TRACKS, makePool, practiceBalance, practiceQuestions, practiceTopic, recentPractice } from './learning.js?v=13r8';
+import { TRACKS, makePool, practiceBalance, practiceQuestions, practiceTopic, recentPractice } from './learning.js?v=14r3';
 import { practiceDifficulty, preferredDifficulty, startingDifficulty } from './practice.js?v=13r8';
-import { HISTORICAL_TRACKS } from './history-chronology.js?v=13r9';
+import { HISTORICAL_TRACKS } from './history-chronology.js?v=14r3';
 
 export const PACE = {
   8: { units: 1, recall: 1, guided: 1, practice: 2, transfer: 1, exit: 1, reading: 3 },
