@@ -397,6 +397,7 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect) {
   resize();
   updateControls(active ? '' : 'wereld');
   frame.dataset.ready = 'true';
+  frame.querySelector('.atlas-loading').hidden = true;
   updateRivers();
   return () => { stopAnimation(); controls.abort(); observer.disconnect(); };
 }

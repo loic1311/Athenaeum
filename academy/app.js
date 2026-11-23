@@ -423,7 +423,7 @@ function attachAtlas(explorer, scope, chosen) {
   explorer.bindAtlasFilters(frame);
   const visibleIds = new Set([...main.querySelectorAll('[data-place-id]')].map(node => node.dataset.placeId));
   const places = explorer.ATLAS_PLACES.filter(place => visibleIds.has(place.id));
-  import('./atlas-globe.js?v=14r3')
+  import('./atlas-globe.js?v=141')
     .then(({ mountAtlasGlobe }) => mountAtlasGlobe(frame, places, chosen, id => {
       const destination = explorerHref('atlas', scope, id);
       if (location.hash === '#' + destination) return;
@@ -436,6 +436,7 @@ function attachAtlas(explorer, scope, chosen) {
     }).catch(() => {
       if (!frame.isConnected) return;
       frame.dataset.failed = 'true';
+      frame.querySelector('.atlas-loading').hidden = true;
       frame.querySelector('.atlas-error').hidden = false;
       frame.querySelector('canvas').hidden = true;
       frame.querySelector('.atlas-controls').hidden = true;
