@@ -1,17 +1,8 @@
+import { EXPLORER_PAGES, explorerHref, explorationLessonHref } from './history-links.js?v=14r4';
+export { EXPLORER_PAGES, HISTORY_SECTIONS, explorerHref, explorationLessonHref } from './history-links.js?v=14r4';
 import { belongsToHistoryTrack, chronologyYear, HISTORICAL_TRACKS, timelineScope } from './history-chronology.js?v=14r3';
 import { ATLAS_PLACES } from './atlas-catalog.js?v=14r3';
 export { ATLAS_PLACES, ATLAS_VIEWS } from './atlas-catalog.js?v=14r3';
-
-export const HISTORY_SECTIONS = {
-  chronologie: ['Chronologia', 'Tijdlijn en tijdvakken', 'clock'],
-  atlas: ['Atlas historicus', 'Wereldbol', 'globe'],
-  bronnen: ['Officina fontium', 'Bronnenatelier', 'scriptorium'],
-  leerplan: ['Curriculum', 'Thematisch leerplan', 'knowledge'],
-};
-export const EXPLORER_PAGES = {
-  ...Object.fromEntries(Object.entries(HISTORY_SECTIONS).map(([page, [title]]) => [page, title])),
-  tijdvakken: 'Chronologia',
-};
 
 export const HISTORICAL_ERAS = [
   { id: 'sporen', from: -300000, to: -3501, date: 'Ca. 300.000–3501 v.Chr.', name: 'Menselijke sporen en vroege landbouw', text: 'Materiële bronnen, migraties, voedselproductie en sedentaire gemeenschappen.' },
@@ -54,17 +45,6 @@ export const STUDY_THEMES = [
   { id: 'methodes', name: 'Heuristiek, bronkritiek en historiografie', text: 'Oefen de stap van bron naar uitspraak, van hypothese naar vergelijking en van historiografisch debat naar een afgebakende vraag.',
     lessons: ['deep-historiografie', 'src-thucydides', 'src-augustus', 'src-justinianus', 'src-magna-carta', 'src-vrijheid', 'src-haiti', 'src-meiji', 'src-vn'] },
 ];
-
-export function explorerHref(page, scope = 'alles', key = '') {
-  if (page === 'tijdvakken' || page === 'chronologie') {
-    return 'paideia/chronologie/' + timelineScope(scope) + (key ? '/tijdvak/' + encodeURIComponent(key) : '/alle');
-  }
-  return 'paideia/' + page + '/' + timelineScope(scope) + (key ? '/' + encodeURIComponent(key) : '');
-}
-
-export function explorationLessonHref(lessonId, page, scope, key = '') {
-  return 'les/' + encodeURIComponent(lessonId) + '/verkenning/' + page + '/' + timelineScope(scope) + (key ? '/' + encodeURIComponent(key) : '');
-}
 
 export const historyInScope = (lesson, scope) => HISTORICAL_TRACKS.includes(lesson.track) &&
   (scope === 'alles' || belongsToHistoryTrack(lesson, scope));

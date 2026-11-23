@@ -7,7 +7,7 @@ import { studyNotes } from './study-notes.js?v=13r6';
 import { LEGACY_TIMES, MAX_REMINDERS, REMINDER_DAYS } from './notifications.js?v=13r6';
 import { belongsToHistoryTrack, chronologicalLessons, chronologyGroups, chronologyYear, HISTORICAL_TRACKS, historyLessonHref,
   PAIDEIA_TRACKS, timelineHref } from './history-chronology.js?v=14r3';
-import { HISTORY_SECTIONS, explorerHref } from './history-explorer.js?v=14r3';
+import { HISTORY_SECTIONS, explorerHref } from './history-links.js?v=14r4';
 
 import { classicalCourse, classicalLesson, greekKeyboard } from './classical-view.js?v=14r3';
 

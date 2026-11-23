@@ -1,19 +1,16 @@
 import { EXAM_GOALS, LEVELS, ROUTES, TRACKS, shuffled, makePool, historyOf, isCorrect, hasAccentError, quickQuestions,
   languageQuestions, lessonQuestions, examQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=14r3';
 import { allPackKeys, byLessonId, loadedLessons, loadPacks, packFiles, packsForTracks, summaries } from './catalog.js?v=14r3';
-import { chronologyPage, mountChronology, lessonExplorerLinks } from './history-timeline.js?v=14r3';
-import { bindAtlasFilters } from './atlas-view.js?v=14r3';
 import { progressOverview, validGoal } from './progress-overview.js?v=14r3';
 import { belongsToHistoryTrack, chronologicalLessons, chronologyForLesson, chronologyYear, HISTORICAL_TRACKS,
   historyLessonHref, historyReadId, timelineScope } from './history-chronology.js?v=14r3';
-import { ATLAS_PLACES, explorationJourney, explorationLessons, explorerHref } from './history-explorer.js?v=14r3';
-import { academicPlanPage, atlasPage, eraPage, primaryPage } from './history-explorer-view.js?v=14r3';
+import { explorerHref, HISTORY_SECTIONS } from './history-links.js?v=14r4';
 import { weeklyExamQuestions, weeklyStudy } from './weekly-exam.js?v=14r3';
 import { isLanguageTopic, LANGUAGE_SKILLS } from './language-topics.js?v=14r3';
 import { record, readRecords, storeRecords, forgetRecords, backups, syncLearning, clearCloudLearning } from './storage.js';
 import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=14r3';
 import { authenticate, authMessage, makeGuest } from './cloud.js?v=13r2';
-import * as view from './views.js?v=14r3';
+import * as view from './views.js?v=14r4';
 import { PACE, DAY_FOCI, STAGES, dayKey, archivedPlans, planDay, advanceDay, drillQuestions, tipsFor } from './daily.js?v=13r9';
 import { checkSelection, completeSelection, practiceOptions, sequencePractice } from './practice.js?v=13r8';
 import { dailyPage } from './daily-view.js?v=13r11';
@@ -35,7 +32,11 @@ const store = window.AthStore;
 const sync = window.AthSync;
 const contentKeys = Object.keys(TRACKS);
 const studyTracks = [...HISTORICAL_TRACKS, 'knowledge', 'traditio'];
-const explorerPages = { atlas: atlasPage, tijdvakken: eraPage, bronnen: primaryPage, leerplan: academicPlanPage };
+const historicalViews = {
+  atlas: { load: () => import('./atlas-view.js?v=14r4') },
+  timeline: { load: () => import('./history-timeline.js?v=14r4') },
+  routes: { load: () => import('./history-explorer-view.js?v=14r4') },
+};
 let profile = null;
 let readingGuide;
 let readingRequest;
@@ -192,7 +193,7 @@ function routePacks(section, key, tab) {
   if (section === 'talen') return key && TRACKS[key] ? packsForTracks([key]) : [];
   if (section === 'traditio') return packsForTracks(['traditio']);
   if (section === 'paideia' && key) {
-    if (key === 'chronologie' || Object.hasOwn(explorerPages, key)) return packsForTracks(HISTORICAL_TRACKS);
+    if (key === 'tijdvakken' || Object.hasOwn(HISTORY_SECTIONS, key)) return packsForTracks(HISTORICAL_TRACKS);
     return packsForTracks(['medieval','earlymodern'].includes(key) ? [key, 'history'] : [key]);
   }
   if (section === 'toetsen') return packsForTracks(studyTracks);
@@ -217,6 +218,25 @@ function loadTraditionView() {
   if (traditionView || traditionViewLoad || traditionViewError) return;
   traditionViewLoad = import('./traditio.js?v=14r3').then(module => { traditionView = module; })
     .catch(() => { traditionViewError = true; }).finally(() => { traditionViewLoad = undefined; refreshContentViews(); });
+}
+
+function historicalView(section, key, lesson) {
+  let name;
+  if (section === 'les' && HISTORICAL_TRACKS.includes(lesson?.track)) name = 'timeline';
+  if (section === 'paideia') {
+    if (key === 'atlas') name = 'atlas';
+    if (key === 'chronologie' || key === 'tijdvakken') name = 'timeline';
+    if (key === 'bronnen' || key === 'leerplan') name = 'routes';
+  }
+  const view = historicalViews[name];
+  if (view && !view.module && !view.promise && !view.failed) {
+    view.promise = view.load().then(module => { view.module = module; })
+      .catch(() => { view.failed = true; }).finally(() => {
+        view.promise = undefined;
+        refreshContentViews();
+      });
+  }
+  return view;
 }
 
 function researchCaseIndex() {
@@ -246,6 +266,9 @@ function render(focus = true) {
   const traditionRoute = section === 'traditio' || (section === 'les' && byLessonId.get(key)?.track === 'traditio');
   if (traditionRoute) loadTraditionView();
   const lessons = lessonList();
+  const openedLesson = section === 'les' ? lessons.find(row => row.id === key) : undefined;
+  const historical = historicalView(section,key,openedLesson);
+  const explorer = historical?.module;
   const info = overview();
   if (key !== filteredTrack) {
     routeFilter = '';
@@ -292,10 +315,13 @@ function render(focus = true) {
       break;
     case 'paideia':
     case 'talen':
-      if (section === 'paideia' && key === 'chronologie') {
-        markup = chronologyPage(lessons, info.studied, readLessons(), timelineScope(tab), tabKey, path[4], path[5]);
-      } else if (section === 'paideia' && Object.hasOwn(explorerPages, key)) {
-        markup = explorerPages[key](lessons, timelineScope(tab), tabKey, info.studied, readLessons());
+      if (historical) {
+        if (key === 'chronologie') {
+          markup = explorer?.chronologyPage(lessons, info.studied, readLessons(), timelineScope(tab), tabKey, path[4], path[5]);
+        } else {
+          const page = { atlas: 'atlasPage', tijdvakken: 'eraPage', bronnen: 'primaryPage', leerplan: 'academicPlanPage' }[key];
+          markup = explorer?.[page](lessons, timelineScope(tab), tabKey, info.studied, readLessons());
+        }
       } else {
         markup = contentKeys.includes(key)
           ? view.course(key, lessons, info.studied, info.prefs, routeFilter, courseFind, tab, readLessons())
@@ -303,7 +329,7 @@ function render(focus = true) {
       }
       break;
     case 'les': {
-      const lesson = lessons.find(row => row.id === key);
+      const lesson = openedLesson;
       top = TRACKS[lesson?.track]?.section === 'language' ? 'talen' : 'paideia';
       if (lesson?.tradition && lesson.track === 'traditio') {
         top = 'traditio';
@@ -311,10 +337,10 @@ function render(focus = true) {
         break;
       }
       markup = lesson ? view.lessonPage(lesson, {
-        journey: explorationJourney(lessons, lesson, path) ?? chronologyForLesson(lessons, lesson, path),
+        journey: explorer?.explorationJourney(lessons, lesson, path) ?? chronologyForLesson(lessons, lesson, path),
         read: readLessons().has(lesson.id), lessons,
         courseTrack: tab === 'vak' && belongsToHistoryTrack(lesson, tabKey) ? tabKey : undefined,
-      }) + (HISTORICAL_TRACKS.includes(lesson.track) ? lessonExplorerLinks(lesson, lessons) : '') : view.heading('Les openen') + '<p class="empty" data-missing-lesson>' +
+      }) + (explorer?.lessonExplorerLinks(lesson) || '') : view.heading('Les openen') + '<p class="empty" data-missing-lesson>' +
         (needed.some(key => packFiles.get(key)?.status === 'loading') ? 'Deze les wordt opgezocht.' :
           'Deze les is op dit moment niet beschikbaar.') +
         '</p><p class="back-link"><a class="text-link" href="#paideia">Naar de vakken</a> · <a class="text-link" href="#zoeken">Zoek een les</a></p>';
@@ -372,11 +398,16 @@ function render(focus = true) {
   if (blocked && ['paideia', 'talen', 'traditio', 'les', 'toetsen'].includes(section)) {
     markup = view.heading(byLessonId.get(key)?.title || TRACKS[key]?.name || view.sectionLabel(top));
   }
+  if (historical && !explorer) {
+    markup = view.heading(openedLesson?.title ?? HISTORY_SECTIONS[key]?.[0] ?? 'Chronologia') + (historical.failed
+      ? '<button type="button" class="button" data-action="retry-content">Opnieuw laden</button>'
+      : '<p class="content-loading" role="status">Onderdeel openen…</p>');
+  }
   applyNavigation(top);
   const notice = lessonLoadingNotice(needed);
   displayMain(notice + markup, { focus });
-  if (section === 'paideia' && key === 'atlas') attachAtlas(lessons, timelineScope(tab), tabKey);
-  if (section === 'paideia' && ['chronologie','tijdvakken'].includes(key)) mountChronology(main);
+  if (section === 'paideia' && key === 'atlas') attachAtlas(explorer, timelineScope(tab), tabKey);
+  if (section === 'paideia' && ['chronologie','tijdvakken'].includes(key)) explorer?.mountChronology(main);
   if (section === 'meer' && key === 'meldingen') prepareNotifications();
   if (section === 'zoeken') showLessonMatches(lessons);
   if (section === 'onderzoek' && tab === 'debat' && tabKey && focus) {
@@ -386,12 +417,12 @@ function render(focus = true) {
   if (document.querySelector('#course-search')) filterCourses();
 }
 
-function attachAtlas(lessons, scope, chosen) {
+function attachAtlas(explorer, scope, chosen) {
   const frame = document.querySelector('#atlas-globe');
   if (!frame) return;
-  bindAtlasFilters(frame);
+  explorer.bindAtlasFilters(frame);
   const visibleIds = new Set([...main.querySelectorAll('[data-place-id]')].map(node => node.dataset.placeId));
-  const places = ATLAS_PLACES.filter(place => visibleIds.has(place.id));
+  const places = explorer.ATLAS_PLACES.filter(place => visibleIds.has(place.id));
   import('./atlas-globe.js?v=14r3')
     .then(({ mountAtlasGlobe }) => mountAtlasGlobe(frame, places, chosen, id => {
       const destination = explorerHref('atlas', scope, id);
@@ -1626,7 +1657,7 @@ const actions = {
     }
     showDialog(dialogText('Athenaeum installeren', 'Open deze link in je browser. Kies in het menu App installeren of Toevoegen aan beginscherm. Op iPhone en iPad staat die optie in het deelmenu.'));
   },
-  'retry-content': () => { readingError = false; traditionViewError = false; const [section,key,tab] = route(); loadFor(routePacks(section,key,tab), true); render(false); },
+  'retry-content': () => { readingError = false; traditionViewError = false; for (const view of Object.values(historicalViews)) view.failed = false; const [section,key,tab] = route(); loadFor(routePacks(section,key,tab), true); render(false); },
   'traditio-exam': async group => {
     if (!traditionView) return;
     const questions = traditionView.traditioExamQuestions(group);

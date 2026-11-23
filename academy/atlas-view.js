@@ -1,7 +1,7 @@
 import { ATLAS_PLACES, ATLAS_VIEWS, atlasById, historicalName, readAtlasYear } from './atlas-catalog.js?v=14r3';
-import { byDate, explorerHref, explorationLessonHref, historyInScope } from './history-explorer.js?v=14r3';
-import { explorerHeader, learningPath } from './history-explorer-view.js?v=14r3';
-import { esc } from './views.js?v=14r3';
+import { byDate, explorerHref, explorationLessonHref, historyInScope } from './history-explorer.js?v=14r4';
+import { explorerHeader, learningPath } from './history-explorer-view.js?v=14r4';
+import { esc } from './views.js?v=14r4';
 
 const count = n => n + (n === 1 ? ' les' : ' lessen');
 const nameKey = value => String(value || '').normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
@@ -142,3 +142,5 @@ export function bindAtlasFilters(frame) {
   });
   apply();
 }
+
+export { ATLAS_PLACES };

@@ -1,11 +1,11 @@
 import { CHRONOLOGY_EVENTS } from './content/chronology-events.js?v=14r3';
 import { byDate, explorerHref, explorationLessonHref, hasTheme, HISTORICAL_ERAS, historyInScope,
-  inEra, STUDY_THEMES } from './history-explorer.js?v=14r3';
+  inEra, STUDY_THEMES } from './history-explorer.js?v=14r4';
 import { chronologyYear, HISTORICAL_TRACKS, timelineScope } from './history-chronology.js?v=14r3';
 import { ATLAS_PLACES } from './atlas-catalog.js?v=14r3';
 import { TRACKS } from './learning.js?v=14r3';
 import { searchLessons } from './lesson-search.js?v=14r3';
-import { esc, heading, historyExplorerNav, icon, studyMeter } from './views.js?v=14r3';
+import { esc, heading, historyExplorerNav, icon, studyMeter } from './views.js?v=14r4';
 
 const REGIONS = { europa: 'Europa', azie: 'Azië', afrika: 'Afrika', amerika: 'Amerika', oceanie: 'Oceanië' };
 const dateExpression = /^(-?\d{1,9})(vchr|nchr|v|n|bce?|ad|ce)?(?:[-–—](-?\d{1,9})(vchr|nchr|v|n|bce?|ad|ce)?)?$/u;
@@ -268,3 +268,5 @@ export function lessonExplorerLinks(lesson) {
     ${themes.length ? `<div><h3>Thema’s in dit tijdvak</h3><div class="row">${themes.map(theme => `<a class="chip outline" href="#${esc(explorerHref('leerplan','alles',theme.id+'~'+era.id))}">${esc(theme.name)}</a>`).join('')}</div></div>` : ''}
     </section>`;
 }
+
+export { explorationJourney } from './history-explorer.js?v=14r4';

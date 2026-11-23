@@ -1,11 +1,11 @@
-importScripts('./sw-assets.js?v=14r3');
+importScripts('./sw-assets.js?v=14r5');
 const BASE = new URL(self.registration.scope);
 const CACHE_PREFIX = 'athenaeum-learning:' + BASE.pathname + ':';
 const VERSION = CACHE_PREFIX + self.learningAssets.version;
 const APP_SHELL = new URL('./index.html', BASE);
 const PAIDEIA_HOME = new URL('./apps/paideia/', BASE);
 const PAIDEIA_REDIRECT = new URL('index.html', PAIDEIA_HOME);
-const ENTRY = './academy/app.js?v=14r3';
+const ENTRY = './academy/app.js?v=14r5';
 const REQUIRED = self.learningAssets.all;
 const EXTRAS = self.learningAssets.extra;
 const WARM = new Set([...REQUIRED, ...EXTRAS].map(path => new URL(path, BASE).href));
@@ -55,6 +55,11 @@ self.addEventListener('fetch', event => {
       if (hit) return hit;
     }
 
+    // A tab that still runs an earlier release may request an older versioned module.
+    if (!navigation && academyAsset && !warm && url.searchParams.has('v') && event.request.cache !== 'reload') {
+      const previous = await caches.match(event.request);
+      if (previous) return previous;
+    }
     let response;
     try {
       response = navigation && (rootPage || oldPaideia) ? await fetchPage(event.request) : await fetch(event.request);
