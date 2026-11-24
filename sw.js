@@ -1,4 +1,4 @@
-importScripts('./sw-assets.js?v=150');
+importScripts('./sw-assets.js?v=160');
 const BASE = new URL(self.registration.scope);
 const CACHE_PREFIX = 'athenaeum-learning:' + BASE.pathname + ':';
 const VERSION = CACHE_PREFIX + self.learningAssets.version;

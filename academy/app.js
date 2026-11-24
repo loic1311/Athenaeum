@@ -1,30 +1,30 @@
-import { academicExam } from './academic-exams.js?v=160';
+import { academicExam, academicExamParts } from './academic-exams.js?v=160';
 import { EXAM_GOALS, LEVELS, ROUTES, TRACKS, shuffled, makePool, historyOf, isCorrect, hasAccentError, quickQuestions,
-  languageQuestions, lessonQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=150';
-import { allPackKeys, byLessonId, loadedLessons, loadPacks, packFiles, packsForTracks, summaries } from './catalog.js?v=142';
-import { progressOverview, validGoal } from './progress-overview.js?v=150';
+  languageQuestions, lessonQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=160';
+import { allPackKeys, byLessonId, loadedLessons, loadPacks, packFiles, packsForTracks, summaries } from './catalog.js?v=160';
+import { progressOverview, validGoal } from './progress-overview.js?v=160';
 import { belongsToHistoryTrack, chronologicalLessons, chronologyForLesson, chronologyYear, HISTORICAL_TRACKS,
-  historyLessonHref, historyReadId, timelineScope } from './history-chronology.js?v=14r3';
-import { explorerHref, HISTORY_SECTIONS } from './history-links.js?v=14r4';
-import { monthlyExamQuestions, monthlyStudy, weeklyExamQuestions, weeklyStudy } from './weekly-exam.js?v=150';
+  historyLessonHref, historyReadId, timelineScope } from './history-chronology.js?v=160';
+import { explorerHref, HISTORY_SECTIONS } from './history-links.js?v=160';
+import { monthlyExamQuestions, monthlyStudy, weeklyExamQuestions, weeklyStudy } from './weekly-exam.js?v=160';
 import { isLanguageTopic, LANGUAGE_SKILLS } from './language-topics.js?v=14r3';
 import { record, readRecords, storeRecords, forgetRecords, backups, syncLearning, clearCloudLearning } from './storage.js?v=142';
-import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=150';
+import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=160';
 import { authenticate, authMessage, makeGuest } from './cloud.js?v=13r2';
-import * as view from './views.js?v=150';
-import { PACE, DAY_FOCI, DAY_MODES, STAGES, dayKey, archivedPlans, planDay, advanceDay, prepareDay, drillQuestions, tipsFor } from './daily.js?v=150';
-import { studyConcept, studyLevel } from './history-study.js?v=150';
+import * as view from './views.js?v=160';
+import { PACE, DAY_FOCI, DAY_MODES, STAGES, dayKey, archivedPlans, planDay, advanceDay, prepareDay, drillQuestions, tipsFor } from './daily.js?v=160';
+import { studyConcept, studyLevel } from './history-study.js?v=160';
 import { studyReadings } from './study-history.js?v=150';
-import { checkSelection, completeSelection, practiceOptions, sequencePractice } from './practice.js?v=150';
-import { dailyPage } from './daily-view.js?v=150';
+import { checkSelection, completeSelection, practiceOptions, sequencePractice } from './practice.js?v=160';
+import { dailyPage } from './daily-view.js?v=160';
 import { findCases, findStudies, lessonSourceIndex, passageMatches, caseWitness, researchPage, researchMarkdown, RESEARCH_TABS,
-  evidencePreview } from './research.js?v=150';
+  evidencePreview } from './research.js?v=160';
 import { addResearchMaterial, comparisonFromForm, evidenceList, validComparison, MAX_COMPARISON_ROWS } from './research-data.js?v=13r1';
-import { readResearchFile } from './research-import.js?v=150';
-import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=150';
+import { readResearchFile } from './research-import.js?v=160';
+import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=160';
 import { fetchJson } from './fetch-json.js?v=142';
-import { searchLessons } from './lesson-search.js?v=150';
-import { countsAsPractice, isStudyDay, studyRecordId } from './streak.js?v=150';
+import { searchLessons } from './lesson-search.js?v=160';
+import { countsAsPractice, isStudyDay, studyRecordId } from './streak.js?v=160';
 import { MAX_REMINDERS, readSchedule, preparePush, pushPreference, pushSupport, savePush, stopPush, testPush } from './notifications.js?v=13r6';
 import { reviewData, SCORE_VERSION } from './assessment.js?v=150';
 
@@ -37,9 +37,9 @@ const sync = window.AthSync;
 const contentKeys = Object.keys(TRACKS);
 const studyTracks = [...HISTORICAL_TRACKS, 'knowledge', 'traditio'];
 const historicalViews = {
-  atlas: { load: () => import('./atlas-view.js?v=150') },
-  timeline: { load: () => import('./history-timeline.js?v=150') },
-  routes: { load: () => import('./history-explorer-view.js?v=150') },
+  atlas: { load: () => import('./atlas-view.js?v=160') },
+  timeline: { load: () => import('./history-timeline.js?v=160') },
+  routes: { load: () => import('./history-explorer-view.js?v=160') },
 };
 let profile = null;
 let readingGuide;
@@ -234,7 +234,7 @@ function lessonLoadingNotice(keys) {
 
 function loadTraditionView() {
   if (traditionView || traditionViewLoad || traditionViewError) return;
-  traditionViewLoad = import('./traditio.js?v=150').then(module => { traditionView = module; })
+  traditionViewLoad = import('./traditio.js?v=160').then(module => { traditionView = module; })
     .catch(() => { traditionViewError = true; }).finally(() => { traditionViewLoad = undefined; refreshContentViews(); });
 }
 
@@ -1319,6 +1319,18 @@ function cacheLessons() {
   ]);
 }
 
+function examSelection(type, theme, all) {
+  return academicExam(lessonList(), new Set([...readLessons(), ...reviews().lessons]), type, theme, all);
+}
+
+async function startAcademicExam(exam, part = 0) {
+  const parts = academicExamParts(exam.questions);
+  if (!parts[part]) throw new Error('Dit toetsdeel is gewijzigd. Open het examen opnieuw.');
+  const title = exam.title + (parts.length > 1 ? ' · Deel ' + (part + 1) + ' van ' + parts.length : '');
+  if (dialog.open) dialog.close();
+  await startQuiz('exam', title, parts[part], { back: 'toetsen' });
+}
+
 async function run(action, target) {
   if (actionBusy) return;
   actionBusy = true;
@@ -1538,6 +1550,11 @@ const actions = {
     if (!questions.length) throw new Error('Open Athenaeum online om de voorbeeldvragen te laden.');
     if (dialog.open) dialog.close();
     await startQuiz('lesson', 'Oefentoets Paideia', questions, { back: 'toetsen' });
+  },
+  'academic-exam-part': async value => {
+    const [type, theme, index] = value.split('/');
+    const exam = examSelection(type, theme, true);
+    if (exam) await startAcademicExam(exam, Number(index));
   },
   'exam': async type => {
     await loadFor(packsForTracks(studyTracks));
@@ -1770,15 +1787,23 @@ document.addEventListener('submit', event => {
     const type = data.get('type');
     const target = form.querySelector('[role="status"]');
     run(async () => {
-      const studied = new Set([...readLessons(), ...reviews().lessons]);
-      const exam = academicExam(lessonList(), studied, type, data.get('theme'), data.has('all'));
+      const theme = data.get('theme');
+      const exam = examSelection(type, theme, data.has('all'));
       if (!exam) {
         inlineMessage(target, type === 'cumulative'
           ? 'Bestudeer eerst een les met universitaire vragen in minstens twee vakken. Je vindt de lessen onder de beschikbare examenstof.'
           : 'Voor deze selectie zijn nog geen passende examenvragen beschikbaar.', true);
         return;
       }
-      await startQuiz('exam', exam.title, exam.questions, { back: 'toetsen' });
+      const parts = academicExamParts(exam.questions);
+      if (parts.length > 1) {
+        showDialog(dialogText(exam.title, 'De vragen zijn verdeeld over delen die je afzonderlijk kunt maken en bewaren.',
+          '<div class="row">' + parts.map((part, index) =>
+            '<button type="button" class="button" data-action="academic-exam-part" data-value="' + view.esc(type + '/' + theme + '/' + index) + '">Deel ' +
+            (index + 1) + ' · ' + part.length + ' vragen</button>').join('') + '</div>'));
+        return;
+      }
+      await startAcademicExam(exam);
     }, target);
     return;
   }

@@ -1,6 +1,6 @@
 import { readAtlasYear } from './atlas-catalog.js?v=142';
 import { ATLAS_KINDS, ATLAS_REGIONS, atlasSnapshot, atlasTicks, formatAtlasYear, loadAtlasAreas } from './atlas-time.js?v=160';
-import { esc, sourceView } from './views.js?v=150';
+import { esc, sourceView } from './views.js?v=160';
 
 const states = new Map();
 const selection = new WeakMap();
@@ -64,9 +64,9 @@ export function bindAtlasTime(frame, lessons, onYear) {
   const state = states.get(scope) ?? { year: '', span: 0, center: null, region: '', kind: '', compare: '' };
   states.set(scope, state);
   const controls = new AbortController();
-  const inputs = Object.fromEntries(['#atlas-year', '#atlas-slider', '[data-time-span]', '[data-atlas-region]',
-    '[data-atlas-kind]', '[data-atlas-comparison]', '#atlas-search'].map((selector, i) =>
-    [['year', 'slider', 'span', 'region', 'kind', 'compare', 'query'][i], layout.querySelector(selector)]));
+  const fields = { year: '#atlas-year', slider: '#atlas-slider', span: '[data-time-span]', region: '[data-atlas-region]',
+    kind: '[data-atlas-kind]', compare: '[data-atlas-comparison]', query: '#atlas-search' };
+  const inputs = Object.fromEntries(Object.entries(fields).map(([name, selector]) => [name, layout.querySelector(selector)]));
   for (const name of ['year', 'span', 'region', 'kind', 'compare']) inputs[name].value = state[name];
   const panel = layout.querySelector('[data-atlas-historical]');
   const details = panel.querySelector('[data-atlas-history-selection]');

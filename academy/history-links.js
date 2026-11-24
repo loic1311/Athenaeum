@@ -1,4 +1,4 @@
-import { timelineScope } from './history-chronology.js?v=14r3';
+import { timelineScope } from './history-chronology.js?v=160';
 
 export const HISTORY_SECTIONS = {
   chronologie: ['Chronologia', 'Tijdlijn en tijdvakken', 'clock'],

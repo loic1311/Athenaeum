@@ -1,18 +1,18 @@
 import { academicSyllabus } from './academic-exams.js?v=160';
-import { EXAM_GOALS, formatSource, KINDS, LEVELS, ROUTES, TRACKS, tally } from './learning.js?v=150';
-import { tipsFor } from './daily.js?v=150';
-import { instructionFor, PRACTICE_KINDS, PRACTICE_PHASES, practiceOptions, practicePhase, workedExample } from './practice.js?v=150';
+import { EXAM_GOALS, formatSource, KINDS, LEVELS, ROUTES, TRACKS, tally } from './learning.js?v=160';
+import { tipsFor } from './daily.js?v=160';
+import { instructionFor, PRACTICE_KINDS, PRACTICE_PHASES, practiceOptions, practicePhase, workedExample } from './practice.js?v=160';
 import { LANGUAGE_TOPICS, isLanguageTopic } from './language-topics.js?v=14r3';
-import { EXAM_ICE, EXAM_PASS, MAX_ICE, STARTING_ICE } from './streak.js?v=150';
+import { EXAM_ICE, EXAM_PASS, MAX_ICE, STARTING_ICE } from './streak.js?v=160';
 import { studyNotes } from './study-notes.js?v=13r6';
 import { LEGACY_TIMES, MAX_REMINDERS, REMINDER_DAYS } from './notifications.js?v=13r6';
 import { belongsToHistoryTrack, chronologicalLessons, chronologyGroups, chronologyYear, HISTORICAL_TRACKS, historyLessonHref,
-  PAIDEIA_TRACKS, timelineHref } from './history-chronology.js?v=14r3';
-import { HISTORY_SECTIONS, explorerHref } from './history-links.js?v=14r4';
+  PAIDEIA_TRACKS, timelineHref } from './history-chronology.js?v=160';
+import { HISTORY_SECTIONS, explorerHref } from './history-links.js?v=160';
 
 import { classicalCourse, classicalLesson, greekKeyboard } from './classical-view.js?v=14r3';
 import { evidenceFor, SCORE_VERSION } from './assessment.js?v=150';
-import { annotatedTerms, lessonSources, preparationFor, studyConcept, studyLevel, STUDY_LEVELS } from './history-study.js?v=150';
+import { annotatedTerms, lessonSources, preparationFor, studyConcept, studyLevel, STUDY_LEVELS } from './history-study.js?v=160';
 
 const SECTION_NAMES = {
   leer: ['Studium', 'pen', 'Studeren'],

@@ -1,6 +1,6 @@
 // Keep stable lesson and item IDs when extending a pack.
 export const catalogPacks = [
-  { key: 'language-topics', name: 'Taalmodules', load: () => import('./language-lessons.js?v=14r3').then(m => m.languageLessons) },
+  { key: 'language-topics', name: 'Taalmodules', load: () => import('./language-lessons.js?v=160').then(m => m.languageLessons) },
   { key: 'core-history', name: 'Historische kernlessen', load: () => import('./history-curriculum.js?v=13r8').then(m => m.historicalLessons) },
   ...['greek', 'roman', 'history', 'knowledge', 'it', 'fr'].map(key => ({
     key, name: { greek: 'Griekse oudheid', roman: 'Romeinse oudheid', history: 'Algemene geschiedenis',

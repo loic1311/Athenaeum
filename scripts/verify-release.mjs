@@ -27,12 +27,18 @@ if (process.argv[2]) {
   const root = pathToFileURL(resolve(process.argv[2]) + '/');
   const content = file => readFile(new URL('academy/content/' + file + '.json',root),'utf8').then(JSON.parse);
   const file = name => import(new URL('academy/' + name + '.js',root));
-  baseline = [
-    ...((await Promise.all(['history','roman','greek','knowledge','it','fr'].map(content))).flat()),
-    ...(await file('history-archive')).historyArchive,
-    ...(await file('history-curriculum')).historicalLessons,
-    ...(await file('language-lessons')).languageLessons,
-  ];
+  const baselinePacks = await file('catalog-packs').then(module => module.catalogPacks, error => {
+    if (error.code !== 'ERR_MODULE_NOT_FOUND') throw error;
+    return undefined;
+  });
+  baseline = baselinePacks
+    ? (await Promise.all(baselinePacks.map(pack => pack.url ? readFile(pack.url, 'utf8').then(JSON.parse) : pack.load()))).flat()
+    : [
+        ...((await Promise.all(['history','roman','greek','knowledge','it','fr'].map(content))).flat()),
+        ...(await file('history-archive')).historyArchive,
+        ...(await file('history-curriculum')).historicalLessons,
+        ...(await file('language-lessons')).languageLessons,
+      ];
   for (const previous of baseline) {
     const current = lessons.get(previous.id);
     assert.equal(current?.track, previous.track, previous.id);
@@ -78,7 +84,7 @@ assert.equal(historicalName(ATLAS_PLACES.find(p=>p.id==='marseille'),900),undefi
 assert.equal(historicalName(ATLAS_PLACES.find(p=>p.id==='pompeii'),2100),undefined);
 const empty = new Set();
 for (const place of ['parijs','toulouse','marseille','madrid','barcelona','gent']) {
-  assert(atlasPage(rows,'alles',place,empty,empty).includes('Uitgebreid studeren'),place);
+  assert(atlasPage(rows,'alles',place).includes('Historisch stadsdossier'),place);
 }
 for (const event of CHRONOLOGY_EVENTS) {
   assert(event.from !== 0 && /^https:\/\//.test(event.source?.[2]),event.id);

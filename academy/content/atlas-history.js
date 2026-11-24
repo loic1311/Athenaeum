@@ -29,11 +29,18 @@ const constantinople = reference('UNESCO World Heritage Centre', 'Historic Areas
 const antik = ['egeisch-myceense-paleizen', 'egeisch-transformaties-rond-1200'];
 const frank = ['karolingisch-macht-en-keizerschap', 'karolingisch-opvolging-en-regionale-macht'];
 const contact = ['egeisch-uiluburun-amarnanetwerk', 'deep-brons'];
+const flagFen = reference('Historic England', 'A Bronze Age post alignment and timber platform at Flag Fen',
+  'National Heritage List for England, lijstnummer 1406460, onderdeel History',
+  'https://historicengland.org.uk/listing/the-list/list-entry/1406460');
 
 const entry = (id, name, kind, region, coordinates, periods, text, source, lessons, uncertainty) =>
   ({ id, name, kind, region, coordinates, periods, text, source, lessons, uncertainty });
 
 export const HISTORICAL_ENTITIES = [
+  entry('flag-fen', 'Flag Fen', 'site', 'Europa', [-0.195, 52.573],
+    [[-1300, -900, 'Laatbronstijdse houten structuren']],
+    'Bewaarde palen en een platform tonen bouw en landgebruik in een nat landschap bij het huidige Peterborough. Ze maken collectieve arbeid ook buiten paleissamenlevingen onderzoekbaar.',
+    flagFen, ['deep-brons'], 'De dateringsband omvat meerdere bouwfasen.'),
   entry('knossos-bronstijd', 'Knossos', 'site', 'Europa', [25.163, 35.298],
     [[-1700, -1460, 'Nieuwe paleisfase'], [-1460, -1250, 'Laat-Minoïsche fasen en Lineair B'], [-1250, -1050, 'Laat- en postpalatiale bewoning']],
     'De actieve administratie, de laatbronstijdse bewoning en de eerdere monumentale paleisfase hebben elk hun eigen datering.',

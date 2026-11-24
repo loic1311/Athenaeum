@@ -1,10 +1,10 @@
-import { TRACKS, ROUTES } from './learning.js?v=150';
-import { DAY_FOCI, DAY_MODES, PACE, STAGES, dayKey } from './daily.js?v=150';
+import { TRACKS, ROUTES } from './learning.js?v=160';
+import { DAY_FOCI, DAY_MODES, PACE, STAGES, dayKey } from './daily.js?v=160';
 import { esc, exampleView, heading, languageGrammar, languageVocabulary, lessonExplanation, primaryPassage,
-  seminarExplanation, sourceView, studyPreparation } from './views.js?v=150';
-import { workedExample } from './practice.js?v=150';
+  seminarExplanation, sourceView, studyPreparation } from './views.js?v=160';
+import { workedExample } from './practice.js?v=160';
 import { SCORE_VERSION } from './assessment.js?v=150';
-import { lessonSources } from './history-study.js?v=150';
+import { lessonSources } from './history-study.js?v=160';
 
 function dateName(date) {
   const value = new Date(date + 'T12:00:00');

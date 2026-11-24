@@ -1,7 +1,7 @@
 import { ATLAS_PLACES, ATLAS_VIEWS, atlasById, historicalName } from './atlas-catalog.js?v=142';
-import { byDate, explorerHref, historyInScope } from './history-explorer.js?v=150';
-import { explorerHeader } from './history-explorer-view.js?v=150';
-import { esc, sourceView } from './views.js?v=150';
+import { byDate, explorerHref, historyInScope } from './history-explorer.js?v=160';
+import { explorerHeader } from './history-explorer-view.js?v=160';
+import { esc, sourceView } from './views.js?v=160';
 import { atlasHistoricalPanel, atlasTimeline, bindAtlasTime, getAtlasHistory } from './atlas-time-view.js?v=160';
 
 const count = n => n + (n === 1 ? ' les' : ' lessen');
@@ -153,8 +153,8 @@ let globeImportFailed = false;
 
 function loadGlobe(retry) {
   globeModule ??= (globeImportFailed && retry
-    ? import('./atlas-globe.js?v=142-retry')
-    : import('./atlas-globe.js?v=142'))
+    ? import('./atlas-globe.js?v=160-retry')
+    : import('./atlas-globe.js?v=160'))
     .catch(error => {
       globeModule = undefined;
       globeImportFailed = true;

@@ -32,9 +32,11 @@ jobs:
           node scripts/build-catalog.mjs
           node scripts/build-offline.mjs
           git diff --exit-code
-          node scripts/verify-release.mjs
+          baseline="$(mktemp -d)"
+          git archive 351cc56dff6af311b2c543d6cfef67fc66d705fd | tar -x -C "$baseline"
+          node scripts/verify-release.mjs "$baseline"
       - name: Test scores, lesbestanden en synchronisatie
-        run: node --test scripts/verify-stability.mjs
+        run: node --test scripts/verify-stability.mjs scripts/verify-academic.mjs
       - name: Installeer Chromium en WebKit voor de browsertests
         run: |
           npm install --no-save --package-lock=false playwright@1.62.1
@@ -42,7 +44,7 @@ jobs:
       - name: Test de gebruikersstromen op desktop, telefoon en tablet
         run: |
           baseline="$(mktemp -d)"
-          git archive 56ef684681a383ad5399e791a06f1c6a32f821a4 | tar -x -C "$baseline"
+          git archive 351cc56dff6af311b2c543d6cfef67fc66d705fd | tar -x -C "$baseline"
           ATHENAEUM_BASELINE="$baseline" node --test scripts/verify-browser.mjs
 
   database:

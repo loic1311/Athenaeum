@@ -32,6 +32,14 @@ export const latinArgument = classicalUnit('la','aci-in-een-veldtocht','syntaxis
     true, ['Zodra Caesar vernam dat ze door onze provincie probeerden te trekken, maakte hij haast om uit de stad te vertrekken.']),
   [latinGrammar('§§ 577–585, Indirect Discourse en Tenses of the Infinitive','indirect-discourse'),caesar], 'rome-gouverneur');
 
+Object.assign(latinArgument.items.at(-1).questions[0], {
+  rubric: criteria([
+    ['Constructie', 'Onderwerp en infinitief vormen de indirecte mededeling. Onderscheid die mededeling van haar afhankelijke infinitieven.', 'Wijs eerst aan wie iets probeert en zoek welke infinitief de mededeling bepaalt.'],
+    ['Vertaling', 'Behoud de samenhang tussen de hoofdhandeling en de afhankelijke handeling.',
+      'Lees je vertaling terug en benoem met welk woord of zinsdeel je de verhouding uitdrukt.'],
+  ]),
+});
+
 export const greekArgument = classicalUnit('grc','participium-in-het-verhaal','syntaxis',
   'Participia, aspect en volgorde in een Grieks verhaal',
   [
@@ -57,6 +65,14 @@ export const greekArgument = classicalUnit('grc','participium-in-het-verhaal','s
     ['Maak duidelijk wie Tissaphernes meeneemt.', 'Ontleed λαβών tot werkwoord, aspect, naamval, getal en geslacht.', 'Leg uit wat verloren kan gaan als je het participium overal met één Nederlands voegwoord vertaalt.'],
     true, ['Kyros trok daarop het binnenland in en nam Tissaphernes als vriend mee.']),
   [greekGrammar('§ 39.13 en volgende, The Genitive Absolute','genitive-absolute'),xenophon], 'perzische-oorlogen');
+
+Object.assign(greekArgument.items.at(-1).questions[0], {
+  rubric: criteria([
+    ['Congruentie', 'Het participium λαβών staat in nominatief mannelijk enkelvoud en sluit aan bij Κῦρος.', 'Zoek eerst de persoon die zowel vertrekt als Tissaphernes meeneemt.'],
+    ['Vertaling', 'Behoud de samenhang tussen de hoofdhandeling en de afhankelijke handeling.',
+      'Lees je vertaling terug en benoem met welk woord of zinsdeel je de verhouding uitdrukt.'],
+  ]),
+});
 
 export const frenchWorkshop = {
   id: 'fr-b2-accord-compte-rendu', level: 'B2', topic: 'studie',
