@@ -407,6 +407,30 @@ dialog::backdrop { background: #12271f7d; backdrop-filter: blur(5px); }
 .daily-glossary { margin: 0; }
 .daily-glossary dt { font-weight: 700; margin: 11px 0 2px; }
 .daily-glossary dd { margin: 0; color: var(--muted); }
+.study-term {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0 .08em;
+  font: inherit;
+  color: var(--evergreen);
+  text-decoration: underline dotted;
+  text-underline-offset: .2em;
+  cursor: pointer;
+}
+.study-term:hover { text-decoration-style: solid; }
+.study-term:focus-visible { outline: 2px solid var(--evergreen); outline-offset: 3px; border-radius: 2px; }
+.study-preparation { padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+.study-goals { margin: 0; padding-left: 1.15rem; }
+.study-seminar h3, .study-preparation h3 {
+  font-family: var(--ui-font);
+  font-size: 1.1rem;
+}
+.study-example { margin-top: .7rem; }
+.study-rubric { min-width: 0; border: 1px solid var(--border); border-radius: 12px; padding: 1rem; padding-top: .6rem; }
+.study-rubric legend { padding: 0 .35rem; font-weight: 700; }
+.study-criterion + .study-criterion { border-top: 1px solid var(--border); padding-top: .8rem; }
+.study-criterion select { width: min(100%, 20rem); }
 .daily-previous { grid-template-columns: minmax(0,1fr) auto; }
 .pace-options { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; margin: 0; padding: 0; border: 0; min-width: 0; }
 .pace-options legend { font-size: .89rem; font-weight: 680; margin-bottom: 7px; }

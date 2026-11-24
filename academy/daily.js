@@ -1,6 +1,6 @@
-import { TRACKS, makePool, practiceBalance, practiceQuestions, practiceTopic, recentPractice } from './learning.js?v=142';
-import { practiceDifficulty, preferredDifficulty, startingDifficulty } from './practice.js?v=13r8';
-import { HISTORICAL_TRACKS } from './history-chronology.js?v=14r3';
+import { TRACKS, makePool, practiceBalance, practiceQuestions, practiceTopic, recentPractice } from './learning.js?v=150';
+import { instructionFor, practiceDifficulty, preferredDifficulty, startingDifficulty } from './practice.js?v=150';
+import { hasStudyGuide, preparationFor, studyLevel } from './history-study.js?v=150';
 
 export const PACE = {
   8: { units: 1, recall: 1, guided: 1, practice: 2, transfer: 1, exit: 1, reading: 3 },
@@ -21,6 +21,11 @@ export const STAGES = {
 export const DAY_FOCI = {
   mix: 'Mijn gekozen leerpaden', ancient: 'Griekse en Romeinse oudheid',
   ...Object.fromEntries(Object.entries(TRACKS).map(([key, track]) => [key, track.name])),
+};
+
+export const DAY_MODES = {
+  auto: 'Afwisselen op basis van je voortgang', lesson: 'Een nieuw onderwerp', concepts: 'Begrippen oefenen',
+  sources: 'Bronnen analyseren', review: 'Cumulatieve herhaling', academic: 'Academische verdieping',
 };
 
 export function dayKey(date = new Date()) {
@@ -49,7 +54,7 @@ function picker(history, seed, noAudio, exclude = [], recent = () => 0) {
   const counts = new Map();
   const diversity = new Map();
   const balance = practiceBalance();
-  return (items, count, kinds, { priority = 0, preferKind = false, difficulty, adaptive = false, eligible = () => true } = {}) => {
+  return (items, count, kinds, { priority = 0, preferKind = false, difficulty, level, adaptive = false, eligible = () => true } = {}) => {
     if (count <= 0) return [];
     const rows = items.map((item, i) => ({
       i, key: item.key, target: adaptive ? preferredDifficulty(item, history) :
@@ -71,6 +76,7 @@ function picker(history, seed, noAudio, exclude = [], recent = () => 0) {
             + (history.seen.has(q.id) ? 7 : 0)
             + (diversity.get(q.kind) || 0) * 5
             + (row.target === undefined ? 0 : Math.abs(practiceDifficulty(q) - row.target) * 21)
+            + (level && studyLevel(q) ? Math.abs(studyLevel(q) - level) * 28 : 0)
             + kinds.indexOf(q.kind) * (preferKind ? 32 : 1)
             + hash(seed + ':' + q.id + ':' + questions.length) / 4294967296 * (priority ? 6 : 20);
           if (!best || value < best.value) best = { q, value, text };
@@ -112,13 +118,13 @@ export function drillQuestions(pool, history, { limit = 15, noAudio = false, see
   return [...result, ...applied];
 }
 
-function lessonIndex(lessons, history, archive) {
+function lessonIndex(lessons, history, archive, read, due) {
   const times = new Map();
   const recentTracks = new Map();
   const recentTopics = new Map();
   const topics = new Map(lessons.map(lesson => [lesson.id, practiceTopic(lesson)]));
   for (const [i, plan] of archive.entries()) {
-    for (const lesson of plan.units) {
+    for (const lesson of plan.units.filter(unit => plan.readUnits?.includes(unit.id) ?? plan.completed)) {
       times.set(lesson.id, (times.get(lesson.id) || 0) + 1);
       if (i >= 6) continue;
       recentTracks.set(lesson.track, (recentTracks.get(lesson.track) || 0) + 1);
@@ -129,18 +135,22 @@ function lessonIndex(lessons, history, archive) {
   const groups = new Map();
   for (const lesson of lessons) {
     const timesRead = times.get(lesson.id) || 0;
-    const fresh = !timesRead && !history.lessons.has(lesson.id);
+    const fresh = !timesRead && !history.lessons.has(lesson.id) && !read.has(lesson.id);
     if (!groups.has(lesson.track)) groups.set(lesson.track, []);
     const topic = topics.get(lesson.id);
-    groups.get(lesson.track).push({ lesson, topic, fresh, timesRead, recent: recentTopics.get(topic) ?? 0 });
+    groups.get(lesson.track).push({ lesson, topic, fresh, timesRead, recent: recentTopics.get(topic) ?? 0, due: due.get(lesson.id) ?? 0 });
   }
   return [...groups].map(([key, units]) => ({
     key, units, fresh: units.some(u => u.fresh), recent: recentTracks.get(key) || 0,
   }));
 }
 
-function chooseLessons(groups, count, salt) {
-  const sorted = [...groups].sort((a,b) => Number(b.fresh) - Number(a.fresh) || a.recent - b.recent || hash(salt+a.key) - hash(salt+b.key));
+function chooseLessons(groups, count, salt, mode) {
+  const priority = unit => mode === 'review' ? unit.due * 5 + Number(!unit.fresh) :
+    mode === 'lesson' ? Number(unit.fresh) : (preparationFor(unit.lesson)?.seminar ? 1 : 0);
+  const ranked = groups.map(group => ({ ...group, priority: Math.max(...group.units.map(priority)) }));
+  const sorted = ranked.sort((a,b) => b.priority - a.priority || Number(b.fresh) - Number(a.fresh) ||
+    a.recent - b.recent || hash(salt+a.key) - hash(salt+b.key));
   const results = [];
   const used = new Set();
   const topics = new Set();
@@ -149,7 +159,7 @@ function chooseLessons(groups, count, salt) {
     for (const { units } of sorted) {
       const remaining = units.filter(u => !used.has(u.lesson.id));
       if (!remaining.length) continue;
-      const [chosen] = remaining.sort((a,b) => Number(topics.has(a.topic)) - Number(topics.has(b.topic)) ||
+      const [chosen] = remaining.sort((a,b) => priority(b) - priority(a) || Number(topics.has(a.topic)) - Number(topics.has(b.topic)) ||
         a.recent - b.recent || Number(b.fresh) - Number(a.fresh) || a.timesRead - b.timesRead ||
         hash(salt + a.lesson.id) - hash(salt + b.lesson.id));
       results.push(chosen);
@@ -163,62 +173,79 @@ function chooseLessons(groups, count, salt) {
   return results;
 }
 
-function comparison(chosen, goals, salt) {
-  const historical = chosen.map(row => row.lesson).filter(l => HISTORICAL_TRACKS.includes(l.track) && l.sources?.length);
-  if (historical.length < 2) return null;
-  const [first,second] = historical;
-  const anchor = goals.find(goal => goal.lesson === first.id);
-  if (!anchor) return null;
-  const cases = [first,second].map(l => {
-    const item = l.items[hash(salt+l.id) % l.items.length];
-    return { title:l.title,label:item.label,note:item.explanation,source:l.sources[item.source ?? 0] };
-  });
-  const selected = cases.map(c => c.label).join(' · ');
-  return {
-    ...anchor.questions[0], kind:'open', id:anchor.key + '/compare/' + second.id + '/' + hash(selected),
-    text:'Vergelijk ‘' + first.title + '’ met ‘' + second.title + '’. Welke uitspraak kan elk voorbeeld staven, en waar ligt de grens?',
-    answer:'Een mogelijk antwoord vertrekt per casus van een concreet gegeven. ' + cases.map(c => c.label + ': ' + c.note).join(' '),
-    cases,
-    criteria:[
-      'Gebruik uit elke casus minstens één gegeven en verwijs naar de aangegeven bron of studie.',
-      'Scheid wat de bron expliciet toont van wat jij afleidt.',
-      'Benoem een verschil in tijd, schaal, genre of doel dat de vergelijking begrenst.',
-    ],
-    tip:'Begin bij de concrete gegevens in beide casussen en geef per casus één voorzichtige gevolgtrekking.',
-    options:undefined, audio:undefined,
-  };
+function chooseMode(requested, minutes, archive, due, lessons) {
+  if (requested !== 'auto') return requested;
+  const modes = ['lesson'];
+  if (lessons.some(lesson => preparationFor(lesson)?.prerequisites.length)) modes.push('concepts');
+  if (minutes >= 15 && lessons.some(lesson => preparationFor(lesson)?.seminar)) modes.push('sources', 'academic');
+  if (due.size) modes.push('review');
+  const previous = archive.find(plan => plan.completed)?.mode;
+  if (due.size && previous !== 'review' && archive.length % 3 === 2) return 'review';
+  return modes[(modes.indexOf(previous) + 1) % modes.length];
 }
 
 export function planDay(lessons, history, archive, {
   date = dayKey(), minutes = 15, focus = 'mix', now = Date.now(), noAudio = false, learner = '',
+  read = new Set(), mode = 'auto',
 } = {}) {
   if (!lessons.length) return null;
   const config = PACE[minutes] ?? PACE[15];
-  const pool = makePool(lessons);
-  const learned = pool.filter(item => history.states.has(item.key)).sort((a,b) =>
+  const seenLessons = new Set([...history.states.keys()].map(key => key.split('/')[0]));
+  const pool = makePool(lessons.filter(lesson => seenLessons.has(lesson.id)));
+  const due = pool.filter(item => history.states.get(item.key)?.due <= now).sort((a,b) =>
+    Number(!!history.states.get(b.key).needsReview) - Number(!!history.states.get(a.key).needsReview) ||
     history.states.get(a.key).due - history.states.get(b.key).due);
-  const due = learned.filter(item => history.states.get(item.key).due <= now);
-  const groups = lessonIndex(lessons, history, archive);
+  const dueLessons = new Map();
+  for (const item of due) dueLessons.set(item.lesson, (dueLessons.get(item.lesson) ?? 0) + 1);
+  const selectedMode = chooseMode(mode, minutes, archive, dueLessons, lessons);
+  const withSeminar = lesson => Boolean(preparationFor(lesson)?.seminar);
+  const withConcepts = lesson => Boolean(preparationFor(lesson)?.prerequisites.length);
+  const specialize = {
+    concepts: withConcepts, sources: lesson => withSeminar(lesson) || Boolean(lesson.primary),
+    academic: lesson => withSeminar(lesson) || Boolean(lesson.structure) && hasStudyGuide(lesson),
+    review: lesson => dueLessons.has(lesson.id),
+  }[selectedMode];
+  const matching = specialize ? lessons.filter(specialize) : lessons;
+  const actualMode = matching.length ? selectedMode : 'lesson';
+  const groups = lessonIndex(matching.length ? matching : lessons, history, archive, read, dueLessons);
   const signatures = new Set(archive.map(p => p.signature));
+  const knownConcepts = [...(history.concepts ?? [])].filter(([, evidence]) => evidence.recall).map(([id]) => id);
+  const mastered = new Set(knownConcepts);
+  const previousMisses = due.filter(item => history.states.get(item.key).needsReview)
+    .map(item => history.states.get(item.key).lastQuestion).filter(Boolean);
+  const recent = recentPractice(pool, history, now);
+  const canRecall = key => {
+    const state = history.states.get(key);
+    return state?.attempted && (read.has(key.split('/')[0]) || state.recognized || state.recallCount || state.applied);
+  };
   let plan;
   for (let attempt = 0; attempt < 24; attempt++) {
-    const salt = [learner,date,minutes,focus,attempt].join(':');
-    const chosen = chooseLessons(groups, config.units, salt);
+    const salt = [learner,date,minutes,focus,actualMode,attempt].join(':');
+    const chosen = chooseLessons(groups, config.units, salt, actualMode);
     const units = chosen.map(({lesson,fresh}) => ({id:lesson.id,title:lesson.title,track:lesson.track,fresh}));
     const goals = makePool(chosen.map(row => row.lesson));
-    const pick = picker(history, salt, noAudio, [], recentPractice(pool, history, now));
-    const recall = pick(learned, config.recall, SHORT, {priority:1,adaptive:true});
-    const guided = pick(goals, config.guided, ['choice','match','fill','card','order'], {difficulty:0});
-    const compare = config.units >= 3 ? comparison(chosen,goals,salt) : null;
-    const transferKinds = minutes <= 8 ? ['order','fill','card','choice'] : ['open','order','fill','listen','card','choice'];
-    const direct = pick(goals, config.transfer - Number(!!compare), transferKinds, {preferKind:true});
-    const applied = compare ? [...direct,compare] : direct;
+    const pick = picker(history, salt, noAudio, previousMisses, recent);
+    const recall = pick(due, config.recall, SHORT, {priority:2, adaptive:true, eligible: q =>
+      canRecall(q.key) && (q.kind !== 'match' || q.pairs.every(pair => canRecall(pair.key))) &&
+      (q.prerequisites ?? []).every(id => mastered.has(id) || read.has(q.lesson)),
+    });
+    const guided = pick(goals, config.guided, ['choice','match','fill','card','order'],
+      {difficulty:0, eligible:q => studyLevel(q) < 3});
+    const advanced = actualMode === 'academic' ? 4 : actualMode === 'sources' ? 3 : 0;
+    const transferKinds = minutes <= 8 && !advanced ? ['order','fill','card','choice'] : ['open','choice','order','fill','listen','card'];
+    const definition = actualMode === 'concepts' ? pick(goals, 1, ['open'], { eligible:q => q.assessment === 'definition' }) : [];
+    const seminar = advanced ? pick(goals, config.transfer, transferKinds, {
+      level:advanced, eligible:q => studyLevel(q) === advanced && Boolean(q.evidenceNotes?.length || q.passage),
+    }) : [];
+    const applied = [...definition, ...seminar, ...pick(goals, config.transfer - definition.length - seminar.length, transferKinds, {
+      level: advanced || (minutes > 8 ? 3 : 2), preferKind: !advanced,
+      eligible: q => actualMode !== 'sources' || q.evidenceNotes?.length || q.passage || studyLevel(q) >= 3,
+    })];
     const exit = pick(goals, config.exit, ['card','fill','choice','listen','order','match'], {difficulty:1});
     const practice = pick(goals, Math.min(1,config.practice), ['match','order']);
     practice.push(...pick(goals, config.practice - practice.length, SHORT, {difficulty:1}));
-    const support = [...new Map([...goals, ...learned].map(item => [item.key, item])).values()];
     while (practice.length < config.practice) {
-      const next = pick(support, config.practice - practice.length, SHORT, {difficulty:1});
+      const next = pick(goals, config.practice - practice.length, SHORT, {difficulty:1, level: actualMode === 'concepts' ? 1 : 0});
       if (!next.length) break;
       practice.push(...next);
     }
@@ -229,10 +256,24 @@ export function planDay(lessons, history, archive, {
     ];
     const signature = [units.map(unit => unit.id).sort().join('|'),
       ...stages.map(stage => stage.questions.map(q => q.id).sort().join('|'))].join('~');
-    plan = {date,focus,minutes,units,stages,signature,due:due.length,cursor:0,completed:false,results:{}};
+    const selectedConcepts = new Set(chosen.flatMap(({ lesson }) => preparationFor(lesson)?.prerequisites ?? []));
+    plan = {date,focus,minutes,mode:actualMode,units,stages,signature,due:due.length,cursor:0,completed:false,results:{},
+      knownConcepts:knownConcepts.filter(id => selectedConcepts.has(id))};
     if (!signatures.has(signature)) return plan;
   }
   return plan;
+}
+
+export function prepareDay(plan, available, at, date = dayKey(new Date(at))) {
+  if (plan.stages[plan.cursor]?.id !== 'read') return plan;
+  const readUnits = plan.units.filter(unit => available.has(unit.id)).map(unit => unit.id);
+  if (!readUnits.length) return plan;
+  const readable = new Set(readUnits);
+  const stages = plan.stages.map((stage, index) => index <= plan.cursor ? stage : {
+    ...stage, questions: stage.questions.filter(q => readable.has(q.lesson) && (q.cases ?? []).every(c =>
+      c.title === q.title || plan.units.some(unit => unit.title === c.title && readable.has(unit.id)))),
+  });
+  return advanceDay({ ...plan, readUnits, readDay:date, readAt:at, stages }, 'read');
 }
 
 export function advanceDay(plan, stepId, result) {
@@ -276,13 +317,16 @@ const approaches = {
 };
 
 export function tipsFor(question) {
-  if (question.skill === 'grammar') return [
+  const instruction = instructionFor(question);
+  if (question.hints?.length === 2) return [instruction, ...question.hints];
+  if (question.skill === 'grammar') return [instruction,
     'Zoek het onderwerp en het woord of zinsdeel dat de gevraagde vorm mee bepaalt. Kijk ook naar de tijd en de functie van de bijzin.',
     'Lees daarna de hele zin met je voorstel. Controleer de vervoeging of overeenkomst en kijk of de zin de bedoelde relatie uitdrukt.',
   ];
-  if (question.skill === 'vocabulary' && question.kind === 'fill') return [
+  if (question.skill === 'vocabulary' && question.kind === 'fill') return [instruction,
     'Bedenk eerst in welke situatie je het gevraagde woord zou gebruiken. Haal dan de uitdrukking op in de doeltaal.',
     'Controleer de betekenis, het lidwoord als dat erbij hoort en de spelling. Lees je voorstel als één uitdrukking.',
   ];
-  return approaches[question.kind] ?? [];
+  const steps = approaches[question.kind];
+  return steps ? [instruction, ...steps] : [];
 }

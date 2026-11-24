@@ -9,6 +9,7 @@ import { streakStatus } from '../academy/streak.js';
 import { resultPage } from '../academy/views.js';
 import { loadPacks, packFiles } from '../academy/catalog.js';
 import { validSharedSecret } from '../supabase/functions/telegram-bot/authorization.ts';
+import './verify-daily.mjs';
 
 const question = (kind, key = 'les/doel') => ({ id: key + '/' + kind, key, lesson: 'les', kind, text: 'Vraag', answer: 'Antwoord' });
 const answer = (rating, more) => ({ rating, response: 'Antwoord', ...more });

@@ -1,29 +1,31 @@
 import { EXAM_GOALS, LEVELS, ROUTES, TRACKS, shuffled, makePool, historyOf, isCorrect, hasAccentError, quickQuestions,
-  languageQuestions, lessonQuestions, examQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=142';
+  languageQuestions, lessonQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=150';
 import { allPackKeys, byLessonId, loadedLessons, loadPacks, packFiles, packsForTracks, summaries } from './catalog.js?v=142';
-import { progressOverview, validGoal } from './progress-overview.js?v=142';
+import { progressOverview, validGoal } from './progress-overview.js?v=150';
 import { belongsToHistoryTrack, chronologicalLessons, chronologyForLesson, chronologyYear, HISTORICAL_TRACKS,
   historyLessonHref, historyReadId, timelineScope } from './history-chronology.js?v=14r3';
 import { explorerHref, HISTORY_SECTIONS } from './history-links.js?v=14r4';
-import { weeklyExamQuestions, weeklyStudy } from './weekly-exam.js?v=142';
+import { monthlyExamQuestions, monthlyStudy, weeklyExamQuestions, weeklyStudy } from './weekly-exam.js?v=150';
 import { isLanguageTopic, LANGUAGE_SKILLS } from './language-topics.js?v=14r3';
 import { record, readRecords, storeRecords, forgetRecords, backups, syncLearning, clearCloudLearning } from './storage.js?v=142';
-import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=142';
+import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=150';
 import { authenticate, authMessage, makeGuest } from './cloud.js?v=13r2';
-import * as view from './views.js?v=142';
-import { PACE, DAY_FOCI, STAGES, dayKey, archivedPlans, planDay, advanceDay, drillQuestions, tipsFor } from './daily.js?v=142';
-import { checkSelection, completeSelection, practiceOptions, sequencePractice } from './practice.js?v=13r8';
-import { dailyPage } from './daily-view.js?v=142';
+import * as view from './views.js?v=150';
+import { PACE, DAY_FOCI, DAY_MODES, STAGES, dayKey, archivedPlans, planDay, advanceDay, prepareDay, drillQuestions, tipsFor } from './daily.js?v=150';
+import { studyConcept, studyLevel } from './history-study.js?v=150';
+import { studyReadings } from './study-history.js?v=150';
+import { checkSelection, completeSelection, practiceOptions, sequencePractice } from './practice.js?v=150';
+import { dailyPage } from './daily-view.js?v=150';
 import { findCases, findStudies, lessonSourceIndex, passageMatches, caseWitness, researchPage, researchMarkdown, RESEARCH_TABS,
-  evidencePreview } from './research.js?v=142';
+  evidencePreview } from './research.js?v=150';
 import { addResearchMaterial, comparisonFromForm, evidenceList, validComparison, MAX_COMPARISON_ROWS } from './research-data.js?v=13r1';
-import { readResearchFile } from './research-import.js?v=142';
-import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=142';
+import { readResearchFile } from './research-import.js?v=150';
+import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=150';
 import { fetchJson } from './fetch-json.js?v=142';
-import { searchLessons } from './lesson-search.js?v=142';
-import { countsAsPractice, isStudyDay, studyRecordId } from './streak.js?v=142';
+import { searchLessons } from './lesson-search.js?v=150';
+import { countsAsPractice, isStudyDay, studyRecordId } from './streak.js?v=150';
 import { MAX_REMINDERS, readSchedule, preparePush, pushPreference, pushSupport, savePush, stopPush, testPush } from './notifications.js?v=13r6';
-import { reviewData, SCORE_VERSION } from './assessment.js?v=142';
+import { reviewData, SCORE_VERSION } from './assessment.js?v=150';
 
 const main = document.querySelector('#main');
 const pageContent = document.querySelector('#page-content');
@@ -34,9 +36,9 @@ const sync = window.AthSync;
 const contentKeys = Object.keys(TRACKS);
 const studyTracks = [...HISTORICAL_TRACKS, 'knowledge', 'traditio'];
 const historicalViews = {
-  atlas: { load: () => import('./atlas-view.js?v=142') },
-  timeline: { load: () => import('./history-timeline.js?v=142') },
-  routes: { load: () => import('./history-explorer-view.js?v=142') },
+  atlas: { load: () => import('./atlas-view.js?v=150') },
+  timeline: { load: () => import('./history-timeline.js?v=150') },
+  routes: { load: () => import('./history-explorer-view.js?v=150') },
 };
 let profile = null;
 let readingGuide;
@@ -93,6 +95,8 @@ function personalLessons() {
   return personalCatalogue;
 }
 const lessonList = () => [...loadedLessons(), ...personalLessons()];
+const savedDay = date => records.find(row => row.id === 'daily-' + date)?.data?.daily;
+const dayPacks = plan => [...new Set((plan?.units ?? []).map(unit => byLessonId.get(unit.id)?.pack).filter(Boolean))];
 const isHistoryRead = row => row.kind === 'prefs' && row.data?.name === 'history-read' &&
   typeof row.data.lesson === 'string' && /^[a-z0-9-]{1,100}$/i.test(row.data.lesson) &&
   row.id === historyReadId(row.data.lesson) && typeof row.data.value === 'boolean';
@@ -198,7 +202,8 @@ function routePacks(section, key, tab) {
     return packsForTracks(['medieval','earlymodern'].includes(key) ? [key, 'history'] : [key]);
   }
   if (section === 'toetsen') return packsForTracks(studyTracks);
-  if (section === 'dagles' || section === 'onderzoek' || (section === 'zoeken' && lessonQuery.trim())) return allPackKeys;
+  if (section === 'dagles') return dayPacks(savedDay(key || dayKey()));
+  if (section === 'onderzoek' || (section === 'zoeken' && lessonQuery.trim())) return allPackKeys;
   return [];
 }
 
@@ -228,7 +233,7 @@ function lessonLoadingNotice(keys) {
 
 function loadTraditionView() {
   if (traditionView || traditionViewLoad || traditionViewError) return;
-  traditionViewLoad = import('./traditio.js?v=142').then(module => { traditionView = module; })
+  traditionViewLoad = import('./traditio.js?v=150').then(module => { traditionView = module; })
     .catch(() => { traditionViewError = true; }).finally(() => { traditionViewLoad = undefined; refreshContentViews(); });
 }
 
@@ -304,7 +309,7 @@ function render(focus = true) {
       const plan = archive.find(p => p.date === (key || dayKey()));
       const resume = plan && dailyDraft(plan);
       top = 'vandaag';
-      markup = dailyPage(plan, lessons, archive, resume, archiveMonth);
+      markup = dailyPage(plan, lessons, archive, resume, archiveMonth, needed.some(pack => packFiles.get(pack)?.status === 'loading'));
       break;
     }
     case 'studiegids':
@@ -376,7 +381,7 @@ function render(focus = true) {
       break;
     }
     case 'toetsen':
-      markup = view.exams({ ...info, weekly: weeklyStudy(lessons, records) });
+      markup = view.exams({ ...info, weekly: weeklyStudy(lessons, records), monthly: monthlyStudy(lessons, records) });
       break;
     case 'voortgang':
       markup = view.progressPage(info);
@@ -824,20 +829,25 @@ function dailyDraft(plan) {
 }
 
 async function createDay(form) {
-  await loadFor(allPackKeys);
-  const p = await requireProfile();
   const fields = new FormData(form);
   const minutes = Number(fields.get('minutes'));
   const focus = String(fields.get('focus'));
-  if (!Object.hasOwn(PACE,minutes) || !Object.hasOwn(DAY_FOCI,focus)) return;
+  const mode = String(fields.get('mode') ?? 'auto');
+  if (!Object.hasOwn(PACE, minutes) || !Object.hasOwn(DAY_FOCI, focus) || !Object.hasOwn(DAY_MODES, mode)) return;
+  const p = await requireProfile();
   const date = dayKey();
-  const old = records.find(x => x.id === 'daily-' + date)?.data?.daily;
-  if (!old) {
+  if (!savedDay(date)) {
     const chosen = prefs();
+    const tracks = focus === 'mix' ? contentKeys.filter(track => chosen['quick-' + track] !== false) :
+      focus === 'ancient' ? ['greek', 'roman'] : ['medieval', 'earlymodern'].includes(focus) ? [focus, 'history'] : [focus];
+    await loadFor(packsForTracks(tracks), true);
+    if (p.id !== profile?.id || savedDay(date)) return;
     const eligible = lessonList().filter(lesson => levelFor(lesson,chosen) &&
       (focus === 'mix' ? chosen['quick-' + lesson.track] !== false :
         focus === 'ancient' ? ['greek','roman'].includes(lesson.track) : belongsToHistoryTrack(lesson, focus)));
-    const plan = planDay(eligible, reviews(), archivedPlans(records), { date, minutes, focus, noAudio: !languageSupport(), learner: p.id });
+    const read = new Set(studyReadings(records).map(row => row.lesson));
+    const plan = planDay(eligible, reviews(), archivedPlans(records), { date, minutes, focus, mode, read,
+      noAudio: !languageSupport(), learner: p.id });
     if (!plan) throw new Error('Voor deze keuze zijn geen lessen geladen. Probeer een ander leerpad.');
     await saveRows([record('draft','daily-' + date,{daily:plan},now())]);
   }
@@ -845,7 +855,7 @@ async function createDay(form) {
 }
 
 async function dailyNext(date) {
-  const plan = records.find(r => r.id === 'daily-' + date)?.data?.daily;
+  const plan = savedDay(date);
   const stage = plan?.stages[plan.cursor];
   if (!stage) return;
   if (stage.questions.length) {
@@ -863,8 +873,11 @@ async function dailyNext(date) {
 }
 
 async function saveDailyStep(plan, step, stats, extra = []) {
-  const daily = advanceDay(plan, step, stats);
-  if (step === 'read') daily.readDay = dayKey();
+  const daily = step === 'read' ? prepareDay(plan, new Set(lessonList().map(lesson => lesson.id)), now()) : advanceDay(plan, step, stats);
+  if (daily === plan) {
+    if (extra.length) await saveRows(extra);
+    return;
+  }
   const studyDay = daily.completed && dayKey();
   if (studyDay) daily.studyDay = studyDay;
   await saveRows([
@@ -974,7 +987,7 @@ function studyEvents(q, answer) {
 function reviewTargets(q, answer) {
   if (!['again','help'].includes(answer?.rating)) return [];
   const targets = q.kind === 'match' ? q.pairs.filter((_, i) => matchingRating(q, answer, i) !== 'good') : [q];
-  return targets.map(({ key, label }) => ({ key, label, lesson: q.lesson }));
+  return targets.map(({ key, label }) => ({ key, label, lesson: q.lesson, question: q.id }));
 }
 
 async function practiceAgain(targets, excluded, back) {
@@ -985,9 +998,9 @@ async function practiceAgain(targets, excluded, back) {
     .filter(item => keys.has(item.key));
   if (!goals.length) throw new Error('De bijbehorende les is niet beschikbaar. Kies een ander leerpad om verder te oefenen.');
   const options = { limit: Math.min(5, goals.length), noAudio: !languageSupport(), compact: true };
-  const questions = drillQuestions(goals, reviews(), { ...options, exclude: excluded });
-  if (!questions.length) questions.push(...drillQuestions(goals, reviews(), options));
-  if (!questions.length) throw new Error('Voor deze leerdoelen is geen korte oefenreeks beschikbaar.');
+  const questions = drillQuestions(goals, reviews(), { ...options, exclude: [...new Set([...excluded,
+    ...targets.map(target => target.question).filter(Boolean)])] });
+  if (!questions.length) throw new Error('Voor deze leerdoelen is geen nieuwe korte vraag beschikbaar. Je kunt de uitleg in de les herlezen.');
   const track = questions.every(q => q.track === questions[0].track) ? questions[0].track : '';
   await startQuiz('lesson', 'Lastige leerdoelen herhalen', questions, { track, back });
 }
@@ -1033,9 +1046,10 @@ async function answerQuestion(skip = false) {
     main.querySelector('.retry')?.focus();
     return;
   }
-  const hinted = Boolean(session.hints?.[session.index]) || Boolean(session.retry);
+  const hintLevel = session.hints?.[session.index] ?? 0;
+  const hinted = Boolean(hintLevel || session.retry);
   const rating = skip ? 'again' : needsReview ? null : correct ? (hinted ? 'help' : 'good') : 'again';
-  const answer = { response: skip ? '' : response, rating, hinted, selection, skipped: skip };
+  const answer = { response: skip ? '' : response, rating, hinted, hintLevel, selection, skipped: skip };
   session.answers[session.index] = answer;
   if (formal) {
     await nextQuestion();
@@ -1092,14 +1106,14 @@ async function finishQuiz() {
   const id = 'result-' + current.id;
   if (current.daily) {
     const {date,step} = current.daily;
-    const plan = records.find(row => row.id === 'daily-' + date)?.data?.daily;
+    const plan = savedDay(date);
     const stats = { scoreVersion: data.scoreVersion, total:data.total, correct:data.correct, selfAssessed:data.selfAssessed,
       hinted:current.answers.filter(answer => answer.hinted).length,
-      assisted:data.assisted,
+      assisted:data.assisted, resultId:id,
       revisit:current.questions.flatMap((q,i) => reviewTargets(q, current.answers[i])) };
-    const finished = record('draft', 'draft-' + current.id, { finished: true }, now());
-    if (plan) await saveDailyStep(plan, step, stats, [finished]);
-    else await saveRows([finished]);
+    const finished = [record('result', id, data, now()), record('draft', 'draft-' + current.id, { finished: true }, now())];
+    if (plan) await saveDailyStep(plan, step, stats, finished);
+    else await saveRows(finished);
     session = null;
     jump('dagles/' + date);
     message('Stap afgerond.');
@@ -1140,6 +1154,25 @@ async function rateExam(value) {
   await saveRows([record('result', id, { ...data, ...counts, scoreVersion: SCORE_VERSION }, now()),
     record('review', 'review-' + id + '-' + index, reviewData(q, answer), now())]);
   render(false);
+}
+
+async function saveRubric(input) {
+  const criterion = Number(input.dataset.rubric);
+  if (!['', 'met', 'revise'].includes(input.value)) return;
+  const result = input.dataset.rubricResult;
+  const [id, position] = result.split('/');
+  const saved = id && records.find(row => row.id === id && row.kind === 'result');
+  const data = saved ? structuredClone(saved.data) : session;
+  const index = saved ? Number(position) : session?.index;
+  const answer = data?.answers[index];
+  if (!answer || answer.skipped || !data.questions[index]?.rubric?.[criterion]) return;
+  answer.rubric ??= {};
+  answer.rubric[criterion] = input.value;
+  if (saved) await saveRows([record('result', id, data, now())]);
+  else await storeSession();
+  const note = input.closest('.study-criterion').querySelector('[data-rubric-note]');
+  note.textContent = input.value === 'revise' ? data.questions[index].rubric[criterion].revision : '';
+  note.hidden = !note.textContent;
 }
 
 async function setLevel(value) {
@@ -1313,6 +1346,10 @@ async function transitionCloud(result) {
 const actions = {
   'quick': () => quick(),
   'daily-next': dailyNext,
+  'study-concept': id => {
+    const term = studyConcept(id);
+    if (term) showDialog(view.conceptDialog(term));
+  },
   'research-new': async () => {
     await requireProfile();
     await saveResearch(emptyResearch(),'vraag');
@@ -1364,11 +1401,11 @@ const actions = {
     const form = document.querySelector('#research-question-form, #research-synthesis');
     saveFile(researchMarkdown(form ? {...doc,...formValues(form)} : doc),'Athenaeum-onderzoeksdossier.md','text/markdown;charset=utf-8');
   },
-  'hint': async value => {
+  'hint': async () => {
     if (!session || session.mode === 'exam' || session.mode === 'placement' || session.answers[session.index]) return;
     const max = tipsFor(session.questions[session.index]).length;
     session.hints ??= {};
-    session.hints[session.index] = value === 'full' ? max : Math.min(max, (session.hints[session.index] || 0) + 1);
+    session.hints[session.index] = Math.min(max, (session.hints[session.index] || 0) + 1);
     await storeSession();
     showQuiz(false);
     main.querySelector('.hint-list')?.focus();
@@ -1469,6 +1506,12 @@ const actions = {
     if (!questions.length) throw new Error('Deze les heeft op dit toestel geen geschikte vragen.');
     await startQuiz('lesson', unit.title, questions, { track: unit.track, back: lessonBack(id) });
   },
+  'lesson-academic': async id => {
+    const unit = lessonList().find(lesson => lesson.id === id);
+    if (!unit) return;
+    const questions = makePool([unit]).flatMap(item => item.academic.filter(q => studyLevel(q) >= 3));
+    await startQuiz('lesson', 'Academische verdieping · ' + unit.title, questions, { track:unit.track, back:lessonBack(id) });
+  },
   'language-practice': async value => {
     const [id, skill] = value.split('/');
     const lesson = lessonList().find(row => row.id === id && row.languageTopic);
@@ -1502,11 +1545,11 @@ const actions = {
     const lessons = lessonList();
     const week = monthly ? null : weeklyStudy(lessons, records);
     const questions = monthly
-      ? examQuestions(makePool(lessons.filter(l => TRACKS[l.track].section === 'history')), reviews(), true, allGoals)
+      ? monthlyExamQuestions(monthlyStudy(lessons, records), reviews(), allGoals)
       : weeklyExamQuestions(week, reviews(), allGoals);
     if (!questions.length) {
-      const description = monthly ? 'Je kunt deze toets starten na ' + EXAM_GOALS.month + ' geoefende leerdoelen uit Paideia.' :
-        'Oefen deze week minstens twee leerdoelen in Paideia of markeer een kernles, verdieping of bronles als gelezen.';
+      const description = monthly ? 'Behandel deze maand minstens ' + EXAM_GOALS.month + ' leerdoelen via een dagles, oefening of gelezen les.' :
+        'Behandel deze week minstens twee leerdoelen via een dagles, oefening of gelezen les.';
       showDialog(dialogText(monthly ? 'Begin met de oefentoets' : 'Je examenstof voor deze week', description,
         '<div class="row"><button type="button" class="button primary" data-action="open-paideia">Open Paideia</button>' +
         '<button type="button" class="button quiet" data-action="exam-practice">Start oefentoets</button>' +
@@ -1883,6 +1926,7 @@ document.addEventListener('input', event => {
 
 document.addEventListener('change', event => {
   const input = event.target;
+  if (input.matches('[data-rubric]')) run(() => saveRubric(input));
   if (input.matches('[data-match-row]') && session && !session.answers[session.index]) {
     const q = session.questions[session.index];
     if (q.kind === 'match') {

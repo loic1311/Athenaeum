@@ -1,8 +1,8 @@
-import { EXAM_GOALS, formatSource, KINDS, LEVELS, ROUTES, TRACKS, tally } from './learning.js?v=142';
-import { tipsFor } from './daily.js?v=142';
-import { instructionFor, PRACTICE_KINDS, PRACTICE_PHASES, practiceOptions, practicePhase, workedExample } from './practice.js?v=13r8';
+import { EXAM_GOALS, formatSource, KINDS, LEVELS, ROUTES, TRACKS, tally } from './learning.js?v=150';
+import { tipsFor } from './daily.js?v=150';
+import { instructionFor, PRACTICE_KINDS, PRACTICE_PHASES, practiceOptions, practicePhase, workedExample } from './practice.js?v=150';
 import { LANGUAGE_TOPICS, isLanguageTopic } from './language-topics.js?v=14r3';
-import { EXAM_ICE, EXAM_PASS, MAX_ICE, STARTING_ICE } from './streak.js?v=142';
+import { EXAM_ICE, EXAM_PASS, MAX_ICE, STARTING_ICE } from './streak.js?v=150';
 import { studyNotes } from './study-notes.js?v=13r6';
 import { LEGACY_TIMES, MAX_REMINDERS, REMINDER_DAYS } from './notifications.js?v=13r6';
 import { belongsToHistoryTrack, chronologicalLessons, chronologyGroups, chronologyYear, HISTORICAL_TRACKS, historyLessonHref,
@@ -10,7 +10,8 @@ import { belongsToHistoryTrack, chronologicalLessons, chronologyGroups, chronolo
 import { HISTORY_SECTIONS, explorerHref } from './history-links.js?v=14r4';
 
 import { classicalCourse, classicalLesson, greekKeyboard } from './classical-view.js?v=14r3';
-import { evidenceFor, SCORE_VERSION } from './assessment.js?v=142';
+import { evidenceFor, SCORE_VERSION } from './assessment.js?v=150';
+import { annotatedTerms, lessonSources, preparationFor, studyConcept, studyLevel, STUDY_LEVELS } from './history-study.js?v=150';
 
 const SECTION_NAMES = {
   leer: ['Studium', 'pen', 'Studeren'],
@@ -481,26 +482,85 @@ function languageLevel(track, level) {
 const paragraphs = text => String(text ?? '').split(/\n\s*\n/u).map(p => p.trim()).filter(Boolean);
 const sentenceBoundaries = typeof Intl.Segmenter === 'function' ? new Intl.Segmenter('nl', { granularity: 'sentence' }) : null;
 
-function emphasizedParagraph(text) {
-  const first = sentenceBoundaries?.segment(text)[Symbol.iterator]().next().value?.segment ?? text.split(/(?<=\.)\s+/u)[0];
-  return '<p><strong>' + esc(first.trimEnd()) + '</strong>' + esc(text.slice(first.trimEnd().length)) + '</p>';
+function conceptButton(id, text) {
+  return '<button type="button" class="study-term" data-action="study-concept" data-value="' + esc(id) + '">' + esc(text) + '</button>';
 }
 
-function studyParagraph(lead, text, source) {
-  return '<p><strong>' + esc(lead) + '</strong> ' + esc(text) +
+function studyText(text) {
+  let html = '';
+  let previous = 0;
+  for (const term of annotatedTerms(text)) {
+    html += esc(text.slice(previous, term.index)) + conceptButton(term.id, term.text);
+    previous = term.index + term.text.length;
+  }
+  return html + esc(text.slice(previous));
+}
+
+function emphasizedParagraph(text, renderText = esc) {
+  const first = sentenceBoundaries?.segment(text)[Symbol.iterator]().next().value?.segment ?? text.split(/(?<=\.)\s+/u)[0];
+  const end = first.trimEnd().length;
+  return '<p><strong>' + renderText(text.slice(0, end)) + '</strong>' + renderText(text.slice(end)) + '</p>';
+}
+
+function studyParagraph(lead, text, source, renderText = esc) {
+  return '<p><strong>' + renderText(lead) + '</strong> ' + renderText(text) +
     (source ? ' ' + sourceView(source) : '') + '</p>';
 }
 
 export function lessonExplanation(lesson) {
+  const renderText = preparationFor(lesson) ? studyText : esc;
+  const summary = paragraphs(lesson.summary).map(text => emphasizedParagraph(text, renderText)).join('');
   if (lesson.structure) {
-    return '<div class="lesson-copy">' + paragraphs(lesson.summary).map(emphasizedParagraph).join('') + '</div>' +
+    return '<div class="lesson-copy">' + summary + '</div>' +
       '<div class="history-dimensions">' + lesson.structure.map(({ heading, lead, text }) =>
-        '<section class="history-dimension lesson-copy"><h3>' + esc(heading) + '</h3>' + studyParagraph(lead + '.', text) + '</section>').join('') + '</div>';
+        '<section class="history-dimension lesson-copy"><h3>' + esc(heading) + '</h3>' + studyParagraph(lead + '.', text, undefined, renderText) + '</section>').join('') + '</div>';
   }
   const core = lesson.languageTopic ? [] : lesson.items.filter(item => typeof item.explanation === 'string').map(item =>
-    studyParagraph(item.label + '.', item.explanation, lesson.sources?.[item.source ?? (lesson.level ? -1 : 0)]));
-  return '<div class="lesson-copy">' + paragraphs(lesson.summary).map(emphasizedParagraph).join('') + core.join('') +
-    studyNotes(lesson).map(([lead, text]) => studyParagraph(lead + '.', text)).join('') + '</div>';
+    studyParagraph(item.label + '.', item.explanation, lesson.sources?.[item.source ?? (lesson.level ? -1 : 0)], renderText));
+  return '<div class="lesson-copy">' + summary + core.join('') +
+    studyNotes(lesson).map(([lead, text]) => studyParagraph(lead + '.', text, undefined, renderText)).join('') + '</div>';
+}
+
+export function studyPreparation(lesson, known = new Set(), required = []) {
+  const guide = preparationFor(lesson);
+  if (!guide) return '';
+  const all = [...new Set([...required, ...guide.prerequisites])].map(studyConcept).filter(Boolean);
+  const terms = rows => '<dl class="daily-glossary">' + rows.map(term =>
+    '<dt>' + conceptButton(term.id, term.label) + '</dt><dd>' + esc(term.definition) + '</dd>').join('') + '</dl>';
+  const unfamiliar = all.filter(term => !known.has(term.id));
+  const familiar = all.filter(term => known.has(term.id));
+  return `<section class="study-preparation stack"><h3>Voorkennis</h3>
+    <p>Na deze les kun je de volgende leerdoelen uitleggen of toepassen.</p>
+    <ul class="study-goals">${lesson.items.map(item => '<li>' + studyText(item.label) + '</li>').join('')}</ul>
+    ${unfamiliar.length ? terms(unfamiliar.slice(0, 5)) : ''}
+    ${unfamiliar.length > 5 ? '<details><summary>Meer begrippen bij deze les</summary>' + terms(unfamiliar.slice(5)) + '</details>' : ''}
+    ${familiar.length ? '<details><summary>Eerder zelfstandig opgehaald</summary>' + terms(familiar) + '</details>' : ''}
+  </section>`;
+}
+
+export function seminarExplanation(lesson) {
+  const seminar = preparationFor(lesson)?.seminar;
+  if (!seminar) return '';
+  const [example, reasoning, source] = seminar.example;
+  return `<div class="study-seminar stack">
+    ${seminar.preparation.map(([title, text, reference]) =>
+      '<section class="lesson-copy"><h3>' + esc(title) + '</h3><p>' + studyText(text) + '</p>' + sourceView(reference) + '</section>').join('')}
+    <details><summary>Uitgewerkt voorbeeld · ${esc(example)}</summary><div class="study-example lesson-copy">
+      <p>${studyText(reasoning)}</p>${sourceView(source)}</div></details>
+  </div>`;
+}
+
+export function conceptDialog(term) {
+  return `<div class="dialog-inner stack">
+    <div class="topline"><h2 id="dialog-title">${esc(term.label)}</h2>
+      <button type="button" class="button icon-only" aria-label="Sluiten" data-action="close-dialog">${icon('close')}</button></div>
+    <p><strong>${esc(term.definition)}</strong></p>
+    <p>${esc(term.context)}</p>
+    <p><strong>Voorbeeld</strong> ${esc(term.example)}</p>
+    <p class="muted small-text">${esc(term.scope)}</p>
+    ${sourceView(term.source)}
+    <div class="row">${term.related.map(studyConcept).map(related => conceptButton(related.id, related.label)).join('')}</div>
+  </div>`;
 }
 
 function historyLinks(lesson, lessons) {
@@ -527,7 +587,7 @@ function historyNavigation(lesson, journey, read) {
   </nav>`;
 }
 
-function primaryPassage(passage, showImage = false) {
+export function primaryPassage(passage, showImage = false) {
   const image = passage.image;
   const imageURL = image && linkURL(image.url);
   const reproduction = showImage && imageURL && /^[a-z0-9-]+\.jpg$/.test(image.file) ? `<figure class="source-image">
@@ -543,25 +603,29 @@ export function lessonPage(lesson, { journey = null, read = false, lessons = [],
   if (lesson.classical) return classicalLesson(lesson,lessons);
   if (lesson.languageTopic) return languageLessonPage(lesson);
   const courseHref = TRACKS[lesson.track].section === 'history' ? 'paideia' : 'talen';
+  const sources = lessonSources(lesson);
   return `<div class="row"><a class="text-link" href="#${courseHref}/${courseTrack}">${TRACKS[courseTrack].name}</a>
     ${journey?.inRoute ? `<a class="text-link" href="#${journey.back ?? timelineHref(journey.scope, journey.mode)}">${esc(journey.label ?? 'Tijdlijn · ' + historyScopeName(journey.scope))}</a>` : ''}</div>
     <div class="block"><br>${heading(lesson.title, '', [lesson.period, lesson.level, ROUTES[lesson.route]].filter(Boolean).join(' · '))}</div>
     <article class="panel stack">
+      ${studyPreparation(lesson)}
       ${lesson.primary ? '<h2>Bronfragment</h2>' + primaryPassage(lesson.primary, true) : ''}
       <h2>${lesson.primary ? 'Context en bronkritiek' : 'Uitleg'}</h2>
       ${lessonExplanation(lesson)}
+      ${seminarExplanation(lesson)}
       ${exampleView(workedExample(lesson))}
       ${lesson.dialogue?.length ? `<div class="dialogue"><h3>Dialoog</h3>${lesson.dialogue.map((line, i) => `<div class="dialogue-line">
         <div class="row"><p lang="${esc(lesson.track)}"><strong>${esc(line.speaker)}</strong> · ${esc(line.text)}</p>
         ${button('speak-line', 'Luister', 'small quiet', lesson.id + '/' + i)}</div><p class="muted small-text">${esc(line.translation)}</p>
       </div>`).join('')}</div>` : ''}
-      ${lesson.sources?.length ? `<details><summary>Bronnen</summary><div class="stack">${lesson.sources.map(sourceView).join('')}</div></details>` : ''}
+      ${sources.length ? `<details><summary>Bronnen</summary><div class="stack">${sources.map(sourceView).join('')}</div></details>` : ''}
     </article>
     <section class="panel block stack lesson-practice">
       <h2>Oefenen</h2>
       <p class="muted">${lesson.structure ? 'Pas de uitleg toe in de analysevragen. Vergelijk je open antwoorden met een modelantwoord en beoordelingscriteria.' :
         'Begin met korte vragen. Gebruik een tip wanneer je vastloopt en bekijk de uitleg bij elk antwoord.'}</p>
       <div class="row">${button('lesson-quiz', lesson.structure ? 'Start de analysevragen' : 'Start korte oefenreeks', 'primary', lesson.id)}
+        ${preparationFor(lesson)?.seminar ? button('lesson-academic', 'Academische verdieping', 'quiet', lesson.id) : ''}
         ${lesson.structure ? '' : button('lesson-more', 'Meer oefeningen', '', lesson.id)}</div>
     </section>
     ${historyNavigation(lesson, journey, read)}
@@ -596,7 +660,7 @@ export function languageGrammar(lesson) {
   const { grammar } = lesson;
   if (!grammar) return '';
   return `<div class="grammar-example stack">
-    <h3>${esc(grammar.title)}</h3><div class="lesson-copy">${paragraphs(grammar.rule).map(emphasizedParagraph).join('')}</div>
+    <h3>${esc(grammar.title)}</h3><div class="lesson-copy">${paragraphs(grammar.rule).map(text => emphasizedParagraph(text)).join('')}</div>
     <p lang="${esc(lesson.track)}"><strong>${esc(grammar.example)}</strong></p><p class="muted">${esc(grammar.translation)}</p>
     ${button('speak-grammar', 'Luister naar het voorbeeld', 'small quiet', lesson.id)}</div>`;
 }
@@ -659,7 +723,9 @@ export function outcomes(rows, emptyText) {
 
 export function exams(info) {
   const week = info.weekly;
+  const month = info.monthly;
   const range = week ? examDate(week.monday) + ' – ' + examDate(week.sunday) : '';
+  const monthName = month?.start.toLocaleDateString('nl-BE', { month:'long', year:'numeric' });
   return sectionHeading('toetsen', 'Bereid je voor met een korte oefentoets of kies een toets over behandelde leerstof uit Paideia.') + `
     <section class="panel course-start stack">
       <h2>Oefentoets</h2><p>Probeer maximaal vijf voorbeeldvragen. Je kunt tips gebruiken en krijgt na elke vraag de uitwerking. Je kunt meteen beginnen.</p>
@@ -668,7 +734,7 @@ export function exams(info) {
     <div class="columns block">
       <section class="panel stack"><h2>Weekexamen</h2><p class="muted">Tot 10 vragen · 45 minuten</p>
         ${range ? '<p class="small-text">' + range + '</p>' : ''}
-        <p>Je krijgt vragen over wat je deze week hebt geoefend of als gelezen hebt gemarkeerd in Paideia en Traditio. Lessen uit de atlas, de tijdlijn en het bronnenatelier tellen mee.</p>
+        <p>Je krijgt vragen over wat je deze week las in een dagles, oefende of als gelezen markeerde in Paideia en Traditio.</p>
         ${week?.lessons.length ? `<details><summary>${week.lessons.length} ${week.lessons.length === 1 ? 'les' : 'lessen'} in jouw examenstof</summary>
           <ul>${week.lessons.map(lesson => `<li><a class="text-link" href="#les/${encodeURIComponent(lesson.id)}">${esc(lesson.title)}</a></li>`).join('')}</ul></details>`
           : '<p class="muted small-text">Je examenstof verschijnt hier zodra je deze week in Paideia studeert.</p>'}
@@ -676,10 +742,15 @@ export function exams(info) {
         <p class="exam-ice">🧊 +${EXAM_ICE.week} ijsklontje bij ${EXAM_PASS}% of meer op minstens ${EXAM_GOALS.week} automatisch beoordeelde vragen, eenmaal per week.</p>
         <div class="row">${button('exam', 'Bekijk weekexamen', '', 'week')}
         ${week?.ready ? button('exam', 'Alle behandelde leerdoelen', 'quiet', 'week-all') : ''}</div></section>
-      <section class="panel stack"><h2>Maandtoets</h2><p class="muted">Tot 18 vragen · 75 minuten. Beschikbaar na ${EXAM_GOALS.month} geoefende leerdoelen uit Paideia.</p>
+      <section class="panel stack"><h2>Maandtoets</h2><p class="muted">Tot 18 vragen · 75 minuten</p>
+        ${monthName ? '<p class="small-text">' + esc(monthName) + '</p>' : ''}
+        <p>Je krijgt vragen over wat je deze kalendermaand bestudeerde in Paideia en Traditio.</p>
+        ${month?.lessons.length ? '<details><summary>' + month.lessons.length + (month.lessons.length === 1 ? ' les' : ' lessen') +
+          ' in jouw examenstof</summary><ul>' + month.lessons.map(lesson => '<li><a class="text-link" href="#les/' +
+          encodeURIComponent(lesson.id) + '">' + esc(lesson.title) + '</a></li>').join('') + '</ul></details>' : ''}
         <p class="exam-ice">🧊 +${EXAM_ICE.month} ijsklontjes bij ${EXAM_PASS}% of meer op minstens ${EXAM_GOALS.month} automatisch beoordeelde vragen, eenmaal per maand.</p>
         <div class="row">${button('exam', 'Bekijk maandtoets', '', 'month')}
-        ${button('exam', 'Alle geoefende leerdoelen', 'quiet', 'month-all')}</div></section>
+        ${month?.ready ? button('exam', 'Alle behandelde leerdoelen', 'quiet', 'month-all') : ''}</div></section>
     </div>
     <section class="block"><div class="topline"><h2>Vorige toetsen</h2></div>${outcomes(info.results.filter(row => row.data.mode === 'exam'), 'Je hebt nog geen toets afgerond.')}</section>`;
 }
@@ -697,8 +768,12 @@ export function progressPage(info) {
         <div><strong>${info.completedLessons}</strong><span>lessen met elk leerdoel geoefend</span></div>
         <div><strong>${info.recognized}</strong><span>leerdoelen juist herkend zonder hulp</span></div>
         <div><strong>${info.retained}</strong><span>leerdoelen zelfstandig opgehaald met minstens 24 uur ertussen</span></div>
+        <div><strong>${info.applied}</strong><span>leerdoelen juist toegepast op een broncasus zonder hulp</span></div>
       </div>
-      <p class="muted small-text">Herkenning en zelfstandige reproductie tellen vanaf versie 1.4.2. Oudere pogingen en zelfbeoordelingen blijven beschikbaar als oefenhistoriek.</p>
+      ${info.conceptRecognition || info.conceptDefinitions || info.conceptApplication ?
+        '<p class="small-text">Begrippen · ' + info.conceptRecognition + ' zelfstandig herkend · ' + info.conceptDefinitions +
+        ' definities zelf nagekeken · ' + info.conceptApplication + ' zelfstandig toegepast.</p>' : ''}
+      <p class="muted small-text">Oudere pogingen en zelfbeoordelingen blijven beschikbaar als oefenhistoriek.</p>
     </section>
     <div class="columns block">
       <section class="panel stack"><h2>Je weekdoel</h2>
@@ -812,13 +887,16 @@ export function quizPage(session) {
     KINDS[q.kind] ?? PRACTICE_KINDS[q.kind];
   const hints = formal ? [] : tipsFor(q);
   const visibleHints = session.hints?.[index] || 0;
+  const difficulty = STUDY_LEVELS[studyLevel(q) - 1];
+  const hintLabels = ['Verduidelijk de vraag', 'Krijg een inhoudelijke tip', 'Krijg een aanwijzing voor je aanpak'];
   return `<div class="quiz">
     <div class="quiz-top"><div><p class="eyebrow">${esc(practiceTitle(session))}</p><span class="quiz-count">Vraag ${index + 1} van ${count}</span></div>
       <div class="row">${session.deadline ? '<span class="chip quiz-timer" id="timer"></span>' : ''}${button('pause', 'Pauzeren', 'small quiet')}</div></div>
     ${studyMeter('Beantwoorde vragen in deze sessie', index + Number(!!answered), count)}
     <div class="panel question stack">
-      <div><span class="chip">${formal ? format : PRACTICE_PHASES[practicePhase(q)] + ' · ' + format}</span><h1${q.promptLanguage ? ' lang="' + esc(q.promptLanguage) + '"' : ''}>${esc(q.text)}</h1></div>
+      <div><span class="chip">${esc([difficulty ?? (formal ? '' : PRACTICE_PHASES[practicePhase(q)]), format].filter(Boolean).join(' · '))}</span><h1${q.promptLanguage ? ' lang="' + esc(q.promptLanguage) + '"' : ''}>${esc(q.text)}</h1></div>
       ${q.passage ? '<details class="question-source"><summary>Lees het fragment</summary>' + primaryPassage(q.passage) + '</details>' : ''}
+      ${evidenceNotes(q)}
       ${q.context ? '<p class="question-context"' + (q.promptLanguage ? ' lang="' + esc(q.promptLanguage) + '"' : '') + '>' + esc(q.context) + '</p>' : ''}
       ${!answered && !formal ? '<p class="question-instruction">' + esc(typeOrder ? 'Typ de volledige zin.' : instructionFor(q)) + '</p>' : ''}
       ${!answered && q.audioPrompt ? `<div class="spoken-prompt stack">
@@ -840,12 +918,10 @@ export function quizPage(session) {
       ${session.retry && !answered ? `<div class="notice retry stack" tabindex="-1" role="status">
         <strong>Probeer nog eens</strong>
         <p>${session.retry === 'accent' ? 'De letters kloppen. Let nog op de accenten.' : q.kind === 'match'
-          ? 'Een of meer koppelingen komen nog niet overeen.' : esc(hints[0] ?? 'Lees de opgave nog eens rustig.')}</p></div>` : ''}
+          ? 'Een of meer koppelingen komen nog niet overeen.' : esc(hints[1] ?? 'Lees de opgave nog eens rustig.')}</p></div>` : ''}
       ${!answered && hints.length ? `<div class="quiz-hints stack">
         ${visibleHints ? '<ol class="hint-list" tabindex="-1" aria-label="Tips bij deze vraag">' + hints.slice(0, visibleHints).map(h => '<li>' + esc(h) + '</li>').join('') + '</ol>' : ''}
-        ${visibleHints < hints.length ? '<div class="row">' +
-          (visibleHints < hints.length - 1 ? button('hint', visibleHints ? 'Een tweede tip' : 'Geef een tip', 'small quiet') : '') +
-          button('hint', 'Bekijk de aanpak', 'small quiet', 'full') + '</div>' : ''}
+        ${visibleHints < hints.length ? '<div>' + button('hint', hintLabels[visibleHints], 'small quiet') + '</div>' : ''}
       </div>` : ''}
       ${answered && !formal ? answerFeedback(q, answered) : ''}
       <div class="quiz-actions">
@@ -861,8 +937,36 @@ export function quizPage(session) {
   </div>`;
 }
 
+function evidenceNotes(q) {
+  if (!q.evidenceNotes?.length) return '';
+  return `<details class="question-source" open><summary>Bronmateriaal bij de vraag</summary>
+    <div class="study-example stack">${q.evidenceNotes.map(([title, text, source]) =>
+      '<section class="lesson-copy"><h3>' + esc(title) + '</h3><p>' + esc(text) + '</p>' + sourceView(source) + '</section>').join('')}</div></details>`;
+}
+
+function rubricView(q, answer, result) {
+  if (!q.rubric?.length) return '';
+  return `<fieldset class="study-rubric stack"><legend>Beoordeel je redenering</legend>
+    <p class="small-text muted">Vergelijk je eigen tekst per criterium. Athenaeum telt dit als zelfbeoordeling.</p>
+    ${q.rubric.map((criterion, index) => {
+      const status = answer.rubric?.[index] ?? '';
+      return `<div class="study-criterion stack">
+        <p><strong>${esc(criterion.label)}</strong> ${esc(criterion.expected)}</p>
+        ${answer.skipped ? '' : `<label class="field"><span class="sr-only">${esc(criterion.label)}</span>
+          <select data-rubric="${index}" data-rubric-result="${esc(result)}">
+            <option value="">Kies je beoordeling</option>
+            <option value="met" ${status === 'met' ? 'selected' : ''}>Aanwezig</option>
+            <option value="revise" ${status === 'revise' ? 'selected' : ''}>Aanvullen</option>
+          </select></label>`}
+        <p class="notice small-text" data-rubric-note aria-live="polite" ${status !== 'revise' ? 'hidden' : ''}>
+          ${status === 'revise' ? esc(criterion.revision) : ''}</p>
+      </div>`;
+    }).join('')}</fieldset>`;
+}
+
 function answerFeedback(q, answer, result = '') {
   const feedback = [...new Set([q.feedback, q.explanation].filter(text => text && text !== q.answer))];
+  const optionNote = q.optionFeedback && Object.hasOwn(q.optionFeedback, answer.response) && q.optionFeedback[answer.response];
   const matches = q.kind === 'match';
   const title = !answer.rating ? 'Modelantwoord' : answer.rating === 'again' ? 'Bekijk de uitwerking' :
     evidenceFor(q, answer) === 'self' ? 'Zelf beoordeeld' : answer.rating === 'help' ? 'Goed met hulp' : 'Goed';
@@ -876,12 +980,22 @@ function answerFeedback(q, answer, result = '') {
         ${sourceView(pair.source)}</li>`;
     }).join('')}</ul>` : '<p class="model-answer">' + esc(q.answer) + '</p>'}
     ${!matches && answer.rating === 'again' && answer.response ? '<p class="small-text">Jouw antwoord · ' + esc(answer.response) + '</p>' : ''}
+    ${optionNote ? '<p><strong>Over je keuze</strong> ' + esc(optionNote) + '</p>' : ''}
     ${!matches && feedback.length ? '<div class="lesson-copy"><h3>Uitleg</h3>' +
-      feedback.flatMap(paragraphs).map(emphasizedParagraph).join('') + '</div>' : ''}
+      feedback.flatMap(paragraphs).map(text => emphasizedParagraph(text)).join('') + '</div>' : ''}
+    ${rubricView(q, answer, result)}
     ${q.criteria?.length ? '<div><h3>Waarop let je?</h3><ul>' + q.criteria.map(text => '<li>' + esc(text) + '</li>').join('') + '</ul></div>' : ''}
+    ${q.prerequisites?.length ? '<div class="row" role="group" aria-label="Begrippen om te herhalen">' +
+      q.prerequisites.map(studyConcept).filter(Boolean).map(term => conceptButton(term.id, term.label)).join('') + '</div>' : ''}
+    ${difficultyLink(q)}
     ${matches ? '' : sourceView(q.source)}${q.audio ?
       button(result ? 'result-listen' : 'listen', 'Luister naar het antwoord', 'small quiet', result) : ''}
   </div>`;
+}
+
+function difficultyLink(q) {
+  if (!q.lesson || !studyLevel(q) || q.kind === 'match') return '';
+  return '<div><a class="text-link" href="#les/' + encodeURIComponent(q.lesson) + '">Lees de bijbehorende uitleg</a></div>';
 }
 
 export function resultPage(id, data, reward = 0) {
@@ -889,7 +1003,7 @@ export function resultPage(id, data, reward = 0) {
   const practice = !placement && data.mode !== 'exam';
   const revisit = practice && data.answers.some(answer => ['again','help'].includes(answer?.rating));
   const back = typeof data.back === 'string' && data.back ? data.back : 'vandaag';
-  const backText = back.startsWith('les/') ? 'Terug naar de les' :
+  const backText = back.startsWith('les/') || back.startsWith('dagles/') ? 'Terug naar de les' :
     back === 'scriptorium/oefenen' ? 'Terug naar het Oefenatelier' :
     back === 'vandaag' ? 'Naar Vandaag' : 'Terug naar het overzicht';
   return heading(placement ? 'Jouw startniveau' : data.title, placement ? 'Deze korte leestoets geeft een richtpunt. Je kunt daarna zelf een niveau kiezen.' : '') + `
@@ -911,6 +1025,7 @@ export function resultPage(id, data, reward = 0) {
     const answer = data.answers[i] ?? {};
       return `<details ${!answer.rating && data.mode === 'exam' ? 'open' : ''}><summary>${esc(q.text)}</summary>
         ${q.passage ? primaryPassage(q.passage) : ''}
+        ${evidenceNotes(q)}
         ${q.context ? '<p class="question-context">' + esc(q.context) + '</p>' : ''}
         ${answer.rating !== 'again' && q.kind !== 'match' ? '<p class="small-text muted">Jouw antwoord · ' + esc(answer.response || '—') + '</p>' : ''}
         ${answerFeedback(q, answer, id + '/' + i)}

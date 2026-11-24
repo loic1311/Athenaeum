@@ -2,6 +2,7 @@ import { EXPLORER_PAGES, explorerHref, explorationLessonHref } from './history-l
 export { EXPLORER_PAGES, HISTORY_SECTIONS, explorerHref, explorationLessonHref } from './history-links.js?v=14r4';
 import { belongsToHistoryTrack, chronologyYear, HISTORICAL_TRACKS, timelineScope } from './history-chronology.js?v=14r3';
 import { ATLAS_PLACES } from './atlas-catalog.js?v=142';
+import { preparationFor } from './history-study.js?v=150';
 export { ATLAS_PLACES, ATLAS_VIEWS } from './atlas-catalog.js?v=142';
 
 export const HISTORICAL_ERAS = [
@@ -83,7 +84,7 @@ export function explorationLessons(lessons, page, scope = 'alles', key = '') {
     const mapped = new Set(places.flatMap(place => place.lessons));
     list = list.filter(lesson => mapped.has(lesson.id) || lesson.places?.some(id => ids.has(id)));
   }
-  if (page === 'bronnen') list = list.filter(lesson => lesson.primary);
+  if (page === 'bronnen') list = list.filter(lesson => lesson.primary || preparationFor(lesson)?.seminar);
   if (page === 'tijdvakken' || page === 'chronologie') {
     const era = HISTORICAL_ERAS.find(period => period.id === key);
     list = list.filter(lesson => era ? inEra(lesson, era) : Number.isInteger(chronologyYear(lesson)));

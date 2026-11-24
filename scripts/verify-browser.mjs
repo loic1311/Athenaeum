@@ -230,23 +230,49 @@ test('De wereldbol en een les blijven bruikbaar bij een offline herstart', { tim
     await page.locator('#atlas-city-list').getByRole('link', { name:/Marseille/ }).click();
     await page.getByRole('link', { name:'Uitgebreid studeren' }).click();
     await page.getByRole('button', { name:'Markeer als gelezen' }).waitFor();
+    await page.goto(baseURL + '#les/acad-aphrodisias-geld');
+    await page.getByRole('button', { name:'Euergetisme', exact:true }).first().click();
+    await page.getByRole('dialog').getByRole('heading', { name:'Euergetisme', exact:true }).waitFor();
   } finally {
     await context.close();
   }
 });
 
-test('Een upgrade van 1.4.1 bewaart lokaal lezen en activeert de nieuwe offlinecache', {
-  timeout:30_000, skip:!baseline,
+test('Een upgrade bewaart lokaal lezen en een open dagles en activeert de nieuwe offlinecache', {
+  timeout:50_000, skip:!baseline,
 }, async () => {
   const context = await browser.newContext();
   const page = await context.newPage();
   const lessonURL = new URL(upgradeScope + '#les/atlas-marseille-massalia', baseURL).href;
   try {
     await page.goto(lessonURL);
-    assert.match(await page.locator('#academy-entry').getAttribute('src'), /v=141$/);
+    const before = await page.locator('#academy-entry').getAttribute('src');
     await page.getByRole('button', {name:'Markeer als gelezen'}).click();
     await page.locator('[data-action="history-read"][aria-pressed=true]').waitFor();
     await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller));
+    const dailyURL = new URL(upgradeScope + '#dagles', baseURL).href;
+    await page.goto(dailyURL);
+    await page.getByLabel('Waar wil je vandaag op focussen?').selectOption('roman');
+    await page.getByRole('button', {name:'Start mijn dagles'}).click();
+    await page.getByRole('button', {name:'Bekijk de uitleg'}).click();
+    await page.getByRole('button', {name:'Verder naar begeleid oefenen'}).click();
+    await page.getByRole('button', {name:'Start deze stap'}).click();
+    await page.getByRole('button', {name:'Start oefenen'}).click();
+    const legacyQuestion = await page.locator('.question h1').textContent();
+    await page.getByRole('button', {name:'Pauzeren'}).click();
+    await page.getByRole('button', {name:'Hervat deze stap'}).waitFor();
+    const previousData = await page.evaluate(async () => {
+      const rows = await new Promise((resolve, reject) => {
+        const database = indexedDB.open('athenaeum_learning');
+        database.onerror = reject;
+        database.onsuccess = () => {
+          const store = database.result.transaction('records').objectStore('records').getAll();
+          store.onerror = reject;
+          store.onsuccess = () => resolve(store.result);
+        };
+      });
+      return rows.map(row => [row.id,row.at,row.kind]);
+    });
 
     upgradeRoot = root;
     await page.evaluate(async () => {
@@ -256,10 +282,21 @@ test('Een upgrade van 1.4.1 bewaart lokaal lezen en activeert de nieuwe offlinec
       await changed;
     });
     await page.reload();
-    assert.match(await page.locator('#academy-entry').getAttribute('src'), /v=142$/);
+    assert.notEqual(await page.locator('#academy-entry').getAttribute('src'), before);
+    await page.getByRole('button', {name:'Hervat deze stap'}).click();
+    assert.equal(await page.locator('.question h1').textContent(), legacyQuestion);
+    const afterData = await page.evaluate(async () => {
+      const { readRecords } = await import('./academy/storage.js?v=142');
+      const id = window.AthStore.currentProfileId();
+      return (await readRecords(id)).map(row => [row.id,row.at,row.kind]);
+    });
+    for (const original of previousData) assert(afterData.some(row => JSON.stringify(row) === JSON.stringify(original)));
+    await page.goto(lessonURL);
     await page.locator('[data-action="history-read"][aria-pressed=true]').waitFor();
     const cacheNames = await page.evaluate(() => caches.keys());
-    assert(cacheNames.some(name => name === 'athenaeum-learning:' + upgradeScope + ':1.4.2-142'));
+    const assets = await readFile(join(root,'sw-assets.js'),'utf8');
+    const version = assets.match(/"version": "([^"]+)"/)[1];
+    assert(cacheNames.some(name => name === 'athenaeum-learning:' + upgradeScope + ':' + version));
     await page.goto(new URL(upgradeScope + '#paideia/atlas/alles', baseURL).href);
     await rectOfGlobe(page);
   } finally {
@@ -267,6 +304,87 @@ test('Een upgrade van 1.4.1 bewaart lokaal lezen en activeert de nieuwe offlinec
     await context.close();
   }
 });
+
+for (const viewport of [{width:1440,height:900}, {width:390,height:844}]) {
+  test('Hodie van begripsuitleg tot bewaarde feedback op ' + viewport.width + ' px', { timeout:60_000 }, async () => {
+    const context = await browser.newContext({ viewport, hasTouch:viewport.width <= 820, serviceWorkers:'block' });
+    const page = await context.newPage();
+    page.setDefaultTimeout(10_000);
+    const errors = [];
+    page.on('pageerror', error => errors.push(error.message));
+    const skipStage = async () => {
+      const count = +(await page.locator('.quiz-count').textContent()).match(/\d+$/)[0];
+      for (let i = 0; i < count; i++) {
+        await page.getByRole('button', { name:'Sla over en bekijk uitwerking' }).click();
+        await page.locator('[data-action="next-question"]').click();
+      }
+      await page.waitForURL('**/#dagles/**');
+    };
+    try {
+      await page.goto(baseURL + '#dagles');
+      await page.getByLabel('Waar wil je vandaag op focussen?').selectOption('ancient');
+      await page.getByLabel('Hoe wil je oefenen?').selectOption('academic');
+      await page.getByRole('button', {name:'Start mijn dagles'}).click();
+      await page.getByRole('heading', {name:'Kennismaken'}).waitFor();
+      await page.getByRole('button', {name:'Bekijk de uitleg'}).click();
+      const term = page.locator('.daily-theory .study-term').first();
+      await term.focus();
+      await term.press('Enter');
+      await page.getByRole('dialog').getByText('Voorbeeld', {exact:true}).waitFor();
+      await page.keyboard.press('Escape');
+      await page.getByRole('dialog').waitFor({state:'hidden'});
+      assert.equal(await term.evaluate(element => element === document.activeElement), true);
+      await noOverflow(page, 'Hodie-uitleg');
+      await page.getByRole('button', {name:'Verder naar begeleid oefenen'}).click();
+      await page.getByRole('button', {name:'Start deze stap'}).click();
+      await page.getByRole('button', {name:'Start oefenen'}).click();
+      await skipStage();
+      await page.getByRole('heading', {name:'Zelf oefenen',exact:true}).waitFor();
+      await page.getByRole('button', {name:'Start deze stap'}).click();
+      await skipStage();
+
+      await page.getByRole('heading', {name:'Toepassen',exact:true}).waitFor();
+      await page.getByRole('button', {name:'Start deze stap'}).click();
+      await page.getByText('Academische verdieping · Open vraag', {exact:true}).waitFor();
+      await page.getByText('Bronmateriaal bij de vraag', {exact:true}).waitFor();
+      await page.locator('#answer').fill('De bron ondersteunt een deel van de verklaring.');
+      await page.getByRole('button', {name:'Verduidelijk de vraag'}).click();
+      await page.getByRole('button', {name:'Krijg een inhoudelijke tip'}).click();
+      await page.getByRole('button', {name:'Krijg een aanwijzing voor je aanpak'}).waitFor();
+      assert.equal(await page.locator('.hint-list li').count(), 2);
+      assert.equal(await page.locator('.model-answer').count(), 0);
+      await page.getByRole('button', {name:'Vergelijk mijn antwoord'}).click();
+      const criterion = page.locator('[data-rubric]').first();
+      await criterion.selectOption('revise');
+      await page.locator('[data-rubric-note]:not([hidden])').waitFor();
+      await noOverflow(page, 'Hodie-feedback');
+      await page.getByRole('button', {name:'Pauzeren'}).click();
+      await page.getByRole('button', {name:'Hervat deze stap'}).waitFor();
+      await page.reload();
+      await page.getByRole('button', {name:'Hervat deze stap'}).click();
+      await criterion.waitFor();
+      assert.equal(await criterion.inputValue(), 'revise');
+      await page.getByRole('button', {name:'Nog oefenen'}).click();
+      await page.getByRole('button', {name:'Afronden'}).click();
+      await page.getByRole('heading', {name:'Afronden',exact:true}).waitFor();
+      await page.getByRole('button', {name:'Start deze stap'}).click();
+      await skipStage();
+      await page.getByRole('heading', {name:'Dagles afgerond'}).waitFor();
+      await page.getByText('Antwoorden en feedback teruglezen', {exact:true}).click();
+      await page.getByRole('link', {name:'Toepassen',exact:true}).click();
+      await page.getByRole('heading', {name:'Zelfbeoordeling',exact:true}).waitFor();
+      await page.locator('.unit-list > details > summary').click();
+      await page.locator('[data-rubric-note]:not([hidden])').waitFor();
+      await page.goto(baseURL + '#toetsen');
+      await page.getByRole('button', {name:'Bekijk maandtoets'}).waitFor();
+      await page.goto(baseURL + '#meer/meldingen');
+      await page.getByRole('heading', {name:'Studieherinneringen',exact:true}).first().waitFor();
+      assert.deepEqual(errors, []);
+    } finally {
+      await context.close();
+    }
+  });
+}
 
 test('Een weekexamen bewaart de zelfbeoordeling naast de automatische score', { timeout:30_000 }, async () => {
   const context = await browser.newContext({ serviceWorkers:'block' });
@@ -279,9 +397,11 @@ test('Een weekexamen bewaart de zelfbeoordeling naast de automatische score', { 
     await page.goto(baseURL + '#toetsen');
     await page.getByRole('button', {name:'Bekijk weekexamen'}).click();
     await page.getByRole('button', {name:'Start toets'}).click();
+    let open = 0;
     for (let number = 1; number <= 3; number++) {
       await page.getByText('Vraag ' + number + ' van 3', {exact:true}).waitFor();
       if (await page.locator('textarea#answer').isVisible()) {
+        open++;
         await page.locator('textarea#answer').fill('Een antwoord uit de browsertest.');
         await page.locator('[data-action=submit-answer]').click();
       } else {
@@ -289,16 +409,18 @@ test('Een weekexamen bewaart de zelfbeoordeling naast de automatische score', { 
       }
     }
     await page.waitForURL('**/#resultaat/**');
+    assert(open >= 1 && open <= 2);
     const assess = page.getByRole('button', {name:'Voldoet aan de criteria'});
-    for (const remaining of [2,1]) {
-      assert.equal(await assess.count(), remaining);
+    const message = done => done + (done === 1 ? ' antwoord zelf beoordeeld.' : ' antwoorden zelf beoordeeld.');
+    for (let done = 1; done <= open; done++) {
       await assess.first().click();
-      await page.getByText(3 - remaining + (remaining === 2 ? ' antwoord zelf beoordeeld.' : ' antwoorden zelf beoordeeld.'), {exact:true}).waitFor();
+      await page.getByText(message(done), {exact:true}).waitFor();
     }
-    await page.getByRole('heading', {name:'0 van 1 automatisch juist zonder hulp'}).waitFor();
+    const score = page.getByRole('heading', {name:'0 van ' + (3 - open) + ' automatisch juist zonder hulp'});
+    await score.waitFor();
     await page.reload();
-    await page.getByRole('heading', {name:'0 van 1 automatisch juist zonder hulp'}).waitFor();
-    await page.getByText('2 antwoorden zelf beoordeeld.', {exact:true}).waitFor();
+    await score.waitFor();
+    await page.getByText(message(open), {exact:true}).waitFor();
   } finally {
     await context.close();
   }
