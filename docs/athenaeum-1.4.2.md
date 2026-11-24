@@ -1,6 +1,6 @@
 # Voortgangsregister Athenaeum 1.4.2
 
-Bijgewerkt op 24 november 2026. GitHub Pages serveert 1.4.1 vanaf `main` (`56ef684681a383ad5399e791a06f1c6a32f821a4`). De wijzigingen staan op `codex/athenaeum-1-4-2` met kanaal `test`.
+Bijgewerkt op 24 november 2026. De basis voor de update is 1.4.1 (`56ef684681a383ad5399e791a06f1c6a32f821a4`). Deze versie heeft vrijgavekanaal `stable`. [Controleer de versie op GitHub Pages](https://loic1311.github.io/Athenaeum/DEPLOY_CHECK.html).
 
 De basis voor K01–K90 is *Athenaeum — KILLCRITIC-foutenregister*, 23 november 2026, sectie «Geprioriteerd issue-register» (Markdown zonder paginering). Bij «Overgenomen» is de auditbevinding bewaard voor latere hertoetsing. «Getest» verwijst naar het expliciet genoemde scenario. Een productieadvies op zich bewijst geen uitval of gegevenstoegang.
 
@@ -11,9 +11,9 @@ De basis voor K01–K90 is *Athenaeum — KILLCRITIC-foutenregister*, 23 novembe
 | Atlas en laden | `academy/atlas-view.js`, `atlas-globe.js`, `atlas-catalog.js`, `content/atlas-sites.js`. Herstart de kaart binnen de pagina. Toetsenbord en kaartknoppen worden beschikbaar zodra het canvas getekend is. Geef 33 huidige naamperiodes een open einddatum. | In Chromium trad een gesimuleerde HTTP 503 op. Na ‘Kaart opnieuw laden’ verscheen Massilia bij 100 n.Chr., met behouden filters en een werkende stedenlijst. De releasecontrole toetst 2100, een leemte bij Marseille en de gesloten periode van Pompeï. |
 | Lespakketten en cache | `academy/catalog.js`, `fetch-json.js`, `app.js`, `scripts/build-offline.mjs`, `sw.js`, `sw-assets.js`. Controleer dubbele sleutels en behoud de oorzaak van laadfouten. De worker gebruikt de entry uit het gegenereerde bestand. | Tests voor 503, een ongeldig pakket en geslaagde herlaadpoging. Gegenereerde bestanden zijn opnieuw opgebouwd. Chromium verifieerde 1.4.1 → 1.4.2 met behoud van een lokale leesmarkering en een bruikbare nieuwe cache. |
 | Kennis en toetsing | `academy/assessment.js`, `learning.js`, `app.js`, `views.js`, `progress-overview.js`, `daily-view.js`, `streak.js`. Registreer afzonderlijk herkenning, zelfstandige reproductie, hulp en zelfbeoordeling. Twee zelfstandige pogingen met minstens 24 uur ertussen vormen een indicator voor herhaling. Eerdere uitslagen behouden hun opgeslagen score en krijgen het label ‘toenmalige telling’. | Unittests voor hulp, zelfbeoordeling, overslaan, leesactiviteit, minimuminterval, bestaande scores en ijsklontjes. Chromium liet na zelfcorrectie 0 van 2 automatisch juist en 1 zelf beoordeeld zien. Beide waarden bleven beschikbaar na herladen. |
-| Synchronisatie | `academy/storage.js`, `shared/sync.js`, `app.js`. Deel tokenvernieuwing binnen een tabblad. Blokkeer een late sessievernieuwing na afmelden. Houd afgewezen items lokaal en verwerk de andere records. De IndexedDB-sleutels en Supabase-structuur blijven compatibel met 1.4.1. | Bij twee gelijktijdige aanroepen daalde het aantal gesimuleerde vernieuwingsverzoeken van twee naar één. Afmelding bleef actief bij een late reactie. De browsertest oefent vijf geïsoleerde profielen met testrecords. Een test met vijf echte accounts en meerdere toestellen volgt op staging. |
-| Supabase | `supabase/functions/telegram-bot/index.ts` en `authorization.ts`. Valideer gedeelde autorisatie vóór meldingsacties. | Bevestigd in productiemetadata dat de oude Telegram-planning inactief is en webpush elke minuut gepland staat. De live Telegram-versie 8 verschilt van de bron in GitHub. Verzoen de versies vóór staginguitrol. Supabase is alleen uitgelezen. De autorisatietest gebruikt fictieve waarden. |
-| Automatische verificatie | `scripts/verify-release.mjs`, `scripts/verify-stability.mjs`, `scripts/verify-browser.mjs`, `scripts/verify-postgres.mjs` en `.github/workflows/verify.yml`. | [CI-run 45364632199](https://github.com/loic1311/Athenaeum/actions/runs/45364632199) slaagde op commit `c9cc2464916c222497dd8af9d9213a9b23878d28`. De controles omvatten zeven Node-tests, acht Chromium-scenario’s en één database-integratietest. Die laatste bevestigde vijf gelijktijdig actieve verbindingen, scheiding van de 200 records per eigenaar, afwijzing van een te groot record, bescherming tegen oude writes en herstel van alle 200 records uit een tijdelijke back-up. |
+| Synchronisatie | `academy/storage.js`, `shared/sync.js`, `app.js`. Deel tokenvernieuwing binnen een tabblad. Blokkeer een late sessievernieuwing na afmelden. Houd afgewezen items lokaal en verwerk de andere records. De IndexedDB-sleutels en Supabase-structuur blijven compatibel met 1.4.1. | Bij twee gelijktijdige aanroepen daalde het aantal gesimuleerde vernieuwingsverzoeken van twee naar één. Afmelding bleef actief bij een late reactie. Vijf onafhankelijke accounts doorliepen de volledige synchronisatie via Supabase Auth en PostgREST in een tijdelijke stack. Een tweede lokaal profiel haalde de voortgang van hetzelfde account op na een gesimuleerde netwerkonderbreking. |
+| Supabase | `supabase/functions/telegram-bot/index.ts` en `authorization.ts`. De actieve versie 8 vormt de basis voor de aangescherpte toegangscontrole. | Versie 9 is actief en de twee uitgevoerde bestanden komen overeen met GitHub. De productieplanning voor Telegram is inactief. De bestaande Web Push-functie komt overeen met de repository. In de tijdelijke stack zijn aanmelding, opslag per account, de planning en het verwijderen van meldingsinstellingen getest. De uitrol gebruikt het bestaande productieschema. |
+| Automatische verificatie | `DEPLOY_CHECK.html`, `scripts/verify-release.mjs`, `scripts/verify-stability.mjs`, `scripts/verify-browser.mjs`, `scripts/verify-postgres.mjs`, `scripts/verify-supabase.mjs` en `.github/workflows/verify.yml`. | [CI-run 45366589571](https://github.com/loic1311/Athenaeum/actions/runs/45366589571) slaagde op commit `0f25578ef5faba7b5bdb5072b274304c8dd7adbc`. Alle 23 tests slaagden. De twaalf browserscenario’s omvatten Chromium en WebKit met gesimuleerde Android-, iPhone- en iPad-profielen. De afzonderlijke PostgreSQL-test bevestigde vijf gelijktijdige verbindingen en herstelde alle 200 records uit een back-up. |
 
 Verificatie van de bestaande basis toonde 548 lessen, 4.769 vragen uit de lespakketten, 65 atlasplaatsen, 26 afzonderlijke gebeurtenissen en 41 Traditio-lessen. Het startscherm, Apps, onderbalk, `/leer`, bestaande routes en les-ID’s gebruiken dezelfde structuur. De testbrowser tekende het canvas op desktop (574 × 525 px) en in telefoon- en tabletweergaves (329 × 310 px en 526 × 377 px). Binnen die atlasweergaves bleef de documentbreedte gelijk aan de viewport. In de testversie zijn ook Massilia, leesmarkering na herstart, weekexamen, 44 v.Chr. in Chronologia en de Scriptorium-werkruimte geopend.
 
@@ -25,23 +25,22 @@ node scripts/build-offline.mjs
 node scripts/verify-release.mjs
 node --test scripts/verify-stability.mjs
 npm install --no-save --package-lock=false playwright@1.62.1
-npx playwright install --with-deps chromium
+npx playwright install --with-deps chromium webkit
 node --test scripts/verify-browser.mjs
 ```
 
 Geef `ATHENAEUM_BASELINE` de map met de uitgepakte GitHub-release 1.4.1 om de upgradeproef mee te nemen. De CI-workflow bereidt die map voor.
 
-De CI-workflow voert `scripts/verify-postgres.mjs` uit in een tijdelijke PostgreSQL 17-container. De proef gebruikt de versioneerde migraties voor leeropslag, vijf fictieve profielen en een afzonderlijke database voor herstel uit een back-up. Dat test de databaselaag met echte parallelle verbindingen. Supabase Auth, PostgREST en de meldingsfuncties vallen onder de afzonderlijke stagingcontrole.
+De CI-workflow voert `scripts/verify-postgres.mjs` uit in een tijdelijke PostgreSQL 17-container. De proef gebruikt de versioneerde migraties voor leeropslag, vijf fictieve profielen en een afzonderlijke database voor herstel uit een back-up. `scripts/verify-supabase.mjs` controleert vervolgens echte sessies, PostgREST en Edge Functions in een aparte tijdelijke Supabase-stack. Het testpakket houdt productieaccounts en meldingsadressen buiten de proef.
 
-De wijzigingsreferentie per bestand staat in de geschiedenis van de [1.4.2-pull request](https://github.com/loic1311/Athenaeum/pull/2). De testbranch is terug te zetten door vanaf de GitHub Pages-basis te werken. Verifieer vóór samenvoegen de geïnstalleerde app op telefoon en tablet en test herstel en synchronisatie met onafhankelijke Supabase-testaccounts.
+De wijzigingsreferentie per bestand staat in de geschiedenis van de [1.4.2-pull request](https://github.com/loic1311/Athenaeum/pull/2). Het herstelpunt voor GitHub Pages is de mergegrens bij 1.4.1. Ontvangst van pushmeldingen en gedrag van de geïnstalleerde app op fysieke toestellen blijven aparte praktijktests.
 
 ## Volgorde van de volgende werkpakketten
 
-1. Herstelproef en vijf aparte testaccounts op staging. Test offline bewerken, sync, profielwissel, gelijktijdige writes en verlies van verbinding.
-2. Verifieer de Edge Function na staginguitrol en toets de actuele Supabase-adviezen aan het gebruikte platform. Hou de bestaande webpushroute in de regressietests.
-3. Valideer de upgrade vanuit 1.4.1 en de laadprestaties op echte toestellen. Publiceer 1.4.2 wanneer de vrijgavecontroles zijn geslaagd.
-4. Werk in 1.5 het kennismodel, volledig curriculum, bronverificatie, klassieke talen, Traditio en Scriptorium uit.
-5. Verbind in 1.6 de atlas, kaartlagen, Chronologia en kennisgraaf met controleerbare data.
+1. Volg de geïnstalleerde app en meldingsontvangst op fysieke toestellen op.
+2. Toets de resterende Supabase-adviezen en verifieer een back-upherstel voor de productieconfiguratie.
+3. Werk in 1.5 het kennismodel, volledig curriculum, bronverificatie, klassieke talen, Traditio en Scriptorium uit.
+4. Verbind in 1.6 de atlas, kaartlagen, Chronologia en kennisgraaf met controleerbare data.
 
 ## Geïnventariseerde auditpunten
 
@@ -111,19 +110,19 @@ De wijzigingsreferentie per bestand staat in de geschiedenis van de [1.4.2-pull 
 | K62 | P1 | Architectuur | 318 !important overschrijvingen | Overgenomen | Controleer afhankelijkheden en splits verantwoordelijkheden in kleine stappen. |
 | K63 | P1 | Architectuur | Ingebedde oude en nieuwe stijlen naast aparte CSS | Overgenomen | Controleer afhankelijkheden en splits verantwoordelijkheden in kleine stappen. |
 | K64 | P1 | Architectuur | Productieversie van de AI-docent mist een gekoppelde versiebeheerde bron | Bevestigd | Reproduceerbare uitrol en testgegevens in 1.5. |
-| K65 | P1 | Architectuur | Diagnostica toont de oude testprocedure van 1.2.1 | Open | Actualiseren aan de hand van de gevalideerde browsertests. |
-| K66 | P0 | Testing | Automatische browsercontrole en CI ontbreken op de basisversie | Getest | Zeven componenttests en acht Chromium-scenario’s zijn geslaagd. |
+| K65 | P1 | Architectuur | Diagnostica toont de oude testprocedure van 1.2.1 | Getest | Diagnostica leest het vrijgavekanaal en geeft twaalf bestandscontroles weer. |
+| K66 | P0 | Testing | Automatische browsercontrole en CI ontbreken op de basisversie | Getest | Zeven componenttests, twaalf browserscenario’s en vier integratietests zijn geslaagd. |
 | K67 | P1 | Testing | Bronchecks vooral structureel, geen inhoudelijke corroboratie | Overgenomen | Leg reproduceerbare tests en acceptatiecriteria vast. |
 | K68 | P1 | Testing | Cacheversies liggen verspreid in imports | Deels getest | De worker leest zijn entry uit het gegenereerde bestand. Importversies blijven per module lopen. |
 | K69 | P1 | Testing | Offline upgrade tussen releases moet worden getoetst | Getest in Chromium | Controleer afzonderlijk de geïnstalleerde iOS- en Android-app. |
-| K70 | P0 | Security | Toegangscontrole van de oude meldingsfunctie is onvoldoende afgebakend | Broncode getest | Supabase. Productiecode nog apart te verifiëren en uit te rollen. |
+| K70 | P0 | Security | Toegangscontrole van de oude meldingsfunctie is onvoldoende afgebakend | Getest en actief | De tijdelijke Edge Runtime bevestigde de gewone sessieflow. Supabase serveert de gecontroleerde versie 9. |
 | K71 | P1 | Security | Controle op gelekte wachtwoorden staat uit | Productieadvies bevestigd | Projectinstelling en beschikbaar abonnement verifiëren vóór wijziging. |
 | K72 | P1 | Security | RLS-beleid evalueert functies per rij | 20 productieadviezen bevestigd | Equivalentie toetsen met de operationele tabellen en testaccounts. |
 | K73 | P2 | Security | Controleer de plaatsing van de pg_net-extensie | Productieadvies bevestigd | Afhankelijkheden van bestaande deployments vaststellen. |
-| K74 | P2 | Security | Bevestig toegangsmodel webpushapparaten | Productiemetadata gecontroleerd | RLS actief. Direct lezen door anonieme en aangemelde bezoekers uitgesloten. Servicefunctie en meldingen apart testen. |
+| K74 | P2 | Security | Bevestig toegangsmodel webpushapparaten | Getest | Productie-RLS gecontroleerd. De tijdelijke Edge Runtime bewaarde per account, verwijderde de inschrijvingen en plande elk tijdstip één keer. |
 | K75 | P1 | Security | Lokale pincode gebruikt een eenvoudige hash | Overgenomen | Verifieer migratie zonder verlies van profielen. |
 | K76 | P1 | Security | Sessiegegevens worden in browseropslag bewaard | Overgenomen | Onderzoek een compatibel sessiemodel met Scriptorium. |
-| K77 | P1 | Data | Synchronisatie kan botsen met sessievernieuwing en losse records | Deels getest | Synchronisatie. Serverisolatie en meer toesteltests blijven open. |
+| K77 | P1 | Data | Synchronisatie kan botsen met sessievernieuwing en losse records | Getest op tijdelijke stack | Vijf accounts, stabiele tokenvernieuwing en voortzetting op een tweede lokaal profiel. |
 | K78 | P1 | Data | Herstel vanuit een onafhankelijke productieback-up | Hersteltest geslaagd in PostgreSQL 17 | Controleer de Supabase-back-up en herhaal een herstelproef op staging. |
 | K79 | P1 | Data | Statistieken moeten kennisbewijzen onderscheiden van activiteit | Getest voor herkenning en reproductie | Kennis en toetsing. Toepassing en langetermijnmetingen volgen in 1.5. |
 | K80 | P1 | AI | LLM-beoordeling niet aantoonbaar menselijk gekalibreerd | Overgenomen | Verifieer brongetrouwheid en overeenstemming met menselijke beoordeling. |
@@ -138,6 +137,6 @@ De wijzigingsreferentie per bestand staat in de geschiedenis van de [1.4.2-pull 
 | K89 | P1 | Privacy | Synchronisatiestatus per record en toestel | Deels geïmplementeerd | Status voor gedeeltelijke sync beschikbaar. Recordstatus in volledige UX blijft open. |
 | K90 | P1 | Strategie | Ambitie alle geschiedenis vs beperkte gedocumenteerde dekking | Overgenomen | Werk per leerlijn vanuit wetenschappelijk gecontroleerde minimumcriteria. |
 | K91 | P0 | Laden | Lespakket kon dezelfde les dubbel bevatten en een andere les missen | Getest | Lespakketten en cache |
-| K92 | P0 | Data | Een afgewezen record kon de resterende cloudsync ophouden | Getest met fictieve profielen | De browser verwerkte geldige records en bewaarde afgewezen items lokaal. PostgreSQL bevestigde de recordgrens. Verifieer ook de volledige Supabase-route op staging. |
+| K92 | P0 | Data | Een afgewezen record kon de resterende cloudsync ophouden | Getest met fictieve profielen | De browser bewaarde afgewezen items lokaal. PostgreSQL bevestigde de recordgrens. De tijdelijke Supabase-stack bevestigde herstel na een onderbroken upload. |
 | K93 | P0 | Data | Parallelle of late sessievernieuwing kon de actieve sessie opnieuw invullen | Getest | Synchronisatie |
 | K94 | P0 | Beoordeling | Alleen overslaan kon oefenactiviteit verhogen | Getest | Kennis en toetsing |
