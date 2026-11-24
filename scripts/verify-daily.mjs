@@ -58,8 +58,8 @@ test('Bestaande historische lessen en bronroutes gebruiken hetzelfde begrippen- 
       assert(lesson?.items.some(item => item.id === goal), id + '/' + goal);
       assert(sourceRoute.has(id), id);
       const questions = makePool([lesson]).flatMap(item => item.academic);
-      assert(questions.some(q => studyLevel(q) === 3 && q.evidenceNotes.length && Object.keys(q.optionFeedback).length === 3));
-      assert(questions.some(q => studyLevel(q) === 4 && q.evidenceNotes.length && q.rubric.length === 3));
+      assert(questions.some(q => studyLevel(q) === 3 && q.evidenceNotes?.length && Object.keys(q.optionFeedback).length === 3));
+      assert(questions.some(q => studyLevel(q) === 4 && q.evidenceNotes?.length && q.rubric.length === 3));
     }
   }
   for (const lesson of historical) {

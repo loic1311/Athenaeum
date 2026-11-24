@@ -1,5 +1,6 @@
 import { practiceVariants, practiceDifficulty, preferredDifficulty, startingDifficulty } from './practice.js?v=160';
 import { independentlyCorrect } from './assessment.js?v=150';
+import { contextualHistoryQuestion, historicalAssessment, reviseHistoryQuestion } from './history-assessment.js?v=161';
 import { prerequisitesFor, studyExercises, studyLevel } from './history-study.js?v=160';
 export { tally } from './assessment.js?v=150';
 
@@ -64,6 +65,7 @@ export function makePool(lessons) {
     const language = TRACKS[lesson.track]?.lang;
     const variants = practiceVariants(lesson, language);
     const exercises = studyExercises(lesson);
+    const historical = historicalAssessment(lesson);
     const pool = lesson.items.map((item, index) => {
       const key = lesson.id + '/' + item.id;
       const source = lesson.sources?.[item.source ?? (language && !lesson.languageTopic ? -1 : 0)];
@@ -78,9 +80,14 @@ export function makePool(lessons) {
         if (prerequisites.length) data.prerequisites = prerequisites;
         return data;
       };
-      const questions = item.questions.map(questionData);
-      const practice = variants[index].map(question => questionData(question, question.variant));
-      const academic = (exercises.get(item.id) ?? []).map(question => questionData(question, 'studie-' + question.id));
+      const revise = question => historical ? reviseHistoryQuestion(lesson, item, question) : question;
+      const originals = item.questions.map(revise);
+      const questions = originals.map(questionData);
+      const practice = variants[index].map(question => questionData(revise(question), question.variant));
+      const academic = (exercises.get(item.id) ?? []).map(question => questionData(revise(question), 'studie-' + question.id));
+      const contextual = historical && contextualHistoryQuestion(lesson, item, source, [...originals, ...academic]);
+      if (contextual) academic.push(questionData(contextual, 'context'));
+
       return { key, ...scope, route: lesson.route, questions, practice, academic };
     });
     lessonPools.set(lesson, pool);
@@ -197,14 +204,16 @@ function questionFor(item, history, options = {}) {
       && (!options.exclude || !options.exclude.has(q.id))
       && (!options.short || q.kind !== 'open') && (!options.noAudio || q.kind !== 'listen'));
   return shuffled(allowed).sort((a, b) => {
-    const open = options.preferOpen ? Number(b.kind === 'open') - Number(a.kind === 'open') : 0;
+    const open = Number(b.kind === 'open') - Number(a.kind === 'open');
+    const format = options.preferOpen ? open : options.preferObjective ? -open : 0;
+    const depth = options.academic ? Number(studyLevel(b) >= 3) - Number(studyLevel(a) >= 3) : 0;
     const aSame = a.id === current?.lastQuestion;
     const bSame = b.id === current?.lastQuestion;
     const support = options.difficulty;
     const difference = support === undefined ? 0 :
       Math.abs(practiceDifficulty(a) - support) - Math.abs(practiceDifficulty(b) - support);
     const own = options.preferOriginal ? Number(!!a.variant) - Number(!!b.variant) : 0;
-    return open || difference || Number(aSame) - Number(bSame) ||
+    return format || depth || difference || Number(aSame) - Number(bSame) ||
       (history.seen.get(a.id) ?? 0) - (history.seen.get(b.id) ?? 0) || own;
   })[0];
 }
@@ -267,8 +276,10 @@ export function examQuestions(pool, history, monthly = false, allGoals = false) 
   const required = EXAM_GOALS[monthly ? 'month' : 'week'];
   if (handled.length < required) return [];
   const ordered = variedSelection(shuffled(handled), limit);
-  return ordered.map((item, index) =>
-    questionFor(item, history, { preferOpen: monthly ? index % 3 !== 0 : index % 3 === 2, noAudio: true, academic: true }));
+  return ordered.map((item, index) => {
+    const preferOpen = monthly ? index % 3 !== 0 : index % 3 === 0;
+    return questionFor(item, history, { preferOpen, preferObjective: !preferOpen, noAudio: true, academic: true });
+  });
 }
 
 export function placementQuestions(pool) {

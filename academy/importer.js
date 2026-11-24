@@ -1,4 +1,4 @@
-import { KINDS, LEVELS, TRACKS } from './learning.js?v=160';
+import { KINDS, LEVELS, TRACKS } from './learning.js?v=161';
 import { annotatedTerms, studyConcept } from './history-study.js?v=160';
 
 export const MAX_IMPORT_CHARS = 180_000;

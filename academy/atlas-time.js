@@ -1,4 +1,4 @@
-import { HISTORICAL_ENTITIES } from './content/atlas-history.js?v=160';
+import { HISTORICAL_ENTITIES } from './content/atlas-history.js?v=161';
 import { fetchJson } from './fetch-json.js?v=142';
 
 export const ATLAS_KINDS = { political: 'Politiek', culture: 'Cultureel', site: 'Vindplaatsen', network: 'Netwerken' };

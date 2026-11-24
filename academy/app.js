@@ -1,30 +1,31 @@
-import { academicExam, academicExamParts } from './academic-exams.js?v=160';
+import { academicExam, academicExamParts, academicPreview } from './academic-exams.js?v=161';
 import { EXAM_GOALS, LEVELS, ROUTES, TRACKS, shuffled, makePool, historyOf, isCorrect, hasAccentError, quickQuestions,
-  languageQuestions, lessonQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=160';
-import { allPackKeys, byLessonId, loadedLessons, loadPacks, packFiles, packsForTracks, summaries } from './catalog.js?v=160';
-import { progressOverview, validGoal } from './progress-overview.js?v=160';
+  languageQuestions, lessonQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=161';
+import { allPackKeys, byLessonId, loadedLessons, loadPacks, packFiles, packsForTracks, summaries } from './catalog.js?v=161';
+import { progressOverview, validGoal } from './progress-overview.js?v=161';
 import { belongsToHistoryTrack, chronologicalLessons, chronologyForLesson, chronologyYear, HISTORICAL_TRACKS,
   historyLessonHref, historyReadId, timelineScope } from './history-chronology.js?v=160';
 import { explorerHref, HISTORY_SECTIONS } from './history-links.js?v=160';
-import { monthlyExamQuestions, monthlyStudy, weeklyExamQuestions, weeklyStudy } from './weekly-exam.js?v=160';
+import { programmeJourney } from './history-programmes.js?v=161';
+import { monthlyExamQuestions, monthlyStudy, weeklyExamQuestions, weeklyStudy } from './weekly-exam.js?v=161';
 import { isLanguageTopic, LANGUAGE_SKILLS } from './language-topics.js?v=14r3';
 import { record, readRecords, storeRecords, forgetRecords, backups, syncLearning, clearCloudLearning } from './storage.js?v=142';
-import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=160';
+import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=161';
 import { authenticate, authMessage, makeGuest } from './cloud.js?v=13r2';
-import * as view from './views.js?v=160';
-import { PACE, DAY_FOCI, DAY_MODES, STAGES, dayKey, archivedPlans, planDay, advanceDay, prepareDay, drillQuestions, tipsFor } from './daily.js?v=160';
+import * as view from './views.js?v=161';
+import { PACE, DAY_FOCI, DAY_MODES, STAGES, dayKey, archivedPlans, planDay, advanceDay, prepareDay, drillQuestions, tipsFor } from './daily.js?v=161';
 import { studyConcept, studyLevel } from './history-study.js?v=160';
 import { studyReadings } from './study-history.js?v=150';
 import { checkSelection, completeSelection, practiceOptions, sequencePractice } from './practice.js?v=160';
-import { dailyPage } from './daily-view.js?v=160';
+import { dailyPage } from './daily-view.js?v=161';
 import { findCases, findStudies, lessonSourceIndex, passageMatches, caseWitness, researchPage, researchMarkdown, RESEARCH_TABS,
-  evidencePreview } from './research.js?v=160';
+  evidencePreview } from './research.js?v=161';
 import { addResearchMaterial, comparisonFromForm, evidenceList, validComparison, MAX_COMPARISON_ROWS } from './research-data.js?v=13r1';
-import { readResearchFile } from './research-import.js?v=160';
-import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=160';
+import { readResearchFile } from './research-import.js?v=161';
+import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=161';
 import { fetchJson } from './fetch-json.js?v=142';
-import { searchLessons } from './lesson-search.js?v=160';
-import { countsAsPractice, isStudyDay, studyRecordId } from './streak.js?v=160';
+import { searchLessons } from './lesson-search.js?v=161';
+import { countsAsPractice, isStudyDay, studyRecordId } from './streak.js?v=161';
 import { MAX_REMINDERS, readSchedule, preparePush, pushPreference, pushSupport, savePush, stopPush, testPush } from './notifications.js?v=13r6';
 import { reviewData, SCORE_VERSION } from './assessment.js?v=150';
 
@@ -37,9 +38,9 @@ const sync = window.AthSync;
 const contentKeys = Object.keys(TRACKS);
 const studyTracks = [...HISTORICAL_TRACKS, 'knowledge', 'traditio'];
 const historicalViews = {
-  atlas: { load: () => import('./atlas-view.js?v=160') },
-  timeline: { load: () => import('./history-timeline.js?v=160') },
-  routes: { load: () => import('./history-explorer-view.js?v=160') },
+  atlas: { load: () => import('./atlas-view.js?v=161') },
+  timeline: { load: () => import('./history-timeline.js?v=161') },
+  routes: { load: () => import('./history-explorer-view.js?v=161') },
 };
 let profile = null;
 let readingGuide;
@@ -234,7 +235,7 @@ function lessonLoadingNotice(keys) {
 
 function loadTraditionView() {
   if (traditionView || traditionViewLoad || traditionViewError) return;
-  traditionViewLoad = import('./traditio.js?v=160').then(module => { traditionView = module; })
+  traditionViewLoad = import('./traditio.js?v=161').then(module => { traditionView = module; })
     .catch(() => { traditionViewError = true; }).finally(() => { traditionViewLoad = undefined; refreshContentViews(); });
 }
 
@@ -355,7 +356,8 @@ function render(focus = true) {
         break;
       }
       markup = lesson ? view.lessonPage(lesson, {
-        journey: explorer?.explorationJourney(lessons, lesson, path) ?? chronologyForLesson(lessons, lesson, path),
+        journey: (tab === 'leesreeks' ? programmeJourney(lesson, tabKey) : undefined) ??
+          explorer?.explorationJourney(lessons, lesson, path) ?? chronologyForLesson(lessons, lesson, path),
         read: readLessons().has(lesson.id), lessons,
         courseTrack: tab === 'vak' && belongsToHistoryTrack(lesson, tabKey) ? tabKey : undefined,
       }) + (explorer?.lessonExplorerLinks(lesson) || '') : view.heading('Les openen') + '<p class="empty" data-missing-lesson>' +
@@ -1522,7 +1524,8 @@ const actions = {
   'lesson-academic': async id => {
     const unit = lessonList().find(lesson => lesson.id === id);
     if (!unit) return;
-    const questions = makePool([unit]).flatMap(item => item.academic.filter(q => studyLevel(q) >= 3));
+    const questions = makePool([unit]).flatMap(item => [...item.questions, ...item.academic].filter(q => studyLevel(q) >= 3));
+    if (!questions.length) throw new Error('In deze les is nog geen verdiepende vraag beschikbaar.');
     await startQuiz('lesson', 'Academische verdieping · ' + unit.title, questions, { track:unit.track, back:lessonBack(id) });
   },
   'language-practice': async value => {
@@ -1543,10 +1546,7 @@ const actions = {
     await loadFor(packsForTracks(studyTracks));
     const lessons = lessonList().filter(l => TRACKS[l.track].section === 'history');
     const history = reviews();
-    const pool = makePool(lessons);
-    const studied = pool.filter(item => history.states.has(item.key));
-    const varied = new Set(studied.map(item => item.topic)).size >= 3;
-    const questions = drillQuestions(varied ? studied : pool, history, { limit: 5, noAudio: true, compact: true });
+    const questions = academicPreview(lessons, new Set([...readLessons(), ...reviews().lessons]));
     if (!questions.length) throw new Error('Open Athenaeum online om de voorbeeldvragen te laden.');
     if (dialog.open) dialog.close();
     await startQuiz('lesson', 'Oefentoets Paideia', questions, { back: 'toetsen' });

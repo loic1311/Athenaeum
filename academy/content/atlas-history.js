@@ -15,7 +15,7 @@ const east = openStax('§ 12.2, East-West Interactions in the Early Middle Ages'
 const africa = openStax('§ 15.2, Medieval Sub-Saharan Africa', '15-2-medieval-sub-saharan-africa');
 const americas = openStax('§ 8.2, Early Cultures and Civilizations in the Americas', '8-2-early-cultures-and-civilizations-in-the-americas');
 const shang = openStax('§ 5.1, Ancient China', '5-1-ancient-china');
-const asia = openStax('§ 5.2, The Indus Valley Civilization', '5-2-the-indus-valley-civilization');
+const asia = openStax('§ 3.4, The Indus Valley Civilization', '3-4-the-indus-valley-civilization');
 const barb = reference('UNESCO World Heritage Centre', 'Gebel Barkal and the Sites of the Napatan Region', 'Outstanding Universal Value',
   'https://whc.unesco.org/en/list/1073/');
 const tikal = reference('UNESCO World Heritage Centre', 'Tikal National Park', 'Outstanding Universal Value',
@@ -35,6 +35,17 @@ const flagFen = reference('Historic England', 'A Bronze Age post alignment and t
 
 const entry = (id, name, kind, region, coordinates, periods, text, source, lessons, uncertainty) =>
   ({ id, name, kind, region, coordinates, periods, text, source, lessons, uncertainty });
+
+const worldHeritage = (title, id) => reference('UNESCO World Heritage Centre', title, 'Outstanding Universal Value',
+  'https://whc.unesco.org/en/list/' + id + '/');
+const genizaAden = reference('Maḍmūn ben Ḥasan', 'Brief uit Aden aan Avraham Ibn Yiju',
+  'T-S NS J1, Princeton Geniza Project 5479', 'https://geniza.princeton.edu/en/documents/5479/', '12e eeuw');
+const malaccaTrade = reference('Ann Kordas, Ryan J. Lynch, Brooke Nelson & Julie Tatlock', 'World History, Volume 2: from 1400',
+  '§ 2.2, The Malacca Sultanate', 'https://openstax.org/books/world-history-volume-2/pages/2-2-the-malacca-sultanate', '2022');
+const colonialCongo = reference('Ann Kordas, Ryan J. Lynch, Brooke Nelson & Julie Tatlock', 'World History, Volume 2: from 1400',
+  '§ 9.4, Exploitation and Resistance', 'https://openstax.org/books/world-history-volume-2/pages/9-4-exploitation-and-resistance', '2022');
+const conference = reference('Delegaties van de Aziatisch-Afrikaanse conferentie', 'Final Communiqué of the Asian-African Conference',
+  '24 april 1955, aanhef en §§ B, D en G', 'https://worldjpn.net/documents/texts/docs/19550424.D1E.html', '1955');
 
 export const HISTORICAL_ENTITIES = [
   entry('flag-fen', 'Flag Fen', 'site', 'Europa', [-0.195, 52.573],
@@ -109,7 +120,7 @@ export const HISTORICAL_ENTITIES = [
   entry('rome-rijk', 'Romeinse keizertijd', 'political', 'Europa', [12.49, 41.89],
     [[-27, 396, 'Principaat en laat-Romeins rijk']],
     'Rome was een knooppunt van bestuur en bevoorrading. Het territorium veranderde door oorlog en bestuurlijke hervorming.',
-    openStax('§ 7.4, The Roman Empire', '7-4-the-roman-empire'), ['struct-ro-principaat', 'struct-ro-provincies'],
+    openStax('§ 7.5, The Regions of Rome', '7-5-the-regions-of-rome'), ['struct-ro-principaat', 'struct-ro-provincies'],
     'De markering geeft de stad weer als referentiepunt voor de lessen.'),
   entry('karolingisch-rijk', 'Karolingische invloedssfeer', 'political', 'Europa', [6.086, 50.775],
     [[801, 844, 'Keizertijd vóór de verdeling']],
@@ -173,4 +184,48 @@ export const HISTORICAL_ENTITIES = [
     [[500, 1000, 'Eilandsamenlevingen in de vroege middeleeuwse eeuwen']],
     'Archeologie en vergelijkend onderzoek helpen veranderingen in bewoning, uitwisseling en politieke organisatie op afzonderlijke eilanden reconstrueren.',
     meta('Oceania, 500–1000 A.D.', '06/oc', '2002'), ['deep-pacific', 'h2-lapita-migratie'], 'Oriëntatie bij Samoa. Datering en verspreiding verschillen per eiland.'),
+  entry('uruk-stedelijke-fasen','Uruk','site','Azië',[45.638,31.322],
+    [[-3500,-3000,'Late Urukperiode']],
+    'Gebouwen, vroege registratie en sporen van ambacht maken de schaal van stedelijke coördinatie onderzoekbaar.',
+    openStax('§ 3.2, Ancient Mesopotamia','3-2-ancient-mesopotamia'),
+    ['wereld-uruk-stad-en-administratie','mesopotamie-stad-en-schrift'],
+    'Het punt geeft de antieke vindplaats aan. De datering vat meerdere fasen samen.'),
+  entry('harappa-stedelijke-fase','Harappa in de stedelijke Indusfase','site','Azië',[72.865,30.628],
+    [[-2600,-1900,'Stedelijke fase van de Indusbeschaving']],
+    'Gewichten, waterbeheer en stedelijke inrichting bieden bewijs voor gecoördineerde activiteiten.',
+    asia, ['wereld-indus-standaarden-en-lokaal-bestuur','h2-indus-steden'],
+    'De stip toont Harappa. De chronologie van andere Indussteden kan verschillen.'),
+  entry('kyrene-vestiging','Kyrene','site','Afrika',[21.86,32.825],
+    [[-630,-499,'Archaïsche vestigingsfasen']],
+    'De Noord-Afrikaanse vestigingsplaats helpt de verhouding tussen migranten uit Thera en lokale groepen onderzoeken.',
+    worldHeritage('Archaeological Site of Cyrene',190), ['polis-vestiging-cyrene'],
+    'De beginfase is bij benadering weergegeven. Stichtingsverhalen hebben hun eigen overlevering.'),
+  entry('athene-klassieke-polis','Athene en Attica','political','Europa',[23.7275,37.985],
+    [[-508,-322,'Klassieke Atheense burgerinstellingen']],
+    'Burgerinschrijving, besluitvorming en controle over middelen verbinden stad en ommeland op verschillende manieren.',
+    reference('Aristoteles of zijn school','Athenaion Politeia','20–22 en 42–45, vert. F. G. Kenyon',
+      'https://www.gutenberg.org/files/26095/26095-h/26095-h.htm','late 4e eeuw v.Chr.'),
+    ['athene-solon-kleisthenes','athene-politiek-deelname-in-praktijk','athene-tributen-van-bond-tot-hegemonie'],
+    'De markering geeft de stad aan. In de gekozen fase veranderden het bestuur en de politieke verhoudingen.'),
+  entry('aden-handel','Aden aan de Rode Zee en Indische Oceaan','network','Azië',[45.028,12.779],
+    [[1080,1250,'Middeleeuwse handelsverbindingen']],
+    'Correspondentie maakt vragen over goederen, risico en bemiddeling in verschillende havens onderzoekbaar.',
+    genizaAden, ['middeleeuwen-handel-middelen-en-vertrouwen','acad-geniza-aden-india'],
+    'De band omvat een tijdvak rond de 12e-eeuwse brieven. De stip geeft Aden als knooppunt weer.'),
+  entry('malakka-zeestraat','Malakka','network','Azië',[102.25,2.195],
+    [[1400,1511,'Sultanaat en handelsnetwerk'],[1511,1641,'Portugese heerschappij in de haven']],
+    'De haven verbond vaarroutes. De inname van de stad veranderde toegang tot een knooppunt en gaf handelaren aanleiding om alternatieven te gebruiken.',
+    malaccaTrade, ['vroegmodern-malakka-en-portugese-macht'],
+    'De vroegste datering is bij benadering. De positie van het punt geeft het havengebied weer.'),
+  entry('congo-benedenstroom','Beneden-Congo en koloniale exploitatie','network','Afrika',[13.057,-5.85],
+    [[1885,1908,'Congo-Vrijstaat']],
+    'Koloniaal gezag, vervoer en export verbonden onder meer stroomafwaartse plaatsen met gebieden in het binnenland.',
+    colonialCongo, ['wereld-congo-berlijn-en-concessies'],
+    'Het punt oriënteert bij Boma. Concessies, productieplaatsen en dwang verschilden per streek.'),
+  entry('bandung-1955','Bandung','site','Azië',[107.609,-6.917],
+    [[1955,1956,'Aziatisch-Afrikaanse conferentie']],
+    'Deelnemende regeringen kwamen in april 1955 samen om onder meer koloniale verhoudingen en samenwerking te bespreken.',
+    conference, ['wereld-bandung-samenwerking-en-keuzes','acad-bandung'],
+    'De markering geeft de stad bij de conferentie aan.'),
+
 ];

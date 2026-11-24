@@ -551,6 +551,32 @@ test('De historische atlas reageert op jaartal, filters, vergelijken en Nu', { t
   }
 });
 
+test('Een leesreeks opent uitgebreide lessen en volgt de inhoudelijke volgorde', { timeout:30_000 }, async () => {
+  const context = await browser.newContext({ viewport: { width:390, height:844 }, serviceWorkers:'block' });
+  const page = await context.newPage();
+  page.setDefaultTimeout(6500);
+  try {
+    await page.goto(baseURL + '#paideia/roman');
+    await page.getByRole('heading', {name:'Leesreeksen per onderwerp'}).waitFor();
+    const series = page.locator('.history-programme').filter({hasText:'Het Eerste Triumviraat en de nasleep'});
+    await series.locator('summary').click();
+    await series.getByRole('link', {name:'De nasleep: burgeroorlog, herstelbeleid en Caesars dictatuur'}).click();
+    await page.getByRole('heading', {name:'Hervormingen, schulden en vestiging'}).waitFor();
+    await page.getByRole('heading', {name:'De eretekens als politieke taal'}).waitFor();
+    const navigation = page.getByRole('navigation', {name:'Verder in de leesreeks'});
+    const read = navigation.getByRole('button', {name:'Markeer als gelezen'});
+    await read.click();
+    await navigation.locator('button[aria-pressed=true]').waitFor();
+    await noOverflow(page, 'Romeinse leesreeks');
+    await navigation.getByRole('link', {name:/Volgende les/}).click();
+    await page.waitForURL('**/#les/acad-iden/leesreeks/acad-eerste-triumviraat');
+    await page.goBack();
+    await navigation.locator('button[aria-pressed=true]').waitFor();
+  } finally {
+    await context.close();
+  }
+});
+
 test('Een academisch examen gebruikt de gewone toetsroute en toont de rubric na indiening', { timeout:30_000 }, async () => {
   const context = await browser.newContext({ serviceWorkers:'block' });
   const page = await context.newPage();

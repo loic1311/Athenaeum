@@ -1,5 +1,7 @@
-import { makePool, shuffled, TRACKS } from './learning.js?v=160';
+import { makePool, shuffled, TRACKS } from './learning.js?v=161';
 import { essay } from './content/history-course-model.js?v=160';
+import { historicalExamCases } from './content/history-exam-cases.js?v=161';
+import { readingProgrammes } from './history-programmes.js?v=161';
 
 function comparativeQuestion(lessons, type) {
   const lookUp = id => lessons.find(lesson => lesson.id === id);
@@ -28,10 +30,45 @@ const themes = [
   ['aegean', 'De Egeïsche wereld en het Nabije Oosten (1600–800 v.Chr.)', lesson => lesson.curriculum === 'aegean'],
   ['carolingian', 'De Karolingen (768–ca. 900)', lesson => lesson.id.startsWith('karolingisch-')],
   ...tracks.map(track => [track, TRACKS[track].name, lesson => lesson.track === track]),
+  ...tracks.flatMap(track => readingProgrammes(track).filter(programme => programme.anchor !== 'struct-gr-paleis' &&
+    programme.anchor !== 'karolingisch-macht-en-keizerschap').map(programme => {
+      const ids = new Set(programme.parts.map(part => part.id));
+      return [programme.anchor, programme.title, lesson => ids.has(lesson.id)];
+    })),
 ];
 const eligible = question => question.kind === 'open' ? Boolean(question.source && question.rubric?.length) :
   Boolean(question.evidence === 'application' && question.optionFeedback && question.source);
 const checkedQuestions = lesson => makePool([lesson]).flatMap(item => [...item.questions, ...item.academic].filter(eligible));
+
+function specialQuestions(lessons) {
+  const byId = new Map(lessons.map(lesson => [lesson.id, lesson]));
+  return historicalExamCases.filter(row => row.readings.every(id => byId.has(id))).map(({ id, readings, question }) => {
+    const base = makePool([byId.get(readings[0])]).flatMap(item => item.questions).find(q => q.kind === 'open');
+    return {
+      id: base.key + '/' + id, key: base.key, lesson: base.lesson, topic: base.topic,
+      title: base.title, track: base.track, label: base.label,
+      source: base.source, ...question,
+    };
+  });
+}
+
+function bySkill(questions, skills, limit) {
+  const selected = [];
+  const used = new Set();
+  for (const skill of skills) {
+    if (selected.length >= limit) break;
+    const remaining = questions.filter(q => !selected.includes(q) && q.historicalSkill === skill);
+    const question = remaining.find(q => !used.has(q.lesson)) ?? remaining[0];
+    if (!question) continue;
+    used.add(question.lesson);
+    selected.push(question);
+  }
+  for (const question of questions) {
+    if (selected.length >= limit) break;
+    if (!selected.includes(question)) selected.push(question);
+  }
+  return selected;
+}
 
 export function academicSyllabus(lessons) {
   const available = lessons.filter(lesson => tracks.includes(lesson.track) && checkedQuestions(lesson).length);
@@ -60,19 +97,31 @@ export function academicExam(lessons, studied, type, theme, all = false) {
     : programme?.lessons ?? [];
   const arranged = all ? selection : shuffled(selection);
   const byLesson = arranged.map(lesson => (all ? checkedQuestions(lesson) : shuffled(checkedQuestions(lesson))).filter(question =>
-    type !== 'advanced' || question.kind === 'open'));
+    type !== 'advanced' || question.kind === 'open' && question.historicalSkill !== 'situation'));
   const eligibleLessons = selection.filter(lesson => checkedQuestions(lesson).length);
   if (type === 'cumulative' && new Set(eligibleLessons.map(lesson => lesson.track)).size < 2) return;
 
   const questions = roundRobin(byLesson).sort((first, second) => Number(first.kind === 'open') - Number(second.kind === 'open'));
   const synthesis = comparativeQuestion(eligibleLessons, type);
-  const open = [...(synthesis ? [synthesis] : []), ...questions.filter(q => q.kind === 'open')];
+  const cases = specialQuestions(eligibleLessons);
+  const open = [...cases, ...(synthesis ? [{...synthesis, historicalSkill: 'synthesis'}] : []), ...questions.filter(q => q.kind === 'open')];
   if (!open.length) return;
   const objective = questions.filter(q => q.kind !== 'open');
-  const selected = all ? [...objective, ...open] : [...objective.slice(0, 3), ...open.slice(0, type === 'advanced' ? 4 : 3)];
+  const skills = type === 'advanced' ? ['source', 'comparison', 'synthesis', 'explanation'] :
+    ['explanation', 'source', 'comparison', 'synthesis', 'situation'];
+  const selected = all ? [...objective, ...open] : [...objective.slice(0, 3), ...bySkill(open, skills, type === 'advanced' ? 4 : 3)];
   const title = type === 'cumulative' ? 'Cumulatief examen' :
     (type === 'advanced' ? 'Gevorderd examen' : 'Thematisch examen') + ' · ' + programme.name;
   return { title, questions: selected };
+}
+
+
+export function academicPreview(lessons, studied) {
+  const tried = lessons.filter(lesson => studied.has(lesson.id) && tracks.includes(lesson.track));
+  const eligible = (tried.length < 2 ? lessons : tried).filter(lesson => tracks.includes(lesson.track));
+  const grouped = roundRobin(shuffled(eligible).map(lesson => shuffled(checkedQuestions(lesson))));
+  const objective = grouped.filter(q => q.kind === 'choice').slice(0, 2);
+  return [...objective, ...bySkill(grouped.filter(q => q.kind === 'open'), ['source', 'explanation', 'comparison'], 5 - objective.length)];
 }
 
 

@@ -1,9 +1,11 @@
-import { academicSyllabus } from './academic-exams.js?v=160';
-import { EXAM_GOALS, formatSource, KINDS, LEVELS, ROUTES, TRACKS, tally } from './learning.js?v=160';
-import { tipsFor } from './daily.js?v=160';
+import { academicSyllabus } from './academic-exams.js?v=161';
+import { HISTORICAL_SKILLS, historicalAssessment } from './history-assessment.js?v=161';
+import { programmeLessonHref, readingProgrammes, relatedProgrammes } from './history-programmes.js?v=161';
+import { EXAM_GOALS, formatSource, KINDS, LEVELS, ROUTES, TRACKS, tally } from './learning.js?v=161';
+import { tipsFor } from './daily.js?v=161';
 import { instructionFor, PRACTICE_KINDS, PRACTICE_PHASES, practiceOptions, practicePhase, workedExample } from './practice.js?v=160';
 import { LANGUAGE_TOPICS, isLanguageTopic } from './language-topics.js?v=14r3';
-import { EXAM_ICE, EXAM_PASS, MAX_ICE, STARTING_ICE } from './streak.js?v=160';
+import { EXAM_ICE, EXAM_PASS, MAX_ICE, STARTING_ICE } from './streak.js?v=161';
 import { studyNotes } from './study-notes.js?v=13r6';
 import { LEGACY_TIMES, MAX_REMINDERS, REMINDER_DAYS } from './notifications.js?v=13r6';
 import { belongsToHistoryTrack, chronologicalLessons, chronologyGroups, chronologyYear, HISTORICAL_TRACKS, historyLessonHref,
@@ -397,11 +399,22 @@ export function historyExplorerNav(scope, active, cards = false) {
   </nav>`;
 }
 
+function programmeCards(programmes, current, read) {
+  return programmes.map(({ anchor, title, guide, parts }) => `<details class="history-programme" ${current ? 'open' : ''}>
+    <summary>${esc(title)} <span class="small-text muted">· ${parts.length} lessen</span></summary>
+    ${guide ? '<p>' + esc(guide) + '</p>' : ''}
+    <ol class="history-programme-list">${parts.map(part => `<li>
+      <a class="text-link" href="#${programmeLessonHref(part.id, anchor)}" ${part.id === current ? 'aria-current="page"' : ''}>${esc(part.title)}</a>
+      ${read?.has(part.id) ? '<span class="small-text muted"> · gelezen</span>' : ''}</li>`).join('')}</ol>
+  </details>`).join('');
+}
+
 function historyCoursePage(track, lessons, studied, read, search) {
   const model = TRACKS[track];
   const core = chronologicalLessons(lessons, track);
   const cases = lessons.filter(lesson => belongsToHistoryTrack(lesson, track) && !lesson.extension && !lesson.structure);
   const next = core.find(lesson => !read.has(lesson.id) && !studied.has(lesson.id));
+  const programmes = readingProgrammes(track);
   return '<p class="back-link"><a class="text-link" href="#paideia">Paideia · Vakken</a></p>' +
     heading(model.name, model.desc, TRACK_NAMES[track]) + `
     ${next ? `<section class="panel study-resume" aria-label="Volgende kernles">
@@ -409,6 +422,8 @@ function historyCoursePage(track, lessons, studied, read, search) {
       <a class="button primary" href="#${historyLessonHref(next.id, track, 'kern')}">Open les</a>
     </section>` : ''}
     ${historyExplorerNav(track)}
+    ${programmes.length ? '<section class="panel block stack" aria-label="Samenhangende leesreeksen"><h2>Leesreeksen per onderwerp</h2>' +
+      programmeCards(programmes, '', read) + '</section>' : ''}
     <section class="block stack">
       <div class="topline"><h2>Lessen</h2><p class="muted small-text" id="lesson-count" aria-live="polite">${core.length + cases.length} lessen</p></div>
       <div class="field course-search"><label for="course-search">Zoek in dit vak</label>
@@ -515,7 +530,7 @@ export function lessonExplanation(lesson) {
     return '<div class="lesson-copy">' + summary + '</div>' +
       '<div class="history-dimensions">' + lesson.structure.map(({ heading, lead, text, references }) =>
         '<section class="history-dimension lesson-copy"><h3>' + esc(heading) + '</h3>' +
-        paragraphs(text).map((paragraph, index) => index === 0 ? studyParagraph(lead + '.', paragraph, undefined, renderText) :
+        paragraphs(text).map((paragraph, index) => index === 0 && lead ? studyParagraph(lead + '.', paragraph, undefined, renderText) :
           '<p>' + renderText(paragraph) + '</p>').join('') +
         (references?.length ? '<div class="row">' + references.map(sourceView).join('') + '</div>' : '') +
         '</section>').join('') + '</div>';
@@ -582,10 +597,11 @@ function historyNavigation(lesson, journey, read) {
   const back = journey.back ?? timelineHref(journey.scope, journey.mode);
   const label = journey.label ?? 'Tijdlijn · ' + historyScopeName(journey.scope);
   const link = journey.link ?? (id => historyLessonHref(id, journey.scope, journey.mode));
+  const title = journey.title ?? 'Chronologisch verder';
   const step = (row, label, direction) => row ? `<a class="button history-step" rel="${direction}" href="#${link(row.id)}">
     <span>${label}</span><strong>${esc(row.title)}</strong></a>` : '';
-  return `<nav class="panel block stack" aria-label="Chronologisch verder leren">
-    <div class="topline"><h2>Chronologisch verder</h2>${journey.index >= 0 ? '<span class="muted small-text">Les ' + (journey.index + 1) + ' van ' + journey.listSize + '</span>' : ''}</div>
+  return `<nav class="panel block stack" aria-label="${title === 'Chronologisch verder' ? 'Chronologisch verder leren' : esc(title)}">
+    <div class="topline"><h2>${esc(title)}</h2>${journey.index >= 0 ? '<span class="muted small-text">Les ' + (journey.index + 1) + ' van ' + journey.listSize + '</span>' : ''}</div>
     <div class="row"><a class="text-link" href="#${back}">${esc(label)}</a>
       <button type="button" class="button small quiet" data-action="history-read" data-value="${esc(lesson.id)}" aria-pressed="${read}">Markeer als gelezen</button></div>
     <div class="history-steps">${step(journey.previous, 'Vorige les', 'prev')}${step(journey.next, 'Volgende les', 'next')}</div>
@@ -609,6 +625,7 @@ export function lessonPage(lesson, { journey = null, read = false, lessons = [],
   if (lesson.languageTopic) return languageLessonPage(lesson);
   const courseHref = TRACKS[lesson.track].section === 'history' ? 'paideia' : 'talen';
   const sources = lessonSources(lesson);
+  const programmes = relatedProgrammes(lesson);
   return `<div class="row"><a class="text-link" href="#${courseHref}/${courseTrack}">${TRACKS[courseTrack].name}</a>
     ${journey?.inRoute ? `<a class="text-link" href="#${journey.back ?? timelineHref(journey.scope, journey.mode)}">${esc(journey.label ?? 'Tijdlijn · ' + historyScopeName(journey.scope))}</a>` : ''}</div>
     <div class="block"><br>${heading(lesson.title, '', [lesson.period, lesson.level, ROUTES[lesson.route]].filter(Boolean).join(' · '))}</div>
@@ -630,9 +647,11 @@ export function lessonPage(lesson, { journey = null, read = false, lessons = [],
       <p class="muted">${lesson.structure ? 'Pas de uitleg toe in de analysevragen. Vergelijk je open antwoorden met een modelantwoord en beoordelingscriteria.' :
         'Begin met korte vragen. Gebruik een tip wanneer je vastloopt en bekijk de uitleg bij elk antwoord.'}</p>
       <div class="row">${button('lesson-quiz', lesson.structure ? 'Start de analysevragen' : 'Start korte oefenreeks', 'primary', lesson.id)}
-        ${preparationFor(lesson)?.seminar ? button('lesson-academic', 'Academische verdieping', 'quiet', lesson.id) : ''}
+        ${historicalAssessment(lesson) || preparationFor(lesson)?.seminar ? button('lesson-academic', 'Academische verdieping', 'quiet', lesson.id) : ''}
         ${lesson.structure ? '' : button('lesson-more', 'Meer oefeningen', '', lesson.id)}</div>
     </section>
+    ${programmes.length ? '<section class="panel block stack" aria-label="Lees verder over dit onderwerp"><h2>Lees verder over dit onderwerp</h2>' +
+      programmeCards(programmes, lesson.id) + '</section>' : ''}
     ${historyNavigation(lesson, journey, read)}
     ${journey ? historyLinks(lesson, lessons) : ''}
     ${lesson.id.startsWith('eigen-') ? '<section class="block">' + button('delete-deck', 'Les verwijderen', 'danger', lesson.id) + '</section>' : ''}`;
@@ -922,6 +941,7 @@ export function quizPage(session) {
   const hints = formal ? [] : tipsFor(q);
   const visibleHints = session.hints?.[index] || 0;
   const difficulty = STUDY_LEVELS[studyLevel(q) - 1];
+  const skill = HISTORICAL_SKILLS[q.historicalSkill];
   const hintLabels = ['Verduidelijk de vraag', 'Krijg een inhoudelijke tip', 'Krijg een aanwijzing voor je aanpak'];
   return `<div class="quiz">
     <div class="quiz-top"><div><p class="eyebrow">${esc(practiceTitle(session))}</p><span class="quiz-count">Vraag ${index + 1} van ${count}</span></div>
@@ -932,7 +952,7 @@ export function quizPage(session) {
       ${q.passage ? '<details class="question-source"><summary>Lees het fragment</summary>' + primaryPassage(q.passage) + '</details>' : ''}
       ${evidenceNotes(q)}
       ${q.context ? '<p class="question-context"' + (q.promptLanguage ? ' lang="' + esc(q.promptLanguage) + '"' : '') + '>' + esc(q.context) + '</p>' : ''}
-      ${!answered && !formal ? '<p class="question-instruction">' + esc(typeOrder ? 'Typ de volledige zin.' : instructionFor(q)) + '</p>' : ''}
+      ${!answered && (!formal || skill) ? '<p class="question-instruction">' + (skill ? '<strong>' + esc(skill) + '</strong> · ' : '') + esc(typeOrder ? 'Typ de volledige zin.' : instructionFor(q)) + '</p>' : ''}
       ${!answered && q.audioPrompt ? `<div class="spoken-prompt stack">
         <div>${button('listen-prompt', 'Luister naar de vraag', '', '')}</div>
         <details><summary>Lees de vraag</summary><p lang="${esc(q.language)}">${esc(q.audioPrompt)}</p><p class="muted">${esc(q.promptMeaning)}</p></details></div>` : ''}
@@ -1012,7 +1032,7 @@ function answerFeedback(q, answer, result = '') {
         ${selected && selected !== pair ? '<p class="small-text">Jouw keuze · ' + esc(selected.answer) + '</p>' : ''}
         ${pair.note ? '<p class="small-text">' + esc(pair.note) + '</p>' : ''}
         ${sourceView(pair.source)}</li>`;
-    }).join('')}</ul>` : '<p class="model-answer">' + esc(q.answer) + '</p>'}
+    }).join('')}</ul>` : '<div class="model-answer lesson-copy">' + paragraphs(q.answer).map(text => '<p>' + esc(text) + '</p>').join('') + '</div>'}
     ${!matches && answer.rating === 'again' && answer.response ? '<p class="small-text">Jouw antwoord · ' + esc(answer.response) + '</p>' : ''}
     ${optionNote ? '<p><strong>Over je keuze</strong> ' + esc(optionNote) + '</p>' : ''}
     ${!matches && feedback.length ? '<div class="lesson-copy"><h3>Uitleg</h3>' +

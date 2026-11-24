@@ -1,6 +1,6 @@
 import { readAtlasYear } from './atlas-catalog.js?v=142';
-import { ATLAS_KINDS, ATLAS_REGIONS, atlasSnapshot, atlasTicks, formatAtlasYear, loadAtlasAreas } from './atlas-time.js?v=160';
-import { esc, sourceView } from './views.js?v=160';
+import { ATLAS_KINDS, ATLAS_REGIONS, atlasSnapshot, atlasTicks, formatAtlasYear, loadAtlasAreas } from './atlas-time.js?v=161';
+import { esc, sourceView } from './views.js?v=161';
 
 const states = new Map();
 const selection = new WeakMap();

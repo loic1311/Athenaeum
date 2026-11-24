@@ -1,0 +1,68 @@
+import { reference } from './history-academic-model.js?v=14r3';
+import { essay } from './history-course-model.js?v=160';
+
+const comparison = (id, readings, prompt, answer, rubric) => ({
+  id, readings, question: essay(prompt, answer, rubric, { historicalSkill: 'comparison' }),
+});
+
+const source = (id, readings, fragment, prompt, answer, rubric, reference) => ({
+  id, readings, question: essay(prompt, answer, rubric, {
+    historicalSkill: 'source', evidenceNotes: [['Anoniem fragment in eigen Nederlandse weergave', fragment]],
+    source: reference,
+  }),
+});
+
+export const historicalExamCases = [
+  comparison('burger-athene', ['athene-solon-kleisthenes','athene-politiek-deelname-in-praktijk'],
+    'Vergelijk een hervorming van Kleisthenes met de burgerinschrijving uit de late vierde eeuw. Welke continuïteit is aannemelijk en waardoor kan een waargenomen verschil ontstaan?',
+    'De deme verbindt lokale burgerorganisatie met politieke toegang. De latere bron geeft een concreet beeld van controle door lokale en centrale instanties. De beschrijving van een laat-klassieke inschrijving kan latere veranderingen bevatten. Om continuïteit te toetsen zoek je gedateerde afspraken in meerdere fasen en maak je onderscheid tussen de structuur en de procedure.',
+    [['Diachronie','Situeer Kleisthenes en de laat-klassieke procedure afzonderlijk.','Vermeld welke delen van het bewaarde werk retrospectief zijn.'],
+     ['Vergelijking','Vergelijk de institutionele rol van de deme in beide gevallen.','Gebruik inschrijving en toegang als gemeenschappelijke maatstaf.'],
+     ['Bronkritiek','Leg uit welk bewijs tussentijdse verandering kan aantonen.','Stel een gedateerd document of aanwijsbare verandering voor.']]),
+  comparison('tri-twee-beleidsmomenten',['triumviraat-consulaat-59','triumviraat-nasleep-dictatuur'],
+    'Vergelijk de landverdeling in 59 v.Chr. met beleid over vestiging na de burgeroorlog. Leg uit wat in de doelgroep, de procedure en de politieke context veranderde.',
+    'Voor 59 speelde het politieke bondgenootschap met Pompeius een rol en moest een consul een voorstel door de republikeinse besluitvorming krijgen. Na de burgeroorlog kon Caesar vanuit geconcentreerd gezag maatregelen nemen over veteranen en vestiging van andere groepen. In beide gevallen verdeelt beleid middelen en brengt het aanhang in beeld. Vergelijk de betrokken groepen en instellingen en behandel Dio en Suetonius als bronnen met verschillende doelen.',
+    [['Situering','Plaats 59 v.Chr. en de jaren na Pharsalus in hun institutionele context.','Maak duidelijk welke machtspositie Caesar in beide fasen had.'],
+     ['Beleidswerking','Volg per periode dezelfde maatstaf.','Vergelijk doelgroep, procedure of controle over middelen.'],
+     ['Bronvergelijking','Noem één verschil tussen de later schrijvende getuigen.','Koppel de gekozen passage aan het genre en het doel.']]),
+  comparison('pest-en-wet',['middeleeuwen-pest-arbeidsvoorwaarden','middeleeuwen-pest-regionale-uitkomsten'],
+    'Gebruik de Engelse loonwetgeving en de Europese loonreeksen besproken in de lessen. Verdedig een stelling over de omstandigheden waarin demografische verandering de onderhandelingspositie van arbeiders kon versterken.',
+    'Sterfte kon arbeid schaarser maken. De Engelse wetgeving laat een poging zien om lonen en mobiliteit te sturen. Loon- en prijsreeksen helpen concrete uitkomsten vergelijken. Een sterker beroep op schaarste was mogelijk wanneer arbeiders elders werk konden vinden en rechten of dwang hen daar niet van weerhielden. Vergelijk dezelfde taken en koopkracht binnen een afgebakend tijdvak.',
+    [['Mechanisme','Verbind sterfte, alternatieven en loon of voorwaarden.','Maak een tussenstap tussen de schok en de uitkomst zichtbaar.'],
+     ['Synchronie','Vergelijk politieke, sociale en economische factoren in dezelfde periode.','Laat zien hoe een regel en een markt elkaar beïnvloeden.'],
+     ['Bewijs','Onderscheid een normatieve tekst en meting van reële lonen.','Zeg welke uitspraak door elk gegeven wordt ondersteund.']]),
+  comparison('rechten-en-opstand',['vroegmodern-unie-utrecht-bestuur','vroegmodern-revoluties-gelijkheid-en-burgerschap'],
+    'Vergelijk de politieke taal van de Verlatinge in 1581 en die van de Franse Verklaring in 1789. Welke vraag over gehoorzaamheid en rechten stelt elk document? Leg uit waarom de betrokken deelnemers verschillende gevolgen ondervonden.',
+    'De Verlatinge verantwoordt het opzeggen van gehoorzaamheid aan een landsheer vanuit zijn verplichtingen. De Franse verklaring formuleert beginselen voor rechten en politieke deelname. De documenten legitimeren verschillende veranderingen en spreken vanuit andere instellingen. Voor gevolgen moet worden onderzocht welke uitvoerende macht, groepen en wetten de formulering omzetten in beslissingen.',
+    [['Context','Situeer auteurs, jaren en politieke omstandigheden.','Benoem de Staten-Generaal en de Franse Nationale Vergadering.'],
+     ['Vergelijking','Gebruik een gemeenschappelijke vraag over de grondslag van gezag.','Voeg per tekst één concrete aanwijzing toe.'],
+     ['Gevolgen','Scheid beginsel, besluit en praktische toegang.','Kies een groep om de reikwijdte van het besluit te toetsen.']]),
+  comparison('steden-uruk-indus',['wereld-uruk-stad-en-administratie','wereld-indus-standaarden-en-lokaal-bestuur'],
+    'Vergelijk Uruk met een stad in het Indusgebied. Verdedig een uitspraak over stedelijke coördinatie die beide casussen draagt, en wijs aan hoe verschillende bronnen je zekerheid beïnvloeden.',
+    'Gebouwen en gespecialiseerde productie ondersteunen coördinatie in beide contexten. Vroege tabletten kunnen in Uruk concrete administratieve praktijken helpen reconstrueren. In het Indusgebied maken gewichten en infrastructuur gebruik van standaarden en investeringen zichtbaar. Er blijven verschillende manieren waarop deze activiteiten gecoördineerd kunnen zijn. De reikwijdte van elke stelling hangt af van wat de bron aanwijst.',
+    [['Maatstaf','Vergelijk éénzelfde activiteit of bestuurlijk probleem.','Gebruik bijvoorbeeld opslag, productie of handhaving van een standaard.'],
+     ['Bronnen','Verbind een verschillende bron in beide casussen met een beperkte uitspraak.','Vermijd extrapolatie van namen of territoria.'],
+     ['Verklaring','Weeg een alternatieve verklaring en noem een toets.','Kies samenwerking tussen lokale gebruikers, bestuur of datering.']]),
+  comparison('aden-en-voc',['middeleeuwen-handel-middelen-en-vertrouwen','vroegmodern-voc-octrooi-en-uitvoering'],
+    'Vergelijk de organisatie van handel op afstand in een Adenitisch koopmansdossier en de VOC. In welke zin speelde lokale bemiddeling in beide gevallen een rol? Leg uit wanneer de vergelijking haar grens bereikt.',
+    'De koopmansbrief laat zien hoe beheer en informatie aan andere personen werden toevertrouwd. Het VOC-octrooi verdeelde bevoegdheden over een formele organisatie, terwijl de praktijk ook afspraken met lokale actoren vergde. Vergelijk de behandeling van dezelfde taak, zoals een levering regelen. De schaal van bevoegdheden en het doel van de bewaarde documenten verschillen. De feitelijke uitvoering vraagt afzonderlijk bewijs.',
+    [['Diachronie','Situeer beide transport- en bestuurscontexten.','Geef plaats en periode van beide dossiers.'],
+     ['Mechanisme','Vergelijk één praktische taak op afstand.','Volg wie informatie, goederen of betalingen kon overdragen.'],
+     ['Bronkritiek','Leg uit welke conclusie voor een brief en een octrooi verschillend sterk is.','Benoem de praktische uitvoering die buiten een normtekst zou vallen.']]),
+  source('fragment-rubicon', ['triumviraat-breuk-en-49'],
+    'De schrijver beschrijft dat de volkstribunen uit de stad vertrokken. Onder bevel van de schrijver was een leger aanwezig. In een rede aan zijn soldaten stelt hij de behandeling van de tribunen en zijn eigen positie voor als redenen om te handelen.',
+    'Situeer het fragment, geef een beargumenteerde toeschrijving en leg uit hoe de positie van de schrijver zijn keuze van argumenten kon bepalen.',
+    'Dit is een eigen weergave van passages uit Caesars Burgeroorlog 1.5–7. De vlucht van de volkstribunen en de toespraak van de bevelhebber passen in de crisis van januari 49. Caesar presenteert zijn ingrijpen als antwoord op geschonden politieke rechten. De tekst documenteert zijn publieke rechtvaardiging. De gebeurtenissen en de motieven van opponenten vragen vergelijking met hun eigen stemmen of andere getuigenissen.',
+    [['Toeschrijving','Verbind minstens twee inhoudelijke aanwijzingen met auteur en situatie.','Gebruik de tribunen en de verhouding tussen schrijver en leger.'],
+     ['Genre','Verklaar hoe het relaas van een deelnemer verschilt van een besluit of latere biografie.','Leg uit welke belangen en keuze van argumenten zichtbaar zijn.'],
+     ['Grenzen','Maak een onderscheid tussen rechtvaardiging en de feitelijke oorzaak van het conflict.','Noem een alternatieve getuigenis of vergelijking.']],
+    reference('Julius Caesar','Burgeroorlog','1.5–7, vert. A. G. Peskett, Loeb-editie','https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Caesar/Civil_Wars/1A%2A.html','1e eeuw v.Chr.')),
+  source('fragment-raad-athene', ['athene-politiek-deelname-in-praktijk'],
+    'De tekst legt uit hoe jonge mannen worden ingeschreven. Na een plaatselijke controle komt ook een raad in beeld. Verder wordt het raadslidmaatschap besproken in samenhang met de groepen waarin burgers zijn ingedeeld.',
+    'Identificeer het vermoedelijke brontype en situeer het fragment. Verbind twee institutionele aanwijzingen met een interpretatie van politieke deelname.',
+    'Dit geeft Athenaion Politeia 42–43 weer. Een laat-vierde-eeuwse beschrijving behandelt hoe demen inschrijving controleerden en hoe de Raad van Vijfhonderd werd samengesteld. Een inwoner diende aan juridische voorwaarden te voldoen voordat hij formeel kon deelnemen. De procedure zegt weinig over de frequentie van feitelijke deelname.',
+    [['Context','Geef een toeschrijving of verdedig een passend genre met datering.','Gebruik de systematische beschrijving van instellingen als aanwijzing.'],
+     ['Analyse','Verbind lokale inschrijving met deelname via centrale instellingen.','Houd controle op burgerschap en raadsorganisatie uit elkaar.'],
+     ['Reikwijdte','Benoem welk aspect van deelname aanvullend bewijs vraagt.','Gebruik frequentie, praktische toegang of een eerder tijdvak.']],
+    reference('Aristoteles of zijn school','Athenaion Politeia','42–43, vert. F. G. Kenyon','https://www.gutenberg.org/files/26095/26095-h/26095-h.htm','late 4e eeuw v.Chr.')),
+];

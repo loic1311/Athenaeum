@@ -508,6 +508,58 @@ export const catalogIndex = {
     ["acad-mogol-razmnama","earlymodern","Het Mogolhof vertaalt de Mahabharata",3,"",""],
     ["acad-haiti-1804","history","Haïti verklaart zijn onafhankelijkheid",3,"",""]
   ],
+  "greece-reading": [
+    ["polis-ruimte-en-gemeenschap","greek","De vorming van poleis: stadskern, ommeland en deelname",1,"","","struct-gr-polis"],
+    ["polis-vestiging-cyrene","greek","Thera en Kyrene: migratie, vestiging en het verhaal erover",1,"","","griekse-nederzettingen"],
+    ["athene-solon-kleisthenes","greek","Van Solon tot Kleisthenes: schuld, conflict en burgerindeling",1,"","","atheense-democratie"],
+    ["athene-politiek-deelname-in-praktijk","greek","De Atheense democratie in de praktijk: inschrijving, raad en besluit",1,"","","struct-gr-klassiek"],
+    ["athene-tributen-van-bond-tot-hegemonie","greek","Tribuut, vloot en dwang in het Atheense bondgenootschap",2,"","","delische-bond"],
+    ["griekenland-besluit-voor-oorlog","greek","De aanloop naar de Peloponnesische Oorlog: incidenten, stemmen en belangen",1,"","","peloponnesische-oorlog"],
+    ["hellenisme-steden-hoven-en-geld","greek","Hellenistisch bestuur: hoven, stadsgemeenschappen en fiscale afspraken",1,"","","struct-gr-hellenisme"]
+  ],
+  "roman-reading": [
+    ["rome-bondgenoten-rechten","roman","Italiaanse bondgenoten, burgerschap en de Bondgenotenoorlog",1,"","","struct-ro-republiek"],
+    ["triumviraat-vorming-belangen","roman","Pompeius, Crassus en Caesar vóór hun afspraak",1,"","","acad-eerste-triumviraat"],
+    ["triumviraat-consulaat-59","roman","Caesars consulaat: landwet, volksvergadering en tegenstand",2,"","","acad-eerste-triumviraat"],
+    ["triumviraat-luca-en-provincies","roman","Van Luca naar de provincies: opvolging, bevel en middelen",1,"","","acad-eerste-triumviraat"],
+    ["triumviraat-breuk-en-49","roman","Het uiteenvallen van het Eerste Triumviraat en de breuk van 49",1,"","","acad-eerste-triumviraat"],
+    ["triumviraat-nasleep-dictatuur","roman","De nasleep: burgeroorlog, herstelbeleid en Caesars dictatuur",1,"","","acad-eerste-triumviraat"],
+    ["rome-augustus-geld-aanhang","roman","Augustus: geldstromen, veteranen en zichtbaar gezag",1,"","","struct-ro-principaat"],
+    ["rome-provincies-begroting","roman","Stedelijke projecten en financieel toezicht in de provincies",1,"","","struct-ro-provincies"],
+    ["rome-donau-toelating-voorziening","roman","De Donauoversteek: toelating, bevoorrading en gezagsbreuk",1,"","","struct-ro-laat"]
+  ],
+  "medieval-reading": [
+    ["middeleeuwen-gezag-na-west-rome","medieval","Na West-Rome: koninklijk gezag en plaatselijke continuïteit",1,"","","struct-me-na-rome"],
+    ["karolingisch-synthese-hof-en-regios","medieval","Karel de Grote. Synthese van bestuur, domeinen, kerk en samenleving",1,"","","karolingisch-macht-en-keizerschap"],
+    ["middeleeuwen-heerlijke-rechten-in-praktijk","medieval","Heerlijke rechten in de praktijk: grond, lasten en rechtspraak",1,"","","struct-me-heerlijkheid"],
+    ["middeleeuwen-steden-knooppunten-rechten","medieval","Steden en markten. Welke rechten maakten handel mogelijk?",1,"","","struct-me-steden"],
+    ["middeleeuwen-pest-arbeidsvoorwaarden","medieval","Pest en arbeid in Engeland. Schaarste, loon en regelgeving",2,"","","struct-me-crisis"],
+    ["middeleeuwen-pest-regionale-uitkomsten","medieval","Na de pest. Waarom liepen regionale uitkomsten uiteen?",1,"","","struct-me-crisis"],
+    ["middeleeuwen-kruistochten-transportroutes","medieval","Kruistochten, transport en politieke verschuivingen",1,"","","struct-me-kruistochten"],
+    ["middeleeuwen-handel-middelen-en-vertrouwen","medieval","Aden en de Indische Oceaan. Krediet, bemiddeling en koopmansbrieven",1,"","","struct-me-verbindingen"]
+  ],
+  "earlymodern-reading": [
+    ["vroegmodern-malakka-en-portugese-macht","earlymodern","Malakka en Portugese macht op de grens van zeeroutes",1,"","","struct-vm-oceaan"],
+    ["vroegmodern-drukwerk-en-publiek","earlymodern","Drukwerk, vertaling en het publiek van de hervormingen",1,"","","struct-vm-reformatie"],
+    ["vroegmodern-augsburg-confessie-bestuur","earlymodern","De Godsdienstvrede van Augsburg als regeling van gezag",1,"","","struct-vm-reformatie"],
+    ["vroegmodern-unie-utrecht-bestuur","earlymodern","De Nederlandse Opstand. Belastingen, samenwerking en soevereiniteit",1,"","","struct-vm-lage-landen"],
+    ["vroegmodern-ottomanen-safavidische-grenzen","earlymodern","Ottomaanse en Safavidische macht in grensgebieden",1,"","","struct-vm-rijken"],
+    ["vroegmodern-voc-octrooi-en-uitvoering","earlymodern","De VOC. Octrooi, kapitaal en plaatselijke uitvoering",1,"","","struct-vm-atlantic"],
+    ["vroegmodern-atlantische-slavernij-archief","earlymodern","Atlantische slavernij. Wat tellen scheepsreizen en wat blijft onderbelicht?",2,"","","struct-vm-atlantic"],
+    ["vroegmodern-revoluties-gelijkheid-en-burgerschap","earlymodern","Atlantische revoluties. Gelijkheid, slavernij en politieke toegang",1,"","","struct-vm-burgerschap"]
+  ],
+  "world-reading": [
+    ["wereld-uruk-stad-en-administratie","history","Uruk. Arbeidsdeling, opslag en de eerste schriftpraktijken",1,"","","struct-wo-steden"],
+    ["wereld-indus-standaarden-en-lokaal-bestuur","history","De Indussteden. Standaarden, infrastructuur en onbekend bestuur",1,"","","struct-wo-steden"],
+    ["wereld-lapita-kust-en-eilandnetwerken","history","Lapita. Aardewerk, bewoningsfasen en verbindingen tussen eilanden",1,"","","h2-lapita-migratie"],
+    ["wereld-song-geld-en-stedelijke-markten","history","Song-China. Geld, staatsinkomsten en regionale markten",1,"","","song-commerciele-revolutie"],
+    ["wereld-mali-handel-en-representatie","history","Mali. Handelsverbindingen, inkomsten en het beeld van Mansa Musa",1,"","","ghana-mali-sahel"],
+    ["wereld-industrie-machine-kapitaal-organisatie","history","Industrialisering. Machines, kapitaal en de organisatie van productie",1,"","","struct-wo-industrie"],
+    ["wereld-industrie-fabrieksarbeid-en-regels","history","Fabrieksarbeid. Gezin, toezicht en de toepassing van arbeidswetgeving",1,"","","struct-wo-industrie"],
+    ["wereld-congo-berlijn-en-concessies","history","Congo-Vrijstaat. Internationale afspraken, exploitatie en plaatselijke dwang",1,"","","struct-wo-imperialisme"],
+    ["wereld-wereldoorlog-productie-en-samenleving","history","De Eerste Wereldoorlog thuis. Productie, tekorten en zorg",1,"","","struct-wo-massapolitiek"],
+    ["wereld-bandung-samenwerking-en-keuzes","history","Bandung. Dekolonisatie, diplomatie en economische samenwerking",1,"","","struct-wo-na-1945"]
+  ],
   "city-paths": [
     ["atlas-stad-ostia","roman","Ostia · Een versterking aan de monding",2,"","atlas"],
     ["atlas-stad-pompeii","roman","Pompeï · Een stad in Romeins Italië",2,"","atlas"],

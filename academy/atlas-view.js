@@ -1,8 +1,8 @@
 import { ATLAS_PLACES, ATLAS_VIEWS, atlasById, historicalName } from './atlas-catalog.js?v=142';
 import { byDate, explorerHref, historyInScope } from './history-explorer.js?v=160';
-import { explorerHeader } from './history-explorer-view.js?v=160';
-import { esc, sourceView } from './views.js?v=160';
-import { atlasHistoricalPanel, atlasTimeline, bindAtlasTime, getAtlasHistory } from './atlas-time-view.js?v=160';
+import { explorerHeader } from './history-explorer-view.js?v=161';
+import { esc, sourceView } from './views.js?v=161';
+import { atlasHistoricalPanel, atlasTimeline, bindAtlasTime, getAtlasHistory } from './atlas-time-view.js?v=161';
 
 const count = n => n + (n === 1 ? ' les' : ' lessen');
 const nameKey = value => String(value || '').normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
