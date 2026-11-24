@@ -1,4 +1,4 @@
-import { TRACKS, makePool, practiceBalance, practiceQuestions, practiceTopic, recentPractice } from './learning.js?v=14r3';
+import { TRACKS, makePool, practiceBalance, practiceQuestions, practiceTopic, recentPractice } from './learning.js?v=142';
 import { practiceDifficulty, preferredDifficulty, startingDifficulty } from './practice.js?v=13r8';
 import { HISTORICAL_TRACKS } from './history-chronology.js?v=14r3';
 

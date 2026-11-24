@@ -1,4 +1,6 @@
 import { practiceVariants, practiceDifficulty, preferredDifficulty, startingDifficulty } from './practice.js?v=13r8';
+import { independentlyCorrect } from './assessment.js?v=142';
+export { tally } from './assessment.js?v=142';
 
 export const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1'];
 export const ROUTES = {
@@ -141,17 +143,29 @@ export function historyOf(records) {
   const lessons = new Set();
   const reviews = records.filter(record => record.kind === 'review').sort((a, b) => a.at - b.at || a.id.localeCompare(b.id));
   for (const record of reviews) {
-    const { key, question, lesson, rating } = record.data;
+    const { key, question, lesson, rating, evidence, skipped } = record.data;
     const current = states.get(key) ?? { stage: 0, count: 0 };
-    const stage = rating === 'again' ? 0 : rating === 'help' ? Math.min(1, current.stage) : Math.min(REVIEW_STEPS.length - 1, current.stage + (rating === 'easy' ? 2 : 1));
-    const wait = rating === 'help' ? 6 * 60 * 60_000 : stage === 0 ? 45 * 60_000 : REVIEW_STEPS[stage] * DAY;
-    const correct = !record.data.skipped && ['good', 'easy'].includes(rating);
-    const day = new Date(record.at).toDateString();
-    const recallDays = correct ? (current.recallDays || 0) + Number(current.recallDate !== day) : 0;
+    const shortReview = rating === 'help' || evidence === 'self';
+    const stage = rating === 'again' || skipped ? 0 : shortReview ? Math.min(1, current.stage) :
+      Math.min(REVIEW_STEPS.length - 1, current.stage + (rating === 'easy' ? 2 : 1));
+    const wait = rating !== 'again' && shortReview ? 6 * 60 * 60_000 : stage === 0 ? 45 * 60_000 : REVIEW_STEPS[stage] * DAY;
+    const correct = independentlyCorrect(record.data);
+    let recallCount = current.recallCount ?? 0;
+    let lastRecall = current.lastRecall;
+    if (evidence === 'recall') {
+      if (!correct) {
+        recallCount = 0;
+        lastRecall = undefined;
+      } else if (lastRecall === undefined || record.at - lastRecall >= DAY) {
+        recallCount++;
+        lastRecall = record.at;
+      }
+    }
     states.set(key, { stage, count: current.count + 1, due: record.at + wait, last: record.at, lastQuestion: question,
-      recallDays, recallDate: correct ? day : undefined });
+      attempted: Boolean(current.attempted || !skipped), recallCount, lastRecall,
+      recognized: evidence === 'recognition' ? correct : current.recognized });
     if (question) seen.set(question, record.at);
-    if (lesson) lessons.add(lesson);
+    if (lesson && !skipped) lessons.add(lesson);
   }
   return { states, seen, lessons };
 }
@@ -252,7 +266,10 @@ export function estimateLevel(questions, responses) {
   let recommended = 'A1';
   const rows = LEVELS.map(level => {
     const group = questions.map((q, index) => ({ q, index })).filter(({ q }) => q.level === level);
-    const correct = group.filter(({ q, index }) => isCorrect(q, responses[index]?.response)).length;
+    const correct = group.filter(({ q, index }) => {
+      const answer = responses[index];
+      return !answer?.skipped && !answer?.hinted && isCorrect(q, answer?.response);
+    }).length;
     return { level, correct, total: group.length };
   });
   for (const row of rows) {
@@ -269,15 +286,4 @@ export function levelFor(lesson, prefs) {
 export function formatSource(source) {
   if (!source) return '';
   return [source.author, source.title, source.year, source.locator].filter(Boolean).join(' · ');
-}
-
-export function tally(questions, answers) {
-  let correct = 0, reviewed = 0;
-  questions.forEach((question, index) => {
-    const answer = answers[index];
-    if (!answer || !answer.rating) return;
-    reviewed++;
-    if (answer.rating !== 'again') correct++;
-  });
-  return { total: questions.length, correct, reviewed };
 }

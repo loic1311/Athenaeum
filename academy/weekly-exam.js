@@ -1,5 +1,5 @@
-import { EXAM_GOALS, TRACKS, examQuestions, makePool } from './learning.js?v=14r3';
-import { dayKey } from './daily.js?v=13r9';
+import { EXAM_GOALS, TRACKS, examQuestions, makePool } from './learning.js?v=142';
+import { dayKey } from './daily.js?v=142';
 
 function currentWeek(now) {
   const monday = new Date(now);

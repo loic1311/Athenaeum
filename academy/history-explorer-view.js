@@ -1,8 +1,8 @@
 import { HISTORY_SECTIONS, HISTORICAL_ERAS, STUDY_THEMES, explorerHref, explorationLessonHref,
-  explorationLessons, historyInScope, inEra, hasTheme, themeSelection } from './history-explorer.js?v=14r4';
+  explorationLessons, historyInScope, inEra, hasTheme, themeSelection } from './history-explorer.js?v=142';
 import { HISTORICAL_TRACKS } from './history-chronology.js?v=14r3';
-import { TRACKS } from './learning.js?v=14r3';
-import { esc, heading, historyExplorerNav, icon, sourceView, studyMeter } from './views.js?v=14r4';
+import { TRACKS } from './learning.js?v=142';
+import { esc, heading, historyExplorerNav, icon, sourceView, studyMeter } from './views.js?v=142';
 import { curricula, reading } from './history-reading.js?v=13r9';
 
 const count = number => number + (number === 1 ? ' les' : ' lessen');

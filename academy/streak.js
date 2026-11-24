@@ -1,4 +1,6 @@
-import { dayKey } from './daily.js?v=13r9';
+import { dayKey } from './daily.js?v=142';
+import { EXAM_GOALS } from './learning.js?v=142';
+import { SCORE_VERSION } from './assessment.js?v=142';
 
 const DAY = 86_400_000;
 export const STARTING_ICE = 2;
@@ -32,8 +34,11 @@ function examPeriod(type, date) {
 function rewardFor(row, completed, today) {
   const data = row.data;
   const type = data.examType ?? ({ Weekexamen: 'week', Maandtoets: 'month' })[data.title];
-  if (data.mode !== 'exam' || !Object.hasOwn(EXAM_ICE, type) || data.total < 1 ||
-      data.reviewed !== data.total || data.correct * 100 < data.total * EXAM_PASS) return null;
+  if (data.mode !== 'exam' || !Object.hasOwn(EXAM_ICE, type) || data.reviewed !== data.total) return null;
+  const currentScore = data.scoreVersion === SCORE_VERSION;
+  const denominator = currentScore ? data.objective : data.total;
+  if (!Number.isInteger(denominator) || denominator < (currentScore ? EXAM_GOALS[type] : 1) ||
+      data.correct * 100 < denominator * EXAM_PASS) return null;
   const graded = dayNumber(data.gradedDay ?? dayKey(new Date(row.at)));
   if (!Number.isFinite(graded) || graded < completed || graded > today) return null;
   const examined = type === 'week' && isStudyDay(data.examWeek) ? dayNumber(data.examWeek) : completed;

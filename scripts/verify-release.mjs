@@ -63,13 +63,19 @@ for (const place of ATLAS_PLACES) {
   assert(Math.abs(place.coordinates[0])<=180 && Math.abs(place.coordinates[1])<=90,place.id);
   const matching = place.lessons.filter(id=>lessons.has(id));
   assert(matching.length,place.id + ' heeft een werkende les.');
-  for (const [from,to,name] of place.windows) assert(from !== 0 && to !== 0 && from <= to && name,place.id);
+  for (const [from,to,name] of place.windows) {
+    assert(Number.isInteger(from) && from !== 0 && name, place.id);
+    assert(to === null || (Number.isInteger(to) && to !== 0 && from <= to), place.id);
+  }
   atlasPaths.push([place.id,matching.length]);
 }
 assert.equal(readAtlasYear('100 n.Chr.'),100);
 assert.equal(readAtlasYear('44 v.Chr.'),-44);
 assert(Number.isNaN(readAtlasYear('0')));
 assert.match(historicalName(ATLAS_PLACES.find(p=>p.id==='marseille'),100),/Massilia/i);
+assert.equal(historicalName(ATLAS_PLACES.find(p=>p.id==='marseille'),2100),'Marseille');
+assert.equal(historicalName(ATLAS_PLACES.find(p=>p.id==='marseille'),900),undefined);
+assert.equal(historicalName(ATLAS_PLACES.find(p=>p.id==='pompeii'),2100),undefined);
 const empty = new Set();
 for (const place of ['parijs','toulouse','marseille','madrid','barcelona','gent']) {
   assert(atlasPage(rows,'alles',place,empty,empty).includes('Uitgebreid studeren'),place);

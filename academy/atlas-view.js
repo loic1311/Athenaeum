@@ -1,7 +1,7 @@
-import { ATLAS_PLACES, ATLAS_VIEWS, atlasById, historicalName, readAtlasYear } from './atlas-catalog.js?v=14r3';
-import { byDate, explorerHref, explorationLessonHref, historyInScope } from './history-explorer.js?v=14r4';
-import { explorerHeader, learningPath } from './history-explorer-view.js?v=14r4';
-import { esc } from './views.js?v=14r4';
+import { ATLAS_PLACES, ATLAS_VIEWS, atlasById, historicalName, readAtlasYear } from './atlas-catalog.js?v=142';
+import { byDate, explorerHref, explorationLessonHref, historyInScope } from './history-explorer.js?v=142';
+import { explorerHeader, learningPath } from './history-explorer-view.js?v=142';
+import { esc } from './views.js?v=142';
 
 const count = n => n + (n === 1 ? ' les' : ' lessen');
 const nameKey = value => String(value || '').normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
@@ -44,20 +44,20 @@ export function atlasPage(lessons, scope, key, studied, read) {
       <section id="atlas-globe" class="atlas-frame" data-selected-place="${esc(chosen?.id || '')}" aria-label="Interactieve historische wereldbol">
         <div class="atlas-map">
           <p class="atlas-loading" role="status">Wereldbol laden…</p>
-          <canvas role="region" tabindex="0" aria-label="Wereldbol. Draai met de pijltjestoetsen, zoom met plus en min, of selecteer een plaats in de lijst.">
+          <canvas role="region" tabindex="-1" aria-label="Wereldbol. Draai met de pijltjestoetsen, zoom met plus en min, of selecteer een plaats in de lijst.">
             Kies een plaats in de lijst.
           </canvas>
           <div class="atlas-map-label"><span aria-hidden="true"></span><span id="atlas-map-status">${chosen ? esc(chosen.name) : 'Wereld'}</span></div>
           ${next ? `<a class="button atlas-map-open" href="#${explorationLessonHref(next.id, 'atlas', scope, chosen.id)}">Leerpad ${esc(chosen.name)}</a>` : ''}
-          <div class="atlas-controls" role="group" aria-label="Kaartzoom">
+          <div class="atlas-controls" role="group" aria-label="Kaartzoom" hidden>
             <button class="button icon-only" type="button" data-map-zoom="1.45" aria-label="Inzoomen">+</button>
             <button class="button icon-only" type="button" data-map-zoom=".69" aria-label="Uitzoomen">−</button>
           </div>
-          <div class="atlas-error notice" hidden><p>De kaart kon niet laden. Je kunt alle leerpaden in de stedenlijst openen.</p>
-            <button type="button" class="button small" data-action="reload-page">Kaart opnieuw laden</button></div>
+          <div class="atlas-error notice" hidden><p role="status"></p>
+            <button type="button" class="button small" data-atlas-retry>Kaart opnieuw laden</button></div>
         </div>
         <div class="atlas-map-footer">
-          <div class="row atlas-presets" aria-label="Ga naar een regio">${Object.entries(ATLAS_VIEWS).map(([id, view]) =>
+          <div class="row atlas-presets" aria-label="Ga naar een regio" hidden>${Object.entries(ATLAS_VIEWS).map(([id, view]) =>
             `<button type="button" class="chip outline" data-map-view="${id}" aria-pressed="${!chosen && id === 'wereld'}">${view.label}</button>`).join('')}</div>
           <p class="small-text muted">Huidige kustlijnen op een orthografische wereldbol. Sleep om te draaien, knijp of dubbelklik om in te zoomen. <a class="text-link" href="https://www.naturalearthdata.com/downloads/110m-physical-vectors/" target="_blank" rel="noopener noreferrer">Kustlijnen van Natural Earth</a> · <a class="text-link" href="https://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-rivers-lake-centerlines/" target="_blank" rel="noopener noreferrer">Huidige rivierlopen</a></p><p class="atlas-layer-status small-text" role="status"></p>
         </div>
@@ -71,7 +71,7 @@ export function atlasPage(lessons, scope, key, studied, read) {
         <div class="field"><label for="atlas-search">Zoek een stad of regio</label>
           <input type="search" id="atlas-search" placeholder="Bijvoorbeeld Parijs, Tolosa of Spanje" aria-controls="atlas-city-list"></div>
         <div class="field"><label for="atlas-year">Historische tijdslaag</label><input id="atlas-year" type="text" placeholder="Bijvoorbeeld 100 n.Chr." aria-describedby="atlas-year-note" aria-controls="atlas-city-list"></div>
-        <p id="atlas-year-note" class="small-text muted">Een leeg veld toont alle plaatsen. Per jaar verschijnen alleen gedocumenteerde perioden. Een ontbrekende markering kan ook een leemte in de gegevens zijn.</p>
+        <p id="atlas-year-note" class="small-text muted">Een leeg veld toont alle plaatsen. Per jaar zie je de vastgelegde naamperiodes. Een huidige naam blijft beschikbaar wanneer er geen eindjaar is vastgelegd. Een ontbrekende markering kan op een leemte in de gegevens wijzen.</p>
         <div class="row atlas-options"><button type="button" class="button small quiet" data-atlas-reset>Wis filters</button><label><input type="checkbox" data-atlas-grid checked> Gradennet</label><label><input type="checkbox" data-atlas-rivers> Grote rivieren</label></div>
         <p id="atlas-year-message" role="status" class="small-text"></p><p id="atlas-results" class="small-text muted" aria-live="polite">${available.length} ${available.length === 1 ? 'plaats' : 'plaatsen'}</p>
         <p id="atlas-empty" class="empty" ${available.length ? 'hidden' : ''}>Geen plaatsen gevonden. Pas je zoekterm of het segment aan.</p>
@@ -143,4 +143,78 @@ export function bindAtlasFilters(frame) {
   apply();
 }
 
-export { ATLAS_PLACES };
+let globeModule;
+let globeImportFailed = false;
+
+function loadGlobe(retry) {
+  globeModule ??= (globeImportFailed && retry
+    ? import('./atlas-globe.js?v=142-retry')
+    : import('./atlas-globe.js?v=142'))
+    .catch(error => {
+      globeModule = undefined;
+      globeImportFailed = true;
+      throw error;
+    });
+  return globeModule;
+}
+
+export function mountAtlas(frame, onSelect) {
+  bindAtlasFilters(frame);
+  const layout = frame.closest('.atlas-layout');
+  const available = new Set([...layout.querySelectorAll('[data-place-id]')].map(row => row.dataset.placeId));
+  const places = ATLAS_PLACES.filter(place => available.has(place.id));
+  const loading = frame.querySelector('.atlas-loading');
+  const canvas = frame.querySelector('canvas');
+  const errorPanel = frame.querySelector('.atlas-error');
+  const retryButton = frame.querySelector('[data-atlas-retry]');
+  const mapControls = frame.querySelector('.atlas-controls');
+  const presets = frame.querySelector('.atlas-presets');
+  let dispose;
+  let closed = false;
+  let pending = false;
+
+  async function start(retry = false) {
+    if (pending || closed) return;
+    pending = true;
+    delete frame.dataset.failed;
+    errorPanel.hidden = true;
+    loading.hidden = false;
+    canvas.hidden = false;
+    try {
+      const { mountAtlasGlobe } = await loadGlobe(retry);
+      if (closed) return;
+      const cleanup = await mountAtlasGlobe(frame, places, frame.dataset.selectedPlace, onSelect, { retry });
+      if (closed) { cleanup?.(); return; }
+      dispose = cleanup;
+      frame.dataset.ready = 'true';
+      canvas.tabIndex = 0;
+      loading.hidden = true;
+      mapControls.hidden = false;
+      presets.hidden = false;
+      if (retry) canvas.focus({ preventScroll: true });
+    } catch (error) {
+      if (closed) return;
+      frame.dataset.failed = 'true';
+      loading.hidden = true;
+      canvas.hidden = true;
+      errorPanel.hidden = false;
+      const reason = error?.message === 'AtlasCanvas' ? 'De browser kon de wereldbol niet tekenen.' :
+        error?.message === 'AtlasGeography' ? 'De kustlijnen konden niet worden gelezen.' :
+        navigator.onLine === false ? 'De kaartbestanden zijn niet offline beschikbaar.' :
+        'De kaartbestanden konden niet laden.';
+      errorPanel.querySelector('p').textContent = reason + ' De leerpaden blijven beschikbaar in de plaatsenlijst.';
+      if (retry) retryButton.focus({ preventScroll: true });
+    } finally {
+      pending = false;
+    }
+  }
+
+  const retry = () => start(true);
+  retryButton.addEventListener('click', retry);
+  start();
+  return () => {
+    closed = true;
+    retryButton.removeEventListener('click', retry);
+    dispose?.();
+  };
+}

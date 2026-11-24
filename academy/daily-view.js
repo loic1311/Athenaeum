@@ -1,7 +1,8 @@
-import { TRACKS, ROUTES } from './learning.js?v=14r3';
-import { DAY_FOCI, PACE, STAGES, dayKey } from './daily.js?v=13r9';
-import { esc, exampleView, heading, languageGrammar, languageVocabulary, lessonExplanation, sourceView } from './views.js?v=14r4';
+import { TRACKS, ROUTES } from './learning.js?v=142';
+import { DAY_FOCI, PACE, STAGES, dayKey } from './daily.js?v=142';
+import { esc, exampleView, heading, languageGrammar, languageVocabulary, lessonExplanation, sourceView } from './views.js?v=142';
 import { workedExample } from './practice.js?v=13r8';
+import { SCORE_VERSION } from './assessment.js?v=142';
 
 function dateName(date) {
   const value = new Date(date + 'T12:00:00');
@@ -51,14 +52,15 @@ function stepList(plan) {
 function planView(plan, lessons, resume) {
   const entries = Object.values(plan.results);
   const total = entries.reduce((n, row) => n + row.total, 0);
-  const correct = entries.reduce((n, row) => n + row.correct, 0);
+  const scored = entries.filter(row => row.scoreVersion === SCORE_VERSION);
+  const correct = scored.reduce((n, row) => n + row.correct, 0);
+  const selfAssessed = scored.reduce((n, row) => n + row.selfAssessed, 0);
   const hinted = entries.reduce((n, row) => n + (row.hinted ?? 0), 0);
-  const independent = Math.max(0, correct - entries.reduce((n, row) => n + (row.assisted ?? 0), 0));
   if (plan.completed) {
     const revisit = [...new Map(entries.flatMap(row => row.revisit ?? []).map(r => [r.key,r])).values()].slice(0,6);
     return `<div class="panel daily-done stack">
       <h2>Dagles afgerond</h2>
-      <p>Je oefende ${total} ${total === 1 ? 'vraag' : 'vragen'}. ${independent} goed op eigen kracht${hinted ? ' · ' + hinted + ' met hulp geoefend' : ''}.</p>
+      <p>Je oefende ${total} ${total === 1 ? 'vraag' : 'vragen'}.${scored.length ? ' ' + correct + ' automatisch juist zonder hulp.' : ''}${hinted ? ' ' + hinted + ' met hulp geoefend.' : ''}${selfAssessed ? ' ' + selfAssessed + ' zelf beoordeeld.' : ''}</p>
       <p class="muted">Athenaeum neemt je antwoorden mee bij de volgende dagles.</p>
       ${revisit.length ? '<div class="notice"><strong>Begrippen om opnieuw te bekijken</strong><ul>' + revisit.map(r =>
         '<li><a class="text-link" href="#les/' + esc(r.lesson) + '">' + esc(r.label) + '</a></li>').join('') + '</ul></div>' : ''}

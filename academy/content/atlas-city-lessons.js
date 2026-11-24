@@ -1,4 +1,4 @@
-import { atlasAdditions } from './atlas-sites.js?v=14r3';
+import { atlasAdditions } from './atlas-sites.js?v=142';
 
 // The different stages of a city dossier constitute one study, with a stable progress ID.
 function cityLesson(place, id = 'atlas-stad-' + place.id) {
