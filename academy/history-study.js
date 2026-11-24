@@ -28,7 +28,7 @@ export function preparationFor(lesson) {
   const seminar = guides.get(lesson.id);
   const introduced = conceptsIn(lesson.title, lesson.summary,
     ...(lesson.structure ?? []).flatMap(section => [section.lead, section.text]),
-    ...lesson.items.flatMap(item => [item.label, item.explanation]));
+    ...lesson.items.flatMap(item => [item.label, item.explanation, ...item.questions.flatMap(q => [q.text, q.context])]));
   const prerequisites = [...new Set([...(seminar?.prerequisites ?? []), ...introduced])];
   const preparation = { seminar, prerequisites };
   preparedLessons.set(lesson, preparation);
@@ -50,8 +50,21 @@ export function prerequisitesFor(lesson, question) {
   ])];
 }
 
+export function lessonSources(lesson) {
+  const seminar = preparationFor(lesson)?.seminar;
+  const references = [...(lesson.sources ?? []), ...(seminar?.preparation ?? []).map(block => block[2]),
+    ...(seminar?.evidence ?? []).map(block => block[2])];
+  return [...new Map(references.map(source => [source.title + '/' + source.locator, source])).values()];
+}
+
 function termExercises(concept) {
+  const alternatives = concept.related.slice(0, 2).map(id => studyConcept(id).definition);
   return [
+    {
+      id: 'herken-' + concept.id, kind: 'choice', studyLevel: 1, text: 'Welke omschrijving past bij ‘' + concept.label.toLocaleLowerCase('nl') + '’?',
+      options: [concept.definition, ...alternatives], answer: concept.definition, concept: concept.id, source: concept.source,
+      feedback: concept.context,
+    },
     {
       id: 'begrip-' + concept.id, kind: 'fill', studyLevel: 1, text: 'Welk begrip wordt hier omschreven?',
       context: concept.definition, answer: concept.label, concept: concept.id, source: concept.source,

@@ -18,6 +18,7 @@ export function preferredDifficulty(item, history) {
 export const PRACTICE_PHASES = ['Herkennen', 'Ophalen', 'Toepassen', 'Zelf formuleren'];
 
 export function practicePhase(question) {
+  if (question.evidence === 'application') return 2;
   if (question.kind === 'match' || question.kind === 'choice' && !question.promptLanguage) return 0;
   if (['fill', 'card', 'listen'].includes(question.kind)) return 1;
   return question.kind === 'open' ? 3 : 2;

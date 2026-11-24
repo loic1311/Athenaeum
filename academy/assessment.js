@@ -1,6 +1,7 @@
 export const SCORE_VERSION = 2;
 
 export function evidenceFor(question, answer) {
+  if (question?.kind === 'choice' && question.evidence === 'application') return 'application';
   switch (question?.kind) {
     case 'open':
     case 'card':
@@ -27,7 +28,10 @@ export function reviewData(question, answer, key = question.key, rating = answer
     key, question: question.id, lesson: question.lesson, rating,
     evidence: evidenceFor(question, answer),
     hinted: Boolean(answer.hinted),
+    ...(answer.hintLevel ? { hintLevel: answer.hintLevel } : {}),
     skipped: Boolean(answer.skipped),
+    ...(question.concept ? { concept: question.concept } : {}),
+    ...(question.assessment ? { assessment: question.assessment } : {}),
   };
 }
 
@@ -36,7 +40,7 @@ export function tally(questions, answers) {
   questions.forEach((question, index) => {
     const answer = answers[index];
     const evidence = evidenceFor(question, answer);
-    const objective = evidence === 'recall' || evidence === 'recognition';
+    const objective = ['recall', 'recognition', 'application'].includes(evidence);
     if (objective) result.objective++;
     if (!answer?.rating) return;
     result.reviewed++;

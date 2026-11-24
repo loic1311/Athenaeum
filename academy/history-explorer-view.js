@@ -46,7 +46,7 @@ export function learningPath(title, description, list, page, scope, key, studied
 export function primaryPage(lessons, scope, _key, studied, read) {
   const sources = explorationLessons(lessons,'bronnen',scope);
   return explorerHeader('bronnen',scope,'',
-    'Lees een origineel fragment met Engelse vertaling en context. Oefen wat de bron expliciet zegt, welke gevolgtrekking je kunt maken en waar aanvullend bewijs nodig is.') +
+    'Onderzoek een bronfragment of een gedocumenteerde casus. Oefen welke uitspraak de bron draagt en waarvoor je aanvullend bewijs nodig hebt.') +
     (sources.length ? `<ol class="unit-list explorer-list source-catalogue">${sources.map(lesson =>
       routeUnit(lesson,'bronnen',scope,'',studied,read)).join('')}</ol>`
       : '<p class="empty">Voor dit segment staan nog geen bronlessen klaar.</p>');

@@ -1,8 +1,10 @@
 import { TRACKS, ROUTES } from './learning.js?v=142';
-import { DAY_FOCI, PACE, STAGES, dayKey } from './daily.js?v=142';
-import { esc, exampleView, heading, languageGrammar, languageVocabulary, lessonExplanation, sourceView } from './views.js?v=142';
+import { DAY_FOCI, DAY_MODES, PACE, STAGES, dayKey } from './daily.js?v=142';
+import { esc, exampleView, heading, languageGrammar, languageVocabulary, lessonExplanation, primaryPassage,
+  seminarExplanation, sourceView, studyPreparation } from './views.js?v=142';
 import { workedExample } from './practice.js?v=13r8';
 import { SCORE_VERSION } from './assessment.js?v=142';
+import { lessonSources } from './history-study.js';
 
 function dateName(date) {
   const value = new Date(date + 'T12:00:00');
@@ -25,14 +27,18 @@ function archiveView(archive, current, month) {
   </div></section>`;
 }
 
-function theory(lesson) {
+function theory(lesson, known, required) {
   const topic = [TRACKS[lesson.track]?.name, lesson.period, lesson.level, ROUTES[lesson.route]].filter(Boolean).join(' · ');
+  const sources = lessonSources(lesson);
+  const seminar = seminarExplanation(lesson);
   return `<article class="panel daily-theory stack">
     <div><p class="eyebrow">${esc(topic)}</p><h3>${esc(lesson.title)}</h3></div>
-    ${lessonExplanation(lesson)}
+    ${studyPreparation(lesson, known, required)}
+    ${seminar ? seminar + '<details><summary>De volledige lesuitleg</summary>' + lessonExplanation(lesson) + '</details>' : lessonExplanation(lesson)}
+    ${lesson.primary ? '<details><summary>Lees de primaire bron</summary>' + primaryPassage(lesson.primary, true) + '</details>' : ''}
     ${lesson.languageTopic ? '<h3>Woordenschat</h3>' + languageVocabulary(lesson, 4) + languageGrammar(lesson) +
       '<details><summary>Volledige woordenlijst</summary>' + languageVocabulary(lesson) + '</details>' : exampleView(workedExample(lesson))}
-    ${lesson.sources?.length ? `<details><summary>Bronnen</summary><div class="stack">${lesson.sources.map(sourceView).join('')}</div></details>` : ''}
+    ${sources.length ? `<details><summary>Bronnen</summary><div class="stack">${sources.map(sourceView).join('')}</div></details>` : ''}
     <a class="text-link" href="#les/${esc(lesson.id)}">Open de volledige les</a>
   </article>`;
 }
@@ -49,7 +55,7 @@ function stepList(plan) {
   </ol>`;
 }
 
-function planView(plan, lessons, resume) {
+function planView(plan, lessons, resume, loading) {
   const entries = Object.values(plan.results);
   const total = entries.reduce((n, row) => n + row.total, 0);
   const scored = entries.filter(row => row.scoreVersion === SCORE_VERSION);
@@ -57,32 +63,41 @@ function planView(plan, lessons, resume) {
   const selfAssessed = scored.reduce((n, row) => n + row.selfAssessed, 0);
   const hinted = entries.reduce((n, row) => n + (row.hinted ?? 0), 0);
   if (plan.completed) {
-    const revisit = [...new Map(entries.flatMap(row => row.revisit ?? []).map(r => [r.key,r])).values()].slice(0,6);
+    const revisit = [...new Map(entries.flatMap(row => row.revisit ?? []).map(r => [r.key,r])).values()];
+    const corrections = plan.stages.filter(stage => plan.results[stage.id]?.resultId);
     return `<div class="panel daily-done stack">
       <h2>Dagles afgerond</h2>
       <p>Je oefende ${total} ${total === 1 ? 'vraag' : 'vragen'}.${scored.length ? ' ' + correct + ' automatisch juist zonder hulp.' : ''}${hinted ? ' ' + hinted + ' met hulp geoefend.' : ''}${selfAssessed ? ' ' + selfAssessed + ' zelf beoordeeld.' : ''}</p>
       <p class="muted">Athenaeum neemt je antwoorden mee bij de volgende dagles.</p>
-      ${revisit.length ? '<div class="notice"><strong>Begrippen om opnieuw te bekijken</strong><ul>' + revisit.map(r =>
+      ${revisit.length ? '<div class="notice"><strong>Leerdoelen om opnieuw te bekijken</strong><ul>' + revisit.slice(0,6).map(r =>
         '<li><a class="text-link" href="#les/' + esc(r.lesson) + '">' + esc(r.label) + '</a></li>').join('') + '</ul></div>' : ''}
+      ${corrections.length ? `<details><summary>Antwoorden en feedback teruglezen</summary><ul>${corrections.map(stage =>
+        '<li><a class="text-link" href="#resultaat/' + esc(plan.results[stage.id].resultId) + '">' + esc(STAGES[stage.id].title) + '</a></li>').join('')}</ul></details>` : ''}
       <div class="row">${revisit.length ? `<button type="button" class="button primary" data-action="daily-practice-again" data-value="${esc(plan.date)}">Oefen deze begrippen opnieuw</button>` : ''}
         <a class="button ${revisit.length ? 'quiet' : 'primary'}" href="#vandaag">Naar Vandaag</a>
         <a class="button quiet" href="#voortgang">Bekijk voortgang</a></div>
     </div>
     <section class="block stack"><h2>Behandeld</h2>
-      <ul>${plan.units.map(unit => `<li><a class="text-link" href="#les/${esc(unit.id)}">${esc(unit.title)}</a></li>`).join('')}</ul>
+      <ul>${plan.units.filter(unit => !plan.readUnits || plan.readUnits.includes(unit.id)).map(unit =>
+        `<li><a class="text-link" href="#les/${esc(unit.id)}">${esc(unit.title)}</a></li>`).join('')}</ul>
     </section>`;
   }
   const stage = plan.stages[plan.cursor];
   const info = STAGES[stage.id];
   const following = plan.stages[plan.cursor+1];
   const noQuestions = !stage.questions.length;
-  const selected = plan.units.flatMap(unit => lessons.filter(l => l.id === unit.id));
+  const byId = new Map(lessons.map(lesson => [lesson.id, lesson]));
+  const selected = plan.units.map(unit => byId.get(unit.id)).filter(Boolean);
+  const missing = plan.units.filter(unit => !byId.has(unit.id));
+  const known = new Set(plan.knownConcepts);
+  const exercises = stage.id === 'read' ? plan.stages.slice(plan.cursor + 1).flatMap(step => step.questions) : [];
   return `<div class="daily-layout">
     <aside class="panel daily-outline stack"><h2>Jouw les in stappen</h2>${stepList(plan)}</aside>
     <div class="stack">
       <section class="panel daily-current stack" aria-labelledby="step-current">
         <p class="eyebrow">Stap ${plan.cursor + 1} van ${plan.stages.length}</p>
         <h2 id="step-current">${stage.id === 'recall' && noQuestions ? 'Kennismaken' : info.title}</h2>
+        ${plan.mode && plan.mode !== 'lesson' ? '<p class="small-text">' + esc(DAY_MODES[plan.mode]) + '</p>' : ''}
         <p class="muted">${stage.id === 'recall' && noQuestions
           ? 'Je kunt meteen naar de uitleg en het voorbeeld. In een volgende dagles komen eerder geoefende begrippen terug.'
           : info.desc}</p>
@@ -92,19 +107,23 @@ function planView(plan, lessons, resume) {
           ${noQuestions ? following?.id === 'read' ? 'Bekijk de uitleg' : following ? 'Naar ' + STAGES[following.id].title.toLowerCase() :
             'Les afronden' : resume ? 'Hervat deze stap' : 'Start deze stap'}</button></div>` : ''}
       </section>
-      ${stage.id === 'read' ? selected.map(theory).join('') + `<div class="row"><button class="button primary" type="button"
-        data-action="daily-next" data-value="${esc(plan.date)}">Verder naar begeleid oefenen</button></div>` : ''}
+      ${stage.id === 'read' ? selected.map(lesson => theory(lesson, known,
+        exercises.filter(q => q.lesson === lesson.id).flatMap(q => q.prerequisites ?? []))).join('') +
+        (!loading && missing.length ? '<p class="notice">De volgende uitleg is nog niet beschikbaar: ' +
+          missing.map(unit => esc(unit.title)).join(', ') + '. De bijbehorende vragen worden overgeslagen als je verdergaat.</p>' : '') +
+        (!loading && selected.length ? `<div class="row"><button class="button primary" type="button"
+          data-action="daily-next" data-value="${esc(plan.date)}">${missing.length ? 'Verder met beschikbare lessen' : 'Verder naar begeleid oefenen'}</button></div>` : '') : ''}
       ${stage.id !== 'read' ? `<section class="panel small-text stack"><h3>Onderwerpen van vandaag</h3><ul class="daily-topics">${
         plan.units.map(unit => '<li>' + esc(unit.title) + '</li>').join('')}</ul></section>` : ''}
     </div>
   </div>`;
 }
 
-export function dailyPage(plan, lessons, archive, resume, month = '') {
+export function dailyPage(plan, lessons, archive, resume, month = '', loading = false) {
   const header = heading('Lectio diei', 'Herhaal wat je weet, lees verder en pas de stof toe.', 'Dagles · ' + dateName(plan?.date ?? dayKey()), 'la');
   if (plan) {
     const today = plan.date === dayKey() ? '' : '<p class="topline"><a class="text-link" href="#dagles">Naar de dagles van vandaag</a></p><br>';
-    return header + today + planView(plan, lessons, resume) + archiveView(archive, plan.date, month);
+    return header + today + planView(plan, lessons, resume, loading) + archiveView(archive, plan.date, month);
   }
   const latest = archive[0];
   const minutes = Object.hasOwn(PACE,latest?.minutes) ? latest.minutes : 15;
@@ -124,6 +143,9 @@ export function dailyPage(plan, lessons, archive, resume, month = '') {
         </fieldset>
         <div class="field"><label for="daily-focus">Waar wil je vandaag op focussen?</label><select name="focus" id="daily-focus">
           ${Object.entries(DAY_FOCI).map(([key,label]) => `<option value="${key}" ${key === focus ? 'selected' : ''}>${label}</option>`).join('')}
+        </select></div>
+        <div class="field"><label for="daily-mode">Hoe wil je oefenen?</label><select name="mode" id="daily-mode">
+          ${Object.entries(DAY_MODES).map(([key, label]) => '<option value="' + key + '">' + esc(label) + '</option>').join('')}
         </select></div>
         <p class="muted small-text">De les sluit aan op je gekozen taalniveaus en eerdere antwoorden. Je kunt op elk moment pauzeren.</p>
         <div><button type="submit" class="button primary">Start mijn dagles</button></div>

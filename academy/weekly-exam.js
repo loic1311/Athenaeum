@@ -1,5 +1,6 @@
 import { EXAM_GOALS, TRACKS, examQuestions, makePool } from './learning.js?v=142';
 import { dayKey } from './daily.js?v=142';
+import { studyReadings } from './study-history.js';
 
 function currentWeek(now) {
   const monday = new Date(now);
@@ -12,35 +13,40 @@ function currentWeek(now) {
   return { monday, sunday, end, startKey: dayKey(monday), endKey: dayKey(sunday) };
 }
 
-export function weeklyStudy(lessons, records, now = Date.now()) {
-  const week = currentWeek(now);
-  const inWeek = at => Number.isFinite(at) && at >= +week.monday && at < +week.end;
-  const read = new Set();
+function assessedPeriod(lessons, records, start, end, minimum) {
+  const inPeriod = at => Number.isFinite(at) && at >= +start && at < +end;
+  const read = new Set(studyReadings(records).filter(row => inPeriod(row.at)).map(row => row.lesson));
   const practiced = new Set();
   for (const row of records) {
     const data = row.data;
-    if (row.kind === 'prefs' && inWeek(row.at) && data?.name === 'history-read' && data.value === true) {
-      read.add(data.lesson);
-    }
-    if (row.kind === 'review' && inWeek(row.at) && !row.id.startsWith('review-result-') && !data?.skipped && data?.key) {
+    if (row.kind === 'review' && inPeriod(row.at) && !row.id.startsWith('review-result-') && !data?.skipped && data?.key) {
       practiced.add(data.key);
     }
-    if (row.kind !== 'draft' || !data?.daily) continue;
-    const plan = data.daily;
-    const readStage = plan.stages?.findIndex(step => step.id === 'read') ?? -1;
-    if (readStage === -1 || !Number.isInteger(plan.cursor) || plan.cursor <= readStage) continue;
-    const day = plan.readDay ?? plan.studyDay ?? plan.date;
-    if (day >= week.startKey && day <= week.endKey) for (const unit of plan.units ?? []) read.add(unit.id ?? unit);
   }
   const pool = makePool(lessons.filter(lesson => ['history', 'traditio'].includes(TRACKS[lesson.track]?.section)));
   const goals = pool.filter(item => (read.has(item.lesson) || practiced.has(item.key)) &&
     item.questions.some(question => question.kind !== 'listen'));
   const ids = new Set(goals.map(item => item.lesson));
   const covered = lessons.filter(lesson => ids.has(lesson.id));
-  return { ...week, goals, lessons: covered, ready: goals.length >= EXAM_GOALS.week };
+  return { goals, lessons: covered, ready: goals.length >= minimum };
 }
 
-export function weeklyExamQuestions(week, history, allGoals = false) {
-  const states = new Map(week.goals.map(item => [item.key, history.states.get(item.key) ?? {}]));
-  return examQuestions(week.goals, { ...history, states }, false, allGoals);
+export function weeklyStudy(lessons, records, now = Date.now()) {
+  const week = currentWeek(now);
+  return { ...week, ...assessedPeriod(lessons, records, week.monday, week.end, EXAM_GOALS.week) };
 }
+
+export function monthlyStudy(lessons, records, now = Date.now()) {
+  const date = new Date(now);
+  const start = new Date(date.getFullYear(), date.getMonth(), 1);
+  const end = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+  return { start, end, startKey: dayKey(start), ...assessedPeriod(lessons, records, start, end, EXAM_GOALS.month) };
+}
+
+function questionsFor(period, history, monthly, allGoals) {
+  const states = new Map(period.goals.map(item => [item.key, history.states.get(item.key) ?? {}]));
+  return examQuestions(period.goals, { ...history, states }, monthly, allGoals);
+}
+
+export const weeklyExamQuestions = (week, history, allGoals = false) => questionsFor(week, history, false, allGoals);
+export const monthlyExamQuestions = (month, history, allGoals = false) => questionsFor(month, history, true, allGoals);

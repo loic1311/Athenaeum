@@ -1,5 +1,6 @@
 import { practiceVariants, practiceDifficulty, preferredDifficulty, startingDifficulty } from './practice.js?v=13r8';
 import { independentlyCorrect } from './assessment.js?v=142';
+import { prerequisitesFor, studyExercises, studyLevel } from './history-study.js';
 export { tally } from './assessment.js?v=142';
 
 export const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1'];
@@ -62,25 +63,32 @@ export function makePool(lessons) {
     if (lessonPools.has(lesson)) return lessonPools.get(lesson);
     const language = TRACKS[lesson.track]?.lang;
     const variants = practiceVariants(lesson, language);
+    const exercises = studyExercises(lesson);
     const pool = lesson.items.map((item, index) => {
       const key = lesson.id + '/' + item.id;
       const source = lesson.sources?.[item.source ?? (language && !lesson.languageTopic ? -1 : 0)];
       const scope = { track: lesson.track, level: lesson.level, topic: practiceTopic(lesson), lesson: lesson.id };
-      const questionData = (question, id) => ({
-        ...question, id: key + '/' + id, key, title: lesson.title,
-        ...scope, label: item.label, explanation: item.explanation,
-        source: question.source ?? source, language,
-      });
+      const questionData = (question, id) => {
+        const data = {
+          ...question, id: key + '/' + id, key, title: lesson.title,
+          ...scope, label: item.label, explanation: question.studyLevel ? undefined : item.explanation,
+          source: question.source ?? source, language,
+        };
+        const prerequisites = prerequisitesFor(lesson, data);
+        if (prerequisites.length) data.prerequisites = prerequisites;
+        return data;
+      };
       const questions = item.questions.map(questionData);
       const practice = variants[index].map(question => questionData(question, question.variant));
-      return { key, ...scope, route: lesson.route, questions, practice };
+      const academic = (exercises.get(item.id) ?? []).map(question => questionData(question, 'studie-' + question.id));
+      return { key, ...scope, route: lesson.route, questions, practice, academic };
     });
     lessonPools.set(lesson, pool);
     return pool;
   });
 }
 
-export const practiceQuestions = item => [...item.questions, ...(item.practice ?? [])];
+export const practiceQuestions = item => [...item.questions, ...(item.practice ?? []), ...(item.academic ?? [])];
 
 export function practiceBalance() {
   const tracks = new Map();
@@ -141,18 +149,20 @@ export function historyOf(records) {
   const states = new Map();
   const seen = new Map();
   const lessons = new Set();
+  const concepts = new Map();
   const reviews = records.filter(record => record.kind === 'review').sort((a, b) => a.at - b.at || a.id.localeCompare(b.id));
   for (const record of reviews) {
-    const { key, question, lesson, rating, evidence, skipped } = record.data;
+    const { key, question, lesson, rating, evidence, skipped, concept, assessment } = record.data;
     const current = states.get(key) ?? { stage: 0, count: 0 };
     const shortReview = rating === 'help' || evidence === 'self';
-    const stage = rating === 'again' || skipped ? 0 : shortReview ? Math.min(1, current.stage) :
+    const stage = skipped ? current.stage : rating === 'again' ? 0 : shortReview ? Math.min(1, current.stage) :
       Math.min(REVIEW_STEPS.length - 1, current.stage + (rating === 'easy' ? 2 : 1));
-    const wait = rating !== 'again' && shortReview ? 6 * 60 * 60_000 : stage === 0 ? 45 * 60_000 : REVIEW_STEPS[stage] * DAY;
+    const wait = skipped ? 45 * 60_000 : rating !== 'again' && shortReview ? 6 * 60 * 60_000 :
+      stage === 0 ? 45 * 60_000 : REVIEW_STEPS[stage] * DAY;
     const correct = independentlyCorrect(record.data);
     let recallCount = current.recallCount ?? 0;
     let lastRecall = current.lastRecall;
-    if (evidence === 'recall') {
+    if (evidence === 'recall' && !skipped) {
       if (!correct) {
         recallCount = 0;
         lastRecall = undefined;
@@ -161,18 +171,28 @@ export function historyOf(records) {
         lastRecall = record.at;
       }
     }
-    states.set(key, { stage, count: current.count + 1, due: record.at + wait, last: record.at, lastQuestion: question,
+    const needsReview = skipped ? current.needsReview : rating === 'help' || rating === 'again';
+    const due = skipped && current.due ? Math.min(current.due, record.at + wait) : record.at + wait;
+    states.set(key, { stage, count: current.count + 1, due, last: record.at, lastQuestion: question, needsReview,
       attempted: Boolean(current.attempted || !skipped), recallCount, lastRecall,
-      recognized: evidence === 'recognition' ? correct : current.recognized });
+      recognized: evidence === 'recognition' && !skipped ? correct : current.recognized,
+      applied: evidence === 'application' && !skipped ? correct : current.applied });
+    if (concept && !skipped) {
+      const understanding = concepts.get(concept) ?? {};
+      if (evidence === 'recall' || evidence === 'recognition' || evidence === 'application') understanding[evidence] = correct;
+      if (assessment === 'definition' && evidence === 'self') understanding.definition = rating;
+      concepts.set(concept, understanding);
+    }
     if (question) seen.set(question, record.at);
     if (lesson && !skipped) lessons.add(lesson);
   }
-  return { states, seen, lessons };
+  return { states, seen, lessons, concepts };
 }
 
 function questionFor(item, history, options = {}) {
   const current = history.states.get(item.key);
-  const variants = options.learning ? practiceQuestions(item) : item.questions;
+  const variants = options.learning ? practiceQuestions(item) :
+    options.academic ? [...item.questions, ...(item.academic ?? []).filter(q => studyLevel(q) >= 3)] : item.questions;
   const allowed = variants.filter(q => (!options.objective || ['choice', 'fill'].includes(q.kind))
       && (!options.exclude || !options.exclude.has(q.id))
       && (!options.short || q.kind !== 'open') && (!options.noAudio || q.kind !== 'listen'));
@@ -248,7 +268,7 @@ export function examQuestions(pool, history, monthly = false, allGoals = false) 
   if (handled.length < required) return [];
   const ordered = variedSelection(shuffled(handled), limit);
   return ordered.map((item, index) =>
-    questionFor(item, history, { preferOpen: monthly ? index % 3 !== 0 : index % 3 === 2, noAudio: true }));
+    questionFor(item, history, { preferOpen: monthly ? index % 3 !== 0 : index % 3 === 2, noAudio: true, academic: true }));
 }
 
 export function placementQuestions(pool) {
