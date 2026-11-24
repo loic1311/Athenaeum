@@ -13,6 +13,9 @@ jobs:
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
       - uses: actions/setup-node@v6
         with:
           node-version: '24'
@@ -37,4 +40,7 @@ jobs:
           npm install --no-save --package-lock=false playwright@1.62.1
           npx playwright install --with-deps chromium
       - name: Test de echte gebruikersstromen in Chromium
-        run: node --test scripts/verify-browser.mjs
+        run: |
+          baseline="$(mktemp -d)"
+          git archive 56ef684681a383ad5399e791a06f1c6a32f821a4 | tar -x -C "$baseline"
+          ATHENAEUM_BASELINE="$baseline" node --test scripts/verify-browser.mjs

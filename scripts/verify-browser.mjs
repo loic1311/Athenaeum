@@ -7,6 +7,10 @@ import { after, before, test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
+const baseline = process.env.ATHENAEUM_BASELINE;
+const upgradeScope = '/Athenaeum-upgrade/';
+const currentScope = '/Athenaeum/';
+let upgradeRoot = baseline;
 const { chromium } = createRequire(import.meta.url)('playwright');
 const types = { '.html':'text/html', '.js':'text/javascript', '.mjs':'text/javascript', '.css':'text/css',
   '.json':'application/json', '.webmanifest':'application/manifest+json', '.svg':'image/svg+xml', '.png':'image/png',
@@ -14,9 +18,10 @@ const types = { '.html':'text/html', '.js':'text/javascript', '.mjs':'text/javas
 const server = createServer(async (request, response) => {
   try {
     const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
-    if (!pathname.startsWith('/Athenaeum/')) throw new Error('Outside test path');
-    const relative = pathname.slice('/Athenaeum/'.length);
-    const base = resolve(root);
+    const upgrade = Boolean(upgradeRoot && pathname.startsWith(upgradeScope));
+    if (!upgrade && !pathname.startsWith(currentScope)) throw new Error('Outside test path');
+    const relative = pathname.slice((upgrade ? upgradeScope : currentScope).length);
+    const base = resolve(upgrade ? upgradeRoot : root);
     let file = resolve(base, relative);
     if ((file !== base && !file.startsWith(base + sep)) || relative.split('/').some(part => part.startsWith('.'))) {
       throw new Error('Outside test root');
@@ -34,7 +39,7 @@ let browser;
 let baseURL;
 before(async () => {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
-  baseURL = 'http://127.0.0.1:' + server.address().port + '/Athenaeum/';
+  baseURL = 'http://127.0.0.1:' + server.address().port + currentScope;
   browser = await chromium.launch({ executablePath:process.env.ATHENAEUM_CHROMIUM || undefined });
 });
 after(async () => {
@@ -121,7 +126,9 @@ for (const viewport of [{width:1440,height:900}, {width:820,height:1180}, {width
       await page.goto(baseURL + '#scriptorium');
       await page.locator('#page-content').getByRole('heading', {name:/Scriptorium/}).first().waitFor();
       await page.getByRole('link', {name:'Open Scriptorium'}).click();
-      await page.locator('.sidebar').getByRole('heading', {name:'Scriptorium'}).waitFor();
+      await page.locator('#page-dashboard').getByRole('button', {name:'Alles bekijken'}).click();
+      await page.locator('#page-corpus').getByRole('heading', {name:'Corpus',exact:true}).waitFor();
+      await noOverflow(page, 'Scriptorium');
       assert.deepEqual(errors, []);
     } finally {
       await context.close();
@@ -185,6 +192,39 @@ test('De wereldbol en een les blijven bruikbaar bij een offline herstart', { tim
     await page.getByRole('link', { name:'Uitgebreid studeren' }).click();
     await page.getByRole('button', { name:'Markeer als gelezen' }).waitFor();
   } finally {
+    await context.close();
+  }
+});
+
+test('Een upgrade van 1.4.1 bewaart lokaal lezen en activeert de nieuwe offlinecache', {
+  timeout:30_000, skip:!baseline,
+}, async () => {
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  const lessonURL = new URL(upgradeScope + '#les/atlas-marseille-massalia', baseURL).href;
+  try {
+    await page.goto(lessonURL);
+    assert.match(await page.locator('#academy-entry').getAttribute('src'), /v=141$/);
+    await page.getByRole('button', {name:'Markeer als gelezen'}).click();
+    await page.locator('[data-action="history-read"][aria-pressed=true]').waitFor();
+    await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller));
+
+    upgradeRoot = root;
+    await page.evaluate(async () => {
+      const registration = await navigator.serviceWorker.ready;
+      const changed = new Promise(resolve => navigator.serviceWorker.addEventListener('controllerchange', resolve, {once:true}));
+      await registration.update();
+      await changed;
+    });
+    await page.reload();
+    assert.match(await page.locator('#academy-entry').getAttribute('src'), /v=142$/);
+    await page.locator('[data-action="history-read"][aria-pressed=true]').waitFor();
+    const cacheNames = await page.evaluate(() => caches.keys());
+    assert(cacheNames.some(name => name === 'athenaeum-learning:' + upgradeScope + ':1.4.2-142'));
+    await page.goto(new URL(upgradeScope + '#paideia/atlas/alles', baseURL).href);
+    await rectOfGlobe(page);
+  } finally {
+    upgradeRoot = baseline;
     await context.close();
   }
 });
