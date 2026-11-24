@@ -77,3 +77,32 @@
 #atlas-year-message:not(:empty) {color:#8a342c}
 .atlas-places .unit-list {scrollbar-gutter:stable}
 @media(max-width:680px){.atlas-places .unit-list{max-height:22rem;overflow:auto}.atlas-map-open.button{max-width:calc(100% - 80px);white-space:normal}}
+
+.atlas-time {
+  padding: .9rem 1rem 1rem;
+  border-top: 1px solid var(--line, #d7cfc0);
+  background: #fcf8ed;
+  color: #243b38;
+}
+
+.atlas-time #atlas-slider { width: 100%; margin: .15rem 0; accent-color: #457366; }
+.atlas-time output { font-weight: 700; }
+.atlas-time-ticks { display: flex; justify-content: space-between; gap: .75rem; }
+.atlas-time-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); gap: .7rem; }
+.atlas-time-fields .field { min-width: 0; }
+.atlas-time-fields select { width: 100%; text-overflow: ellipsis; }
+.atlas-legend { display: grid; gap: .35rem; }
+.atlas-legend span, .atlas-entity-list button { display: flex; gap: .5rem; align-items: center; text-align: left; }
+.atlas-key { width: .65rem; height: .65rem; flex: 0 0 .65rem; border: 1px solid #554e3f; transform: rotate(45deg); }
+.atlas-key.area { transform: none; border-style: dashed; background: #f0dc9b; }
+.atlas-key.political { background: #ffe28c; }
+.atlas-key.culture { background: #eca5ff; }
+.atlas-key.site { background: #a7f3ea; }
+.atlas-key.network { background: #ffb195; }
+.atlas-key.comparison { transform: none; border: 2px dotted #a63a64; }
+.atlas-entity-list { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: .35rem; }
+.atlas-entity-list button { min-height: 2.5rem; white-space: normal; }
+.atlas-history-selection:empty { display: none; }
+.atlas-dossier { max-width: 86ch; margin-inline: auto; }
+.atlas-dossier-period { border-top: 1px solid var(--line, #d7cfc0); padding-top: 1rem; }
+.atlas-dossier-period h3, .atlas-dossier-period h4 { margin-top: .45rem; }

@@ -68,12 +68,6 @@ function orderedSentence(text) {
     words.slice(index * group, (index + 1) * group).join(' '));
 }
 
-function removeLabel(text, label) {
-  if (label.length < 2) return text;
-  const escaped = label.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&');
-  return text.replace(new RegExp('(?<![\\p{L}\\p{N}])' + escaped + '(?![\\p{L}\\p{N}])', 'giu'), '…');
-}
-
 export function practiceVariants(lesson, language) {
   if (lesson.structure) return lesson.items.map(() => []);
   const concepts = lesson.items.map((item, index) => {
@@ -87,22 +81,6 @@ export function practiceVariants(lesson, language) {
   const variants = lesson.items.map(() => []);
   for (const row of concepts) {
     const { index, item, example, key } = row;
-    if (!language && item.explanation?.length >= 22 && item.explanation.length <= 460) {
-      const used = new Set([normalizeLabel(item.label)]);
-      const alternatives = concepts.filter(candidate => {
-        const label = normalizeLabel(candidate.item.label);
-        if (!label || used.has(label) || candidate.answer === row.answer) return false;
-        used.add(label);
-        return true;
-      }).slice(0, 3).map(candidate => candidate.item.label);
-      if (alternatives.length >= 2) {
-        variants[index].push({
-          variant: 'concept', kind: 'choice', text: 'Welk begrip past bij deze uitleg?',
-          context: removeLabel(item.explanation, item.label), answer: item.label, options: [item.label, ...alternatives],
-          tip: 'Lees de omschrijving en bedenk welke term in deze les bij die functie of eigenschap hoort.',
-        });
-      }
-    }
     const scene = item.id === 'zin' ? lesson.scene : null;
     const model = item.vocabulary ? null : example || (scene ? { phrase: scene.line, meaning: scene.meaning } : null);
     if (model) {
@@ -118,8 +96,9 @@ export function practiceVariants(lesson, language) {
     }
   }
 
-  const eligible = concepts.filter(row => row.prompt && row.answer && row.answer.length <= 460 &&
-    (!language || row.example || !concepts.some(candidate => candidate.example)));
+  // Lesson labels can describe learning goals. Only language prompts are suitable for automatic matching.
+  const eligible = language ? concepts.filter(row => row.prompt && row.answer && row.answer.length <= 460 &&
+    (row.example || !concepts.some(candidate => candidate.example))) : [];
   const prompts = new Set(), answers = new Set();
   const distinct = eligible.filter(row => {
     const prompt = normalizeLabel(row.prompt), answer = normalizeLabel(row.answer);

@@ -24,6 +24,7 @@ export const catalogIndex = {
     ["la-verbonden-participium","la","Wie leest terwijl iemand wacht?",7,"",""],
     ["la-gerundium-gerundivum","la","Een handeling of een verplichting?",7,"",""],
     ["la-irrealis","la","Wat zou er zijn gebeurd?",6,"",""],
+    ["la-aci-in-een-veldtocht","la","Accusativus cum infinitivo: perspectief en relatieve tijd",8,"",""],
     ["la-caesar","la","Caesar verdeelt Gallië",6,"",""],
     ["la-cicero","la","Cicero spreekt Catilina aan",6,"",""],
     ["la-vergilius","la","Vergilius kiest de eerste woorden",6,"",""],
@@ -47,6 +48,7 @@ export const catalogIndex = {
     ["grc-participium","grc","Een genitivus absolutus vertalen",6,"",""],
     ["grc-modaliteit","grc","Een mogelijkheid, wens of doel",6,"",""],
     ["grc-verbieden","grc","Een mededeling ontkennen of iemand iets verbieden",6,"",""],
+    ["grc-participium-in-het-verhaal","grc","Participia, aspect en volgorde in een Grieks verhaal",8,"",""],
     ["grc-xenophon","grc","Xenophon opent een dynastiek verhaal",6,"",""],
     ["grc-thucydides","grc","Hoe Thucydides zijn onderwerp afbakent",6,"",""],
     ["grc-homerus","grc","Epos naast Attisch proza",6,"",""],
@@ -102,7 +104,9 @@ export const catalogIndex = {
     ["it-onderweg-trein","it","Tickets, sporen en aankomsttijden",16,"A2",""],
     ["it-afspraak-regelen","it","Een uur voorstellen en een afspraak verplaatsen",16,"A2",""],
     ["it-afspraak-verleden","it","Vertellen waarom iets anders liep",15,"B1",""],
-    ["it-gesprek-cortesia","it","Beleefd om hulp of uitleg vragen",15,"B1",""]
+    ["it-gesprek-cortesia","it","Beleefd om hulp of uitleg vragen",15,"B1",""],
+    ["fr-b2-accord-compte-rendu","fr","Een verslag nakijken: akkoord van het voltooid deelwoord",11,"B2",""],
+    ["it-b1-imperfetto-racconto","it","Vertellen wat er gebeurde: imperfetto en passato prossimo",11,"B1",""]
   ],
   "core-history": [
     ["struct-gr-paleis","greek","De Egeïsche wereld van paleis tot lokale gemeenschap",3,"",""],
@@ -448,6 +452,30 @@ export const catalogIndex = {
     ["deep-amerikas","history","De Amerika’s vóór 1492 · Steden, voedsel en regionale macht",3,"","verdieping"],
     ["deep-zuidafrika","history","Zuid-Afrika · Democratische overgang en herinnering",3,"","verdieping"],
     ["deep-azie-1997","history","De Aziatische crisis · Kapitaalstromen en sociale gevolgen",3,"","verdieping"]
+  ],
+  "aegean": [
+    ["egeisch-kretenzische-centra","greek","Kreta: paleiscentra, nederzettingen en productie",2,"",""],
+    ["egeisch-kreta-1450","greek","Kreta na ca. 1450 v.Chr.: verwoesting, bestuur en ritueel",2,"",""],
+    ["egeisch-myceense-paleizen","greek","Myceense macht: Mycene, Tiryns, Pylos en Thebe",2,"",""],
+    ["egeisch-lineair-b-economie","greek","Lineair B: productie, arbeid en ritueel in de Myceense economie",2,"",""],
+    ["egeisch-uiluburun-amarnanetwerk","history","Egypte, Cyprus en de Levant: diplomatie en maritieme uitwisseling",2,"",""],
+    ["egeisch-wilusa-hatti","history","Anatolië: Hatti, Wilusa en de grenzen van het Troje-bewijs",2,"",""],
+    ["egeisch-transformaties-rond-1200","greek","Rond 1200 v.Chr.: afbraak van paleissystemen en regionale veranderingen",2,"",""],
+    ["egeisch-vroege-ijzertijd","greek","De vroege ijzertijd: bewoning, elitevorming en nieuwe netwerken",2,"",""]
+  ],
+  "carolingian": [
+    ["karolingisch-macht-en-keizerschap","medieval","Karel de Grote: expansie, aristocratie en keizerschap",2,"",""],
+    ["karolingisch-domeinen-en-arbeid","medieval","Karolingische domeinen: grond, arbeid en koninklijke middelen",2,"",""],
+    ["karolingisch-kerk-onderwijs-en-schrift","medieval","Kerk, onderwijs en handschriften in de Karolingische wereld",2,"",""],
+    ["karolingisch-opvolging-en-regionale-macht","medieval","Van Karolingische eenheid naar regionale koninkrijken",2,"",""]
+  ],
+  "world-depth": [
+    ["wereld-shang-anyang","history","Late Shang: orakelbotten, hof en productie bij Anyang",2,"",""],
+    ["wereld-san-lorenzo","history","San Lorenzo: landschap en elitevorming in de Golfregio",2,"",""],
+    ["wereld-wari-andes","history","Wari en Tiwanaku: politieke invloed tijdens de Middenhorizon",2,"",""],
+    ["rome-gracchus-land-en-politiek","roman","Tiberius Gracchus: grondgebruik en politieke strijd in de republiek",2,"",""],
+    ["wereld-belgie-kiesrecht","history","België: van cijnskiesrecht naar enkelvoudig mannenkiesrecht",2,"",""],
+    ["atlantisch-saint-domingue-vrijheid","earlymodern","Van Saint-Domingue naar Haïti: slavernij, afschaffing en onafhankelijkheid",2,"",""]
   ],
   "academic": [
     ["acad-koningstijd","roman","De koningstijd opgraven aan de Tiber",3,"",""],

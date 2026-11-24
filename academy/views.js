@@ -1,3 +1,4 @@
+import { academicSyllabus } from './academic-exams.js?v=160';
 import { EXAM_GOALS, formatSource, KINDS, LEVELS, ROUTES, TRACKS, tally } from './learning.js?v=150';
 import { tipsFor } from './daily.js?v=150';
 import { instructionFor, PRACTICE_KINDS, PRACTICE_PHASES, practiceOptions, practicePhase, workedExample } from './practice.js?v=150';
@@ -512,8 +513,12 @@ export function lessonExplanation(lesson) {
   const summary = paragraphs(lesson.summary).map(text => emphasizedParagraph(text, renderText)).join('');
   if (lesson.structure) {
     return '<div class="lesson-copy">' + summary + '</div>' +
-      '<div class="history-dimensions">' + lesson.structure.map(({ heading, lead, text }) =>
-        '<section class="history-dimension lesson-copy"><h3>' + esc(heading) + '</h3>' + studyParagraph(lead + '.', text, undefined, renderText) + '</section>').join('') + '</div>';
+      '<div class="history-dimensions">' + lesson.structure.map(({ heading, lead, text, references }) =>
+        '<section class="history-dimension lesson-copy"><h3>' + esc(heading) + '</h3>' +
+        paragraphs(text).map((paragraph, index) => index === 0 ? studyParagraph(lead + '.', paragraph, undefined, renderText) :
+          '<p>' + renderText(paragraph) + '</p>').join('') +
+        (references?.length ? '<div class="row">' + references.map(sourceView).join('') + '</div>' : '') +
+        '</section>').join('') + '</div>';
   }
   const core = lesson.languageTopic ? [] : lesson.items.filter(item => typeof item.explanation === 'string').map(item =>
     studyParagraph(item.label + '.', item.explanation, lesson.sources?.[item.source ?? (lesson.level ? -1 : 0)], renderText));
@@ -721,6 +726,34 @@ export function outcomes(rows, emptyText) {
   </a>`).join('')}</div>` : `<p class="empty">${esc(emptyText)}</p>`;
 }
 
+function academicExams(lessons) {
+  const programmes = academicSyllabus(lessons);
+  if (!programmes.length) return '';
+  return `<section class="panel block stack">
+    <h2>Universitaire examens</h2>
+    <p>Beantwoord toepassingsvragen en essays. Na het indienen zie je de modelantwoorden en beoordeel je je eigen redenering per criterium.</p>
+    <form id="academic-exam-form" class="stack">
+      <div class="columns">
+        <label class="field">Examentype <select name="type">
+          <option value="thematic">Thematisch</option>
+          <option value="cumulative">Cumulatief over bestudeerde vakken</option>
+          <option value="advanced">Gevorderd met open vragen</option>
+        </select></label>
+        <label class="field">Thema of vak <select name="theme">${programmes.map(row =>
+          `<option value="${esc(row.id)}">${esc(row.name)}</option>`).join('')}</select></label>
+      </div>
+      <label><input type="checkbox" name="all"> Alle beschikbare vragen voor deze selectie</label>
+      <p class="muted small-text">Voor het cumulatieve examen geldt je bestudeerde stof uit minstens twee vakken.</p>
+      <div><button class="button primary" type="submit">Open academisch examen</button></div>
+      <p class="small-text" role="status" id="academic-exam-message" hidden></p>
+    </form>
+    <details><summary>Bekijk de beschikbare examenstof</summary><div class="stack">${programmes.map(row =>
+      `<details><summary>${esc(row.name)} · ${row.lessons.length} lessen</summary><ul>${row.lessons.map(lesson =>
+        `<li><a class="text-link" href="#les/${encodeURIComponent(lesson.id)}">${esc(lesson.title)}</a></li>`).join('')}</ul></details>`).join('')}
+    </div></details>
+  </section>`;
+}
+
 export function exams(info) {
   const week = info.weekly;
   const month = info.monthly;
@@ -731,6 +764,7 @@ export function exams(info) {
       <h2>Oefentoets</h2><p>Probeer maximaal vijf voorbeeldvragen. Je kunt tips gebruiken en krijgt na elke vraag de uitwerking. Je kunt meteen beginnen.</p>
       <div>${button('exam-practice', 'Start oefentoets', 'primary')}</div>
     </section>
+    ${academicExams(info.examLessons ?? [])}
     <div class="columns block">
       <section class="panel stack"><h2>Weekexamen</h2><p class="muted">Tot 10 vragen · 45 minuten</p>
         ${range ? '<p class="small-text">' + range + '</p>' : ''}

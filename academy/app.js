@@ -1,3 +1,4 @@
+import { academicExam } from './academic-exams.js?v=160';
 import { EXAM_GOALS, LEVELS, ROUTES, TRACKS, shuffled, makePool, historyOf, isCorrect, hasAccentError, quickQuestions,
   languageQuestions, lessonQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=150';
 import { allPackKeys, byLessonId, loadedLessons, loadPacks, packFiles, packsForTracks, summaries } from './catalog.js?v=142';
@@ -381,7 +382,7 @@ function render(focus = true) {
       break;
     }
     case 'toetsen':
-      markup = view.exams({ ...info, weekly: weeklyStudy(lessons, records), monthly: monthlyStudy(lessons, records) });
+      markup = view.exams({ ...info, examLessons: lessons, weekly: weeklyStudy(lessons, records), monthly: monthlyStudy(lessons, records) });
       break;
     case 'voortgang':
       markup = view.progressPage(info);
@@ -423,7 +424,7 @@ function render(focus = true) {
   applyNavigation(top);
   const notice = lessonLoadingNotice(needed);
   displayMain(notice + markup, { focus });
-  if (section === 'paideia' && key === 'atlas') attachAtlas(explorer, timelineScope(tab));
+  if (section === 'paideia' && key === 'atlas') attachAtlas(explorer, timelineScope(tab), lessons);
   if (section === 'paideia' && ['chronologie','tijdvakken'].includes(key)) explorer?.mountChronology(main);
   if (section === 'meer' && key === 'meldingen') prepareNotifications();
   if (section === 'zoeken') showLessonMatches(lessons);
@@ -434,7 +435,7 @@ function render(focus = true) {
   if (document.querySelector('#course-search')) filterCourses();
 }
 
-function attachAtlas(explorer, scope) {
+function attachAtlas(explorer, scope, lessons) {
   const frame = document.querySelector('#atlas-globe');
   if (!frame) return;
   unmountAtlas = explorer.mountAtlas(frame, id => {
@@ -442,7 +443,7 @@ function attachAtlas(explorer, scope) {
     if (location.hash === '#' + destination) return;
     atlasPinDestination = destination;
     jump(destination);
-  });
+  }, lessons);
 }
 
 async function setProfile(next) {
@@ -1763,6 +1764,24 @@ document.addEventListener('click', event => {
 
 document.addEventListener('submit', event => {
   const form = event.target;
+  if (form.id === 'academic-exam-form') {
+    event.preventDefault();
+    const data = new FormData(form);
+    const type = data.get('type');
+    const target = form.querySelector('[role="status"]');
+    run(async () => {
+      const studied = new Set([...readLessons(), ...reviews().lessons]);
+      const exam = academicExam(lessonList(), studied, type, data.get('theme'), data.has('all'));
+      if (!exam) {
+        inlineMessage(target, type === 'cumulative'
+          ? 'Bestudeer eerst een les met universitaire vragen in minstens twee vakken. Je vindt de lessen onder de beschikbare examenstof.'
+          : 'Voor deze selectie zijn nog geen passende examenvragen beschikbaar.', true);
+        return;
+      }
+      await startQuiz('exam', exam.title, exam.questions, { back: 'toetsen' });
+    }, target);
+    return;
+  }
   if (form.id === 'weekly-goal-form') {
     event.preventDefault();
     const value = Number(new FormData(form).get('lessons'));

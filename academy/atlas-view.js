@@ -1,7 +1,8 @@
-import { ATLAS_PLACES, ATLAS_VIEWS, atlasById, historicalName, readAtlasYear } from './atlas-catalog.js?v=142';
-import { byDate, explorerHref, explorationLessonHref, historyInScope } from './history-explorer.js?v=150';
-import { explorerHeader, learningPath } from './history-explorer-view.js?v=150';
-import { esc } from './views.js?v=150';
+import { ATLAS_PLACES, ATLAS_VIEWS, atlasById, historicalName } from './atlas-catalog.js?v=142';
+import { byDate, explorerHref, historyInScope } from './history-explorer.js?v=150';
+import { explorerHeader } from './history-explorer-view.js?v=150';
+import { esc, sourceView } from './views.js?v=150';
+import { atlasHistoricalPanel, atlasTimeline, bindAtlasTime, getAtlasHistory } from './atlas-time-view.js?v=160';
 
 const count = n => n + (n === 1 ? ' les' : ' lessen');
 const nameKey = value => String(value || '').normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
@@ -23,22 +24,32 @@ function groupAtlasLessons(lessons, scope) {
   for (const list of grouped.values()) list.sort(byDate);
   return grouped;
 }
-function overview(place, path) {
-  const direct = path.filter(unit => unit.places?.includes(place.id) || unit.id.startsWith('atlas-' + place.id));
-  const stages = place.stages || direct.map(unit => [unit.period,unit.title.replace(/^.*? · /u,''),unit.summary]);
-  if (!stages.length) return '';
-  return '<details class="atlas-overview"><summary>Beknopt stadsoverzicht</summary><ol>' + stages.map(([period,title,text]) =>
-    '<li><small>' + esc(period) + '</small><h3>' + esc(title) + '</h3><p>' + esc(text) + '</p></li>').join('') + '</ol></details>';
+function cityDossier(place, path) {
+  const local = path.filter(unit => unit.id.startsWith('atlas-' + place.id) && unit.structure?.length);
+  const dossier = local.length ? local : (place.stages ?? []).map(([period, title, summary]) => ({ period, title, summary }));
+  const sources = new Map([...(place.sources ?? []), ...local.flatMap(lesson => lesson.sources ?? [])]
+    .map(source => [source.title + '/' + source.locator, source]));
+  return `<article id="city-dossier" class="panel block stack atlas-dossier">
+    <h2>${esc(place.name)} · Historisch stadsdossier</h2><p>${esc(place.text)}</p>
+    ${dossier.map(({ period, title, summary, structure }) => `<section class="lesson-copy atlas-dossier-period">
+      <p class="small-text muted">${esc(period)}</p><h3>${esc(title.replace(/^.*? · /u,''))}</h3><p>${esc(summary)}</p>
+      ${structure?.map(({ heading, lead, text }) =>
+        '<h4>' + esc(heading) + '</h4><p><strong>' + esc(lead) + '.</strong> ' + esc(text) + '</p>').join('') ?? ''}
+    </section>`).join('')}
+    ${sources.size ? '<details><summary>Bronnen van het stadsdossier</summary><div class="stack">' +
+      [...sources.values()].map(sourceView).join('') + '</div></details>' : ''}
+    ${path.length ? '<details><summary>Bijbehorende lessen en oefeningen</summary><ul>' + path.map(lesson =>
+      '<li><a class="text-link" href="#les/' + encodeURIComponent(lesson.id) + '">' + esc(lesson.title) + '</a></li>').join('') + '</ul></details>' : ''}
+  </article>`;
 }
-export function atlasPage(lessons, scope, key, studied, read) {
+export function atlasPage(lessons, scope, key) {
   const paths = groupAtlasLessons(lessons, scope);
   const available = ATLAS_PLACES.map(place => ({ place, lessons: (paths.get(place.id) || []) }))
     .filter(entry => entry.lessons.length).sort((a, b) => a.place.name.localeCompare(b.place.name, 'nl'));
   const selected = available.find(entry => entry.place.id === key);
   const chosen = selected?.place;
-  const path = selected?.lessons ?? [];
-  const next = path.find(lesson => !read.has(lesson.id) && !studied.has(lesson.id)) ?? path[0];
-  const prompt = 'Draai de wereldbol en kies een stad. Tik op een groep spelden om verder in te zoomen.';
+  const path = chosen ? (scope === 'alles' ? selected.lessons : groupAtlasLessons(lessons, 'alles').get(chosen.id)) : [];
+  const prompt = 'Draai de wereldbol, kies een jaar of open het dossier van een stad.';
   return explorerHeader('atlas', scope, chosen?.id, prompt) + `
     <div class="atlas-layout" data-atlas-scope="${esc(scope)}">
       <section id="atlas-globe" class="atlas-frame" data-selected-place="${esc(chosen?.id || '')}" aria-label="Interactieve historische wereldbol">
@@ -48,7 +59,6 @@ export function atlasPage(lessons, scope, key, studied, read) {
             Kies een plaats in de lijst.
           </canvas>
           <div class="atlas-map-label"><span aria-hidden="true"></span><span id="atlas-map-status">${chosen ? esc(chosen.name) : 'Wereld'}</span></div>
-          ${next ? `<a class="button atlas-map-open" href="#${explorationLessonHref(next.id, 'atlas', scope, chosen.id)}">Leerpad ${esc(chosen.name)}</a>` : ''}
           <div class="atlas-controls" role="group" aria-label="Kaartzoom" hidden>
             <button class="button icon-only" type="button" data-map-zoom="1.45" aria-label="Inzoomen">+</button>
             <button class="button icon-only" type="button" data-map-zoom=".69" aria-label="Uitzoomen">−</button>
@@ -61,19 +71,19 @@ export function atlasPage(lessons, scope, key, studied, read) {
             `<button type="button" class="chip outline" data-map-view="${id}" aria-pressed="${!chosen && id === 'wereld'}">${view.label}</button>`).join('')}</div>
           <p class="small-text muted">Huidige kustlijnen op een orthografische wereldbol. Sleep om te draaien, knijp of dubbelklik om in te zoomen. <a class="text-link" href="https://www.naturalearthdata.com/downloads/110m-physical-vectors/" target="_blank" rel="noopener noreferrer">Kustlijnen van Natural Earth</a> · <a class="text-link" href="https://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-rivers-lake-centerlines/" target="_blank" rel="noopener noreferrer">Huidige rivierlopen</a></p><p class="atlas-layer-status small-text" role="status"></p>
         </div>
+        ${atlasTimeline()}
       </section>
-      <section class="panel stack atlas-places" aria-label="Plaatsen met een leerpad">
-        ${chosen ? `<div class="atlas-selection">
-          <p class="small-text">${esc(chosen.region)}</p><h2>${esc(chosen.name)}</h2><p>${esc(chosen.text)}</p>${overview(chosen,path)}
-          <div class="row"><a class="button primary" href="#${explorationLessonHref(next.id, 'atlas', scope, chosen.id)}">Uitgebreid studeren</a>
-          <button class="button quiet" type="button" data-action="scroll-to" data-value="explorer-path">Alle lessen</button></div>
+      <section class="panel stack atlas-places" aria-label="Plaatsen en historische gebieden">
+        ${chosen ? `<div class="atlas-selection" data-city-selection>
+          <p class="small-text">${esc(chosen.region)}</p><h2>${esc(chosen.name)}</h2><p>${esc(chosen.text)}</p>
+          <button class="button primary" type="button" data-action="scroll-to" data-value="city-dossier">Lees het stadsdossier</button>
         </div>` : '<h2>Plaatsen</h2>'}
         <div class="field"><label for="atlas-search">Zoek een stad of regio</label>
           <input type="search" id="atlas-search" placeholder="Bijvoorbeeld Parijs, Tolosa of Spanje" aria-controls="atlas-city-list"></div>
-        <div class="field"><label for="atlas-year">Historische tijdslaag</label><input id="atlas-year" type="text" placeholder="Bijvoorbeeld 100 n.Chr." aria-describedby="atlas-year-note" aria-controls="atlas-city-list"></div>
-        <p id="atlas-year-note" class="small-text muted">Een leeg veld toont alle plaatsen. Per jaar zie je de vastgelegde naamperiodes. Een huidige naam blijft beschikbaar wanneer er geen eindjaar is vastgelegd. Een ontbrekende markering kan op een leemte in de gegevens wijzen.</p>
+        ${atlasHistoricalPanel()}
+        <h3>Steden</h3>
         <div class="row atlas-options"><button type="button" class="button small quiet" data-atlas-reset>Wis filters</button><label><input type="checkbox" data-atlas-grid checked> Gradennet</label><label><input type="checkbox" data-atlas-rivers> Grote rivieren</label></div>
-        <p id="atlas-year-message" role="status" class="small-text"></p><p id="atlas-results" class="small-text muted" aria-live="polite">${available.length} ${available.length === 1 ? 'plaats' : 'plaatsen'}</p>
+        <p id="atlas-results" class="small-text muted" aria-live="polite">${available.length} ${available.length === 1 ? 'plaats' : 'plaatsen'}</p>
         <p id="atlas-empty" class="empty" ${available.length ? 'hidden' : ''}>Geen plaatsen gevonden. Pas je zoekterm of het segment aan.</p>
         <ul class="unit-list explorer-list" id="atlas-city-list">${available.map(({ place, lessons: cityLessons }) => `
           <li data-place-id="${place.id}" data-place-name="${esc([place.name, place.region, place.aliases].filter(Boolean).join(' '))}">
@@ -82,34 +92,30 @@ export function atlasPage(lessons, scope, key, studied, read) {
               <span class="small-text">${count(cityLessons.length)}</span></a></li>`).join('')}</ul>
       </section>
     </div>
-    ${chosen ? learningPath(chosen.name, chosen.text, path, 'atlas', scope, chosen.id, studied, read, 'Alle plaatsen') : ''}`;
+    ${chosen ? cityDossier(chosen, path) : ''}`;
 }
 
 const filters = new Map();
-export function bindAtlasFilters(frame) {
+export function bindAtlasFilters(frame, lessons) {
   const layout = frame.closest('.atlas-layout');
   if (!layout) return;
   const scope = layout.dataset.atlasScope;
-  const saved = filters.get(scope) || {query: '', year: '', grid: true};
+  const saved = filters.get(scope) || {query: '', grid: true};
   const nameInput = layout.querySelector('#atlas-search');
-  const yearInput = layout.querySelector('#atlas-year');
   const gridInput = layout.querySelector('[data-atlas-grid]');
   const riverInput = layout.querySelector('[data-atlas-rivers]');
   const counter = layout.querySelector('#atlas-results');
   const empty = layout.querySelector('#atlas-empty');
-  const message = layout.querySelector('#atlas-year-message');
   const rows = [...layout.querySelectorAll('[data-place-id]')];
   nameInput.value = saved.query;
-  yearInput.value = saved.year;
   gridInput.checked = saved.grid;
   riverInput.checked = Boolean(saved.rivers);
-  function apply() {
+  let selectedYear = null;
+  function apply(year = selectedYear) {
+    selectedYear = year;
     const words = nameKey(nameInput.value.trim()).split(/\s+/u).filter(Boolean);
-    const year = readAtlasYear(yearInput.value);
     const invalid = Number.isNaN(year);
     const selected = [];
-    yearInput.setAttribute('aria-invalid', String(invalid));
-    message.textContent = invalid ? 'Gebruik een historisch jaartal, bijvoorbeeld 44 v.Chr. of 125 n.Chr. De telling kent geen jaar nul.' : '';
     for (const row of rows) {
       const place = atlasById.get(row.dataset.placeId);
       const label = year === null ? place.name : historicalName(place, year);
@@ -121,8 +127,8 @@ export function bindAtlasFilters(frame) {
     const focus = frame.dataset.selectedPlace;
     if (focus) {
       const matched = selected.includes(focus);
-      for (const panel of [layout.querySelector('.atlas-selection'), frame.querySelector('.atlas-map-open'), layout.nextElementSibling]) {
-        if (panel && (panel === layout.nextElementSibling ? panel.id === 'explorer-path' : true)) panel.hidden = !matched;
+      for (const panel of [layout.querySelector('[data-city-selection]'), layout.parentElement.querySelector('#city-dossier')]) {
+        if (panel) panel.hidden = !matched;
       }
     }
     empty.hidden = selected.length > 0 || invalid;
@@ -131,16 +137,15 @@ export function bindAtlasFilters(frame) {
     frame.dataset.atlasRivers = String(riverInput.checked);
     frame.dataset.atlasGrid = gridInput.checked ? 'true' : 'false';
     frame.dispatchEvent(new CustomEvent('atlas-filter', {detail: selected}));
-    filters.set(scope, {query: nameInput.value, year: yearInput.value, grid: gridInput.checked, rivers: riverInput.checked});
+    filters.set(scope, {query: nameInput.value, grid: gridInput.checked, rivers: riverInput.checked});
   }
-  nameInput.addEventListener('input', apply);
-  yearInput.addEventListener('input', apply);
-  gridInput.addEventListener('change', apply);
-  riverInput.addEventListener('change', apply);
+  const timeline = bindAtlasTime(frame, lessons, apply);
+  gridInput.addEventListener('change', () => apply());
+  riverInput.addEventListener('change', () => apply());
   layout.querySelector('[data-atlas-reset]').addEventListener('click', () => {
-    nameInput.value = ''; yearInput.value = ''; apply(); nameInput.focus();
+    nameInput.value = ''; timeline.reset(); nameInput.focus();
   });
-  apply();
+  return timeline;
 }
 
 let globeModule;
@@ -158,8 +163,8 @@ function loadGlobe(retry) {
   return globeModule;
 }
 
-export function mountAtlas(frame, onSelect) {
-  bindAtlasFilters(frame);
+export function mountAtlas(frame, onSelect, lessons) {
+  const timeline = bindAtlasFilters(frame, lessons);
   const layout = frame.closest('.atlas-layout');
   const available = new Set([...layout.querySelectorAll('[data-place-id]')].map(row => row.dataset.placeId));
   const places = ATLAS_PLACES.filter(place => available.has(place.id));
@@ -183,7 +188,7 @@ export function mountAtlas(frame, onSelect) {
     try {
       const { mountAtlasGlobe } = await loadGlobe(retry);
       if (closed) return;
-      const cleanup = await mountAtlasGlobe(frame, places, frame.dataset.selectedPlace, onSelect, { retry });
+      const cleanup = await mountAtlasGlobe(frame, places, frame.dataset.selectedPlace, onSelect, { retry, history: () => getAtlasHistory(frame) });
       if (closed) { cleanup?.(); return; }
       dispose = cleanup;
       frame.dataset.ready = 'true';
@@ -202,7 +207,7 @@ export function mountAtlas(frame, onSelect) {
         error?.message === 'AtlasGeography' ? 'De kustlijnen konden niet worden gelezen.' :
         navigator.onLine === false ? 'De kaartbestanden zijn niet offline beschikbaar.' :
         'De kaartbestanden konden niet laden.';
-      errorPanel.querySelector('p').textContent = reason + ' De leerpaden blijven beschikbaar in de plaatsenlijst.';
+      errorPanel.querySelector('p').textContent = reason + ' De plaatsendossiers blijven beschikbaar in de lijst.';
       if (retry) retryButton.focus({ preventScroll: true });
     } finally {
       pending = false;
@@ -214,6 +219,7 @@ export function mountAtlas(frame, onSelect) {
   start();
   return () => {
     closed = true;
+    timeline?.close();
     retryButton.removeEventListener('click', retry);
     dispose?.();
   };
