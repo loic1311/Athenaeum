@@ -1,8 +1,8 @@
 import './vendor/d3-array.min.mjs';
 import './vendor/d3-geo.min.mjs';
-import { ATLAS_VIEWS, historicalName } from './atlas-catalog.js?v=14r3';
+import { ATLAS_VIEWS, historicalName } from './atlas-catalog.js?v=142';
 
-import { fetchJson } from './fetch-json.js?v=13r11';
+import { fetchJson } from './fetch-json.js?v=142';
 
 const { geoCentroid, geoDistance, geoGraticule10, geoOrthographic, geoPath } = globalThis.d3;
 const sphere = { type: 'Sphere' };
@@ -14,8 +14,15 @@ const distance = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 let geography;
 let riversRequest;
 
-function loadGeography() {
-  geography ??= fetchJson(new URL('./content/atlas-land.json?v=13r9', import.meta.url))
+function loadGeography(retry) {
+  geography ??= fetchJson(new URL('./content/atlas-land.json?v=13r9', import.meta.url), { cache: retry ? 'reload' : 'default' })
+    .then(world => {
+      if (world?.type !== 'GeometryCollection' || !world.geometries?.length ||
+          !world.geometries.every(geometry => geometry?.type === 'Polygon' && geometry.coordinates?.length)) {
+        throw new Error('AtlasGeography');
+      }
+      return world;
+    })
     .catch(error => {
       geography = undefined;
       throw error;
@@ -54,12 +61,12 @@ function indexPlaces(places) {
   };
 }
 
-export async function mountAtlasGlobe(frame, places, selected, onSelect) {
-  const world = await loadGeography();
+export async function mountAtlasGlobe(frame, places, selected, onSelect, { retry = false } = {}) {
+  const world = await loadGeography(retry);
   if (!frame.isConnected) return;
   const canvas = frame.querySelector('canvas');
   const context = canvas.getContext('2d');
-  if (!context) throw new Error('De wereldbol kon niet tekenen.');
+  if (!context) throw new Error('AtlasCanvas');
   const controls = new AbortController();
   const listen = (element, event, handler, options = {}) =>
     element.addEventListener(event, handler, { ...options, signal: controls.signal });
@@ -359,7 +366,11 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect) {
   });
   const layerMessage = frame.querySelector('.atlas-layer-status');
   async function updateRivers() {
-    if (frame.dataset.atlasRivers !== 'true' || rivers || loadingRivers) return;
+    if (frame.dataset.atlasRivers !== 'true') {
+      layerMessage.textContent = '';
+      return;
+    }
+    if (rivers || loadingRivers) return;
     loadingRivers = true;
     layerMessage.textContent = 'Rivierlaag laden…';
     riversRequest ??= fetchJson(new URL('./content/atlas-rivers.json?v=14r1', import.meta.url)).catch(error => {
@@ -372,7 +383,7 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect) {
       layerMessage.textContent = '';
       draw();
     } catch {
-      if (frame.isConnected) layerMessage.textContent = 'De rivierlaag is niet beschikbaar. Zet de laag uit en aan om opnieuw te laden.';
+      if (frame.isConnected && frame.dataset.atlasRivers === 'true') layerMessage.textContent = 'De rivierlaag is niet beschikbaar. Zet de laag uit en aan om opnieuw te laden.';
     } finally {
       loadingRivers = false;
     }
@@ -392,12 +403,32 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect) {
   });
   const visibleRows = frame.parentElement.querySelectorAll('[data-place-id]:not([hidden])');
   filter = new Set([...visibleRows].map(row => row.dataset.placeId));
-  const observer = new ResizeObserver(resize);
-  observer.observe(canvas);
-  resize();
-  updateControls(active ? '' : 'wereld');
-  frame.dataset.ready = 'true';
-  frame.querySelector('.atlas-loading').hidden = true;
+  const single = filter.size === 1 && places.find(place => filter.has(place.id));
+  if (single) {
+    center = single.coordinates;
+    zoom = 9;
+    mapLabel = name(single);
+  }
+  let observer;
+  function dispose() {
+    stopAnimation();
+    controls.abort();
+    observer?.disconnect();
+  }
+  try {
+    resize();
+    if (!width || !height) throw new Error('AtlasCanvas');
+    updateControls(active || single ? '' : 'wereld');
+    if (typeof ResizeObserver === 'function') {
+      observer = new ResizeObserver(resize);
+      observer.observe(canvas);
+    } else {
+      listen(window, 'resize', resize);
+    }
+  } catch (error) {
+    dispose();
+    throw error;
+  }
   updateRivers();
-  return () => { stopAnimation(); controls.abort(); observer.disconnect(); };
+  return dispose;
 }

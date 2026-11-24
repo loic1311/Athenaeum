@@ -1,7 +1,7 @@
-import { esc, sectionHeading, sourceView } from './views.js?v=14r4';
+import { esc, sectionHeading, sourceView } from './views.js?v=142';
 import { MATERIAL_TYPES, COMPARISON_RELATIONS, evidenceList, MAX_EXCERPT, MAX_COMPARISON_ROWS } from './research-data.js?v=13r1';
 
-import { fetchJson } from './fetch-json.js?v=13r11';
+import { fetchJson } from './fetch-json.js?v=142';
 
 export const RESEARCH_TABS = {
   vraag:'Probleemstelling', invoegen:'Invoegen', vinden:'Bronnen zoeken', bron:'Bronanalyse',

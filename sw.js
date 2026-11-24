@@ -1,11 +1,11 @@
-importScripts('./sw-assets.js?v=141');
+importScripts('./sw-assets.js?v=142');
 const BASE = new URL(self.registration.scope);
 const CACHE_PREFIX = 'athenaeum-learning:' + BASE.pathname + ':';
 const VERSION = CACHE_PREFIX + self.learningAssets.version;
 const APP_SHELL = new URL('./index.html', BASE);
 const PAIDEIA_HOME = new URL('./apps/paideia/', BASE);
 const PAIDEIA_REDIRECT = new URL('index.html', PAIDEIA_HOME);
-const ENTRY = './academy/app.js?v=141';
+const ENTRY = self.learningAssets.entry;
 const REQUIRED = self.learningAssets.all;
 const EXTRAS = self.learningAssets.extra;
 const WARM = new Set([...REQUIRED, ...EXTRAS].map(path => new URL(path, BASE).href));

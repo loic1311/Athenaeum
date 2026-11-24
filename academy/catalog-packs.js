@@ -10,6 +10,6 @@ export const catalogPacks = [
   { key: 'archive', name: 'Steden, bronnen en verdieping', load: () => import('./history-archive.js?v=13r10').then(m => m.historyArchive) },
   { key: 'academic', name: 'Historische modules', load: () => import('./content/history-academic.js?v=14r3').then(m => m.academicHistory) },
   { key: 'connections', name: 'Mondiale geschiedenis', load: () => import('./content/history-connections.js?v=14r3').then(m => m.connectedHistory) },
-  { key: 'city-paths', name: 'Stadsgeschiedenissen', load: () => import('./content/atlas-city-lessons.js?v=14r3').then(m => m.atlasCityLessons) },
+  { key: 'city-paths', name: 'Stadsgeschiedenissen', load: () => import('./content/atlas-city-lessons.js?v=142').then(m => m.atlasCityLessons) },
   { key: 'traditions', name: 'Traditio', load: () => import('./content/traditio.js?v=14r3').then(m => m.TRADITIO_LESSONS) },
 ];

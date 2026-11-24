@@ -1,4 +1,4 @@
-import { atlasAdditions, establishedHistories } from './content/atlas-sites.js?v=14r3';
+import { atlasAdditions, establishedHistories } from './content/atlas-sites.js?v=142';
 
 export const ATLAS_VIEWS = {
   wereld: { label: 'Wereld', center: [14, 28], zoom: 1 },
@@ -123,7 +123,7 @@ export const ATLAS_PLACES = [
 export const atlasById = new Map(ATLAS_PLACES.map(place => [place.id, place]));
 export function historicalName(place, year) {
   if (!Number.isInteger(year) || !year) return undefined;
-  return place.windows.find(([from, to]) => year >= from && year <= to)?.[2];
+  return place.windows.find(([from, to]) => year >= from && (to === null || year <= to))?.[2];
 }
 
 export function readAtlasYear(value) {

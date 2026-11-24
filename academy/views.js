@@ -1,8 +1,8 @@
-import { EXAM_GOALS, formatSource, KINDS, LEVELS, ROUTES, TRACKS, tally } from './learning.js?v=14r3';
-import { tipsFor } from './daily.js?v=13r9';
+import { EXAM_GOALS, formatSource, KINDS, LEVELS, ROUTES, TRACKS, tally } from './learning.js?v=142';
+import { tipsFor } from './daily.js?v=142';
 import { instructionFor, PRACTICE_KINDS, PRACTICE_PHASES, practiceOptions, practicePhase, workedExample } from './practice.js?v=13r8';
 import { LANGUAGE_TOPICS, isLanguageTopic } from './language-topics.js?v=14r3';
-import { EXAM_ICE, EXAM_PASS, MAX_ICE, STARTING_ICE } from './streak.js?v=13r9';
+import { EXAM_ICE, EXAM_PASS, MAX_ICE, STARTING_ICE } from './streak.js?v=142';
 import { studyNotes } from './study-notes.js?v=13r6';
 import { LEGACY_TIMES, MAX_REMINDERS, REMINDER_DAYS } from './notifications.js?v=13r6';
 import { belongsToHistoryTrack, chronologicalLessons, chronologyGroups, chronologyYear, HISTORICAL_TRACKS, historyLessonHref,
@@ -10,6 +10,7 @@ import { belongsToHistoryTrack, chronologicalLessons, chronologyGroups, chronolo
 import { HISTORY_SECTIONS, explorerHref } from './history-links.js?v=14r4';
 
 import { classicalCourse, classicalLesson, greekKeyboard } from './classical-view.js?v=14r3';
+import { evidenceFor, SCORE_VERSION } from './assessment.js?v=142';
 
 const SECTION_NAMES = {
   leer: ['Studium', 'pen', 'Studeren'],
@@ -643,10 +644,16 @@ function examDate(at) {
   return new Date(at).toLocaleDateString('nl-BE', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
+function scoreText(data) {
+  if (data.scoreVersion !== SCORE_VERSION) return data.correct + ' / ' + data.total + ' · toenmalige telling';
+  if (!data.objective) return 'Zelfbeoordeling';
+  return data.correct + ' van ' + data.objective + ' automatisch juist zonder hulp';
+}
+
 export function outcomes(rows, emptyText) {
   return rows.length ? `<div class="unit-list">${rows.map(row => `<a class="unit" href="#resultaat/${esc(row.id)}">${icon('check')}
     <div><h3>${esc(row.data.title)}</h3><small>${examDate(row.at)}</small></div>
-    <span class="unit-trailing">${row.data.reviewed < row.data.total ? 'Correctie open' : esc(row.data.correct + ' / ' + row.data.total)}</span>
+    <span class="unit-trailing">${row.data.reviewed < row.data.total ? 'Correctie open' : esc(scoreText(row.data))}</span>
   </a>`).join('')}</div>` : `<p class="empty">${esc(emptyText)}</p>`;
 }
 
@@ -666,11 +673,11 @@ export function exams(info) {
           <ul>${week.lessons.map(lesson => `<li><a class="text-link" href="#les/${encodeURIComponent(lesson.id)}">${esc(lesson.title)}</a></li>`).join('')}</ul></details>`
           : '<p class="muted small-text">Je examenstof verschijnt hier zodra je deze week in Paideia studeert.</p>'}
         ${week?.goals.length && !week.ready ? '<p class="muted small-text">Oefen nog één leerdoel om het weekexamen te starten.</p>' : ''}
-        <p class="exam-ice">🧊 +${EXAM_ICE.week} ijsklontje bij ${EXAM_PASS}% of meer, eenmaal per week.</p>
+        <p class="exam-ice">🧊 +${EXAM_ICE.week} ijsklontje bij ${EXAM_PASS}% of meer op minstens ${EXAM_GOALS.week} automatisch beoordeelde vragen, eenmaal per week.</p>
         <div class="row">${button('exam', 'Bekijk weekexamen', '', 'week')}
         ${week?.ready ? button('exam', 'Alle behandelde leerdoelen', 'quiet', 'week-all') : ''}</div></section>
       <section class="panel stack"><h2>Maandtoets</h2><p class="muted">Tot 18 vragen · 75 minuten. Beschikbaar na ${EXAM_GOALS.month} geoefende leerdoelen uit Paideia.</p>
-        <p class="exam-ice">🧊 +${EXAM_ICE.month} ijsklontjes bij ${EXAM_PASS}% of meer, eenmaal per maand.</p>
+        <p class="exam-ice">🧊 +${EXAM_ICE.month} ijsklontjes bij ${EXAM_PASS}% of meer op minstens ${EXAM_GOALS.month} automatisch beoordeelde vragen, eenmaal per maand.</p>
         <div class="row">${button('exam', 'Bekijk maandtoets', '', 'month')}
         ${button('exam', 'Alle geoefende leerdoelen', 'quiet', 'month-all')}</div></section>
     </div>
@@ -688,9 +695,10 @@ export function progressPage(info) {
       <div class="study-evidence">
         <div><strong>${info.studiedCount}</strong><span>lessen gelezen of geoefend</span></div>
         <div><strong>${info.completedLessons}</strong><span>lessen met elk leerdoel geoefend</span></div>
-        <div><strong>${info.retained}</strong><span>leerdoelen op verschillende dagen goed beantwoord</span></div>
+        <div><strong>${info.recognized}</strong><span>leerdoelen juist herkend zonder hulp</span></div>
+        <div><strong>${info.retained}</strong><span>leerdoelen zelfstandig opgehaald met minstens 24 uur ertussen</span></div>
       </div>
-      <p class="muted small-text">Bij open vragen telt ook je eigen beoordeling. Na een fout of hulp begint de reeks voor dat leerdoel opnieuw.</p>
+      <p class="muted small-text">Herkenning en zelfstandige reproductie tellen vanaf versie 1.4.2. Oudere pogingen en zelfbeoordelingen blijven beschikbaar als oefenhistoriek.</p>
     </section>
     <div class="columns block">
       <section class="panel stack"><h2>Je weekdoel</h2>
@@ -700,7 +708,7 @@ export function progressPage(info) {
       </section>
       <section class="panel stack"><h2>Laatste beoordeelde examen</h2>
         ${info.completedExams.length ? `<p><strong>${esc(info.completedExams[0].data.title)}</strong> · ${examDate(new Date(info.completedExams[0].at))}</p>
-          <p>${info.completedExams[0].data.correct} van ${info.completedExams[0].data.total} goed</p>
+          <p>${esc(scoreText(info.completedExams[0].data))}</p>
           <a class="text-link" href="#resultaat/${encodeURIComponent(info.completedExams[0].id)}">Bekijk je antwoorden</a>` :
           '<p class="muted">Hier verschijnt je resultaat zodra alle antwoorden van je examen beoordeeld zijn.</p><a class="text-link" href="#toetsen">Naar de examens</a>'}
       </section></div>
@@ -856,8 +864,10 @@ export function quizPage(session) {
 function answerFeedback(q, answer, result = '') {
   const feedback = [...new Set([q.feedback, q.explanation].filter(text => text && text !== q.answer))];
   const matches = q.kind === 'match';
+  const title = !answer.rating ? 'Modelantwoord' : answer.rating === 'again' ? 'Bekijk de uitwerking' :
+    evidenceFor(q, answer) === 'self' ? 'Zelf beoordeeld' : answer.rating === 'help' ? 'Goed met hulp' : 'Goed';
   return `<div class="feedback stack ${answer.rating === 'again' ? 'again' : ''}" tabindex="-1" role="status">
-    <h3>${answer.rating === 'again' ? 'Bekijk de uitwerking' : answer.rating === 'help' ? 'Goed met hulp' : answer.rating ? 'Goed' : 'Modelantwoord'}</h3>
+    <h3>${title}</h3>
     ${matches ? `<ul class="match-feedback">${q.pairs.map((pair, i) => {
       const selected = q.pairs[answer.selection?.[i]];
       return `<li><strong>${esc(pair.prompt)}</strong><p>${esc(pair.answer)}</p>
@@ -877,7 +887,6 @@ function answerFeedback(q, answer, result = '') {
 export function resultPage(id, data, reward = 0) {
   const placement = data.mode === 'placement';
   const practice = !placement && data.mode !== 'exam';
-  const assisted = data.answers.filter(answer => answer?.rating === 'help').length;
   const revisit = practice && data.answers.some(answer => ['again','help'].includes(answer?.rating));
   const back = typeof data.back === 'string' && data.back ? data.back : 'vandaag';
   const backText = back.startsWith('les/') ? 'Terug naar de les' :
@@ -886,8 +895,9 @@ export function resultPage(id, data, reward = 0) {
   return heading(placement ? 'Jouw startniveau' : data.title, placement ? 'Deze korte leestoets geeft een richtpunt. Je kunt daarna zelf een niveau kiezen.' : '') + `
     <section class="panel stack">
       ${placement ? '<h2>' + esc(data.estimate.recommended) + '</h2><div class="row">' + data.estimate.rows.filter(row => row.total).map(row => '<span class="chip">' + esc(row.level) + ' · ' + esc(row.correct) + '/' + esc(row.total) + '</span>').join('') + '</div>' :
-        '<h2>' + esc(data.correct - (practice ? assisted : 0)) + ' van ' + esc(data.total) + (practice ? ' op eigen kracht' : ' goed') + '</h2>' +
-        (practice && assisted ? '<p>' + assisted + (assisted === 1 ? ' vraag goed' : ' vragen goed') + ' met hulp.</p>' : '') +
+        '<h2>' + esc(scoreText(data)) + '</h2>' +
+        (data.assisted ? '<p>' + data.assisted + (data.assisted === 1 ? ' vraag juist' : ' vragen juist') + ' met hulp.</p>' : '') +
+        (data.selfAssessed ? '<p>' + data.selfAssessed + (data.selfAssessed === 1 ? ' antwoord zelf beoordeeld.' : ' antwoorden zelf beoordeeld.') + '</p>' : '') +
         (data.reviewed < data.total ? '<p class="muted">Beoordeel hieronder de open antwoorden om je resultaat af te werken.</p>' : '')}
       ${reward ? `<p class="exam-ice">🧊 Je hebt ${reward} ${reward === 1 ? 'ijsklontje' : 'ijsklontjes'} verdiend!</p>` : ''}
       <div class="row">
@@ -1089,7 +1099,8 @@ export function accountDialog(mode, email = '') {
 
 export function summarizeSession(session) {
   return {
-    ...tally(session.questions, session.answers), mode: session.mode, title: session.title, track: session.track ?? '', back: session.back,
+    ...tally(session.questions, session.answers), scoreVersion: SCORE_VERSION, mode: session.mode, title: session.title,
+    track: session.track ?? '', back: session.back,
     questions: session.questions.map(({ options, accepted, optionOrder, ...question }) => question), answers: session.answers,
   };
 }

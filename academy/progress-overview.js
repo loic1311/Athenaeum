@@ -1,12 +1,12 @@
-import { TRACKS, levelFor } from './learning.js?v=14r3';
-import { dayKey } from './daily.js?v=13r9';
-import { streakStatus } from './streak.js?v=13r9';
+import { TRACKS, levelFor } from './learning.js?v=142';
+import { dayKey } from './daily.js?v=142';
+import { streakStatus } from './streak.js?v=142';
 
 export const validGoal = value => Number.isSafeInteger(value) && value >= 1;
 
 export function progressOverview(lessons, records, review, read, prefs, profile, active, when = new Date()) {
   const byTrack = Object.fromEntries(Object.keys(TRACKS).map(id => [id, {
-    lessons: 0, studied: 0, complete: 0, total: 0, goals: 0, retained: 0, due: 0,
+    lessons: 0, studied: 0, complete: 0, total: 0, goals: 0, recognized: 0, retained: 0, due: 0,
   }]));
   const byId = new Map(lessons.map(lesson => [lesson.id, lesson]));
   const coveredGoals = new Map();
@@ -14,9 +14,11 @@ export function progressOverview(lessons, records, review, read, prefs, profile,
     const lesson = byId.get(key.split('/')[0]);
     if (!lesson) continue;
     const track = byTrack[lesson.track];
-    track.goals++;
     if (state.due <= +when) track.due++;
-    if (state.recallDays >= 2) track.retained++;
+    if (!state.attempted) continue;
+    track.goals++;
+    if (state.recognized) track.recognized++;
+    if (state.recallCount >= 2) track.retained++;
     coveredGoals.set(lesson.id, (coveredGoals.get(lesson.id) ?? 0) + 1);
   }
   for (const lesson of lessons) {
@@ -61,7 +63,7 @@ export function progressOverview(lessons, records, review, read, prefs, profile,
     streak: streakStatus(records, dayKey(when)), days: records.filter(row => row.kind === 'draft' && row.data.daily?.completed).length,
     profile, lessons, studied: review.lessons, byTrack, prefs, today: activity.at(-1).count, activity, resume: Boolean(active),
     resumeTitle: active?.title, lastLesson: last?.unit, results, completedExams,
-    goals: sum('goals'), totalGoals: sum('total'), retained: sum('retained'), due: sum('due'),
+    goals: sum('goals'), totalGoals: sum('total'), recognized: sum('recognized'), retained: sum('retained'), due: sum('due'),
     studiedCount: sum('studied'), completedLessons: sum('complete'), readCount: read.size,
     weeklyLessons: week.size, weeklyGoal: validGoal(goalValue) ? goalValue : null,
     next: Object.keys(TRACKS).map(track => lessons.find(lesson => lesson.track === track && !review.lessons.has(lesson.id) &&

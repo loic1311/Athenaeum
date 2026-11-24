@@ -1,4 +1,5 @@
-// Windows record selected periods of attestation. Gaps deliberately say nothing about habitation.
+// Windows record selected periods of attestation. Null denotes a current name without a recorded end.
+// Gaps deliberately say nothing about habitation.
 const site = (id, name, region, coordinates, track, year, aliases, windows, stages, focus, exercise, sources, related = []) =>
   ({ id, name, region, coordinates, track, year, aliases, windows, stages, focus, exercise, sources, related });
 const wh = (id, title) => ({ author: 'UNESCO World Heritage Centre', title, locator: 'Description en Outstanding Universal Value, webpagina zonder paginering', url: 'https://whc.unesco.org/en/list/' + id + '/' });
@@ -56,7 +57,7 @@ export const atlasAdditions = [
     'Vergelijk publieke bouwprojecten langs de Rhône vóór en na de Romeinse tijd.', ['Welk bewijs kan voortgezet gebruik van een stadsruimte aantonen?', 'Gedateerde aanpassingen aan oude percelen of muren ondersteunen hergebruik. De aanwezigheid van oude stenen alleen verklaart de nieuwe functie niet.'],
     [wh(164,'Arles, Roman and Romanesque Monuments')]),
   site('bordeaux','Bordeaux','Frankrijk · Garonne',[-.572,44.842],'earlymodern',1750,'Burdigala Bordeaux Port de la Lune',
-    [[50,390,'Burdigala'],[1400,2026,'Bordeaux']],[
+    [[50,390,'Burdigala'],[1400,null,'Bordeaux']],[
       ['Romeinse keizertijd','Burdigala aan de rivier','Burdigala gebruikte de Garonne als toegang tot een groter handelsnetwerk. Het bewaarde amfitheater, het Palais Gallien, toont een andere stedelijke functie dan de overslag van goederen aan de rivier.'],
       ['18e eeuw','De gevel van de haven','De herinrichting van kades en pleinen keerde de bebouwing naar de rivier. Achter de nieuwe gevels lagen Atlantische handelsbetrekkingen, waaronder slavernij en de handel in producten uit plantagekolonies.']],
     'Onderzoek wat de monumentale kades van een Atlantische haven zichtbaar maken over handel en stedelijke macht.', ['Waarom vertelt een gevelrij maar een deel van de geschiedenis van een haven?', 'Zij toont de bestemming van stedelijke investeringen. Scheepsregisters en handelsarchieven zijn nodig om herkomst van goederen en rol van gedwongen arbeid te bepalen.'],
@@ -80,7 +81,7 @@ export const atlasAdditions = [
     'Hoe hing de vestiging van veteranen samen met de uitbouw van een provinciale hoofdstad?', ['Welke twee soorten infrastructuur verbinden de inwoners met hun omgeving?', 'De brug vergemakkelijkte verkeer over de Guadiana; de waterleiding voerde water van buiten de stad aan. Beide vragen onderhoud en organisatie.'],
     [wh(664,'Archaeological Ensemble of Mérida')]),
   site('cordoba','Córdoba','Spanje · Guadalquivir',[-4.779,37.879],'medieval',950,'Corduba Qurtuba Qurṭuba Córdoba Cordoba',
-    [[-100,350,'Corduba'],[800,1235,'Qurṭuba'],[1250,2026,'Córdoba']],[
+    [[-100,350,'Corduba'],[800,1235,'Qurṭuba'],[1250,null,'Córdoba']],[
       ['Romeinse keizertijd','Corduba aan de Baetis','Een brug verbond de Romeinse stad met de overzijde van de Guadalquivir. De ligging aan de rivier verklaart haar verbindingen met Baetica. Onderdelen van de huidige brug zijn het resultaat van latere verbouwingen.'],
       ['8e–10e eeuw','De grote moskee','De opeenvolgende Omajjadische uitbreidingen vergrootten de gebedsruimte. Wie zuilenrijen en bouwfasen afzonderlijk bekijkt, kan politieke presentatie én de praktische inrichting van een moskee onderzoeken.'],
       ['13e eeuw en later','Een kathedraal in een oudere gebedsruimte','Na de verovering door Ferdinand III werd de moskee als kathedraal gebruikt. De latere verbouwingen documenteren hoe veranderingen in gezag en eredienst dezelfde ruimte herschikten.']],
@@ -163,73 +164,73 @@ export const atlasAdditions = [
     'Verbind de inscriptie over stedelijke uitgaven met de stenen monumenten van een Griekse polis onder Rome.', ['Welke vraag kun je met een keizerlijke brief beter beantwoorden dan met het stadion alleen?', 'De brief geeft toegang tot de voorgelegde prioriteiten en de reactie van Hadrianus. Het stadion toont fysieke mogelijkheden, maar geen onderhandelingen over een specifieke uitgave.'],
     [wh(1519,'Aphrodisias'),ref('Joyce Reynolds','Letters of Hadrian to Aphrodisias on trials, taxes and an aqueduct (2000)','JRA 13, pp. 5–20, brief III, rr. 27–41','https://droitromain.univ-grenoble-alpes.fr/Constitutiones/Aphrodisienses8.gr.html'),ref('Kathleen M. Coleman','Exchanging Gladiators for an Aqueduct at Aphrodisias (2008)','Acta Classica 51, pp. 31–46, vooral pp. 31–32','https://casa-kvsa.org.za/legacy/2008/AC51-04-Coleman.pdf')]),
   site('brugge','Brugge','België · Vlaanderen',[3.224,51.209],'medieval',1350,'Bruges Brugge Zwin',
-    [[1150,2026,'Brugge']],[
+    [[1150,null,'Brugge']],[
       ['Hoge en late middeleeuwen','Handel rond een binnenhaven','Waterwegen verbonden Brugge via voorhavens met de Noordzee. Buitenlandse kooplieden en lokale makelaars maakten de stad tot een ontmoetingsplaats. De ligging alleen verklaart de handel niet; ook krediet, opslag en bemiddeling waren nodig.'],
       ['15e eeuw','Een stad van hof, kunst en ambacht','De aanwezigheid van het Bourgondische hof en kapitaalkrachtige stedelingen schiep opdrachten voor kunstenaars en ambachtslieden. Schilderijen tonen hun opdrachtgevers selectiever dan bijvoorbeeld handelsrekeningen of belastingregisters.']],
     'Hoe hingen Brugse voorhavens, handelsinstellingen en opdrachtgevers samen?', ['Waarom levert een schilderij van een koopman geen doorsnede van de Brugse bevolking?', 'Een portret vergt middelen en een opdrachtgever. Voor loonarbeiders, migranten en dienstverlening zijn andere bronnen nodig.'],
     [wh(996,'Historic Centre of Brugge')],['struct-me-steden']),
   site('ieper','Ieper','België · Westhoek',[2.886,50.851],'medieval',1300,'Ypres Ieper Ieperlee In Flanders Fields',
-    [[1150,2026,'Ieper']],[
+    [[1150,null,'Ieper']],[
       ['13e–14e eeuw','Een markt voor lakens','De Lakenhalle verbond opslag, controle en verkoop van laken op de Grote Markt. Het gebouw maakt het economische en politieke gewicht van stedelijke textielproductie zichtbaar. Het thuiswerk van spinners en wevers liet minder monumentale sporen na.'],
       ['1914–1918 en de wederopbouw','Een gereconstrueerd stadsgezicht','Het oorlogsgeweld verwoestte de oude hal. Bij de wederopbouw koos men voor een reconstructie van de historische gevel. Wie nu op de markt staat, ziet tegelijk een middeleeuws ontwerp en twintigste-eeuwse opvattingen over herstel.']],
     'Waarom moet je bij de Ieperse Lakenhalle onderscheid maken tussen bouwvorm en ouderdom van het materiaal?', ['Welke twee geschiedenissen kun je met de huidige Lakenhalle bestuderen?', 'Het oude ontwerp verwijst naar de stedelijke lakenhandel. Het herbouwde materiaal documenteert de keuzes na de oorlog.'],
     [ref('Stad Ieper','Gemeentelijk ruimtelijk structuurplan, informatief gedeelte','p. 82, Stedelijk Ieper','https://www.ieper.be/ntegrale-versie')],['eerste-wereldoorlog']),
   site('kortrijk','Kortrijk','België · Leie',[3.269,50.828],'medieval',1302,'Courtrai Kortrijk Groeningekouter',
-    [[1250,2026,'Kortrijk']],[
+    [[1250,null,'Kortrijk']],[
       ['11 juli 1302','Een veldslag buiten de stad','Op de Groeningekouter versloeg een leger uit het graafschap Vlaanderen het koninklijke leger van Filips IV. De strijd ontstond uit conflicten over gezag in het graafschap, stedelijke tegenstellingen en de verhouding met de Franse kroon.'],
       ['Latere herinnering','Een veldslag krijgt nieuwe betekenissen','De strijd werd in monumenten, herdenkingen en tentoonstellingen telkens opnieuw verteld. Een moderne maquette of een nationaal verhaal documenteert de interpretatie van 1302 en heeft een andere bewijskracht dan een contemporaine kroniek.']],
     'Leg het conflict in het graafschap Vlaanderen naast de latere herdenking van de slag.', ['Welke vraag beantwoord je met een recent monument beter dan met een kroniek?', 'Een monument laat zien wie de slag later herdacht en welke betekenis zij eraan gaven. Voor het verloop van de strijd zijn vroegere bronnen nodig.'],
     [ref('Visit Kortrijk','1302. Opstand, slag, keerpunt','Museumparcours en belevingstafel over de slag','https://www.visitkortrijk.be/nl/1302')]),
   site('londen','Londen','Verenigd Koninkrijk · Theems',[-.087,51.511],'roman',100,'London Londinium Theems Thames',
-    [[55,400,'Londinium'],[1100,2026,'London']],[
+    [[55,400,'Londinium'],[1100,null,'London']],[
       ['Ca. 50–60 n.Chr.','Een haven aan de Theems','De Romeinse nederzetting groeide bij een oversteek van de rivier. Straten, kades en goederen verbonden militairen, handelaars en ambachtslieden. In veel opgravingen bewaart de natte bodem ook houten constructies.'],
       ['60/61 n.Chr. en later','Vernieling en herbouw','Tijdens de opstand van Boudica werd Londinium verwoest. Brandlagen en de heraanleg van straten geven een ander soort bewijs dan Romeinse verslagen. De stad kon zich vervolgens opnieuw ontwikkelen als haven en bestuurlijk centrum.']],
     'Wat vertelt de herbouw van Londinium na de opstand van Boudica?', ['Hoe toets je een geschreven bericht over de verwoesting van een stad?', 'Vergelijk gedateerde brandlagen en de ligging van bebouwing vóór en na de brand. Zo kun je ook onderscheiden welke delen bij één onderzoek zichtbaar werden.'],
     [ref('London Museum','A timeline of Roman London: Londinium from start to end','The early years en Boudica’s revolt','https://www.londonmuseum.org.uk/collections/london-stories/timeline-roman-london-londinium/')]),
   site('oxford','Oxford','Verenigd Koninkrijk · Theems',[-1.255,51.754],'medieval',1167,'Oxonia Oxford university universiteit',
-    [[1096,2026,'Oxford']],[
+    [[1096,null,'Oxford']],[
       ['1096','Onderwijs zonder stichtingsakte','Voor dit jaar is onderwijs in Oxford aantoonbaar. Er is geen enkele bekende stichtingsdatum voor de universiteit. Aanwijzingen voor lesgeven en bewijs voor een georganiseerde universitaire instelling beantwoorden verschillende vragen.'],
       ['Vanaf 1167','Geleerden en instellingen','De terugkeer van Engelse studenten nadat Hendrik II studie in Parijs beperkte, gaf Oxford een impuls. Colleges, voorzieningen en regels groeiden geleidelijk. Studentenpopulatie en de rechtspersoon van een college moeten daarom afzonderlijk worden gedateerd.']],
     'Hoe onderzoek je het ontstaan van een universiteit zonder eenduidig stichtingsjaar?', ['Is 1096 een bewezen stichtingsdatum voor de universiteit?', 'De bron levert bewijs van onderwijs in dat jaar. Voor formele rechten, bestuur en colleges moet je andere en vaak latere documenten raadplegen.'],
     [ref('University of Oxford','Our history','The early days','https://www.ox.ac.uk/about/the-university/history')],['struct-me-steden']),
   site('venetie','Venetië','Italië · Lagune',[12.339,45.435],'medieval',1200,'Venezia Venice Venise Venetia',
-    [[1000,2026,'Venezia']],[
+    [[1000,null,'Venezia']],[
       ['Vanaf de 5e eeuw','Wonen tussen land en water','Bewoning op verschillende lagune-eilanden ging vooraf aan de concentratie rond het latere stadscentrum. Vaarwegen verbonden de eilanden. De vroege geschiedenis van de lagune is daarom ruimer dan die van het huidige San Marcoplein.'],
       ['Middeleeuwen','Scheepvaart en stedelijke macht','De republiek gebruikte handelscontacten, havens en scheepsbouw om haar invloed uit te breiden. Het Arsenaal toont de schaal waarop arbeid en materialen konden worden georganiseerd, terwijl koopmansarchieven afzonderlijke transacties beter laten volgen.']],
     'Volg de overgang van verspreide eilandbewoning naar een stad met een grote scheepsbouwnijverheid.', ['Waarom vormt één eiland geen afdoende verklaring voor de groei van Venetië?', 'Vervoer, scheepsbouw, bevoorrading en vroege bewoning waren over de lagune en verdere vaarroutes verdeeld.'],
     [wh(394,'Venice and its Lagoon')]),
   site('florence','Florence','Italië · Toscane',[11.254,43.772],'earlymodern',1450,'Firenze Florentia Florence Arno',
-    [[-30,350,'Florentia'],[1200,2026,'Firenze']],[
+    [[-30,350,'Florentia'],[1200,null,'Firenze']],[
       ['Romeinse tijd','Florentia aan de Arno','De Romeinse kolonie nam een plaats in aan de Arno. Het regelmatige stratenplan rond de oude kern kan met resten onder latere gebouwen worden vergeleken. De zichtbaarheid van dat patroon bewijst geen onveranderde omvang van de stad.'],
       ['14e–16e eeuw','Ambacht, politiek en kunst','De groei van het stedelijke vermogen schiep opdrachten voor grote kerkelijke en publieke bouwprojecten. Onder de Medici werd patronage een middel van politieke profilering. Gilden, kerkelijke instellingen en andere families bleven eveneens opdrachtgevers.']],
     'Wat leert het Florentijnse stadsbeeld over de verschillende opdrachtgevers van renaissancekunst?', ['Waarom moet je patronage per bouwproject onderzoeken?', 'Gilden, kerkelijke instellingen en de Medici hadden verschillende middelen en belangen. Een stijl of een stadsnaam identificeert de opdrachtgever niet.'],
     [wh(174,'Historic Centre of Florence')]),
   site('keulen','Keulen','Duitsland · Rijn',[6.959,50.941],'roman',50,'Köln Cologne CCAA Colonia Claudia Ara Agrippinensium',
-    [[50,380,'Colonia Claudia Ara Agrippinensium'],[1250,2026,'Köln']],[
+    [[50,380,'Colonia Claudia Ara Agrippinensium'],[1250,null,'Köln']],[
       ['50 n.Chr.','Een kolonie aan de Rijn','Onder Claudius kreeg de nederzetting de titel van Romeinse kolonie. De uitgebreide stadsnaam verwees ook naar Agrippina. Een juridische statusverandering is daarmee beter te dateren dan het begin van alle bewoning op de plek.'],
       ['Middeleeuwen en 19e eeuw','Een kathedraal over eeuwen','De gotische dom werd in de dertiende eeuw begonnen en in de negentiende voltooid. Zijn ogenschijnlijk eenvormige buitenkant vraagt onderzoek naar twee verschillende contexten van patronage, financiering en historische belangstelling.']],
     'Plaats een Romeinse kolonietitel en een eeuwenlang kerkelijk bouwproject elk in hun tijd.', ['Waarom is het verleend koloniale stadsrecht geen bewijs voor de eerste bewoning?', 'De titel veranderde de juridische positie van een bestaande nederzetting. Oudere bewoningsresten moeten onafhankelijk worden gedateerd.'],
     [ref('Museen der Stadt Köln','Metropolis on the Rhine','Legacy of the Romans, kolonietitel en Agrippina','https://downloads.museenkoeln.de/home/ITBBroschuere_EN.pdf'),wh(292,'Cologne Cathedral')]),
   site('aken','Aken','Duitsland · Rijnland',[6.084,50.775],'medieval',800,'Aachen Aix-la-Chapelle Aquisgranum',
-    [[795,1000,'Aquisgranum'],[1200,2026,'Aachen']],[
+    [[795,1000,'Aquisgranum'],[1200,null,'Aachen']],[
       ['Rond 790–800','Een kapel voor het hof','Karel de Grote liet een paleiskapel met een centrale achthoek bouwen. Het gebouw bood ruimte aan de liturgie van het hof. Architectonische verwijzingen naar oudere vorstelijke kerken hielpen zijn gezag voor een publiek herkenbaar te maken.'],
       ['Middeleeuwen','Een plaats van kroning en herinnering','Latere vorsten gebruikten Aken voor kroningen. Door toevoegingen aan kapel en koor veranderde de loop van bezoekers en geestelijken. Hetzelfde gebouw droeg zo uiteenlopende politieke en religieuze herinneringen.']],
     'Hoe werd een Karolingische hofkapel een latere plaats van kroning en herinnering?', ['Welk bewijs is nodig om een kroning in Aken te dateren?', 'De kapel toont een mogelijke omgeving. Vermeldingen in gedateerde teksten of handelingen zijn nodig om een concrete ceremonie en deelnemer te identificeren.'],
     [wh(3,'Aachen Cathedral')],['h2-karolingische-schriftcultuur']),
   site('wenen','Wenen','Oostenrijk · Donau',[16.372,48.21],'history',1860,'Vindobona Wien Vienna Ringstraße',
-    [[100,350,'Vindobona'],[1250,2026,'Wien']],[
+    [[100,350,'Vindobona'],[1250,null,'Wien']],[
       ['Romeinse keizertijd','Een legerplaats aan de Donau','Vindobona maakte deel uit van de Romeinse aanwezigheid langs de rivier. De militaire nederzetting en de civiele omgeving vervulden verschillende functies. Onder het latere stadscentrum zijn resten van het legerkamp teruggevonden.'],
       ['19e eeuw','Van verdedigingsgordel tot Ringstraße','Na de beslissing om de omwalling op te heffen kwam er een boulevard met publieke gebouwen. Het tracé maakte zichtbaar hoe de vroegere scheiding tussen binnenstad en voorsteden voor vervoer en representatie werd hergebruikt.']],
     'Welke stedelijke grenzen zijn ook na afbraak nog in het stratenplan terug te vinden?', ['Waarom kun je de Ringstraße niet zonder meer als een Romeins kamptracé lezen?', 'De boulevard volgt de veel latere verdedigingsgordel. Voor het Romeinse kamp zijn de archeologische resten in de binnenstad bepalend.'],
     [wh(1033,'Historic Centre of Vienna')]),
   site('praag','Praag','Tsjechië · Moldau',[14.421,50.088],'medieval',1350,'Praha Prague Praag Vltava Karelsbrug',
-    [[1100,2026,'Praha']],[
+    [[1100,null,'Praha']],[
       ['Middeleeuwen','Een groep stedelijke kernen','Burcht, wijken en markten aan weerszijden van de Moldau ontwikkelden zich niet allemaal op hetzelfde moment. Wie middeleeuws Praag reconstrueert, moet rekening houden met de verbindingen en rechten van verschillende stadsdelen.'],
       ['14e eeuw','De ingrepen van Karel IV','Onder Karel IV kregen nieuwe stadsaanleg, brug en kathedraal bijzondere steun. De Karelsbrug verbond beide oevers terwijl religieuze en politieke gebouwen de positie van de residentie in het rijk zichtbaar maakten.']],
     'Onderzoek hoe een nieuwe brug het gebruik van oudere stedelijke kernen veranderde.', ['Welke bron heb je naast een brugplan nodig om gebruikers van de brug te kennen?', 'Tolregisters, stedelijke gegevens of beschrijvingen geven informatie over verkeer en groepen. De vorm van de brug toont vooral de mogelijke route.'],
     [wh(616,'Historic Centre of Prague')]),
   site('granada','Granada','Spanje · Andalusië',[-3.59,37.176],'medieval',1350,'Gharnata Garnata Granada Alhambra Nasriden',
-    [[1250,1491,'Gharnāṭa'],[1493,2026,'Granada']],[
+    [[1250,1491,'Gharnāṭa'],[1493,null,'Granada']],[
       ['13e–15e eeuw','Een Nasridisch hof','Het Alhambra combineerde versterking, paleis en werkruimten. De Generalife bood een eigen buitenverblijf met tuinen. In de Albaicín aan de andere zijde lagen woningen en straten met een andere relatie tot het hof.'],
       ['Na 1492','Hergebruik na de verovering','Na de overgave van Granada nam de christelijke monarchie de paleisomgeving in gebruik. Latere ingrepen, waaronder het paleis van Karel V, voegden een andere vorstelijke vormentaal toe aan de bestaande gebouwen.']],
     'Vergelijk de ruimten van het Nasridische hof met de ingrepen na de overgave van Granada.', ['Waarom moet een reconstructie van de Nasridische hoofdstad ook de Albaicín tonen?', 'Het paleiscomplex vertegenwoordigt vooral het hof. Wijken aan de overzijde maken het verschil tussen residentie en bredere stedelijke leefruimte zichtbaar.'],
@@ -286,24 +287,24 @@ export const atlasAdditions = [
 
 // Selected attestation windows. Their endpoints are editorial bounds, not foundation or abandonment dates.
 export const establishedHistories = Object.fromEntries([
-  ['marseille','Massalia Massilia Marselha Marseille Phocée Lacydon', [[-575,-50,'Massalia'],[-49,500,'Massilia'],[1481,2026,'Marseille']]],
-  ['parijs','Lutetia Lutèce Paris Seine', [[1,300,'Lutetia'],[1200,2026,'Paris']]],
-  ['toulouse','Tolosa Toulouse Garonne', [[30,400,'Tolosa'],[1600,2026,'Toulouse']]],
-  ['madrid','Mayrit Maǧrīṭ Madrid', [[900,1050,'Maǧrīṭ'],[1561,2026,'Madrid']]],
-  ['barcelona','Barcino Bàrcino Barcelona Eixample', [[1,350,'Barcino'],[1250,2026,'Barcelona']]],
-  ['lyon','Lugdunum Lyon Rhône Saône', [[-42,300,'Lugdunum'],[1500,2026,'Lyon']]],
-  ['lissabon','Lisboa Lisbon Lissabon Baixa', [[1700,2026,'Lisboa']]],
-  ['athene','Athēnai Athènes Athens Athenae Attica', [[-480,-322,'Athēnai'],[1,300,'Athēnai'],[1834,2026,'Athína']]],
-  ['rome','Roma Rome Rom Romulus', [[-500,500,'Roma'],[1200,2026,'Roma']]],
-  ['gent','Ganda Gand Ghent Gent', [[700,900,'Ganda (abdijsite)'],[1200,2026,'Gent']]],
-  ['antwerpen','Antwerp Anvers Antwerpen Schelde', [[1450,2026,'Antwerpen']]],
-  ['istanbul','Byzantion Byzantium Kōnstantinoupolis Constantinopel Konstantiniyye Istanbul İstanbul', [[-450,192,'Byzantion'],[330,1452,'Kōnstantinoupolis'],[1454,1900,'Kostantiniyye'],[1930,2026,'İstanbul']]],
-  ['alexandrie','Alexandria Alexandreia Alexandrië al-Iskandariyya', [[-320,400,'Alexandreia'],[1800,2026,'Al-Iskandariyya']]],
-  ['bagdad','Baghdad Baghdād Madīnat al-Salām Bagdad', [[770,900,'Madīnat al-Salām'],[1000,1257,'Baghdād'],[1800,2026,'Baghdād']]],
+  ['marseille','Massalia Massilia Marselha Marseille Phocée Lacydon', [[-575,-50,'Massalia'],[-49,500,'Massilia'],[1481,null,'Marseille']]],
+  ['parijs','Lutetia Lutèce Paris Seine', [[1,300,'Lutetia'],[1200,null,'Paris']]],
+  ['toulouse','Tolosa Toulouse Garonne', [[30,400,'Tolosa'],[1600,null,'Toulouse']]],
+  ['madrid','Mayrit Maǧrīṭ Madrid', [[900,1050,'Maǧrīṭ'],[1561,null,'Madrid']]],
+  ['barcelona','Barcino Bàrcino Barcelona Eixample', [[1,350,'Barcino'],[1250,null,'Barcelona']]],
+  ['lyon','Lugdunum Lyon Rhône Saône', [[-42,300,'Lugdunum'],[1500,null,'Lyon']]],
+  ['lissabon','Lisboa Lisbon Lissabon Baixa', [[1700,null,'Lisboa']]],
+  ['athene','Athēnai Athènes Athens Athenae Attica', [[-480,-322,'Athēnai'],[1,300,'Athēnai'],[1834,null,'Athína']]],
+  ['rome','Roma Rome Rom Romulus', [[-500,500,'Roma'],[1200,null,'Roma']]],
+  ['gent','Ganda Gand Ghent Gent', [[700,900,'Ganda (abdijsite)'],[1200,null,'Gent']]],
+  ['antwerpen','Antwerp Anvers Antwerpen Schelde', [[1450,null,'Antwerpen']]],
+  ['istanbul','Byzantion Byzantium Kōnstantinoupolis Constantinopel Konstantiniyye Istanbul İstanbul', [[-450,192,'Byzantion'],[330,1452,'Kōnstantinoupolis'],[1454,1900,'Kostantiniyye'],[1930,null,'İstanbul']]],
+  ['alexandrie','Alexandria Alexandreia Alexandrië al-Iskandariyya', [[-320,400,'Alexandreia'],[1800,null,'Al-Iskandariyya']]],
+  ['bagdad','Baghdad Baghdād Madīnat al-Salām Bagdad', [[770,900,'Madīnat al-Salām'],[1000,1257,'Baghdād'],[1800,null,'Baghdād']]],
   ['kilwa','Kilwa Kisiwani Quiloa Swahili', [[1150,1500,'Kilwa Kisiwani (vindplaats)']]],
-  ['timbuktu','Timbuktu Tombouctou Timboektoe Mali Sahel', [[1350,1600,'Timboektoe'],[1800,2026,'Timboektoe']]],
-  ['kyoto','Heian-kyō Kyoto Kyōto Japan', [[795,1100,'Heian-kyō'],[1600,2026,'Kyōto']]],
-  ['delhi','Delhi Dilli Dillī Shahjahanabad', [[1250,1500,'Delhi (regio)'],[1650,1856,'Shahjahanabad'],[1911,2026,'Delhi']]],
-  ['mexico','Tenochtitlan Tenochtitlán México Ciudad de México', [[1350,1520,'Tenochtitlan'],[1550,2026,'Ciudad de México']]],
-  ['cuzco','Cusco Cuzco Qusqu Inka', [[1450,1532,'Cusco'],[1550,2026,'Cuzco']]],
+  ['timbuktu','Timbuktu Tombouctou Timboektoe Mali Sahel', [[1350,1600,'Timboektoe'],[1800,null,'Timboektoe']]],
+  ['kyoto','Heian-kyō Kyoto Kyōto Japan', [[795,1100,'Heian-kyō'],[1600,null,'Kyōto']]],
+  ['delhi','Delhi Dilli Dillī Shahjahanabad', [[1250,1500,'Delhi (regio)'],[1650,1856,'Shahjahanabad'],[1911,null,'Delhi']]],
+  ['mexico','Tenochtitlan Tenochtitlán México Ciudad de México', [[1350,1520,'Tenochtitlan'],[1550,null,'Ciudad de México']]],
+  ['cuzco','Cusco Cuzco Qusqu Inka', [[1450,1532,'Cusco'],[1550,null,'Cuzco']]],
 ].map(([id,aliases,windows]) => [id,{aliases,windows}]));

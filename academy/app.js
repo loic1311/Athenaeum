@@ -1,28 +1,29 @@
 import { EXAM_GOALS, LEVELS, ROUTES, TRACKS, shuffled, makePool, historyOf, isCorrect, hasAccentError, quickQuestions,
-  languageQuestions, lessonQuestions, examQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=14r3';
-import { allPackKeys, byLessonId, loadedLessons, loadPacks, packFiles, packsForTracks, summaries } from './catalog.js?v=14r3';
-import { progressOverview, validGoal } from './progress-overview.js?v=14r3';
+  languageQuestions, lessonQuestions, examQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=142';
+import { allPackKeys, byLessonId, loadedLessons, loadPacks, packFiles, packsForTracks, summaries } from './catalog.js?v=142';
+import { progressOverview, validGoal } from './progress-overview.js?v=142';
 import { belongsToHistoryTrack, chronologicalLessons, chronologyForLesson, chronologyYear, HISTORICAL_TRACKS,
   historyLessonHref, historyReadId, timelineScope } from './history-chronology.js?v=14r3';
 import { explorerHref, HISTORY_SECTIONS } from './history-links.js?v=14r4';
-import { weeklyExamQuestions, weeklyStudy } from './weekly-exam.js?v=14r3';
+import { weeklyExamQuestions, weeklyStudy } from './weekly-exam.js?v=142';
 import { isLanguageTopic, LANGUAGE_SKILLS } from './language-topics.js?v=14r3';
-import { record, readRecords, storeRecords, forgetRecords, backups, syncLearning, clearCloudLearning } from './storage.js';
-import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=14r3';
+import { record, readRecords, storeRecords, forgetRecords, backups, syncLearning, clearCloudLearning } from './storage.js?v=142';
+import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=142';
 import { authenticate, authMessage, makeGuest } from './cloud.js?v=13r2';
-import * as view from './views.js?v=14r4';
-import { PACE, DAY_FOCI, STAGES, dayKey, archivedPlans, planDay, advanceDay, drillQuestions, tipsFor } from './daily.js?v=13r9';
+import * as view from './views.js?v=142';
+import { PACE, DAY_FOCI, STAGES, dayKey, archivedPlans, planDay, advanceDay, drillQuestions, tipsFor } from './daily.js?v=142';
 import { checkSelection, completeSelection, practiceOptions, sequencePractice } from './practice.js?v=13r8';
-import { dailyPage } from './daily-view.js?v=13r11';
+import { dailyPage } from './daily-view.js?v=142';
 import { findCases, findStudies, lessonSourceIndex, passageMatches, caseWitness, researchPage, researchMarkdown, RESEARCH_TABS,
-  evidencePreview } from './research.js?v=13r11';
+  evidencePreview } from './research.js?v=142';
 import { addResearchMaterial, comparisonFromForm, evidenceList, validComparison, MAX_COMPARISON_ROWS } from './research-data.js?v=13r1';
-import { readResearchFile } from './research-import.js?v=13r8';
-import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=13r11';
-import { fetchJson } from './fetch-json.js?v=13r11';
-import { searchLessons } from './lesson-search.js?v=14r3';
-import { countsAsPractice, isStudyDay, studyRecordId } from './streak.js?v=13r9';
+import { readResearchFile } from './research-import.js?v=142';
+import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=142';
+import { fetchJson } from './fetch-json.js?v=142';
+import { searchLessons } from './lesson-search.js?v=142';
+import { countsAsPractice, isStudyDay, studyRecordId } from './streak.js?v=142';
 import { MAX_REMINDERS, readSchedule, preparePush, pushPreference, pushSupport, savePush, stopPush, testPush } from './notifications.js?v=13r6';
+import { reviewData, SCORE_VERSION } from './assessment.js?v=142';
 
 const main = document.querySelector('#main');
 const pageContent = document.querySelector('#page-content');
@@ -33,9 +34,9 @@ const sync = window.AthSync;
 const contentKeys = Object.keys(TRACKS);
 const studyTracks = [...HISTORICAL_TRACKS, 'knowledge', 'traditio'];
 const historicalViews = {
-  atlas: { load: () => import('./atlas-view.js?v=14r4') },
-  timeline: { load: () => import('./history-timeline.js?v=14r4') },
-  routes: { load: () => import('./history-explorer-view.js?v=14r4') },
+  atlas: { load: () => import('./atlas-view.js?v=142') },
+  timeline: { load: () => import('./history-timeline.js?v=142') },
+  routes: { load: () => import('./history-explorer-view.js?v=142') },
 };
 let profile = null;
 let readingGuide;
@@ -204,11 +205,22 @@ function routePacks(section, key, tab) {
 function loadFor(keys, retry = false) {
   return loadPacks(keys, refreshContentViews, retry);
 }
+
+function packFailure(error) {
+  if (error?.code === 'CATALOG_MISMATCH') return 'Inhoud en catalogus komen niet overeen.';
+  if (error?.name === 'SyntaxError') return 'Het lesbestand kon niet worden gelezen.';
+  if (error?.name === 'AbortError') return 'Het lesbestand reageerde niet op tijd.';
+  if (error?.status === 404) return 'Het lesbestand ontbreekt op de server.';
+  if (Number.isInteger(error?.status)) return 'De server antwoordde met HTTP ' + error.status + '.';
+  return connection() ? 'Het lesbestand kon niet worden opgehaald.' : 'Deze lessen zijn niet offline beschikbaar.';
+}
+
 function lessonLoadingNotice(keys) {
   const files = keys.map(key => packFiles.get(key)).filter(Boolean);
   const failed = files.filter(file => file.status === 'failed');
   if (failed.length) return `<div class="notice content-notice" role="status">
-    <p><strong>Laden onderbroken</strong> · ${failed.map(file => view.esc(file.name)).join(', ')}.</p>
+    <p><strong>Laden onderbroken</strong></p><ul>${failed.map(file =>
+      '<li>' + view.esc(file.name) + ' · ' + view.esc(packFailure(file.error)) + '</li>').join('')}</ul>
     <button type="button" class="button small" data-action="retry-content">Opnieuw laden</button>
   </div>`;
   return files.some(file => file.status === 'loading') ? '<p class="content-loading muted" role="status">Lessen laden…</p>' : '';
@@ -216,7 +228,7 @@ function lessonLoadingNotice(keys) {
 
 function loadTraditionView() {
   if (traditionView || traditionViewLoad || traditionViewError) return;
-  traditionViewLoad = import('./traditio.js?v=14r3').then(module => { traditionView = module; })
+  traditionViewLoad = import('./traditio.js?v=142').then(module => { traditionView = module; })
     .catch(() => { traditionViewError = true; }).finally(() => { traditionViewLoad = undefined; refreshContentViews(); });
 }
 
@@ -406,7 +418,7 @@ function render(focus = true) {
   applyNavigation(top);
   const notice = lessonLoadingNotice(needed);
   displayMain(notice + markup, { focus });
-  if (section === 'paideia' && key === 'atlas') attachAtlas(explorer, timelineScope(tab), tabKey);
+  if (section === 'paideia' && key === 'atlas') attachAtlas(explorer, timelineScope(tab));
   if (section === 'paideia' && ['chronologie','tijdvakken'].includes(key)) explorer?.mountChronology(main);
   if (section === 'meer' && key === 'meldingen') prepareNotifications();
   if (section === 'zoeken') showLessonMatches(lessons);
@@ -417,31 +429,15 @@ function render(focus = true) {
   if (document.querySelector('#course-search')) filterCourses();
 }
 
-function attachAtlas(explorer, scope, chosen) {
+function attachAtlas(explorer, scope) {
   const frame = document.querySelector('#atlas-globe');
   if (!frame) return;
-  explorer.bindAtlasFilters(frame);
-  const visibleIds = new Set([...main.querySelectorAll('[data-place-id]')].map(node => node.dataset.placeId));
-  const places = explorer.ATLAS_PLACES.filter(place => visibleIds.has(place.id));
-  import('./atlas-globe.js?v=141')
-    .then(({ mountAtlasGlobe }) => mountAtlasGlobe(frame, places, chosen, id => {
-      const destination = explorerHref('atlas', scope, id);
-      if (location.hash === '#' + destination) return;
-      atlasPinDestination = destination;
-      jump(destination);
-    }))
-    .then(cleanup => {
-      if (frame.isConnected) unmountAtlas = cleanup;
-      else cleanup?.();
-    }).catch(() => {
-      if (!frame.isConnected) return;
-      frame.dataset.failed = 'true';
-      frame.querySelector('.atlas-loading').hidden = true;
-      frame.querySelector('.atlas-error').hidden = false;
-      frame.querySelector('canvas').hidden = true;
-      frame.querySelector('.atlas-controls').hidden = true;
-      frame.querySelector('.atlas-presets').hidden = true;
-    });
+  unmountAtlas = explorer.mountAtlas(frame, id => {
+    const destination = explorerHref('atlas', scope, id);
+    if (location.hash === '#' + destination) return;
+    atlasPinDestination = destination;
+    jump(destination);
+  });
 }
 
 async function setProfile(next) {
@@ -521,7 +517,7 @@ async function synchronize(manual = false) {
   syncState = 'Bezig met bijwerken…';
   updateConnection();
   try {
-    await syncLearning(pid);
+    const { blocked } = await syncLearning(pid);
     const updated = await readRecords(pid);
     if (profile?.id !== pid) return;
     const resetAt = Math.max(0, ...updated.filter(x => x.kind === 'reset').map(x => x.at));
@@ -529,8 +525,9 @@ async function synchronize(manual = false) {
     for (const row of records) if (row.at > resetAt && (!merged.has(row.id) || merged.get(row.id).at < row.at)) merged.set(row.id, row);
     const changed = merged.size !== records.length || records.some(row => merged.get(row.id)?.at !== row.at);
     if (changed) records = [...merged.values()];
-    syncState = 'Cloud bijgewerkt';
-    if (manual) message('Je voortgang is bijgewerkt.');
+    syncState = blocked ? 'Cloud deels bijgewerkt · lokaal bewaard' : 'Cloud bijgewerkt';
+    if (manual) message(blocked ? blocked + (blocked === 1 ? ' item kon' : ' items konden') +
+      ' niet naar de cloud en staan nog op dit toestel.' : 'Je voortgang is bijgewerkt.');
     const activeView = route()[0];
     if (!changed) return;
     if (activeView === 'zoeken') showLessonMatches();
@@ -969,12 +966,9 @@ function matchingRating(q, answer, i) {
 
 function studyEvents(q, answer) {
   const id = 'review-' + session.id + '-' + session.index;
-  if (q.kind === 'match') return q.pairs.map((pair, i) => record('review', id + '-' + i, {
-    key: pair.key, question: q.id, lesson: q.lesson, rating: matchingRating(q, answer, i), skipped: Boolean(answer.skipped),
-  }, now()));
-  return [record('review', id, {
-    key: q.key, question: q.id, lesson: q.lesson, rating: answer.rating, skipped: Boolean(answer.skipped),
-  }, now())];
+  if (q.kind === 'match') return q.pairs.map((pair, i) =>
+    record('review', id + '-' + i, reviewData(q, answer, pair.key, matchingRating(q, answer, i)), now()));
+  return [record('review', id, reviewData(q, answer), now())];
 }
 
 function reviewTargets(q, answer) {
@@ -1099,9 +1093,9 @@ async function finishQuiz() {
   if (current.daily) {
     const {date,step} = current.daily;
     const plan = records.find(row => row.id === 'daily-' + date)?.data?.daily;
-    const stats = { total:data.total, correct:data.correct,
+    const stats = { scoreVersion: data.scoreVersion, total:data.total, correct:data.correct, selfAssessed:data.selfAssessed,
       hinted:current.answers.filter(answer => answer.hinted).length,
-      assisted:current.answers.filter(answer => answer.rating === 'help').length,
+      assisted:data.assisted,
       revisit:current.questions.flatMap((q,i) => reviewTargets(q, current.answers[i])) };
     const finished = record('draft', 'draft-' + current.id, { finished: true }, now());
     if (plan) await saveDailyStep(plan, step, stats, [finished]);
@@ -1112,8 +1106,8 @@ async function finishQuiz() {
     return;
   }
   const examReviews = current.mode === 'exam' ? current.questions.flatMap((q, index) => {
-    const rating = current.answers[index].rating;
-    return rating ? [record('review', 'review-' + id + '-' + index, { key: q.key, question: q.id, lesson: q.lesson, rating }, now())] : [];
+    const answer = current.answers[index];
+    return answer.rating ? [record('review', 'review-' + id + '-' + index, reviewData(q, answer), now())] : [];
   }) : [];
   data.studyDay = dayKey();
   if (current.mode === 'exam') {
@@ -1136,14 +1130,15 @@ async function rateExam(value) {
   const result = records.find(x => x.id === id && x.kind === 'result');
   if (!result || !['again', 'good'].includes(rating)) return;
   const data = structuredClone(result.data);
-  if (!data.answers[index] || data.answers[index].rating) return;
-  data.answers[index].rating = rating;
+  const answer = data.answers[index];
   const q = data.questions[index];
+  if (!answer || answer.rating || !['open', 'card'].includes(q?.kind)) return;
+  answer.rating = rating;
   const counts = tally(data.questions, data.answers);
   data.studyDay ??= dayKey(new Date(result.at));
   if (counts.reviewed === counts.total) data.gradedDay = dayKey();
-  await saveRows([record('result', id, { ...data, ...counts }, now()),
-    record('review', 'review-' + id + '-' + index, { key: q.key, question: q.id, lesson: q.lesson, rating }, now())]);
+  await saveRows([record('result', id, { ...data, ...counts, scoreVersion: SCORE_VERSION }, now()),
+    record('review', 'review-' + id + '-' + index, reviewData(q, answer), now())]);
   render(false);
 }
 

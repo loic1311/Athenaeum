@@ -96,53 +96,86 @@ function fromCloud(row) {
 }
 
 const SYNC_MAX_BYTES = 850_000;
+const PAYLOAD_MAX_BYTES = 250_000;
 const SYNC_KINDS = new Set(['review', 'result', 'draft', 'deck', 'prefs']);
+const encoder = new TextEncoder();
 
 export async function syncLearning(profile) {
   const sync = window.AthSync;
-  const token = await sync.access(profile);
-  const user = sync.cfg(profile).user?.id;
+  const { user: account, url } = sync.cfg(profile);
+  const user = account?.id;
   if (!user) throw new Error('Log in om voortgang te bewaren op andere toestellen.');
+  function requireSameAccount() {
+    const current = sync.cfg(profile);
+    if (current.user?.id !== user || current.url !== url) throw new Error('De aanmelding is intussen gewijzigd.');
+  }
+  const token = await sync.access(profile);
+  requireSameAccount();
   const headers = { Authorization: 'Bearer ' + token };
   const userFilter = 'user_id=eq.' + encodeURIComponent(user);
   const pending = (await readRecords(profile)).filter(row => row.pending && SYNC_KINDS.has(row.kind));
   let batch = [];
   let bytes = 0;
-  async function send() {
-    if (!batch.length) return;
-    await sync.request(profile, '/rest/v1/rpc/athenaeum_save_learning', {
-      method: 'POST', headers, body: JSON.stringify({ p_records: batch.map(toCloud) }),
-    });
-    await markSent(profile, batch);
+  let blocked = 0;
+  async function send(rows) {
+    if (!rows.length) return;
+    requireSameAccount();
+    try {
+      await sync.request(profile, '/rest/v1/rpc/athenaeum_save_learning', {
+        method: 'POST', headers, body: '{"p_records":[' + rows.map(row => row.json).join(',') + ']}',
+      });
+    } catch (error) {
+      if (error.code !== '23514' && error.status !== 413) throw error;
+      if (rows.length === 1) { blocked++; return; }
+      const midpoint = Math.floor(rows.length / 2);
+      await send(rows.slice(0, midpoint));
+      await send(rows.slice(midpoint));
+      return;
+    }
+    requireSameAccount();
+    await markSent(profile, rows.map(row => row.record));
+  }
+  async function flush() {
+    await send(batch);
     batch = [];
     bytes = 0;
   }
   for (const row of pending) {
-    const size = new TextEncoder().encode(JSON.stringify(toCloud(row))).length;
-    if (batch.length >= 150 || bytes + size > SYNC_MAX_BYTES) await send();
-    batch.push(row);
+    if (encoder.encode(JSON.stringify(row.data)).length > PAYLOAD_MAX_BYTES) {
+      blocked++;
+      continue;
+    }
+    const json = JSON.stringify(toCloud(row));
+    const size = encoder.encode(json).length + 1;
+    if (batch.length >= 150 || bytes + size > SYNC_MAX_BYTES) await flush();
+    batch.push({ record: row, json });
     bytes += size;
   }
-  await send();
+  await flush();
 
   const cursorKey = 'academy_cursor_' + profile + '_' + user;
-  const saved = localStorage.getItem(cursorKey);
-  const since = saved ? new Date(Number(saved) - 120_000).toISOString() : '';
+  const saved = Number(localStorage.getItem(cursorKey));
+  const since = saved > 0 && Number.isFinite(new Date(saved).getTime()) ? new Date(Math.max(0, saved - 120_000)).toISOString() : '';
   let after = '';
-  let mostRecent = Number(saved ?? 0);
+  let mostRecent = since ? saved : 0;
   for (;;) {
+    requireSameAccount();
     const query = new URLSearchParams({ select: 'record_id,kind,changed_ms,payload,saved_at', order: 'record_id.asc', limit: '250' });
     if (since) query.set('saved_at', 'gte.' + since);
     if (after) query.set('record_id', 'gt.' + after);
     const rows = await sync.request(profile, '/rest/v1/athenaeum_learning?' + userFilter + '&' + query, { headers });
     if (!Array.isArray(rows)) throw new Error('De voortgang kon niet opgehaald worden.');
-    if (sync.cfg(profile).user?.id !== user) return;
+    requireSameAccount();
     await storeRecords(profile, rows.map(fromCloud), false);
-    for (const row of rows) mostRecent = Math.max(mostRecent, Date.parse(row.saved_at));
+    for (const row of rows) {
+      const at = Date.parse(row.saved_at);
+      if (Number.isFinite(at)) mostRecent = Math.max(mostRecent, at);
+    }
     if (rows.length < 250) break;
     after = rows.at(-1).record_id;
   }
   if (mostRecent > 0) localStorage.setItem(cursorKey, String(mostRecent));
+  return { blocked };
 }
 
 export async function clearCloudLearning(profile) {

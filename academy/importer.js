@@ -1,4 +1,4 @@
-import { KINDS, LEVELS, TRACKS } from './learning.js?v=14r3';
+import { KINDS, LEVELS, TRACKS } from './learning.js?v=142';
 
 export const MAX_IMPORT_CHARS = 180_000;
 const MAX_FILE_BYTES = 18 * 1024 * 1024;

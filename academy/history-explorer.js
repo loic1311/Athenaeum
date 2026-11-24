@@ -1,8 +1,8 @@
 import { EXPLORER_PAGES, explorerHref, explorationLessonHref } from './history-links.js?v=14r4';
 export { EXPLORER_PAGES, HISTORY_SECTIONS, explorerHref, explorationLessonHref } from './history-links.js?v=14r4';
 import { belongsToHistoryTrack, chronologyYear, HISTORICAL_TRACKS, timelineScope } from './history-chronology.js?v=14r3';
-import { ATLAS_PLACES } from './atlas-catalog.js?v=14r3';
-export { ATLAS_PLACES, ATLAS_VIEWS } from './atlas-catalog.js?v=14r3';
+import { ATLAS_PLACES } from './atlas-catalog.js?v=142';
+export { ATLAS_PLACES, ATLAS_VIEWS } from './atlas-catalog.js?v=142';
 
 export const HISTORICAL_ERAS = [
   { id: 'sporen', from: -300000, to: -3501, date: 'Ca. 300.000–3501 v.Chr.', name: 'Menselijke sporen en vroege landbouw', text: 'Materiële bronnen, migraties, voedselproductie en sedentaire gemeenschappen.' },

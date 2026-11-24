@@ -17,6 +17,7 @@ let suspendDirty=false;
 
 const running=new Map();
 const scriptRunning=new Map();
+const refreshing=new Map();
 
 function cfg(pid){
   const base={
@@ -97,7 +98,10 @@ async function rawRequest(url,key,path,opt={}){
   if(!r.ok){
     const msg=(data&&typeof data==='object'&&(data.msg||data.message||data.error_description||data.error))
       ||String(data||'').slice(0,300)||`${r.status} ${r.statusText}`;
-    throw new Error(`${r.status}: ${msg}`);
+    const error=new Error(`${r.status}: ${msg}`);
+    error.status=r.status;
+    if(typeof data?.code==='string')error.code=data.code;
+    throw error;
   }
   return data;
 }
@@ -133,14 +137,28 @@ async function auth(pid,email,password,signup=false){
 }
 
 async function access(pid){
-  let c=cfg(pid);
+  const c=cfg(pid);
   if(c.access_token&&c.expires_at>Date.now()+60000)return c.access_token;
   if(!c.refresh_token)throw new Error('Meld eerst aan.');
-  const d=await request(pid,'/auth/v1/token?grant_type=refresh_token',{
+  const active=refreshing.get(pid);
+  if(active?.refreshToken===c.refresh_token&&active.userId===c.user?.id&&active.url===c.url)return active.promise;
+  const task=rawRequest(c.url,c.key,'/auth/v1/token?grant_type=refresh_token',{
     method:'POST',body:JSON.stringify({refresh_token:c.refresh_token})
+  }).then(async d=>{
+    const current=cfg(pid);
+    if(current.user?.id!==c.user?.id||current.url!==c.url||
+       (d.user?.id&&c.user?.id&&d.user.id!==c.user.id))throw new Error('De aanmelding is intussen gewijzigd.');
+    if(current.refresh_token!==c.refresh_token){
+      if(current.access_token&&current.expires_at>Date.now()+60000)return current.access_token;
+      throw new Error('De aanmelding is intussen gewijzigd.');
+    }
+    await storeSession(pid,d);
+    return d.access_token;
+  }).finally(()=>{
+    if(refreshing.get(pid)?.promise===task)refreshing.delete(pid);
   });
-  await storeSession(pid,d);
-  return d.access_token;
+  refreshing.set(pid,{url:c.url,userId:c.user?.id,refreshToken:c.refresh_token,promise:task});
+  return task;
 }
 
 function plain(x){return x&&typeof x==='object'&&!Array.isArray(x)}
