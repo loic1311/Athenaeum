@@ -350,6 +350,7 @@ for (const viewport of [{width:1440,height:900}, {width:390,height:844}]) {
       await page.locator('#answer').fill('De bron ondersteunt een deel van de verklaring.');
       await page.getByRole('button', {name:'Verduidelijk de vraag'}).click();
       await page.getByRole('button', {name:'Krijg een inhoudelijke tip'}).click();
+      await page.getByRole('button', {name:'Krijg een aanwijzing voor je aanpak'}).waitFor();
       assert.equal(await page.locator('.hint-list li').count(), 2);
       assert.equal(await page.locator('.model-answer').count(), 0);
       await page.getByRole('button', {name:'Vergelijk mijn antwoord'}).click();
@@ -372,7 +373,7 @@ for (const viewport of [{width:1440,height:900}, {width:390,height:844}]) {
       await page.getByText('Antwoorden en feedback teruglezen', {exact:true}).click();
       await page.getByRole('link', {name:'Toepassen',exact:true}).click();
       await page.getByRole('heading', {name:'Zelfbeoordeling',exact:true}).waitFor();
-      await page.locator('.unit-list summary').click();
+      await page.locator('.unit-list > details > summary').click();
       await page.locator('[data-rubric-note]:not([hidden])').waitFor();
       await page.goto(baseURL + '#toetsen');
       await page.getByRole('button', {name:'Bekijk maandtoets'}).waitFor();
