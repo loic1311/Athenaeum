@@ -8,6 +8,7 @@ import { catalogPacks as manifests } from '../academy/catalog-packs.js';
 import { HISTORICAL_ENTITIES } from '../academy/content/atlas-history.js';
 import { belongsToHistoryTrack } from '../academy/history-chronology.js';
 import { makePool } from '../academy/learning.js';
+import { generateLessons } from '../academy/importer.js';
 
 const lessons = (await Promise.all(manifests.map(pack => pack.url
   ? readFile(pack.url, 'utf8').then(JSON.parse) : pack.load()))).flat();
@@ -93,4 +94,19 @@ test('Atlas onderscheidt tijdsgebonden geometrie, vindplaatsen en leemtes', () =
       assert.deepEqual(ring[0], ring.at(-1));
     }
   }
+});
+
+
+test('Geïmporteerde historische teksten leveren alleen gecontroleerde begrippen of passagevragen op', () => {
+  const [lesson] = generateLessons({ track: 'greek', title: 'Eigen tekst', author: 'Testauteur' }, [
+    { locator: 'p. 1', text: 'In de nederzettingen veranderden vormen van samenwerking en productie op uiteenlopende manieren.' },
+    { locator: 'p. 2', text: 'Lineair B werd door verschillende paleisadministraties gebruikt om specifieke goederen te registreren.' },
+  ]);
+  const [passage, concept] = lesson.items;
+  assert.equal(passage.label, 'Passage 1');
+  assert.equal(passage.questions[0].kind, 'open');
+  assert.equal(lesson.sources[passage.source].locator, 'p. 1');
+  assert.equal(concept.label, 'Lineair B');
+  assert.equal(concept.questions[0].concept, 'lineair-b');
+  assert(concept.questions[0].source.locator);
 });

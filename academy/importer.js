@@ -1,4 +1,5 @@
 import { KINDS, LEVELS, TRACKS } from './learning.js?v=160';
+import { annotatedTerms, studyConcept } from './history-study.js?v=160';
 
 export const MAX_IMPORT_CHARS = 180_000;
 const MAX_FILE_BYTES = 18 * 1024 * 1024;
@@ -93,6 +94,26 @@ function pairItem(front, back, isLanguage, source, distractors) {
   return { label: front, explanation: back, source, questions };
 }
 
+function passageItem(sentence, source, number) {
+  const terms = [...new Set(annotatedTerms(sentence).map(term => term.id))];
+  const [term] = terms.map(studyConcept);
+  const label = term?.label ?? 'Passage ' + number;
+  const question = term ? {
+    kind: 'open', text: 'Definieer ' + label + ' en leg uit hoe de passage het begrip gebruikt.',
+    answer: term.definition + '\n\nIn de passage: ' + sentence,
+    source: term.source,
+    concept: term.id,
+    criteria: ['Geef de betekenis of functie van het begrip in eigen woorden.',
+      'Verbind de definitie met het concrete voorbeeld of de bewering in de passage.'],
+  } : {
+    kind: 'open', text: 'Formuleer de hoofdgedachte van deze passage in eigen woorden.',
+    answer: sentence,
+    criteria: ['Duid aan over welke personen, groepen of gebeurtenissen de passage spreekt.',
+      'Vat de voornaamste bewering samen en behoud de beperkingen die de passage zelf aangeeft.'],
+  };
+  return { label, explanation: sentence, source, questions: [{ ...question, context: sentence }] };
+}
+
 export function generateLessons(input, sections) {
   const total = sections.reduce((length, page) => length + page.text.length, 0);
   if (total > MAX_IMPORT_CHARS) throw new Error('Dit is meer dan 180.000 tekens. Verwerk de tekst in stukken. Je invoer blijft bewaard.');
@@ -112,6 +133,12 @@ export function generateLessons(input, sections) {
       continue;
     }
     for (const sentence of sentences(page.text)) {
+      if (!language) {
+        if (used.has(sentence)) continue;
+        used.add(sentence);
+        gathered.push(passageItem(sentence, src, gathered.length + 1));
+        continue;
+      }
       const term = termIn(sentence);
       if (!term || used.has(term.toLowerCase())) continue;
       const mask = sentence.split(term).join(' […] ');

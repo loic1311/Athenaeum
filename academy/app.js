@@ -2027,7 +2027,7 @@ window.addEventListener('hashchange', () => {
   const selectedPin = atlasPinDestination && location.hash === '#' + atlasPinDestination;
   atlasPinDestination = undefined;
   render(!selectedPin);
-  if (selectedPin) document.querySelector('.atlas-map-open')?.focus({ preventScroll: true });
+  if (selectedPin) document.querySelector('[data-city-selection] button')?.focus({ preventScroll: true });
 });
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') scheduleSync(100);
@@ -2044,17 +2044,28 @@ function refreshContentViews() {
     if (!['paideia', 'talen', 'traditio', 'dagles', 'onderzoek', 'zoeken', 'toetsen', 'les'].includes(section)) return;
 
     const field = document.activeElement;
-    const atlasControls = ['atlas-search','atlas-year'].map(id => [id, main.querySelector('#' + id)?.value ?? '']);
+    const queryIds = ['atlas-search', 'atlas-year', 'chronology-query'];
+    const queries = queryIds.map(id => [id, main.querySelector('#' + id)?.value]);
+    const examForm = main.querySelector('#academic-exam-form');
+    const exam = examForm && new FormData(examForm);
     render(false);
-    for (const [id,value] of atlasControls) {
-      const control = value && main.querySelector('#' + id);
-      if (control) {
+    for (const [id, value] of queries) {
+      const control = main.querySelector('#' + id);
+      if (control && value !== undefined && control.value !== value) {
         control.value = value;
         control.dispatchEvent(new Event('input', { bubbles: true }));
       }
     }
+    const newExam = main.querySelector('#academic-exam-form');
+    if (newExam && exam) {
+      for (const name of ['type', 'theme']) {
+        const field = newExam.elements[name];
+        if ([...field.options].some(option => option.value === exam.get(name))) field.value = exam.get(name);
+      }
+      newExam.elements.all.checked = exam.has('all');
+    }
     const replacement = field?.id && main.querySelector('#' + CSS.escape(field.id));
-    if (replacement && ['atlas-search','atlas-year','course-search','lesson-query'].includes(field.id)) {
+    if (replacement && [...queryIds, 'course-search', 'lesson-query'].includes(field.id)) {
       replacement.focus({ preventScroll: true });
     }
   }, 70);

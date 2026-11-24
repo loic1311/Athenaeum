@@ -505,6 +505,7 @@ test('Vijf gelijktijdige lokale profielen bewaren en synchroniseren gescheiden l
 test('De historische atlas reageert op jaartal, filters, vergelijken en Nu', { timeout:30_000 }, async () => {
   const context = await browser.newContext({ viewport:{width:390,height:844}, reducedMotion:'reduce', serviceWorkers:'block' });
   const page = await context.newPage();
+  page.setDefaultTimeout(6500);
   try {
     await page.goto(baseURL + '#paideia/atlas/alles');
     await rectOfGlobe(page);
@@ -523,6 +524,18 @@ test('De historische atlas reageert op jaartal, filters, vergelijken en Nu', { t
     await west.click();
     await page.getByRole('link', {name:/OpenHistoricalMap-bijdragers/}).waitFor();
     assert.equal(await figures.getByRole('button', {name:'Karolingische invloedssfeer',exact:true}).count(), 0);
+    await figures.getByRole('button', {name:'Oost-Francië',exact:true}).click();
+    await page.locator('[data-map-view="europa"]').click();
+    const canvas = page.locator('#atlas-globe canvas');
+    const point = await canvas.evaluate(node => {
+      const { width, height } = node.getBoundingClientRect();
+      const project = globalThis.d3.geoOrthographic().translate([width/2, height/2])
+        .scale(Math.min(width, height) * .44 * 4.6).rotate([-12, -48]);
+      const [x, y] = project([1.3, 46.3]);
+      return { x, y };
+    });
+    await canvas.click({position:point});
+    await page.locator('[data-atlas-history-selection]').getByRole('heading', {name:'West-Francië'}).waitFor();
     await page.getByLabel('Vergelijk met').fill('810 n.Chr.');
     const comparison = page.getByRole('region', {name:'Vergelijkende tijdslaag'});
     await comparison.getByRole('button', {name:'Karolingische invloedssfeer',exact:true}).click();
@@ -541,6 +554,7 @@ test('De historische atlas reageert op jaartal, filters, vergelijken en Nu', { t
 test('Een academisch examen gebruikt de gewone toetsroute en toont de rubric na indiening', { timeout:30_000 }, async () => {
   const context = await browser.newContext({ serviceWorkers:'block' });
   const page = await context.newPage();
+  page.setDefaultTimeout(6500);
   try {
     await page.goto(baseURL + '#toetsen');
     await page.getByLabel('Examentype').selectOption('advanced');

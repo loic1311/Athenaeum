@@ -13,10 +13,10 @@ export function atlasTimeline() {
     <div class="atlas-time-ticks small-text"><span data-time-start></span><span data-time-end></span></div>
     <div class="atlas-time-fields">
       <label class="field">Historische tijdslaag <input id="atlas-year" type="text" placeholder="Bijvoorbeeld 1200 v.Chr." aria-describedby="atlas-year-note atlas-year-message"></label>
-      <label class="field">Tijdschaal <select data-time-span>
+      <div class="field"><label for="atlas-span">Tijdschaal</label><select id="atlas-span" data-time-span>
         <option value="0">Wereldgeschiedenis</option><option value="100">200 jaar rond de gekozen datum</option>
         <option value="25">50 jaar rond de gekozen datum</option>
-      </select></label>
+      </select></div>
     </div>
     <div class="row">
       <button type="button" class="button small" data-time-now>Nu</button>
@@ -33,10 +33,10 @@ export function atlasTimeline() {
 export function atlasHistoricalPanel() {
   return `<section class="atlas-historical stack" data-atlas-historical hidden aria-label="Historische kaartlagen">
     <div class="atlas-time-fields">
-      <label class="field">Regio <select data-atlas-region><option value="">Alle regio’s</option>
-        ${ATLAS_REGIONS.map(region => '<option>' + esc(region) + '</option>').join('')}</select></label>
-      <label class="field">Kaartlaag <select data-atlas-kind><option value="">Alle soorten</option>
-        ${Object.entries(ATLAS_KINDS).map(([id, name]) => `<option value="${id}">${esc(name)}</option>`).join('')}</select></label>
+      <div class="field"><label for="atlas-region">Regio</label><select id="atlas-region" data-atlas-region><option value="">Alle regio’s</option>
+        ${ATLAS_REGIONS.map(region => '<option>' + esc(region) + '</option>').join('')}</select></div>
+      <div class="field"><label for="atlas-kind">Kaartlaag</label><select id="atlas-kind" data-atlas-kind><option value="">Alle soorten</option>
+        ${Object.entries(ATLAS_KINDS).map(([id, name]) => `<option value="${id}">${esc(name)}</option>`).join('')}</select></div>
     </div>
     <label class="field">Vergelijk met <input data-atlas-comparison type="text" placeholder="Bijvoorbeeld 810 n.Chr." aria-describedby="atlas-compare-message"></label>
     <p class="small-text" id="atlas-compare-message" role="status"></p>
