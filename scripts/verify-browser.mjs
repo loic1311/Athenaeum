@@ -377,7 +377,7 @@ for (const viewport of [{width:1440,height:900}, {width:390,height:844}]) {
       await page.goto(baseURL + '#toetsen');
       await page.getByRole('button', {name:'Bekijk maandtoets'}).waitFor();
       await page.goto(baseURL + '#meer/meldingen');
-      await page.getByRole('heading', {name:/Meldingen/i}).first().waitFor();
+      await page.getByRole('heading', {name:'Studieherinneringen',exact:true}).first().waitFor();
       assert.deepEqual(errors, []);
     } finally {
       await context.close();

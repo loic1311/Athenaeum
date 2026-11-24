@@ -12,7 +12,7 @@ import { annotatedTerms, preparationFor, studyLevel } from '../academy/history-s
 import { DAY, historyOf, makePool, practiceQuestions } from '../academy/learning.js';
 import { progressOverview } from '../academy/progress-overview.js';
 import { studyReadings } from '../academy/study-history.js';
-import { quizPage, resultPage } from '../academy/views.js';
+import { languageGrammar, quizPage, resultPage } from '../academy/views.js';
 import { monthlyExamQuestions, monthlyStudy, weeklyExamQuestions, weeklyStudy } from '../academy/weekly-exam.js';
 
 const catalogue = Promise.all(catalogPacks.map(pack =>
@@ -106,6 +106,14 @@ test('Zelfstandig toegepaste kennis, hulp en overslaan hebben afzonderlijke gevo
   assert.equal(user.applied, 1);
   assert.equal(user.conceptApplication, 1);
   assert.equal(user.activity.find(day => day.date === dayKey(new Date(now - 2 * DAY))).count, 1);
+});
+
+test('Bestaande feedback en grammaticablokken behouden hun alinea-opmaak', async () => {
+  const [base, french] = await lessonsById('rome-constitutie', 'fr-basis-goedendag');
+  const [q] = makePool([base])[0].questions;
+  const answer = { rating:'again', response:'Een verkeerd antwoord.' };
+  assert.match(quizPage({ mode:'daily', title:'Begeleid oefenen', index:0, questions:[q], answers:[answer] }), /<h3>Uitleg<\/h3>/u);
+  assert.match(languageGrammar(french), /<div class="lesson-copy"><p><strong>/u);
 });
 
 test('Een vervolgoefening gebruikt een nieuwe vraag bij hetzelfde leerdoel en wacht op voorbereide kennis', async () => {

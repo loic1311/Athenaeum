@@ -660,7 +660,7 @@ export function languageGrammar(lesson) {
   const { grammar } = lesson;
   if (!grammar) return '';
   return `<div class="grammar-example stack">
-    <h3>${esc(grammar.title)}</h3><div class="lesson-copy">${paragraphs(grammar.rule).map(emphasizedParagraph).join('')}</div>
+    <h3>${esc(grammar.title)}</h3><div class="lesson-copy">${paragraphs(grammar.rule).map(text => emphasizedParagraph(text)).join('')}</div>
     <p lang="${esc(lesson.track)}"><strong>${esc(grammar.example)}</strong></p><p class="muted">${esc(grammar.translation)}</p>
     ${button('speak-grammar', 'Luister naar het voorbeeld', 'small quiet', lesson.id)}</div>`;
 }
@@ -982,7 +982,7 @@ function answerFeedback(q, answer, result = '') {
     ${!matches && answer.rating === 'again' && answer.response ? '<p class="small-text">Jouw antwoord · ' + esc(answer.response) + '</p>' : ''}
     ${optionNote ? '<p><strong>Over je keuze</strong> ' + esc(optionNote) + '</p>' : ''}
     ${!matches && feedback.length ? '<div class="lesson-copy"><h3>Uitleg</h3>' +
-      feedback.flatMap(paragraphs).map(emphasizedParagraph).join('') + '</div>' : ''}
+      feedback.flatMap(paragraphs).map(text => emphasizedParagraph(text)).join('') + '</div>' : ''}
     ${rubricView(q, answer, result)}
     ${q.criteria?.length ? '<div><h3>Waarop let je?</h3><ul>' + q.criteria.map(text => '<li>' + esc(text) + '</li>').join('') + '</ul></div>' : ''}
     ${q.prerequisites?.length ? '<div class="row" role="group" aria-label="Begrippen om te herhalen">' +
