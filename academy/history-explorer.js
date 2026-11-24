@@ -1,8 +1,8 @@
-import { EXPLORER_PAGES, explorerHref, explorationLessonHref } from './history-links.js?v=14r4';
-export { EXPLORER_PAGES, HISTORY_SECTIONS, explorerHref, explorationLessonHref } from './history-links.js?v=14r4';
-import { belongsToHistoryTrack, chronologyYear, HISTORICAL_TRACKS, timelineScope } from './history-chronology.js?v=14r3';
+import { EXPLORER_PAGES, explorerHref, explorationLessonHref } from './history-links.js?v=160';
+export { EXPLORER_PAGES, HISTORY_SECTIONS, explorerHref, explorationLessonHref } from './history-links.js?v=160';
+import { belongsToHistoryTrack, chronologyYear, HISTORICAL_TRACKS, timelineScope } from './history-chronology.js?v=160';
 import { ATLAS_PLACES } from './atlas-catalog.js?v=142';
-import { preparationFor } from './history-study.js?v=150';
+import { preparationFor } from './history-study.js?v=160';
 export { ATLAS_PLACES, ATLAS_VIEWS } from './atlas-catalog.js?v=142';
 
 export const HISTORICAL_ERAS = [

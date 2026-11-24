@@ -1,6 +1,9 @@
 import { reference } from './history-academic-model.js';
 
 export const studySources = {
+  linearA: reference('Ester Salgarella', 'Writing in Bronze Age Crete: “Minoan” Linear A', '§§ 2–3, schrift en gebruik', 'https://doi.org/10.1017/9781009520041', '2025'),
+  aegean: reference('Cynthia W. Shelmerdine & John Bennet', 'Economy and Administration', 'The Cambridge Companion to the Aegean Bronze Age, pp. 289–309', 'https://www.cambridge.org/core/books/abs/cambridge-companion-to-the-aegean-bronze-age/economy-and-administration/78B9F1C2DDA5BB5CC83D06F150EA468B', '2008'),
+  crete: reference('Sturt W. Manning', 'Formation of the Palaces', 'The Cambridge Companion to the Aegean Bronze Age, pp. 105–120', 'https://doi.org/10.1017/CCOL9780521814447.005', '2008'),
   method: reference('Ann Kordas, Ryan J. Lynch, Brooke Nelson en Julie Tatlock', 'World History, Volume 1', '§ 1.2, Primary Sources', 'https://openstax.org/books/world-history-volume-1/pages/1-2-primary-sources', '2023'),
   mesopotamia: reference('Ann Kordas, Ryan J. Lynch, Brooke Nelson en Julie Tatlock', 'World History, Volume 1', '§ 3.2, Ancient Mesopotamia', 'https://openstax.org/books/world-history-volume-1/pages/3-2-ancient-mesopotamia', '2023'),
   sahel: reference('Ann Kordas, Ryan J. Lynch, Brooke Nelson en Julie Tatlock', 'World History, Volume 1', '§ 15.2, Medieval Sub-Saharan Africa, The Mali Empire', 'https://openstax.org/books/world-history-volume-1/pages/15-2-medieval-sub-saharan-africa', '2023'),

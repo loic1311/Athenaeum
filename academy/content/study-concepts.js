@@ -1,6 +1,26 @@
-import { studySources as source } from './study-sources.js?v=150';
+import { studySources as source } from './study-sources.js?v=160';
 
 export const concepts = Object.fromEntries([
+  ['lineair-a', 'Lineair A', ['lineaire a-schrift'],
+    'Een schrift uit de Egeïsche bronstijd, vooral bekend van Kreta. De onderliggende taal is grotendeels onbegrepen.',
+    'Veel teksten hebben een administratieve functie. Hoeveelheden, goederen en tekens kunnen gedeeltelijk worden onderscheiden.',
+    'Tabletten, zegeldragers en andere vindcontexten bij Hagia Triada helpen de registratie van goederen onderzoeken.',
+    'Kreta en omringende gebieden in het tweede millennium v.Chr.', ['lineair-b', 'redistributie'], source.linearA],
+  ['lineair-b', 'Lineair B', ['lineair b-tabletten', 'lineair b-tablet'],
+    'Het schrift waarmee Myceense schrijvers een vroege vorm van het Grieks noteerden.',
+    'Veel bewaarde documenten komen uit paleisadministraties. Het archief laat zien welke groepen en verplichtingen voor een bepaald dossier van belang waren.',
+    'In Pylos groepeerde de administratie bepaalde leveringen en taken per plaats.',
+    'Paleiscentra op Kreta en het Griekse vasteland in de late bronstijd.', ['lineair-a', 'wanax'], source.aegean],
+  ['wanax', 'Wanax', ['wa-na-ka'],
+    'Titel van een hooggeplaatste figuur in Myceense archieven.',
+    'Combinaties met grond, goederen en cultische activiteiten geven aanwijzingen voor gezag. Voor een beschrijving van alle bevoegdheden zijn andere gegevens nodig.',
+    'Pylische tabletten verbinden de wanax met bepaalde categorieën in de paleisadministratie.',
+    'Myceense paleiscontexten in het tweede millennium v.Chr.', ['lineair-b', 'redistributie'], source.aegean],
+  ['redistributie', 'Redistributie', ['herverdeling via een centrum', 'paleisgebonden redistributie'],
+    'Een vorm van herverdeling waarbij goederen bij een centrum worden verzameld en daarna opnieuw worden toegewezen.',
+    'De omvang kan per product of plaats verschillen. Bewijs voor ontvangst, opslag en uitgifte komt uit verschillende documenten en vondstcontexten.',
+    'Een paleis kan wol verzamelen en vervolgens grondstoffen toewijzen aan groepen die textiel produceren.',
+    'Onderzoek naar paleiseconomieën en andere historische vormen van verdeling.', ['lineair-b', 'norm-praktijk'], source.crete],
   ['bron', 'Primaire bron', ['primaire bronnen', 'primair bronnenmateriaal'],
     'Een tekst, voorwerp of ander spoor uit de tijd of situatie waarover je een onderzoeksvraag stelt.',
     'Of iets een primaire bron is, hangt af van de vraag. Een negentiende-eeuws handboek is een primaire bron voor negentiende-eeuws onderwijs en een veel latere tekst voor de Romeinse Republiek.',

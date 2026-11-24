@@ -1,9 +1,9 @@
-import { catalogIndex } from './catalog-index.js?v=14r3';
-import { catalogPacks } from './catalog-packs.js?v=142';
+import { catalogIndex } from './catalog-index.js?v=161';
+import { catalogPacks } from './catalog-packs.js?v=161';
 import { fetchJson } from './fetch-json.js?v=142';
 
 export const summaries = Object.entries(catalogIndex).flatMap(([pack, rows]) =>
-  rows.map(([id, track, title, goalCount, level, extension]) => ({ id, track, title, goalCount, level, extension, pack })));
+  rows.map(([id, track, title, goalCount, level, extension, anchor]) => ({ id, track, title, goalCount, level, extension, anchor, pack })));
 export const byLessonId = new Map(summaries.map(lesson => [lesson.id, lesson]));
 export const allPackKeys = catalogPacks.map(pack => pack.key);
 const trackPacks = new Map();

@@ -64,7 +64,7 @@ export const historyLessonHref = (id, scope, mode) => 'les/' + encodeURIComponen
 export const historyReadId = id => 'history-read-' + id;
 
 export function belongsToHistoryTrack(lesson, track) {
-  return lesson.track === track || (lesson.track === 'history' && Object.hasOwn(scopes, track) && scopes[track].has(lesson.id));
+  return lesson.track === track || (track === 'greek' && lesson.curriculum === 'aegean') || (lesson.track === 'history' && Object.hasOwn(scopes, track) && scopes[track].has(lesson.id));
 }
 
 export function chronologyYear(lesson) {

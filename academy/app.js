@@ -1,29 +1,31 @@
+import { academicExam, academicExamParts, academicPreview } from './academic-exams.js?v=161';
 import { EXAM_GOALS, LEVELS, ROUTES, TRACKS, shuffled, makePool, historyOf, isCorrect, hasAccentError, quickQuestions,
-  languageQuestions, lessonQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=150';
-import { allPackKeys, byLessonId, loadedLessons, loadPacks, packFiles, packsForTracks, summaries } from './catalog.js?v=142';
-import { progressOverview, validGoal } from './progress-overview.js?v=150';
+  languageQuestions, lessonQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=161';
+import { allPackKeys, byLessonId, loadedLessons, loadPacks, packFiles, packsForTracks, summaries } from './catalog.js?v=161';
+import { progressOverview, validGoal } from './progress-overview.js?v=161';
 import { belongsToHistoryTrack, chronologicalLessons, chronologyForLesson, chronologyYear, HISTORICAL_TRACKS,
-  historyLessonHref, historyReadId, timelineScope } from './history-chronology.js?v=14r3';
-import { explorerHref, HISTORY_SECTIONS } from './history-links.js?v=14r4';
-import { monthlyExamQuestions, monthlyStudy, weeklyExamQuestions, weeklyStudy } from './weekly-exam.js?v=150';
+  historyLessonHref, historyReadId, timelineScope } from './history-chronology.js?v=160';
+import { explorerHref, HISTORY_SECTIONS } from './history-links.js?v=160';
+import { programmeJourney } from './history-programmes.js?v=161';
+import { monthlyExamQuestions, monthlyStudy, weeklyExamQuestions, weeklyStudy } from './weekly-exam.js?v=161';
 import { isLanguageTopic, LANGUAGE_SKILLS } from './language-topics.js?v=14r3';
 import { record, readRecords, storeRecords, forgetRecords, backups, syncLearning, clearCloudLearning } from './storage.js?v=142';
-import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=150';
+import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=161';
 import { authenticate, authMessage, makeGuest } from './cloud.js?v=13r2';
-import * as view from './views.js?v=150';
-import { PACE, DAY_FOCI, DAY_MODES, STAGES, dayKey, archivedPlans, planDay, advanceDay, prepareDay, drillQuestions, tipsFor } from './daily.js?v=150';
-import { studyConcept, studyLevel } from './history-study.js?v=150';
+import * as view from './views.js?v=161';
+import { PACE, DAY_FOCI, DAY_MODES, STAGES, dayKey, archivedPlans, planDay, advanceDay, prepareDay, drillQuestions, tipsFor } from './daily.js?v=161';
+import { studyConcept, studyLevel } from './history-study.js?v=160';
 import { studyReadings } from './study-history.js?v=150';
-import { checkSelection, completeSelection, practiceOptions, sequencePractice } from './practice.js?v=150';
-import { dailyPage } from './daily-view.js?v=150';
+import { checkSelection, completeSelection, practiceOptions, sequencePractice } from './practice.js?v=160';
+import { dailyPage } from './daily-view.js?v=161';
 import { findCases, findStudies, lessonSourceIndex, passageMatches, caseWitness, researchPage, researchMarkdown, RESEARCH_TABS,
-  evidencePreview } from './research.js?v=150';
+  evidencePreview } from './research.js?v=161';
 import { addResearchMaterial, comparisonFromForm, evidenceList, validComparison, MAX_COMPARISON_ROWS } from './research-data.js?v=13r1';
-import { readResearchFile } from './research-import.js?v=150';
-import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=150';
+import { readResearchFile } from './research-import.js?v=161';
+import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=161';
 import { fetchJson } from './fetch-json.js?v=142';
-import { searchLessons } from './lesson-search.js?v=150';
-import { countsAsPractice, isStudyDay, studyRecordId } from './streak.js?v=150';
+import { searchLessons } from './lesson-search.js?v=161';
+import { countsAsPractice, isStudyDay, studyRecordId } from './streak.js?v=161';
 import { MAX_REMINDERS, readSchedule, preparePush, pushPreference, pushSupport, savePush, stopPush, testPush } from './notifications.js?v=13r6';
 import { reviewData, SCORE_VERSION } from './assessment.js?v=150';
 
@@ -36,9 +38,9 @@ const sync = window.AthSync;
 const contentKeys = Object.keys(TRACKS);
 const studyTracks = [...HISTORICAL_TRACKS, 'knowledge', 'traditio'];
 const historicalViews = {
-  atlas: { load: () => import('./atlas-view.js?v=150') },
-  timeline: { load: () => import('./history-timeline.js?v=150') },
-  routes: { load: () => import('./history-explorer-view.js?v=150') },
+  atlas: { load: () => import('./atlas-view.js?v=161') },
+  timeline: { load: () => import('./history-timeline.js?v=161') },
+  routes: { load: () => import('./history-explorer-view.js?v=161') },
 };
 let profile = null;
 let readingGuide;
@@ -233,7 +235,7 @@ function lessonLoadingNotice(keys) {
 
 function loadTraditionView() {
   if (traditionView || traditionViewLoad || traditionViewError) return;
-  traditionViewLoad = import('./traditio.js?v=150').then(module => { traditionView = module; })
+  traditionViewLoad = import('./traditio.js?v=161').then(module => { traditionView = module; })
     .catch(() => { traditionViewError = true; }).finally(() => { traditionViewLoad = undefined; refreshContentViews(); });
 }
 
@@ -354,7 +356,8 @@ function render(focus = true) {
         break;
       }
       markup = lesson ? view.lessonPage(lesson, {
-        journey: explorer?.explorationJourney(lessons, lesson, path) ?? chronologyForLesson(lessons, lesson, path),
+        journey: (tab === 'leesreeks' ? programmeJourney(lesson, tabKey) : undefined) ??
+          explorer?.explorationJourney(lessons, lesson, path) ?? chronologyForLesson(lessons, lesson, path),
         read: readLessons().has(lesson.id), lessons,
         courseTrack: tab === 'vak' && belongsToHistoryTrack(lesson, tabKey) ? tabKey : undefined,
       }) + (explorer?.lessonExplorerLinks(lesson) || '') : view.heading('Les openen') + '<p class="empty" data-missing-lesson>' +
@@ -381,7 +384,7 @@ function render(focus = true) {
       break;
     }
     case 'toetsen':
-      markup = view.exams({ ...info, weekly: weeklyStudy(lessons, records), monthly: monthlyStudy(lessons, records) });
+      markup = view.exams({ ...info, examLessons: lessons, weekly: weeklyStudy(lessons, records), monthly: monthlyStudy(lessons, records) });
       break;
     case 'voortgang':
       markup = view.progressPage(info);
@@ -423,7 +426,7 @@ function render(focus = true) {
   applyNavigation(top);
   const notice = lessonLoadingNotice(needed);
   displayMain(notice + markup, { focus });
-  if (section === 'paideia' && key === 'atlas') attachAtlas(explorer, timelineScope(tab));
+  if (section === 'paideia' && key === 'atlas') attachAtlas(explorer, timelineScope(tab), lessons);
   if (section === 'paideia' && ['chronologie','tijdvakken'].includes(key)) explorer?.mountChronology(main);
   if (section === 'meer' && key === 'meldingen') prepareNotifications();
   if (section === 'zoeken') showLessonMatches(lessons);
@@ -434,7 +437,7 @@ function render(focus = true) {
   if (document.querySelector('#course-search')) filterCourses();
 }
 
-function attachAtlas(explorer, scope) {
+function attachAtlas(explorer, scope, lessons) {
   const frame = document.querySelector('#atlas-globe');
   if (!frame) return;
   unmountAtlas = explorer.mountAtlas(frame, id => {
@@ -442,7 +445,7 @@ function attachAtlas(explorer, scope) {
     if (location.hash === '#' + destination) return;
     atlasPinDestination = destination;
     jump(destination);
-  });
+  }, lessons);
 }
 
 async function setProfile(next) {
@@ -1318,6 +1321,18 @@ function cacheLessons() {
   ]);
 }
 
+function examSelection(type, theme, all) {
+  return academicExam(lessonList(), new Set([...readLessons(), ...reviews().lessons]), type, theme, all);
+}
+
+async function startAcademicExam(exam, part = 0) {
+  const parts = academicExamParts(exam.questions);
+  if (!parts[part]) throw new Error('Dit toetsdeel is gewijzigd. Open het examen opnieuw.');
+  const title = exam.title + (parts.length > 1 ? ' · Deel ' + (part + 1) + ' van ' + parts.length : '');
+  if (dialog.open) dialog.close();
+  await startQuiz('exam', title, parts[part], { back: 'toetsen' });
+}
+
 async function run(action, target) {
   if (actionBusy) return;
   actionBusy = true;
@@ -1509,7 +1524,8 @@ const actions = {
   'lesson-academic': async id => {
     const unit = lessonList().find(lesson => lesson.id === id);
     if (!unit) return;
-    const questions = makePool([unit]).flatMap(item => item.academic.filter(q => studyLevel(q) >= 3));
+    const questions = makePool([unit]).flatMap(item => [...item.questions, ...item.academic].filter(q => studyLevel(q) >= 3));
+    if (!questions.length) throw new Error('In deze les is nog geen verdiepende vraag beschikbaar.');
     await startQuiz('lesson', 'Academische verdieping · ' + unit.title, questions, { track:unit.track, back:lessonBack(id) });
   },
   'language-practice': async value => {
@@ -1530,13 +1546,15 @@ const actions = {
     await loadFor(packsForTracks(studyTracks));
     const lessons = lessonList().filter(l => TRACKS[l.track].section === 'history');
     const history = reviews();
-    const pool = makePool(lessons);
-    const studied = pool.filter(item => history.states.has(item.key));
-    const varied = new Set(studied.map(item => item.topic)).size >= 3;
-    const questions = drillQuestions(varied ? studied : pool, history, { limit: 5, noAudio: true, compact: true });
+    const questions = academicPreview(lessons, new Set([...readLessons(), ...reviews().lessons]));
     if (!questions.length) throw new Error('Open Athenaeum online om de voorbeeldvragen te laden.');
     if (dialog.open) dialog.close();
     await startQuiz('lesson', 'Oefentoets Paideia', questions, { back: 'toetsen' });
+  },
+  'academic-exam-part': async value => {
+    const [type, theme, index] = value.split('/');
+    const exam = examSelection(type, theme, true);
+    if (exam) await startAcademicExam(exam, Number(index));
   },
   'exam': async type => {
     await loadFor(packsForTracks(studyTracks));
@@ -1763,6 +1781,32 @@ document.addEventListener('click', event => {
 
 document.addEventListener('submit', event => {
   const form = event.target;
+  if (form.id === 'academic-exam-form') {
+    event.preventDefault();
+    const data = new FormData(form);
+    const type = data.get('type');
+    const target = form.querySelector('[role="status"]');
+    run(async () => {
+      const theme = data.get('theme');
+      const exam = examSelection(type, theme, data.has('all'));
+      if (!exam) {
+        inlineMessage(target, type === 'cumulative'
+          ? 'Bestudeer eerst een les met universitaire vragen in minstens twee vakken. Je vindt de lessen onder de beschikbare examenstof.'
+          : 'Voor deze selectie zijn nog geen passende examenvragen beschikbaar.', true);
+        return;
+      }
+      const parts = academicExamParts(exam.questions);
+      if (parts.length > 1) {
+        showDialog(dialogText(exam.title, 'De vragen zijn verdeeld over delen die je afzonderlijk kunt maken en bewaren.',
+          '<div class="row">' + parts.map((part, index) =>
+            '<button type="button" class="button" data-action="academic-exam-part" data-value="' + view.esc(type + '/' + theme + '/' + index) + '">Deel ' +
+            (index + 1) + ' · ' + part.length + ' vragen</button>').join('') + '</div>'));
+        return;
+      }
+      await startAcademicExam(exam);
+    }, target);
+    return;
+  }
   if (form.id === 'weekly-goal-form') {
     event.preventDefault();
     const value = Number(new FormData(form).get('lessons'));
@@ -1983,7 +2027,7 @@ window.addEventListener('hashchange', () => {
   const selectedPin = atlasPinDestination && location.hash === '#' + atlasPinDestination;
   atlasPinDestination = undefined;
   render(!selectedPin);
-  if (selectedPin) document.querySelector('.atlas-map-open')?.focus({ preventScroll: true });
+  if (selectedPin) document.querySelector('[data-city-selection] button')?.focus({ preventScroll: true });
 });
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') scheduleSync(100);
@@ -2000,17 +2044,28 @@ function refreshContentViews() {
     if (!['paideia', 'talen', 'traditio', 'dagles', 'onderzoek', 'zoeken', 'toetsen', 'les'].includes(section)) return;
 
     const field = document.activeElement;
-    const atlasControls = ['atlas-search','atlas-year'].map(id => [id, main.querySelector('#' + id)?.value ?? '']);
+    const queryIds = ['atlas-search', 'atlas-year', 'chronology-query'];
+    const queries = queryIds.map(id => [id, main.querySelector('#' + id)?.value]);
+    const examForm = main.querySelector('#academic-exam-form');
+    const exam = examForm && new FormData(examForm);
     render(false);
-    for (const [id,value] of atlasControls) {
-      const control = value && main.querySelector('#' + id);
-      if (control) {
+    for (const [id, value] of queries) {
+      const control = main.querySelector('#' + id);
+      if (control && value !== undefined && control.value !== value) {
         control.value = value;
         control.dispatchEvent(new Event('input', { bubbles: true }));
       }
     }
+    const newExam = main.querySelector('#academic-exam-form');
+    if (newExam && exam) {
+      for (const name of ['type', 'theme']) {
+        const field = newExam.elements[name];
+        if ([...field.options].some(option => option.value === exam.get(name))) field.value = exam.get(name);
+      }
+      newExam.elements.all.checked = exam.has('all');
+    }
     const replacement = field?.id && main.querySelector('#' + CSS.escape(field.id));
-    if (replacement && ['atlas-search','atlas-year','course-search','lesson-query'].includes(field.id)) {
+    if (replacement && [...queryIds, 'course-search', 'lesson-query'].includes(field.id)) {
       replacement.focus({ preventScroll: true });
     }
   }, 70);

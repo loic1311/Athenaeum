@@ -54,6 +54,17 @@ async function noOverflow(page, section) {
   assert(width.content <= width.screen + 1, section + ' loopt horizontaal over: ' + width.content + '/' + width.screen);
 }
 
+async function openMarseilleLesson(page, touch = false) {
+  const dossier = page.locator('#city-dossier');
+  await dossier.getByRole('heading', {name:'Marseille · Historisch stadsdossier'}).waitFor();
+  const show = dossier.getByText('Bijbehorende lessen en oefeningen', {exact:true});
+  if (touch) await show.tap();
+  else await show.click();
+  const link = dossier.getByRole('link', {name:/Marseille · Massalia/});
+  if (touch) await link.tap();
+  else await link.click();
+}
+
 async function rectOfGlobe(page) {
   const frame = page.locator('#atlas-globe[data-ready=true]');
   const canvas = frame.locator('canvas');
@@ -118,7 +129,7 @@ for (const viewport of [{width:1440,height:900}, {width:820,height:1180}, {width
       await city.waitFor();
       await page.locator('#atlas-year').fill('2100');
       await page.locator('#atlas-city-list').getByRole('link', {name:/Marseille/}).click();
-      await page.getByRole('link', {name:'Uitgebreid studeren'}).click();
+      await openMarseilleLesson(page);
       const mark = page.getByRole('button', {name:'Markeer als gelezen'});
       await mark.click();
       await page.waitForFunction(() => document.querySelector('[data-action="history-read"]')?.getAttribute('aria-pressed') === 'true');
@@ -165,7 +176,7 @@ for (const device of ['Pixel 7','iPhone 13','iPad Pro 11']) {
       await page.getByLabel('Historische tijdslaag').fill('100 n.Chr.');
       await page.getByLabel('Zoek een stad of regio').fill('Massilia');
       await page.locator('#atlas-city-list').getByRole('link', { name:/Massilia.*Marseille/ }).tap();
-      await page.getByRole('link', { name:'Uitgebreid studeren' }).tap();
+      await openMarseilleLesson(page, true);
       await page.getByRole('button', { name:'Markeer als gelezen' }).waitFor();
       await noOverflow(page, device + ' les');
     } finally {
@@ -195,11 +206,11 @@ test('Herstel van de kustlijn en de kaartmodule binnen dezelfde pagina', { timeo
     assert.equal(await page.locator('#atlas-search').inputValue(), 'Massilia');
     assert.match(await page.locator('#atlas-map-status').textContent(), /Massilia/);
 
-    await page.route(url => url.pathname.endsWith('/atlas-globe.js') && url.search === '?v=142',
+    await page.route(url => url.pathname.endsWith('/atlas-globe.js') && url.search === '?v=160',
       route => route.fulfill({status:503,body:'Fixture'}));
     await page.reload();
     await page.getByRole('button', {name:'Kaart opnieuw laden'}).waitFor();
-    const moduleRetry = page.waitForRequest(url => url.url().includes('atlas-globe.js?v=142-retry'));
+    const moduleRetry = page.waitForRequest(url => url.url().includes('atlas-globe.js?v=160-retry'));
     await page.getByRole('button', {name:'Kaart opnieuw laden'}).click();
     await moduleRetry;
     await rectOfGlobe(page);
@@ -228,7 +239,7 @@ test('De wereldbol en een les blijven bruikbaar bij een offline herstart', { tim
     await rectOfGlobe(page);
     await page.locator('#atlas-search').fill('Marseille');
     await page.locator('#atlas-city-list').getByRole('link', { name:/Marseille/ }).click();
-    await page.getByRole('link', { name:'Uitgebreid studeren' }).click();
+    await openMarseilleLesson(page);
     await page.getByRole('button', { name:'Markeer als gelezen' }).waitFor();
     await page.goto(baseURL + '#les/acad-aphrodisias-geld');
     await page.getByRole('button', { name:'Euergetisme', exact:true }).first().click();
@@ -486,6 +497,108 @@ test('Vijf gelijktijdige lokale profielen bewaren en synchroniseren gescheiden l
       assert(rows.filter(row => row.owner === 'test-profiel-' + index && !row.pending).length === 2);
       assert.equal(rows.filter(row => row.pending).length, index === 0 ? 2 : 0);
     }
+  } finally {
+    await context.close();
+  }
+});
+
+test('De historische atlas reageert op jaartal, filters, vergelijken en Nu', { timeout:30_000 }, async () => {
+  const context = await browser.newContext({ viewport:{width:390,height:844}, reducedMotion:'reduce', serviceWorkers:'block' });
+  const page = await context.newPage();
+  page.setDefaultTimeout(6500);
+  try {
+    await page.goto(baseURL + '#paideia/atlas/alles');
+    await rectOfGlobe(page);
+    const year = page.getByLabel('Historische tijdslaag');
+    const figures = page.getByRole('region', {name:'Historische entiteiten'});
+    await year.fill('1200 v.Chr.');
+    await figures.getByRole('button', {name:'Knossos',exact:true}).click();
+    await page.locator('[data-atlas-history-selection]').getByText(/postpalatiale bewoning/).waitFor();
+    await page.locator('[data-atlas-history-selection]').getByRole('link', {name:/Kreta na/}).waitFor();
+    await page.getByLabel('Regio', {exact:true}).selectOption('Amerika');
+    await figures.getByRole('button', {name:'San Lorenzo',exact:true}).waitFor();
+    assert.equal(await figures.getByRole('button', {name:'Knossos',exact:true}).count(), 0);
+    await page.getByLabel('Regio', {exact:true}).selectOption('');
+    await year.fill('900 n.Chr.');
+    const west = figures.getByRole('button', {name:'West-Francië',exact:true});
+    await west.click();
+    await page.getByRole('link', {name:/OpenHistoricalMap-bijdragers/}).waitFor();
+    assert.equal(await figures.getByRole('button', {name:'Karolingische invloedssfeer',exact:true}).count(), 0);
+    await figures.getByRole('button', {name:'Oost-Francië',exact:true}).click();
+    await page.locator('[data-map-view="europa"]').click();
+    const canvas = page.locator('#atlas-globe canvas');
+    const point = await canvas.evaluate(node => {
+      const { width, height } = node.getBoundingClientRect();
+      const project = globalThis.d3.geoOrthographic().translate([width/2, height/2])
+        .scale(Math.min(width, height) * .44 * 4.6).rotate([-12, -48]);
+      const [x, y] = project([1.3, 46.3]);
+      return { x, y };
+    });
+    await canvas.click({position:point});
+    await page.locator('[data-atlas-history-selection]').getByRole('heading', {name:'West-Francië'}).waitFor();
+    await page.getByLabel('Vergelijk met').fill('810 n.Chr.');
+    const comparison = page.getByRole('region', {name:'Vergelijkende tijdslaag'});
+    await comparison.getByRole('button', {name:'Karolingische invloedssfeer',exact:true}).click();
+    await page.locator('[data-atlas-history-selection]').getByRole('heading', {name:'Karolingische invloedssfeer'}).waitFor();
+    const slider = page.getByLabel('Tijdschuif', {exact:true});
+    await slider.press('End');
+    assert.equal(await slider.getAttribute('aria-valuetext'), 'Nu');
+    await figures.waitFor({state:'hidden'});
+    await page.locator('#atlas-city-list').getByRole('link', {name:/Marseille/}).waitFor();
+    await noOverflow(page, 'Historische atlas');
+  } finally {
+    await context.close();
+  }
+});
+
+test('Een leesreeks opent uitgebreide lessen en volgt de inhoudelijke volgorde', { timeout:30_000 }, async () => {
+  const context = await browser.newContext({ viewport: { width:390, height:844 }, serviceWorkers:'block' });
+  const page = await context.newPage();
+  page.setDefaultTimeout(6500);
+  try {
+    await page.goto(baseURL + '#paideia/roman');
+    await page.getByRole('heading', {name:'Leesreeksen per onderwerp'}).waitFor();
+    const series = page.locator('.history-programme').filter({hasText:'Het Eerste Triumviraat en de nasleep'});
+    await series.locator('summary').click();
+    await series.getByRole('link', {name:'De nasleep: burgeroorlog, herstelbeleid en Caesars dictatuur'}).click();
+    await page.getByRole('heading', {name:'Hervormingen, schulden en vestiging'}).waitFor();
+    await page.getByRole('heading', {name:'De eretekens als politieke taal'}).waitFor();
+    const navigation = page.getByRole('navigation', {name:'Verder in de leesreeks'});
+    const read = navigation.getByRole('button', {name:'Markeer als gelezen'});
+    await read.click();
+    await navigation.locator('button[aria-pressed=true]').waitFor();
+    await noOverflow(page, 'Romeinse leesreeks');
+    await navigation.getByRole('link', {name:/Volgende les/}).click();
+    await page.waitForURL('**/#les/acad-iden/leesreeks/acad-eerste-triumviraat');
+    await page.goBack();
+    await navigation.locator('button[aria-pressed=true]').waitFor();
+  } finally {
+    await context.close();
+  }
+});
+
+test('Een academisch examen gebruikt de gewone toetsroute en toont de rubric na indiening', { timeout:30_000 }, async () => {
+  const context = await browser.newContext({ serviceWorkers:'block' });
+  const page = await context.newPage();
+  page.setDefaultTimeout(6500);
+  try {
+    await page.goto(baseURL + '#toetsen');
+    await page.getByLabel('Examentype').selectOption('advanced');
+    await page.getByLabel('Thema of vak').selectOption('aegean');
+    await page.getByRole('button', {name:'Open academisch examen'}).click();
+    await page.getByRole('button', {name:'Start toets'}).click();
+    assert.equal(await page.getByText('Beoordeel je redenering', {exact:true}).count(), 0);
+    for (let n = 1; n <= 4; n++) {
+      await page.getByText('Vraag ' + n + ' van 4', {exact:true}).waitFor();
+      await page.locator('#answer').fill('Een historische vergelijking in eigen woorden.');
+      await page.locator('[data-action=submit-answer]').click();
+    }
+    await page.waitForURL('**/#resultaat/**');
+    await page.getByText('Beoordeel je redenering', {exact:true}).first().waitFor();
+    await page.getByRole('button', {name:'Voldoet aan de criteria'}).first().click();
+    await page.getByText('1 antwoord zelf beoordeeld.', {exact:true}).waitFor();
+    await page.reload();
+    await page.getByText('1 antwoord zelf beoordeeld.', {exact:true}).waitFor();
   } finally {
     await context.close();
   }

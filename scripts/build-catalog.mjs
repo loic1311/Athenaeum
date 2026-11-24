@@ -11,7 +11,9 @@ for (const pack of catalogPacks) {
       throw new Error('Invalid or duplicate lesson in ' + pack.key + ': ' + lesson.id);
     }
     ids.add(lesson.id);
-    return [lesson.id, lesson.track, lesson.title, lesson.items.length, lesson.level || '', lesson.extension || ''];
+    const row = [lesson.id, lesson.track, lesson.title, lesson.items.length, lesson.level || '', lesson.extension || ''];
+    if (lesson.anchor) row.push(lesson.anchor);
+    return row;
   });
 }
 const lines = Object.entries(index).map(([key, rows]) => '  ' + JSON.stringify(key) + ': [\n' +

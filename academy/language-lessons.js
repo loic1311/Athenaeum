@@ -1,3 +1,4 @@
+import { frenchWorkshop, greekArgument, italianWorkshop, latinArgument } from './content/language-workshops.js?v=160';
 import { latinUnits } from './content/classical-latin.js?v=14r3';
 import { latinWorkshops } from './content/classical-latin-workshops.js?v=14r3';
 import { greekWorkshops } from './content/classical-greek-workshops.js?v=14r3';
@@ -33,11 +34,11 @@ function wordItem(entry, index, words, track) {
 function languageLesson(definition, track) {
   const { words, grammar, scene, reading, source, topic, ...identity } = definition;
   const terms = words.map((entry, index) => wordItem(entry, index, words, track));
-  const forms = grammar.items.map(([prompt, answer, accepted], index) => ({
+  const forms = grammar.items.map(([prompt, answer, accepted, feedback = grammar.rule], index) => ({
     id: 'vorm-' + (index + 1),
     label: grammar.title,
     explanation: grammar.rule,
-    questions: [{ kind: 'fill', skill: 'grammar', strict: true, text: prompt, answer, accepted, feedback: grammar.rule }],
+    questions: [{ kind: 'fill', skill: 'grammar', strict: true, text: prompt, answer, accepted, feedback }],
   }));
   const conversation = {
     id: 'zin',
@@ -45,7 +46,7 @@ function languageLesson(definition, track) {
     explanation: scene.translation,
     questions: [{
       kind: 'open', skill: 'sentence', text: scene.prompt, audioPrompt: scene.line, promptMeaning: scene.meaning,
-      answer: scene.answer, audio: scene.answer, criteria: scene.criteria,
+      answer: scene.answer, audio: scene.answer, criteria: scene.rubric?.length ? undefined : scene.criteria, rubric: scene.rubric,
       feedback: scene.translation, tip: scene.criteria[0],
     }],
   };
@@ -78,8 +79,10 @@ function orderedClassicalCourse(core, supplements) {
 export const languageLessons = [
   ...frenchStarters.map(definition => languageLesson(definition, 'fr')),
   ...italianStarters.map(definition => languageLesson(definition, 'it')),
-  ...orderedClassicalCourse(latinUnits, latinWorkshops), ...orderedClassicalCourse(greekUnits, greekWorkshops),
+  ...orderedClassicalCourse(latinUnits, [...latinWorkshops, latinArgument]), ...orderedClassicalCourse(greekUnits, [...greekWorkshops, greekArgument]),
   ...frenchTopics.map(definition => languageLesson(definition, 'fr')),
   ...frenchLevelTopics.map(definition => languageLesson(definition, 'fr')),
   ...italianTopics.map(definition => languageLesson(definition, 'it')),
+  languageLesson(frenchWorkshop, 'fr'),
+  languageLesson(italianWorkshop, 'it'),
 ];

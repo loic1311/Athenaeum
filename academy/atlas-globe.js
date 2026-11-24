@@ -4,10 +4,11 @@ import { ATLAS_VIEWS, historicalName } from './atlas-catalog.js?v=142';
 
 import { fetchJson } from './fetch-json.js?v=142';
 
-const { geoCentroid, geoDistance, geoGraticule10, geoOrthographic, geoPath } = globalThis.d3;
+const { geoCentroid, geoContains, geoDistance, geoGraticule10, geoOrthographic, geoPath } = globalThis.d3;
 const sphere = { type: 'Sphere' };
 const graticule = geoGraticule10();
 const maxZoom = 28;
+const historyColors = { political: '#ffe28c', culture: '#eca5ff', site: '#a7f3ea', network: '#ffb195' };
 const clamp = (number, min, max) => Math.max(min, Math.min(max, number));
 const longitude = value => (value + 540) % 360 - 180;
 const distance = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
@@ -61,7 +62,7 @@ function indexPlaces(places) {
   };
 }
 
-export async function mountAtlasGlobe(frame, places, selected, onSelect, { retry = false } = {}) {
+export async function mountAtlasGlobe(frame, places, selected, onSelect, { retry = false, history = () => ({}) } = {}) {
   const world = await loadGeography(retry);
   if (!frame.isConnected) return;
   const canvas = frame.querySelector('canvas');
@@ -83,6 +84,7 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect, { retry
   let width = 0;
   let height = 0;
   let markers = [];
+  let historicalMarkers = [];
   let gesture;
   let animation = 0;
   let hover;
@@ -171,6 +173,58 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect, { retry
     }
   }
 
+  function drawHistoricalAreas(figures, compared) {
+    if (figures.length === 0 && compared.length === 0) return;
+    context.save();
+    context.setLineDash([5, 3]);
+    for (const figure of figures) {
+      if (figure.area) shape(figure.area, '#f4d77a65', '#68490d', 1.4);
+    }
+    context.setLineDash([2, 4]);
+    for (const figure of compared) {
+      if (figure.area) shape(figure.area, null, '#a63a64', 2);
+    }
+    context.restore();
+  }
+
+  function drawHistoricalMarkers(figures, compared) {
+    historicalMarkers = [];
+    const labels = [];
+    function drawRecord(figure, comparison) {
+      if (geoDistance(center, figure.coordinates) > Math.PI / 2) return;
+      const point = projection(figure.coordinates);
+      const [x, y] = point;
+      if (x < 6 || x > width - 6 || y < 6 || y > height - 6) return;
+      if (!comparison) {
+        historicalMarkers.push({ point, places: [figure], historical: true });
+      }
+      const size = figure.id === hover ? 9 : comparison ? 7 : 5;
+      context.beginPath();
+      context.moveTo(x, y - size);
+      context.lineTo(x + size, y);
+      context.lineTo(x, y + size);
+      context.lineTo(x - size, y);
+      context.closePath();
+      context.lineWidth = comparison ? 2.2 : 1.4;
+      context.strokeStyle = comparison ? '#a63a64' : '#17272a';
+      if (!comparison) {
+        context.fillStyle = historyColors[figure.kind];
+        context.fill();
+      }
+      context.stroke();
+      if (comparison || zoom < 2 || labels.some(([lx, ly]) => Math.abs(x - lx) < 100 && Math.abs(y - ly) < 16)) return;
+      labels.push(point);
+      context.font = '650 12px system-ui';
+      context.lineWidth = 3.6;
+      context.strokeStyle = '#1b3038';
+      context.fillStyle = '#fff9eb';
+      context.strokeText(figure.name, x + 10, y - 6);
+      context.fillText(figure.name, x + 10, y - 6);
+    }
+    for (const figure of compared) drawRecord(figure, true);
+    for (const figure of figures) drawRecord(figure, false);
+  }
+
   function draw() {
     if (!width || !height) return;
     const ratio = canvas.width / width;
@@ -187,6 +241,8 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect, { retry
     land.addColorStop(1, '#779d91');
     shape(world, land, '#d6e4ce', .8);
     if (rivers && frame.dataset.atlasRivers === 'true') shape(rivers, null, '#326476', zoom >= 3 ? 1.1 : .8);
+    const { figures = [], compared = [] } = history();
+    drawHistoricalAreas(figures, compared);
     if (zoom < 2.3) {
       const radius = projection.scale();
       const light = context.createRadialGradient(width/2-radius*.3, height/2-radius*.32, radius*.12,
@@ -197,6 +253,7 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect, { retry
       shape(sphere, light);
     }
     drawMarkers();
+    drawHistoricalMarkers(figures, compared);
   }
 
   function resize() {
@@ -270,16 +327,28 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect, { retry
   }
 
   function hit(point) {
+    const pin = historicalMarkers.find(marker => distance(point, marker.point) < 11);
+    if (pin) return pin;
     const markersByDistance = markers.map(marker => ({ marker, distance: distance(point, marker.point) }))
       .sort((a, b) => a.distance - b.distance);
     const selectedMarker = markersByDistance[0];
     if (selectedMarker?.distance < (selectedMarker.marker.places.length > 1 ? 18 : 14)) return selectedMarker.marker;
-    return markers.find(({ label }) => label && Math.abs(label[1] - point[1]) <= 8 &&
+    const label = markers.find(({ label }) => label && Math.abs(label[1] - point[1]) <= 8 &&
       point[0] >= label[0] - 2 && point[0] <= label[0] + label[2]);
+    if (label) return label;
+    if (distance(point, [width / 2, height / 2]) > projection.scale()) return;
+    const coordinates = projection.invert(point);
+    const area = history().figures?.find(figure => figure.area && geoContains(figure.area, coordinates));
+    if (area) return { places: [area], historical: true };
+
   }
 
   function pick(marker) {
     if (!marker) return;
+    if (marker.historical) {
+      frame.dispatchEvent(new CustomEvent('atlas-entity-select', { detail: marker.places[0].id }));
+      return;
+    }
     if (marker.places.length === 1) {
       onSelect(marker.places[0].id);
       return;
@@ -388,6 +457,7 @@ export async function mountAtlasGlobe(frame, places, selected, onSelect, { retry
       loadingRivers = false;
     }
   }
+  listen(frame, 'atlas-history', draw);
   listen(frame, 'atlas-filter', event => {
     updateRivers();
     filter = new Set(event.detail);

@@ -1,6 +1,6 @@
-import { TRACKS, levelFor } from './learning.js?v=150';
-import { dayKey } from './daily.js?v=150';
-import { streakStatus } from './streak.js?v=150';
+import { TRACKS, levelFor } from './learning.js?v=161';
+import { dayKey } from './daily.js?v=161';
+import { streakStatus } from './streak.js?v=161';
 import { studyReadings } from './study-history.js?v=150';
 
 export const validGoal = value => Number.isSafeInteger(value) && value >= 1;

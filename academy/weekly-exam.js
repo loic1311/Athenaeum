@@ -1,5 +1,5 @@
-import { EXAM_GOALS, TRACKS, examQuestions, makePool } from './learning.js?v=150';
-import { dayKey } from './daily.js?v=150';
+import { EXAM_GOALS, TRACKS, examQuestions, makePool } from './learning.js?v=161';
+import { dayKey } from './daily.js?v=161';
 import { studyReadings } from './study-history.js?v=150';
 
 function currentWeek(now) {

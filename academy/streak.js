@@ -1,5 +1,5 @@
-import { dayKey } from './daily.js?v=150';
-import { EXAM_GOALS } from './learning.js?v=150';
+import { dayKey } from './daily.js?v=161';
+import { EXAM_GOALS } from './learning.js?v=161';
 import { SCORE_VERSION } from './assessment.js?v=150';
 
 const DAY = 86_400_000;
