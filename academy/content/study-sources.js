@@ -1,0 +1,25 @@
+import { reference } from './history-academic-model.js';
+
+export const studySources = {
+  method: reference('Ann Kordas, Ryan J. Lynch, Brooke Nelson en Julie Tatlock', 'World History, Volume 1', '§ 1.2, Primary Sources', 'https://openstax.org/books/world-history-volume-1/pages/1-2-primary-sources', '2023'),
+  mesopotamia: reference('Ann Kordas, Ryan J. Lynch, Brooke Nelson en Julie Tatlock', 'World History, Volume 1', '§ 3.2, Ancient Mesopotamia', 'https://openstax.org/books/world-history-volume-1/pages/3-2-ancient-mesopotamia', '2023'),
+  sahel: reference('Ann Kordas, Ryan J. Lynch, Brooke Nelson en Julie Tatlock', 'World History, Volume 1', '§ 15.2, Medieval Sub-Saharan Africa, The Mali Empire', 'https://openstax.org/books/world-history-volume-1/pages/15-2-medieval-sub-saharan-africa', '2023'),
+  athens: reference('Aristoteles of zijn school, vert. F. G. Kenyon', 'Athenaion Politeia', '42–43, inschrijving in de deme en samenstelling van de raad', 'https://www.gutenberg.org/files/26095/26095-h/26095-h.htm', 'late 4e eeuw v.Chr.'),
+  polybius: reference('Polybius, vert. W. R. Paton', 'Historiën', '6.11–18, vooral 6.12–15', 'https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Polybius/6%2A.html#11', '2e eeuw v.Chr.'),
+  hadrian: reference('Hadrianus, ed. Reynolds, Roueché en Bodard', 'Inscriptions of Aphrodisias', 'IAph2007 11.412, brief III, r. 27–41 = SEG 50.1096', 'https://insaph.kcl.ac.uk/iaph2007/iAph110412.html', '125 n.Chr., editie 2007'),
+  coleman: reference('Kathleen M. Coleman', 'Exchanging Gladiators for an Aqueduct at Aphrodisias', 'Acta Classica 51, pp. 31–33 en 43–44', 'https://casa-kvsa.org.za/legacy/2008/AC51-04-Coleman.pdf', '2008'),
+  zuiderhoek: reference('Arjan Zuiderhoek', 'The Politics of Munificence in the Roman Empire', 'hfst. 1, Introducing euergetism: questions, definitions and data', 'https://www.cambridge.org/core/books/abs/politics-of-munificence-in-the-roman-empire/introducing-euergetism-questions-definitions-and-data/112DF537CAB391CF5F32468F01AF80B8', '2009'),
+  connectivity: reference('Martin Pitts en Miguel John Versluys', 'Globalisation and the Roman World', 'hfst. 1, Globalisation and the Roman world: perspectives and opportunities', 'https://doi.org/10.1017/CBO9781107338920.002', '2015'),
+  strabo: reference('Strabo, vert. H. L. Jones', 'Geografie', '4.1.4–5', 'https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Strabo/4a%2A.html#4', 'rond het begin van de jaartelling'),
+  geniza: reference('Maḍmūn ben Ḥasan, ed. S. D. Goitein en M. A. Friedman', 'Brief uit Aden aan Avraham Ibn Yiju', 'T-S NS J1, India Book II.24, Princeton Geniza Project 5479', 'https://geniza.princeton.edu/en/documents/5479/', '12e eeuw, editie 2008'),
+  ship: reference('Saʿīd b. Marḥab, beschrijving Princeton Geniza Project', 'Brief uit Aden aan Abū Zikrī b. ʿAṭiyya', 'ENA 2741.4, India Book VI.53, bewaarde rectomarge', 'https://geniza.princeton.edu/en/documents/9237/', 'midden 12e eeuw'),
+  wages: reference('Eduard III en zijn raad', 'Ordinance of Labourers', 'aanhef en bepalingen over dienstplicht en vroegere lonen', 'https://sourcebooks.fordham.edu/seth/ordinance-labourers.asp', '1349'),
+  statute: reference('Engels Parlement', 'Statute of Labourers', 'aanhef en bepalingen over ambachtslieden en lokale rechters', 'https://sourcebooks.fordham.edu/seth/statute-labourers.asp', '1351'),
+  luther: reference('Maarten Luther', 'Disputatio pro declaratione virtutis indulgentiarum', 'voorwoord en stellingen 27–28, 36–37', 'https://www.luther.de/en/95thesen.html', '1517'),
+  voyages: reference('SlaveVoyages-onderzoeksteam', 'Trans-Atlantic Slave Trade Database', 'Understanding the Database, historische inleiding en documentatie van de schattingen', 'https://legacy.slavevoyages.org/voyage/about', ''),
+  haiti: reference('Jean-Jacques Dessalines en de ondertekenaars, vert. Laurent Dubois en John D. Garrigus', 'Haïtiaanse onafhankelijkheidsverklaring', 'Proclamatie en Akte van onafhankelijkheid, Les Gonaïves, 1 januari', 'https://today.duke.edu/showcase/haitideclaration/declarationstext.html', '1804'),
+  factoryAct: reference('UK Parliament', 'The 1833 Factory Act', 'Factory Inspectors, algemene reikwijdte van de wet', 'https://www.parliament.uk/about/living-heritage/transformingsociety/livinglearning/19thcentury/overview/factoryact/', ''),
+  factoryReport: reference('Britse fabrieksinspectie', 'Factory Inspectors’ Report', 'British Parliamentary Papers (1836), p. 353, bron 1 bij The National Archives', 'https://www.nationalarchives.gov.uk/education/resources/1833-factory-act/source-1/', '1836'),
+  bandung: reference('Delegaties van de Aziatisch-Afrikaanse conferentie', 'Final Communiqué of the Asian-African Conference', 'inleiding en secties A, D en G, 24 april', 'https://worldjpn.net/documents/texts/docs/19550424.D1E.html', '1955'),
+  song: reference('Asia for Educators, Columbia University', 'Song Dynasty China', 'The Song Economic Revolution, Money and the Economy', 'https://afe.easia.columbia.edu/songdynasty-module/econ-rev-money.html', ''),
+};
