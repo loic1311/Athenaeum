@@ -35,11 +35,11 @@ jobs:
           node scripts/verify-release.mjs
       - name: Test scores, lesbestanden en synchronisatie
         run: node --test scripts/verify-stability.mjs
-      - name: Installeer Chromium voor de browsertests
+      - name: Installeer Chromium en WebKit voor de browsertests
         run: |
           npm install --no-save --package-lock=false playwright@1.62.1
-          npx playwright install --with-deps chromium
-      - name: Test de echte gebruikersstromen in Chromium
+          npx playwright install --with-deps chromium webkit
+      - name: Test de gebruikersstromen op desktop, telefoon en tablet
         run: |
           baseline="$(mktemp -d)"
           git archive 56ef684681a383ad5399e791a06f1c6a32f821a4 | tar -x -C "$baseline"
@@ -93,15 +93,24 @@ jobs:
           sed -i '/^major_version = /s/.*/major_version = 17/' supabase/config.toml
           cat "$GITHUB_WORKSPACE/supabase/config.toml" >> supabase/config.toml
           mkdir -p supabase/migrations supabase/functions
-          cp -R "$GITHUB_WORKSPACE/supabase/functions/athenaeum-webpush" +                "$GITHUB_WORKSPACE/supabase/functions/telegram-bot" supabase/functions/
+          for name in athenaeum-webpush telegram-bot; do
+            cp -R "$GITHUB_WORKSPACE/supabase/functions/$name" supabase/functions/
+          done
           cat > supabase/migrations/20261120000000_fixture_extensions.sql <<'SQL'
           create extension if not exists supabase_vault with schema vault;
           create extension if not exists pg_cron;
           SQL
-          for migration in 20261121174406_athenaeum_learning.sql +                           20261122084119_athenaeum_webpush.sql +                           20261122124421_custom_webpush_schedule.sql +                           20261123210000_uncap_learning_history.sql; do
+          migrations=(
+            20261121174406_athenaeum_learning.sql
+            20261122084119_athenaeum_webpush.sql
+            20261122124421_custom_webpush_schedule.sql
+            20261123210000_uncap_learning_history.sql
+          )
+          for migration in "${migrations[@]}"; do
             cp "$GITHUB_WORKSPACE/supabase/migrations/$migration" supabase/migrations/
           done
-          supabase start +            -x realtime,storage-api,imgproxy,mailpit,postgres-meta,studio,logflare,vector,supavisor +            > "$stage/start.log" 2>&1 || { tail -25 "$stage/start.log"; exit 1; }
+          optional=realtime,storage-api,imgproxy,mailpit,postgres-meta,studio,logflare,vector,supavisor
+          supabase start -x "$optional" > "$stage/start.log" 2>&1 || { tail -25 "$stage/start.log"; exit 1; }
           supabase status -o json > "$stage/api.json"
       - name: Test echte sessies, synchronisatie en meldingsinstellingen
         run: |

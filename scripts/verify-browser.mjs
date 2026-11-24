@@ -11,7 +11,7 @@ const baseline = process.env.ATHENAEUM_BASELINE;
 const upgradeScope = '/Athenaeum-upgrade/';
 const currentScope = '/Athenaeum/';
 let upgradeRoot = baseline;
-const { chromium } = createRequire(import.meta.url)('playwright');
+const { chromium, devices, webkit } = createRequire(import.meta.url)('playwright');
 const types = { '.html':'text/html', '.js':'text/javascript', '.mjs':'text/javascript', '.css':'text/css',
   '.json':'application/json', '.webmanifest':'application/manifest+json', '.svg':'image/svg+xml', '.png':'image/png',
   '.jpg':'image/jpeg', '.woff2':'font/woff2' };
@@ -68,6 +68,19 @@ async function rectOfGlobe(page) {
   assert(drawing.width >= 300 && drawing.height >= 300 && drawing.alpha > 0, JSON.stringify(drawing));
   return drawing;
 }
+
+test('Diagnostica toont de juiste vrijgaveversie', { timeout:20_000 }, async () => {
+  const context = await browser.newContext({ serviceWorkers:'block' });
+  const page = await context.newPage();
+  try {
+    await page.goto(baseURL + 'DEPLOY_CHECK.html');
+    const version = JSON.parse(await readFile(join(root,'version.json'),'utf8'));
+    await page.getByText('Versie ' + version.version + ' · ' + version.channel, {exact:true}).first().waitFor();
+    await page.getByText('12 van 12 controles geslaagd.', {exact:true}).waitFor();
+  } finally {
+    await context.close();
+  }
+});
 
 for (const viewport of [{width:1440,height:900}, {width:820,height:1180}, {width:390,height:844}]) {
   test('Navigatie en atlas op ' + viewport.width + ' px', { timeout:30_000 }, async () => {
@@ -132,6 +145,32 @@ for (const viewport of [{width:1440,height:900}, {width:820,height:1180}, {width
       assert.deepEqual(errors, []);
     } finally {
       await context.close();
+    }
+  });
+}
+
+for (const device of ['Pixel 7','iPhone 13','iPad Pro 11']) {
+  test('Atlasbediening met aanraakprofiel ' + device, { timeout:30_000 }, async () => {
+    const profile = devices[device];
+    const engine = profile.defaultBrowserType === 'webkit' ? await webkit.launch() : browser;
+    const context = await engine.newContext({ ...profile, reducedMotion:'reduce' });
+    const page = await context.newPage();
+    page.setDefaultTimeout(10_000);
+    try {
+      await page.goto(baseURL + '#paideia/atlas/alles');
+      await rectOfGlobe(page);
+      await page.getByRole('button', { name:'Inzoomen' }).tap();
+      assert.match(await page.locator('#atlas-map-status').textContent(), /×/);
+      await noOverflow(page, device);
+      await page.getByLabel('Historische tijdslaag').fill('100 n.Chr.');
+      await page.getByLabel('Zoek een stad of regio').fill('Massilia');
+      await page.locator('#atlas-city-list').getByRole('link', { name:/Massilia.*Marseille/ }).tap();
+      await page.getByRole('link', { name:'Uitgebreid studeren' }).tap();
+      await page.getByRole('button', { name:'Markeer als gelezen' }).waitFor();
+      await noOverflow(page, device + ' les');
+    } finally {
+      await context.close();
+      if (engine !== browser) await engine.close();
     }
   });
 }
