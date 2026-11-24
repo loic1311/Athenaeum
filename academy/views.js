@@ -1,8 +1,8 @@
-import { EXAM_GOALS, formatSource, KINDS, LEVELS, ROUTES, TRACKS, tally } from './learning.js?v=142';
-import { tipsFor } from './daily.js?v=142';
-import { instructionFor, PRACTICE_KINDS, PRACTICE_PHASES, practiceOptions, practicePhase, workedExample } from './practice.js?v=13r8';
+import { EXAM_GOALS, formatSource, KINDS, LEVELS, ROUTES, TRACKS, tally } from './learning.js?v=150';
+import { tipsFor } from './daily.js?v=150';
+import { instructionFor, PRACTICE_KINDS, PRACTICE_PHASES, practiceOptions, practicePhase, workedExample } from './practice.js?v=150';
 import { LANGUAGE_TOPICS, isLanguageTopic } from './language-topics.js?v=14r3';
-import { EXAM_ICE, EXAM_PASS, MAX_ICE, STARTING_ICE } from './streak.js?v=142';
+import { EXAM_ICE, EXAM_PASS, MAX_ICE, STARTING_ICE } from './streak.js?v=150';
 import { studyNotes } from './study-notes.js?v=13r6';
 import { LEGACY_TIMES, MAX_REMINDERS, REMINDER_DAYS } from './notifications.js?v=13r6';
 import { belongsToHistoryTrack, chronologicalLessons, chronologyGroups, chronologyYear, HISTORICAL_TRACKS, historyLessonHref,
@@ -10,8 +10,8 @@ import { belongsToHistoryTrack, chronologicalLessons, chronologyGroups, chronolo
 import { HISTORY_SECTIONS, explorerHref } from './history-links.js?v=14r4';
 
 import { classicalCourse, classicalLesson, greekKeyboard } from './classical-view.js?v=14r3';
-import { evidenceFor, SCORE_VERSION } from './assessment.js?v=142';
-import { annotatedTerms, lessonSources, preparationFor, studyConcept, studyLevel, STUDY_LEVELS } from './history-study.js';
+import { evidenceFor, SCORE_VERSION } from './assessment.js?v=150';
+import { annotatedTerms, lessonSources, preparationFor, studyConcept, studyLevel, STUDY_LEVELS } from './history-study.js?v=150';
 
 const SECTION_NAMES = {
   leer: ['Studium', 'pen', 'Studeren'],

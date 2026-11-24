@@ -1,4 +1,4 @@
-import { studySources as s } from './study-sources.js';
+import { studySources as s } from './study-sources.js?v=150';
 
 function choice(id, text, answer, alternatives, feedback, hints, concept) {
   return {

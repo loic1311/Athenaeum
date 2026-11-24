@@ -1,6 +1,6 @@
-import { dayKey } from './daily.js?v=142';
-import { EXAM_GOALS } from './learning.js?v=142';
-import { SCORE_VERSION } from './assessment.js?v=142';
+import { dayKey } from './daily.js?v=150';
+import { EXAM_GOALS } from './learning.js?v=150';
+import { SCORE_VERSION } from './assessment.js?v=150';
 
 const DAY = 86_400_000;
 export const STARTING_ICE = 2;

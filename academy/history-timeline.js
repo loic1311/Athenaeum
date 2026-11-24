@@ -1,11 +1,11 @@
 import { CHRONOLOGY_EVENTS } from './content/chronology-events.js?v=14r3';
 import { byDate, explorerHref, explorationLessonHref, hasTheme, HISTORICAL_ERAS, historyInScope,
-  inEra, STUDY_THEMES } from './history-explorer.js?v=142';
+  inEra, STUDY_THEMES } from './history-explorer.js?v=150';
 import { chronologyYear, HISTORICAL_TRACKS, timelineScope } from './history-chronology.js?v=14r3';
 import { ATLAS_PLACES } from './atlas-catalog.js?v=142';
-import { TRACKS } from './learning.js?v=142';
-import { searchLessons } from './lesson-search.js?v=142';
-import { esc, heading, historyExplorerNav, icon, studyMeter } from './views.js?v=142';
+import { TRACKS } from './learning.js?v=150';
+import { searchLessons } from './lesson-search.js?v=150';
+import { esc, heading, historyExplorerNav, icon, studyMeter } from './views.js?v=150';
 
 const REGIONS = { europa: 'Europa', azie: 'Azië', afrika: 'Afrika', amerika: 'Amerika', oceanie: 'Oceanië' };
 const dateExpression = /^(-?\d{1,9})(vchr|nchr|v|n|bce?|ad|ce)?(?:[-–—](-?\d{1,9})(vchr|nchr|v|n|bce?|ad|ce)?)?$/u;
@@ -269,4 +269,4 @@ export function lessonExplorerLinks(lesson) {
     </section>`;
 }
 
-export { explorationJourney } from './history-explorer.js?v=142';
+export { explorationJourney } from './history-explorer.js?v=150';

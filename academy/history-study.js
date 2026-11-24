@@ -1,5 +1,5 @@
-import { concepts } from './content/study-concepts.js';
-import { seminars } from './content/history-seminars.js';
+import { concepts } from './content/study-concepts.js?v=150';
+import { seminars } from './content/history-seminars.js?v=150';
 
 export const STUDY_LEVELS = ['Basiskennis', 'Historisch begrip', 'Universitaire toepassing', 'Academische verdieping'];
 const historicalTracks = new Set(['greek', 'roman', 'medieval', 'earlymodern', 'history', 'knowledge', 'traditio']);

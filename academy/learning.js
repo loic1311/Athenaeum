@@ -1,7 +1,7 @@
-import { practiceVariants, practiceDifficulty, preferredDifficulty, startingDifficulty } from './practice.js?v=13r8';
-import { independentlyCorrect } from './assessment.js?v=142';
-import { prerequisitesFor, studyExercises, studyLevel } from './history-study.js';
-export { tally } from './assessment.js?v=142';
+import { practiceVariants, practiceDifficulty, preferredDifficulty, startingDifficulty } from './practice.js?v=150';
+import { independentlyCorrect } from './assessment.js?v=150';
+import { prerequisitesFor, studyExercises, studyLevel } from './history-study.js?v=150';
+export { tally } from './assessment.js?v=150';
 
 export const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1'];
 export const ROUTES = {

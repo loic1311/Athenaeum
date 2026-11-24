@@ -1,31 +1,31 @@
 import { EXAM_GOALS, LEVELS, ROUTES, TRACKS, shuffled, makePool, historyOf, isCorrect, hasAccentError, quickQuestions,
-  languageQuestions, lessonQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=142';
+  languageQuestions, lessonQuestions, placementQuestions, placementPassed, estimateLevel, levelFor, tally } from './learning.js?v=150';
 import { allPackKeys, byLessonId, loadedLessons, loadPacks, packFiles, packsForTracks, summaries } from './catalog.js?v=142';
-import { progressOverview, validGoal } from './progress-overview.js?v=142';
+import { progressOverview, validGoal } from './progress-overview.js?v=150';
 import { belongsToHistoryTrack, chronologicalLessons, chronologyForLesson, chronologyYear, HISTORICAL_TRACKS,
   historyLessonHref, historyReadId, timelineScope } from './history-chronology.js?v=14r3';
 import { explorerHref, HISTORY_SECTIONS } from './history-links.js?v=14r4';
-import { monthlyExamQuestions, monthlyStudy, weeklyExamQuestions, weeklyStudy } from './weekly-exam.js?v=142';
+import { monthlyExamQuestions, monthlyStudy, weeklyExamQuestions, weeklyStudy } from './weekly-exam.js?v=150';
 import { isLanguageTopic, LANGUAGE_SKILLS } from './language-topics.js?v=14r3';
 import { record, readRecords, storeRecords, forgetRecords, backups, syncLearning, clearCloudLearning } from './storage.js?v=142';
-import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=142';
+import { generateLessons, readStudyFile, validDeck, MAX_IMPORT_CHARS } from './importer.js?v=150';
 import { authenticate, authMessage, makeGuest } from './cloud.js?v=13r2';
-import * as view from './views.js?v=142';
-import { PACE, DAY_FOCI, DAY_MODES, STAGES, dayKey, archivedPlans, planDay, advanceDay, prepareDay, drillQuestions, tipsFor } from './daily.js?v=142';
-import { studyConcept, studyLevel } from './history-study.js';
-import { studyReadings } from './study-history.js';
-import { checkSelection, completeSelection, practiceOptions, sequencePractice } from './practice.js?v=13r8';
-import { dailyPage } from './daily-view.js?v=142';
+import * as view from './views.js?v=150';
+import { PACE, DAY_FOCI, DAY_MODES, STAGES, dayKey, archivedPlans, planDay, advanceDay, prepareDay, drillQuestions, tipsFor } from './daily.js?v=150';
+import { studyConcept, studyLevel } from './history-study.js?v=150';
+import { studyReadings } from './study-history.js?v=150';
+import { checkSelection, completeSelection, practiceOptions, sequencePractice } from './practice.js?v=150';
+import { dailyPage } from './daily-view.js?v=150';
 import { findCases, findStudies, lessonSourceIndex, passageMatches, caseWitness, researchPage, researchMarkdown, RESEARCH_TABS,
-  evidencePreview } from './research.js?v=142';
+  evidencePreview } from './research.js?v=150';
 import { addResearchMaterial, comparisonFromForm, evidenceList, validComparison, MAX_COMPARISON_ROWS } from './research-data.js?v=13r1';
-import { readResearchFile } from './research-import.js?v=142';
-import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=142';
+import { readResearchFile } from './research-import.js?v=150';
+import { scriptoriumPaste, scriptoriumShell, scriptoriumTransferDialog, scriptoriumURL } from './scriptorium.js?v=150';
 import { fetchJson } from './fetch-json.js?v=142';
-import { searchLessons } from './lesson-search.js?v=142';
-import { countsAsPractice, isStudyDay, studyRecordId } from './streak.js?v=142';
+import { searchLessons } from './lesson-search.js?v=150';
+import { countsAsPractice, isStudyDay, studyRecordId } from './streak.js?v=150';
 import { MAX_REMINDERS, readSchedule, preparePush, pushPreference, pushSupport, savePush, stopPush, testPush } from './notifications.js?v=13r6';
-import { reviewData, SCORE_VERSION } from './assessment.js?v=142';
+import { reviewData, SCORE_VERSION } from './assessment.js?v=150';
 
 const main = document.querySelector('#main');
 const pageContent = document.querySelector('#page-content');
@@ -36,9 +36,9 @@ const sync = window.AthSync;
 const contentKeys = Object.keys(TRACKS);
 const studyTracks = [...HISTORICAL_TRACKS, 'knowledge', 'traditio'];
 const historicalViews = {
-  atlas: { load: () => import('./atlas-view.js?v=142') },
-  timeline: { load: () => import('./history-timeline.js?v=142') },
-  routes: { load: () => import('./history-explorer-view.js?v=142') },
+  atlas: { load: () => import('./atlas-view.js?v=150') },
+  timeline: { load: () => import('./history-timeline.js?v=150') },
+  routes: { load: () => import('./history-explorer-view.js?v=150') },
 };
 let profile = null;
 let readingGuide;
@@ -233,7 +233,7 @@ function lessonLoadingNotice(keys) {
 
 function loadTraditionView() {
   if (traditionView || traditionViewLoad || traditionViewError) return;
-  traditionViewLoad = import('./traditio.js?v=142').then(module => { traditionView = module; })
+  traditionViewLoad = import('./traditio.js?v=150').then(module => { traditionView = module; })
     .catch(() => { traditionViewError = true; }).finally(() => { traditionViewLoad = undefined; refreshContentViews(); });
 }
 

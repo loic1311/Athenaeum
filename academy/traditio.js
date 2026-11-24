@@ -1,6 +1,6 @@
 import { TRADITIONS, TRADITIO_LESSONS, TRADITIO_READING } from './content/traditio.js?v=14r3';
-import { makePool, shuffled } from './learning.js?v=142';
-import { esc, heading, icon, sourceView } from './views.js?v=142';
+import { makePool, shuffled } from './learning.js?v=150';
+import { esc, heading, icon, sourceView } from './views.js?v=150';
 
 const paths = new Map(TRADITIONS.map(tradition => [tradition.id, tradition]));
 const byTradition = new Map();

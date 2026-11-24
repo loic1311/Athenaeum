@@ -1,4 +1,4 @@
-import { studySources as source } from './study-sources.js';
+import { studySources as source } from './study-sources.js?v=150';
 
 export const concepts = Object.fromEntries([
   ['bron', 'Primaire bron', ['primaire bronnen', 'primair bronnenmateriaal'],

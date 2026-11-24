@@ -2,7 +2,7 @@ import { EXPLORER_PAGES, explorerHref, explorationLessonHref } from './history-l
 export { EXPLORER_PAGES, HISTORY_SECTIONS, explorerHref, explorationLessonHref } from './history-links.js?v=14r4';
 import { belongsToHistoryTrack, chronologyYear, HISTORICAL_TRACKS, timelineScope } from './history-chronology.js?v=14r3';
 import { ATLAS_PLACES } from './atlas-catalog.js?v=142';
-import { preparationFor } from './history-study.js';
+import { preparationFor } from './history-study.js?v=150';
 export { ATLAS_PLACES, ATLAS_VIEWS } from './atlas-catalog.js?v=142';
 
 export const HISTORICAL_ERAS = [

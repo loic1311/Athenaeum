@@ -1,6 +1,6 @@
-import { EXAM_GOALS, TRACKS, examQuestions, makePool } from './learning.js?v=142';
-import { dayKey } from './daily.js?v=142';
-import { studyReadings } from './study-history.js';
+import { EXAM_GOALS, TRACKS, examQuestions, makePool } from './learning.js?v=150';
+import { dayKey } from './daily.js?v=150';
+import { studyReadings } from './study-history.js?v=150';
 
 function currentWeek(now) {
   const monday = new Date(now);
