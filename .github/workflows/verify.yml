@@ -1,0 +1,40 @@
+name: Athenaeum regressietests
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Controleer JavaScript en TypeScript
+        run: |
+          git ls-files -z '*.js' '*.mjs' | xargs -0 -n 1 node --check
+          git ls-files -z '*.ts' | xargs -0 node --input-type=module -e '
+            import { readFileSync } from "node:fs";
+            import { stripTypeScriptTypes } from "node:module";
+            for (const file of process.argv.slice(1)) stripTypeScriptTypes(readFileSync(file, "utf8"));
+          '
+      - name: Controleer catalogus en offlinebestanden
+        run: |
+          node scripts/build-catalog.mjs
+          node scripts/build-offline.mjs
+          git diff --exit-code
+          node scripts/verify-release.mjs
+      - name: Test scores, lesbestanden en synchronisatie
+        run: node --test scripts/verify-stability.mjs
+      - name: Installeer Chromium voor de browsertests
+        run: |
+          npm install --no-save --package-lock=false playwright@1.62.1
+          npx playwright install --with-deps chromium
+      - name: Test de echte gebruikersstromen in Chromium
+        run: node --test scripts/verify-browser.mjs
